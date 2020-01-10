@@ -91,11 +91,12 @@ class login extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
       child: Row(
         children: [
-          Divider(),
+
+          Expanded(child: Divider(height: 1)),
           Text(
-              '0'
+              ' 0 '
           ),
-          Divider(),
+          Expanded(child: Divider(height: 1)),
         ],
       ),
     );
@@ -117,6 +118,7 @@ class login extends StatelessWidget {
             passWordTextField(),
             TextForgetPassword(),
             buttonLoginIn(),
+            TextRegister(),
             lineDivisor(),
 
           ],
