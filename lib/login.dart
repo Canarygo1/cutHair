@@ -5,10 +5,21 @@ class login extends StatelessWidget {
 
   Widget emailTextField(){
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 1.5),
+          ),
+          hintStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 18.0,
+          ),
+        ),
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18.0,
         ),
       ),
     );
@@ -16,19 +27,29 @@ class login extends StatelessWidget {
 
   Widget passWordTextField(){
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
         decoration: InputDecoration(
           hintText: 'Contraseña',
+          enabledBorder: const UnderlineInputBorder(
+            borderSide: const BorderSide(color: Colors.black, width: 1.5),
+          ),
+          hintStyle: TextStyle(
+            color: Colors.black,
+            fontSize: 18.0,
+          ),
         ),
         obscureText: true,
-      ),
+        style: TextStyle(
+          color: Colors.black,
+        ),
+      )
     );
   }
 
   Widget TextForgetPassword(){
     return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: GestureDetector(
         onTap: (){
 
@@ -38,9 +59,9 @@ class login extends StatelessWidget {
           textAlign: TextAlign.right,
           style: TextStyle(
             color: Color.fromRGBO(0, 144, 255, 1),
-            fontWeight: FontWeight.bold,
             decoration: TextDecoration.underline,
             decorationColor: Color.fromRGBO(0, 144, 255, 1),
+            fontSize: 16.0,
           ),
         ),
       )
@@ -49,25 +70,32 @@ class login extends StatelessWidget {
 
   Widget buttonLoginIn(){
     return Container(
-      padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-      child: RaisedButton(
-        child: Text(
-          'Entrar',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+      child: ButtonTheme(
+        child: RaisedButton(
+          child: Text(
+            'Entrar',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+            ),
+          ),
+          onPressed: (){
+
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
           ),
         ),
-        onPressed: (){
-
-        },
+        height: 60.0,
+        buttonColor: Color.fromRGBO(230, 73, 90, 1),
       ),
     );
   }
 
   Widget TextRegister(){
     return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: (){
 
@@ -77,9 +105,9 @@ class login extends StatelessWidget {
             textAlign: TextAlign.right,
             style: TextStyle(
               color: Color.fromRGBO(0, 144, 255, 1),
-              fontWeight: FontWeight.bold,
               decoration: TextDecoration.underline,
               decorationColor: Color.fromRGBO(0, 144, 255, 1),
+              fontSize: 16.0,
             ),
           ),
         )
@@ -88,15 +116,24 @@ class login extends StatelessWidget {
 
   Widget lineDivisor(){
     return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: Row(
         children: [
-
-          Expanded(child: Divider(height: 1)),
+          Expanded(
+              child: Divider(
+                  height: 5.0,
+                  color: Colors.black,
+                ),
+          ),
           Text(
               ' 0 '
           ),
-          Expanded(child: Divider(height: 1)),
+          Expanded(
+              child: Divider(
+                height: 5.0,
+                color: Colors.black,
+              ),
+          ),
         ],
       ),
     );
