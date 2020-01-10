@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class login extends StatelessWidget {
 
@@ -121,20 +122,63 @@ class login extends StatelessWidget {
         children: [
           Expanded(
               child: Divider(
-                  height: 5.0,
-                  color: Colors.black,
+                thickness: 2.0,
+                endIndent: 10.0,
+                color: Colors.black,
                 ),
           ),
           Text(
-              ' 0 '
+              ' 0 ',
+            style: TextStyle(
+              fontSize: 18.0,
+              color: Colors.black,
+            ),
           ),
           Expanded(
               child: Divider(
-                height: 5.0,
+                indent: 10.0,
+                thickness: 2.0,
                 color: Colors.black,
               ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget facebookButton(){
+    return Container(
+      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+      child: ButtonTheme(
+        child: RaisedButton(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                FontAwesomeIcons.facebook,
+                color: Colors.white,
+              ),
+              Expanded(
+                child: Text(
+                  'Entrar con facebook',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                ),
+              )
+            ],
+          ),
+          onPressed: (){
+
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+        ),
+        height: 50.0,
+        buttonColor: Color.fromRGBO(59, 89, 152, 1),
       ),
     );
   }
@@ -157,7 +201,7 @@ class login extends StatelessWidget {
             buttonLoginIn(),
             TextRegister(),
             lineDivisor(),
-
+            facebookButton(),
           ],
         ),
       ),
