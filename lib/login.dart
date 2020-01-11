@@ -6,10 +6,14 @@ import 'register.dart';
 
 class login extends StatelessWidget {
 
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   Widget emailTextField(){
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
+        controller: emailController,
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
           enabledBorder: const UnderlineInputBorder(
@@ -32,6 +36,7 @@ class login extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
+        controller: passwordController,
         decoration: InputDecoration(
           hintText: 'Contraseña',
           enabledBorder: const UnderlineInputBorder(
@@ -71,7 +76,7 @@ class login extends StatelessWidget {
     );
   }
 
-  Widget buttonLoginIn(){
+  Widget buttonLoginIn(BuildContext context){
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -84,7 +89,8 @@ class login extends StatelessWidget {
             ),
           ),
           onPressed: (){
-
+            print('eyyy');
+            loginCode().iniciarSesion(emailController.text.toString(), passwordController.text.toString(), context);
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -188,6 +194,7 @@ class login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -200,7 +207,7 @@ class login extends StatelessWidget {
             emailTextField(),
             passWordTextField(),
             TextForgetPassword(),
-            buttonLoginIn(),
+            buttonLoginIn(context),
             TextRegister(context),
             lineDivisor(),
             facebookButton(),
