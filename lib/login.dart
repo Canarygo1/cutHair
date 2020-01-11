@@ -89,7 +89,6 @@ class login extends StatelessWidget {
             ),
           ),
           onPressed: (){
-            print('eyyy');
             loginCode().iniciarSesion(emailController.text.toString(), passwordController.text.toString(), context);
           },
           shape: RoundedRectangleBorder(

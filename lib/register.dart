@@ -2,8 +2,12 @@ import 'package:cuthair/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'loginCode.dart';
+import 'registerCode.dart';
 
 class register extends StatelessWidget {
+
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
 
   Widget nombreTextField(){
     return Padding(
@@ -53,6 +57,7 @@ class register extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
+        controller: email,
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
           enabledBorder: const UnderlineInputBorder(
@@ -75,6 +80,7 @@ class register extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
+          controller: password,
           decoration: InputDecoration(
             hintText: 'Contraseña',
             enabledBorder: const UnderlineInputBorder(
@@ -137,7 +143,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget buttonRegister(){
+  Widget buttonRegister(BuildContext context){
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 30.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -150,7 +156,7 @@ class register extends StatelessWidget {
             ),
           ),
           onPressed: (){
-
+            registerCode().register(email.text.toString(), password.text.toString(), context);
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -207,7 +213,7 @@ class register extends StatelessWidget {
             passWordTextField(),
             repeatPassWordTextField(),
             numeroTelefono(),
-            buttonRegister(),
+            buttonRegister(context),
           ],
         ),
       ),

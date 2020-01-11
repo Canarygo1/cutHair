@@ -14,18 +14,11 @@ class loginCode{
 
  void iniciarSesion(String email, String password, BuildContext context) async{
    FirebaseUser user;
-   try{
-     user = (await auth.signInWithEmailAndPassword(
-         email: email, password: password)).user;
-   }catch(e){
-     print(e.toString());
-   }finally{
-     if(user != null){
-       print('adios');
-       pushPage(context, register());
-     }else{
-       print('Hola');
-     }
+   user = (await auth.signInWithEmailAndPassword(
+       email: email, password: password)).user;
+   if(user != null){
+     pushPage(context, register());
+   }else{
    }
  }
 }
