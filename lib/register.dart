@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'registerCode.dart';
 import 'globalMethods.dart';
+
 class register extends StatelessWidget {
 
   TextEditingController nombre = TextEditingController();

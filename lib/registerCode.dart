@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'login.dart';
 import 'package:toast/toast.dart';
 
-
 class registerCode{
 
   final FirebaseAuth auth =FirebaseAuth.instance;

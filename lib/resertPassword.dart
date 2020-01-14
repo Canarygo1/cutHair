@@ -10,7 +10,10 @@ class resetPassword extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> changePassword() async {
-    await auth.sendPasswordResetEmail(email: emailControler.text.toString());
+    auth.setLanguageCode("es");
+    await auth.sendPasswordResetEmail(
+        email: emailControler.text.toString(),
+    );
   }
 
   @override
@@ -21,6 +24,7 @@ class resetPassword extends StatelessWidget {
         color: Color.fromRGBO(300, 300, 300, 1),
         child: ListView(
           children: <Widget>[
+            goBack(context),
             emailTextField(),
             botonEnviarCorreo(context),
           ],
@@ -86,6 +90,36 @@ class resetPassword extends StatelessWidget {
     );
   }
 
+  Widget goBack(BuildContext context){
+    return Container(
+        padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
+        child: GestureDetector(
+          onTap: (){
+            globalMethods().pushPage(context, login());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.navigate_before,
+                color: Color.fromRGBO(230, 73, 90, 1),
+                size: 35.0,
+              ),
+              Expanded(
+                child: Text(
+                  'Volver al login',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                    fontSize: 18.0,
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+    );
+  }
 
 }
 
