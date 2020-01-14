@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'registerCode.dart';
 import 'globalMethods.dart';
+
 class register extends StatelessWidget {
 
   TextEditingController nombre = TextEditingController();
@@ -218,6 +219,7 @@ class register extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       body: Form(
         key: keyForm,
         child: Container(
