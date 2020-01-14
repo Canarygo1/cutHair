@@ -213,4 +213,5 @@ class register extends StatelessWidget {
       ),
     );
   }
+
 }
