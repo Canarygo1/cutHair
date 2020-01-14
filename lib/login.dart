@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'loginCode.dart';
 import 'register.dart';
@@ -154,7 +157,7 @@ class login extends StatelessWidget {
     );
   }
 
-  Widget facebookButton(){
+  Widget facebookButton(BuildContext context){
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -179,7 +182,14 @@ class login extends StatelessWidget {
             ],
           ),
           onPressed: (){
+            facebookLogin(context).then((user) {
+              if (user != null) {
+                print('Logged in successfully.');
 
+              } else {
+                print('Error while Login.');
+              }
+            });
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -210,10 +220,39 @@ class login extends StatelessWidget {
             buttonLoginIn(context),
             TextRegister(context),
             lineDivisor(),
-            facebookButton(),
+            facebookButton(context),
           ],
         ),
       ),
     );
+  }
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final FacebookLogin fbLogin = new FacebookLogin();
+  Future<FirebaseUser> facebookLogin(BuildContext context) async {
+    FirebaseUser currentUser;
+    // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
+    // if you remove above comment then facebook login will take username and pasword for login in Webview
+    try {
+      final FacebookLoginResult facebookLoginResult =
+      await fbLogin.logIn(['email', 'public_profile']);
+      if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
+        FacebookAccessToken facebookAccessToken =
+            facebookLoginResult.accessToken;
+        final AuthCredential credential = FacebookAuthProvider.getCredential(
+            accessToken: facebookAccessToken.token);
+        final AuthResult authResult =  await auth.signInWithCredential(credential);
+        final FirebaseUser user = authResult.user;
+        assert(user.email != null);
+        assert(user.displayName != null);
+        assert(!user.isAnonymous);
+        assert(await user.getIdToken() != null);
+        currentUser = await auth.currentUser();
+        assert(user.uid == currentUser.uid);
+        return currentUser;
+      }
+    } catch (e) {
+      print(e);
+    }
+    return currentUser;
   }
 }
