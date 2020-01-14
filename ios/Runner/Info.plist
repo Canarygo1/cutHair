@@ -20,6 +20,15 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+
+    <key>LSApplicationQueriesSchemes</key>
+    <array> <string>fbapi</string> <string>fb-messenger-share-api</string>
+    <string>fbauth2</string> <string>fbshareextension</string> </array>
+    <key>CFBundleURLTypes</key> <array>
+     <dict> <key>CFBundleURLSchemes</key>
+     <array> <string>fb493927641521806</string> </array> </dict> </array>
+     <key>FacebookAppID</key> <string>493927641521806</string> <key>FacebookDisplayName</key>
+     <string>cutHair</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
