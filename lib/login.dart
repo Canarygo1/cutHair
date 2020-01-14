@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'loginCode.dart';
 import 'register.dart';
+import 'globalMethods.dart';
 
 class login extends StatelessWidget {
 
@@ -106,7 +107,7 @@ class login extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: (){
-            loginCode().pushPage(context, register());
+            globalMethods().pushPage(context, register());
           },
           child: Text(
             'Registrarse',

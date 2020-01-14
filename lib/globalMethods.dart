@@ -7,5 +7,6 @@ class globalMethods{
       MaterialPageRoute<void>(builder: (_) => page),
     );
   }
-
 }
+
+

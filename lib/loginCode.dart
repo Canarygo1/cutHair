@@ -1,24 +1,28 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
+import 'globalMethods.dart';
+import 'package:toast/toast.dart';
 
 class loginCode{
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
- void pushPage(BuildContext context, Widget page){
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => page),
-    );
- }
-
  void iniciarSesion(String email, String password, BuildContext context) async{
    FirebaseUser user;
-   user = (await auth.signInWithEmailAndPassword(
-       email: email, password: password)).user;
-   if(user != null){
-     pushPage(context, register());
-   }else{
+   try {
+     user = (await auth.signInWithEmailAndPassword(
+         email: email, password: password)).user;
+       globalMethods().pushPage(context, register());
+   }catch(Exception){
+     Toast.show(
+       "Los datos no son correctos",
+       context,
+       gravity: Toast.BOTTOM,
+       textColor: Colors.black,
+       duration: Toast.LENGTH_LONG,
+       backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+     );
    }
  }
 }
