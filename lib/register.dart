@@ -1,7 +1,7 @@
+import 'package:cuthair/globalMethods.dart';
 import 'package:cuthair/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'loginCode.dart';
 
 class register extends StatelessWidget {
 
@@ -167,7 +167,7 @@ class register extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
           child: GestureDetector(
             onTap: (){
-              loginCode().pushPage(context, login());
+              globalMethods().pushPage(context, login());
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
