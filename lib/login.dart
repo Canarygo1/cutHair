@@ -1,3 +1,4 @@
+import 'package:cuthair/resertPassword.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -7,6 +8,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'loginCode.dart';
 import 'register.dart';
 import 'globalMethods.dart';
+import 'resertPassword.dart';
 
 class login extends StatelessWidget {
 
@@ -59,12 +61,12 @@ class login extends StatelessWidget {
     );
   }
 
-  Widget TextForgetPassword(){
+  Widget TextForgetPassword(BuildContext context){
     return Container(
       padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: GestureDetector(
         onTap: (){
-
+          globalMethods().pushPage(context, resetPassword());
         },
         child: Text(
           '¿Has olvidado tu contraseña?',
@@ -216,7 +218,7 @@ class login extends StatelessWidget {
           children: <Widget>[
             emailTextField(),
             passWordTextField(),
-            TextForgetPassword(),
+            TextForgetPassword(context),
             buttonLoginIn(context),
             TextRegister(context),
             lineDivisor(),
