@@ -239,5 +239,4 @@ class register extends StatelessWidget {
       ),
     );
   }
-
 }
