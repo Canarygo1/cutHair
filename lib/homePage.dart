@@ -52,8 +52,4 @@ class homePage extends StatelessWidget {
       ),
     );
   }
-
-  Widget builBarberShop(BuildContext context, int index){
-
-  }
 }
