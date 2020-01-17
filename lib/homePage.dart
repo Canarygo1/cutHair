@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class homePage extends StatelessWidget {
 
-  List<Object> itemList;
+  List<Peluqueria> itemList;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class homePage extends StatelessWidget {
               childAspectRatio: 8.0 / 9.0,
               children: itemList
               .map(
-                (Item) => ItemList(peluqueria: Item),
+                (Peluqueria) => ItemList(peluqueria: Peluqueria),
               ).toList(),
             ),
           ],
