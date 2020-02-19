@@ -109,6 +109,7 @@ class login extends StatelessWidget {
 
   Widget TextRegister(BuildContext context){
     return Container(
+
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: (){
