@@ -1,3 +1,4 @@
+import 'package:cuthair/DetailScreen.dart';
 import 'package:flutter/material.dart';
 import 'login.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: login(),
+      home: DetailScreen(),
     );
   }
 }
