@@ -1,5 +1,8 @@
+import 'package:cuthair/chooseHairDresser.dart';
 import 'package:cuthair/model/peluqueria.dart';
 import 'package:flutter/material.dart';
+
+import 'globalMethods.dart';
 
 class home extends StatelessWidget {
   @override
@@ -54,66 +57,71 @@ class home extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: peluquerias.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
-                      child: Container(
-                        child: Column(
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10.0),
-                              child: Center(
-                                child: Container(
-                                  child: AspectRatio(
-                                    aspectRatio: 4 / 4,
-                                    child: Image(
-                                      fit: BoxFit.fill,
-                                      height: 10,
-                                      width: 10,
-                                      image: ExactAssetImage(
-                                          "assets/images/privilegeLogo.jpg"),
+                  return GestureDetector(
+                    onTap: (){
+                      globalMethods().pushPage(context, chooseHairDresserScreen());
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width * 0.3,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Center(
+                                  child: Container(
+                                    child: AspectRatio(
+                                      aspectRatio: 4 / 4,
+                                      child: Image(
+                                        fit: BoxFit.fill,
+                                        height: 10,
+                                        width: 10,
+                                        image: ExactAssetImage(
+                                            "assets/images/privilegeLogo.jpg"),
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(7, 10, 0, 0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    "Privilege",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0),
-                                  ),
-                                  Text(
-                                    "BarberShop",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15.0),
-                                  ),
-                                  Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.location_on,
-                                        size: 12,
-                                        color: Colors.white,
-                                      ),
-                                      Text(
-                                        "Santa Cruz",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 12.0),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(7, 10, 0, 0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Text(
+                                      "Privilege",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18.0),
+                                    ),
+                                    Text(
+                                      "BarberShop",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 15.0),
+                                    ),
+                                    Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.location_on,
+                                          size: 12,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Santa Cruz",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12.0),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

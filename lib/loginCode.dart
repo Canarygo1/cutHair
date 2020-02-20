@@ -1,3 +1,4 @@
+import 'package:cuthair/homePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'register.dart';
@@ -13,7 +14,7 @@ class loginCode{
    try {
      user = (await auth.signInWithEmailAndPassword(
          email: email, password: password)).user;
-       globalMethods().pushPage(context, register());
+       globalMethods().pushPage(context, home());
    }catch(Exception){
      Toast.show(
        "Los datos no son correctos",
