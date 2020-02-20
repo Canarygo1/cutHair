@@ -20,17 +20,35 @@ class home extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+          Container(
+            height: 90,
+            color: Color.fromRGBO(230, 73, 90, 1),
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
+              child: Row(
+                children: <Widget>[
+                  Icon(Icons.location_on),
+                  Text("Santa Cruz de Tenerife")
+                ],
+              ),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
             child: Row(
               children: <Widget>[
-                Icon(Icons.location_on, color: Color.fromRGBO(230, 73, 90, 1)),
-                Text("Cercanas"),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                  child: Text(
+                    "Cercanas",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                )
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 24.0),
             height: MediaQuery.of(context).size.height * 0.35,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
