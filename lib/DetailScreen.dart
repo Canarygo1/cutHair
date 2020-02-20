@@ -1,3 +1,4 @@
+import 'package:cuthair/DetailCita.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,90 +9,110 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   String nombrePeluqueria = "Privilege";
-  String direccionPeluqueria = "Calle tu madre";
+  String direccionPeluqueria = "Calle San Patricio";
 
-  List<String> tipoServicio = [
-    'Corte Cabello',
-    'Rapado al estilo Llanero Solitario'
+  List<DetailCita> detallesServicio = [
+    new DetailCita("Corte Cabello", 20, 15.65),
+    new DetailCita("Rapado al estilo Llanero Solitario", 15, 10.42),
+    new DetailCita("Tinte", 120, 35)
   ];
-  List<int> duracionServicio = [20, 15];
-  List<double> precioServicio = [15.65, 10.42];
 
   @override
   Widget build(BuildContext context) {
-    print(tipoServicio);
-    print(duracionServicio);
-    print(precioServicio);
 
     return Scaffold(
-        backgroundColor: Colors.grey,
+        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
           //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Image(
-              fit: BoxFit.fill,
-              height: 10,
-              width: 10,
               image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
             ),
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Text(""),
                 Text(nombrePeluqueria,
                     style: TextStyle(color: Colors.white, fontSize: 22.0)),
                 Text(direccionPeluqueria,
                     style: TextStyle(color: Colors.white)),
-                Text("")
+                Container(
+                    child: Row(
+                        children: [
+                          Expanded(
+                            child: Divider(
+                              thickness: 1.0,
+                              endIndent: 0.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ])
+                )
               ],
             ),
             Container(
+              height: MediaQuery.of(context).size.height * 0.38,
               child: ListView.builder(
-                  itemCount: 2,
+                  scrollDirection: Axis.vertical,
+                  itemCount: detallesServicio.length,
+                  shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return new Card(
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(tipoServicio.elementAt(index),
-                              style: TextStyle(color: Colors.white)),
-                          Text(
-                              duracionServicio.elementAt(index).toString(),
-                              style: TextStyle(color: Colors.white)),
-                          Text(
-                              precioServicio.elementAt(index).toString(),
-                              style: TextStyle(color: Colors.white))
+                      shape: BeveledRectangleBorder(side: BorderSide(color: Color.fromRGBO(300, 300, 300, 1))),
+                        child: new Container(
+                          color: Color.fromRGBO(300, 300, 300, 1),
+                          child: new Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(" "+ detallesServicio.elementAt(index).tipoServicio,
+                              style: TextStyle(color: Colors.white, fontSize: 18.0),
+                              textAlign: TextAlign.center),
+                            Text(" "+ detallesServicio.elementAt(index).duracionServicio.toString() +
+                                  " minutos",
+                              style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                            Text(" "+ detallesServicio.elementAt(index).precioServicio.toString() + " €",
+                              style: TextStyle(color: Colors.white, fontSize: 14.0)),
+                            Container(
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Divider(
+
+                                      thickness: 2.0,
+                                      endIndent: 0.0,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ])
+                            )
                         ],
                       ),
-                    );
+                    ));
                   }),
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text("Tinte", style: TextStyle(color: Colors.white)),
-                Text("Duracion: 40 minutos",
-                    style: TextStyle(color: Colors.white)),
-                Text("30.00€", style: TextStyle(color: Colors.white))
-              ],
-            ),
-            /*Container(
-              alignment: FractionalOffset.bottomCenter,
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
               child: ButtonTheme(
-                  child: RaisedButton(
-                      child: Text(
-                        'Reservar cita',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18.0,
-                        ),
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(10.0),
-                      )),
-                  height: 50.0,
-                  minWidth: 200.0,
-                  buttonColor: Color.fromRGBO(230, 73, 90, 1)),
-            )*/
+                child: RaisedButton(
+                  child: Text(
+                    'Reservar cita',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  onPressed: (){
+
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                ),
+                height: 60.0,
+                minWidth: 200,
+                buttonColor: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            )
           ],
         ));
   }
