@@ -1,12 +1,15 @@
 class DetailCita
 {
   String peluquero;
-  String fechaCita;
+  DateTime fechaCita;
+  String horaCita;
   String tipoServicio;
   int duracionServicio;
   double precioServicio;
 
   DetailCita(this.tipoServicio, this.duracionServicio, this.precioServicio);
+
+
 
   String get nombrePeluquero {
     return peluquero;
@@ -16,12 +19,20 @@ class DetailCita
     this.peluquero = nombre;
   }
 
-  String get fecha {
+  DateTime get fecha {
     return fechaCita;
   }
 
-  void set fecha(String fecha){
+  void set fecha(DateTime fecha){
     this.fechaCita = fecha;
+  }
+
+  String get hora {
+    return horaCita;
+  }
+
+  void set hora(String hora){
+    this.horaCita = hora;
   }
 
   String get tipo {

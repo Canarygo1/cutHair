@@ -1,3 +1,4 @@
+import 'package:cuthair/ConfirmScreen.dart';
 import 'package:cuthair/DetailCita.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,11 +20,14 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Declaración de texto para la prueba de el boton
+    detallesServicio.elementAt(0).peluquero = "Pedro";
+    detallesServicio.elementAt(0).fechaCita = new DateTime(1992, 10, 15);
+    detallesServicio.elementAt(0).horaCita = "16:00";
 
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
-          //mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Image(
               image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
@@ -102,6 +106,9 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => ConfirmScreen(detallesServicio.elementAt(0)
+                    )));
 
                   },
                   shape: RoundedRectangleBorder(
