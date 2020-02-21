@@ -1,5 +1,7 @@
 import 'package:cuthair/DetailCita.dart';
+import 'package:cuthair/login.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 
 import 'register.dart';
 import 'globalMethods.dart';
@@ -131,7 +133,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   ),
                 ),
                 onPressed: (){
-                  globalMethods().pushPage(context, register());
+                  globalMethods().pushPage(context, login());
+                  Toast.show(
+                    "Cita reservada",
+                    context,
+                    gravity: Toast.BOTTOM,
+                    textColor: Colors.black,
+                    duration: Toast.LENGTH_LONG,
+                    backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+                  );
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),

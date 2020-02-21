@@ -20,7 +20,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Declaración de texto para la prueba de el boton
+    //Declaración de texto para la prueba de el boton
     detallesServicio.elementAt(0).peluquero = "Pedro";
     detallesServicio.elementAt(0).fechaCita = new DateTime(1992, 10, 15);
     detallesServicio.elementAt(0).horaCita = "16:00";
