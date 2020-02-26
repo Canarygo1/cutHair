@@ -187,57 +187,57 @@ class register extends StatelessWidget {
 
   Widget goBack(BuildContext context){
     return Container(
-      padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
-          child: GestureDetector(
-            onTap: (){
-              globalMethods().pushPage(context, login());
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.navigate_before,
-                  color: Color.fromRGBO(230, 73, 90, 1),
-                  size: 35.0,
-                ),
-                Expanded(
-                  child: Text(
-                    'Volver al login',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color.fromRGBO(230, 73, 90, 1),
-                      fontSize: 18.0,
-                    ),
+        padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
+        child: GestureDetector(
+          onTap: (){
+            globalMethods().pushPage(context, login());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.navigate_before,
+                color: Color.fromRGBO(230, 73, 90, 1),
+                size: 35.0,
+              ),
+              Expanded(
+                child: Text(
+                  'Volver al login',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                    fontSize: 18.0,
                   ),
-                )
-              ],
-            ),
-          )
-     );
+                ),
+              )
+            ],
+          ),
+        )
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset : false,
       body: Form(
         key: keyForm,
         child: Container(
-          color: Color.fromRGBO(300, 300, 300, 1),
-          child: ListView(
-            children: <Widget>[
-              goBack(context),
-              nombreTextField(),
-              apellidosTextField(),
-              correoTextField(),
-              passWordTextField(),
-              repeatPassWordTextField(),
-              numeroTelefono(),
-              buttonRegister(context),
-            ],
-          )
+            color: Color.fromRGBO(300, 300, 300, 1),
+            child: ListView(
+              children: <Widget>[
+                goBack(context),
+                nombreTextField(),
+                apellidosTextField(),
+                correoTextField(),
+                passWordTextField(),
+                repeatPassWordTextField(),
+                numeroTelefono(),
+                buttonRegister(context),
+              ],
+            )
         ),
       ),
     );
   }
-
 }

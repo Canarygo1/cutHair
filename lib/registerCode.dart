@@ -7,7 +7,7 @@ import 'package:toast/toast.dart';
 
 class registerCode{
 
-  final FirebaseAuth auth =FirebaseAuth.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
   static String password1;
 
   void registerAuth(String email, String password, BuildContext context) async {
