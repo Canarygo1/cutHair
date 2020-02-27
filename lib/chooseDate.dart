@@ -1,4 +1,4 @@
-import 'package:cuthair/ConfirmScreen.dart';
+import 'package:cuthair/confirmScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -49,7 +49,7 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
 
   Widget textHour() {
     return Container(
-      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(10.0, 0, 0.0, 0.0),
       child: Text(
         "Horas disponibles",
         style: TextStyle(
@@ -62,11 +62,11 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
 
   Widget calendar() {
     return Container(
+      height: MediaQuery.of(context).size.height * 0.57,
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
           this.setState(() => _currentDate2 = date);
         },
-
         weekendTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -79,16 +79,9 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
         showHeaderButton: false,
         showOnlyCurrentMonthDate: false,
         weekFormat: false,
-        markedDatesMap: _markedDateMap,
         height: 400.0,
         selectedDateTime: _currentDate2,
         customGridViewPhysics: NeverScrollableScrollPhysics(),
-        markedDateCustomShapeBorder:
-            CircleBorder(side: BorderSide(color: Colors.white)),
-        markedDateCustomTextStyle: TextStyle(
-          fontSize: 18,
-          color: Colors.white,
-        ),
         todayTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -132,8 +125,9 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                 ),
               ),
             );
+          } else {
+            return null;
           }
-          return null;
         },
       ),
     );

@@ -1,6 +1,6 @@
-import 'package:cuthair/ConfirmScreen.dart';
+import 'package:cuthair/confirmScreen.dart';
 import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/model/Service.dart';
+import 'package:cuthair/model/service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -125,11 +125,7 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ConfirmScreen(detallesServicio.elementAt(0))));
+
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'Employe.dart';
+import 'employe.dart';
 
 class HairdressingData{
   List<Employe> employees;

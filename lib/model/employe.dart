@@ -1,4 +1,4 @@
-import 'Schedule.dart';
+import 'schedule.dart';
 
 class Employe{
   String name;

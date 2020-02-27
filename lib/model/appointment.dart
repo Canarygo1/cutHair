@@ -1,7 +1,7 @@
-import 'package:cuthair/model/Employe.dart';
-import 'package:cuthair/model/Service.dart';
+import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/service.dart';
 
-import 'User.dart';
+import 'user.dart';
 
 class Appointment {
   final User user;

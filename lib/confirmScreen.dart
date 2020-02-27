@@ -1,5 +1,5 @@
 import 'package:cuthair/login.dart';
-import 'package:cuthair/model/Appointment.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'globalMethods.dart';
