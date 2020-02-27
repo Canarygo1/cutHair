@@ -1,3 +1,4 @@
+import 'package:cuthair/chooseDate.dart';
 import 'package:cuthair/homePage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -14,7 +15,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
 
   Widget title(){
     return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -53,8 +54,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
 
   Widget hairDressersButtons(){
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17, vertical: 24.0),
-      height: MediaQuery.of(context).size.height * 0.60,
+      padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+      height: MediaQuery.of(context).size.height * 0.80,
       child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: nombres.length,
@@ -71,7 +72,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
                     ),
                   ),
                   onPressed: (){
-
+                    globalMethods().pushPage(context, chooseDateScreen());
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

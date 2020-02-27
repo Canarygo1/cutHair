@@ -1,7 +1,10 @@
 import 'package:cuthair/ConfirmScreen.dart';
-import 'package:cuthair/DetailCita.dart';
+import 'package:cuthair/chooseHairDresser.dart';
+import 'package:cuthair/model/Service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'globalMethods.dart';
 
 class DetailScreen extends StatefulWidget {
   @override
@@ -12,19 +15,16 @@ class _DetailScreenState extends State<DetailScreen> {
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
 
-  List<DetailCita> detallesServicio = [
-    new DetailCita("Corte Cabello", 20, 15.65),
-    new DetailCita("Rapado al estilo Llanero Solitario", 15, 10.42),
-    new DetailCita("Tinte", 120, 35)
+  List<Service> detallesServicio = [
+    new Service("Corte Cabello", 20, 15.65),
+    new Service("Rapado al estilo Llanero Solitario", 15, 10.42),
+    new Service("Tinte", 120, 35),
+    new Service("Barba", 120, 35),
+    new Service("Cejas", 120, 35)
   ];
 
   @override
   Widget build(BuildContext context) {
-    //Declaración de texto para la prueba de el boton
-    detallesServicio.elementAt(0).peluquero = "Pedro";
-    detallesServicio.elementAt(0).fechaCita = new DateTime(1992, 10, 15);
-    detallesServicio.elementAt(0).horaCita = "16:00";
-
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
@@ -41,17 +41,15 @@ class _DetailScreenState extends State<DetailScreen> {
                 Text(direccionPeluqueria,
                     style: TextStyle(color: Colors.white)),
                 Container(
-                    child: Row(
-                        children: [
-                          Expanded(
-                            child: Divider(
-                              thickness: 1.0,
-                              endIndent: 0.0,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ])
-                )
+                    child: Row(children: [
+                  Expanded(
+                    child: Divider(
+                      thickness: 1.0,
+                      endIndent: 0.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]))
               ],
             ),
             Container(
@@ -61,37 +59,58 @@ class _DetailScreenState extends State<DetailScreen> {
                   itemCount: detallesServicio.length,
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
-                    return new Card(
-                      shape: BeveledRectangleBorder(side: BorderSide(color: Color.fromRGBO(300, 300, 300, 1))),
-                        child: new Container(
-                          color: Color.fromRGBO(300, 300, 300, 1),
-                          child: new Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(" "+ detallesServicio.elementAt(index).tipoServicio,
-                              style: TextStyle(color: Colors.white, fontSize: 18.0),
-                              textAlign: TextAlign.center),
-                            Text(" "+ detallesServicio.elementAt(index).duracionServicio.toString() +
-                                  " minutos",
-                              style: TextStyle(color: Colors.white, fontSize: 16.0)),
-                            Text(" "+ detallesServicio.elementAt(index).precioServicio.toString() + " €",
-                              style: TextStyle(color: Colors.white, fontSize: 14.0)),
-                            Container(
-                              child: Row(
-                                children: [
+                    return GestureDetector(
+                      onTap: () {
+                        globalMethods()
+                            .pushPage(context, chooseHairDresserScreen());
+                      },
+                      child: new Card(
+                          shape: BeveledRectangleBorder(
+                              side: BorderSide(
+                                  color: Color.fromRGBO(300, 300, 300, 1))),
+                          child: new Container(
+                            color: Color.fromRGBO(300, 300, 300, 1),
+                            child: new Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                    " " +
+                                        detallesServicio.elementAt(index).tipo,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18.0),
+                                    textAlign: TextAlign.center),
+                                Text(
+                                    " " +
+                                        detallesServicio
+                                            .elementAt(index)
+                                            .duracion
+                                            .toString() +
+                                        " minutos",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.0)),
+                                Text(
+                                    " " +
+                                        detallesServicio
+                                            .elementAt(index)
+                                            .precio
+                                            .toString() +
+                                        " €",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 14.0)),
+                                Container(
+                                    child: Row(children: [
                                   Expanded(
                                     child: Divider(
-
                                       thickness: 2.0,
                                       endIndent: 0.0,
-                                      color: Colors.black,
+                                      color: Colors.white,
                                     ),
                                   ),
-                                ])
-                            )
-                        ],
-                      ),
-                    ));
+                                ]))
+                              ],
+                            ),
+                          )),
+                    );
                   }),
             ),
             Container(
@@ -105,11 +124,12 @@ class _DetailScreenState extends State<DetailScreen> {
                       fontSize: 18.0,
                     ),
                   ),
-                  onPressed: (){
-                    Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => ConfirmScreen(detallesServicio.elementAt(0)
-                    )));
-
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ConfirmScreen(detallesServicio.elementAt(0))));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

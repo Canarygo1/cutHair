@@ -1,5 +1,5 @@
 import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/model/peluqueria.dart';
+import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
 
 import 'globalMethods.dart';
@@ -7,17 +7,17 @@ import 'globalMethods.dart';
 class home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Peluqueria> peluquerias = [];
+    List<HairDressing> peluquerias = [];
     peluquerias
-        .add(new Peluqueria("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
+        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     peluquerias
-        .add(new Peluqueria("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
+        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     peluquerias
-        .add(new Peluqueria("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
+        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     peluquerias
-        .add(new Peluqueria("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
+        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     peluquerias
-        .add(new Peluqueria("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
+        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     return Scaffold(
       backgroundColor: Color.fromRGBO(44, 45, 47, 1),
       body: Column(
