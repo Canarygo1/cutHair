@@ -1,7 +1,6 @@
 import 'package:cuthair/homePage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'register.dart';
 import 'globalMethods.dart';
 import 'package:toast/toast.dart';
 

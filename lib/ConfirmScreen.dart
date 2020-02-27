@@ -1,13 +1,11 @@
-import 'package:cuthair/DetailCita.dart';
 import 'package:cuthair/login.dart';
+import 'package:cuthair/model/Appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
-import 'register.dart';
 import 'globalMethods.dart';
 
 class ConfirmScreen extends StatefulWidget {
-  DetailCita detallesCita;
+  Appointment detallesCita;
 
   ConfirmScreen(this.detallesCita);
 
@@ -16,9 +14,9 @@ class ConfirmScreen extends StatefulWidget {
 }
 
 class _ConfirmScreenState extends State<ConfirmScreen> {
-  DetailCita detallesCita;
+  Appointment details;
 
-  _ConfirmScreenState(this.detallesCita);
+  _ConfirmScreenState(this.details);
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +41,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Peluquero: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(detallesCita.nombrePeluquero,
+                  child: Text(details.employe.name,
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -57,7 +55,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Dia: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(detallesCita.fecha.toString(),
+                  child: Text(details.checkIn.day.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -71,7 +69,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Hora: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(detallesCita.hora,
+                  child: Text(details.checkIn.hour.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -85,7 +83,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Tipo servicio: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(detallesCita.tipo,
+                  child: Text(details.service.tipo,
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -100,7 +98,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 17.0))
                 ),
                 Expanded(
-                  child: Text(detallesCita.duracion.toString() + " minutos",
+                  child: Text(details.service.duracion.toString() + " minutos",
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -115,7 +113,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 17.0))
                 ),
                 Expanded(
-                  child: Text(detallesCita.precio.toString(),
+                  child: Text(details.service.precio.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
