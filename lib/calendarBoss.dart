@@ -13,6 +13,18 @@ class CalendarBoss extends StatefulWidget {
 }
 
 class _CalendarBossState extends State<CalendarBoss> {
+
+  DateTime _currentDate = new DateTime.now();
+  DateTime _currentDate2;
+  EventList<Event> _markedDateMap = new EventList<Event>();
+  List<DateTime> dates = List<DateTime>();
+  List<Day> days = List<Day>();
+  String checkIn;
+  String checkOut;
+
+  RangeValues values = RangeValues(7, 24);
+  RangeLabels labels = RangeLabels('7:00', '24:00');
+
   Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
@@ -32,17 +44,6 @@ class _CalendarBossState extends State<CalendarBoss> {
           ),
         ));
   }
-
-  DateTime _currentDate = new DateTime.now();
-  DateTime _currentDate2;
-  EventList<Event> _markedDateMap = new EventList<Event>();
-  List<DateTime> dates = List<DateTime>();
-  List<Day> days = List<Day>();
-  String checkIn;
-  String checkOut;
-
-  RangeValues values = RangeValues(7, 24);
-  RangeLabels labels = RangeLabels('7:00', '24:00');
 
   Widget _presentIcon(String day) => Container(
         height: 55,
@@ -180,9 +181,9 @@ class _CalendarBossState extends State<CalendarBoss> {
             ),
           ),
           onPressed: () {
+            days.clear();
             for (var value in dates) {
-              days.add(new Day(value,checkIn, checkOut));
-              print(days.toString());
+              days.add(new Day(value, checkIn, checkOut));
             }
           },
           shape: RoundedRectangleBorder(
@@ -221,48 +222,48 @@ class _CalendarBossState extends State<CalendarBoss> {
     );
   }
 
-  Widget schedules() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-      height: MediaQuery.of(context).size.height * 0.80,
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: days.length,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-                color: Colors.white,
-              ),
-              padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-              child: ListTile(
-                title: Title(
-                  title: days.elementAt(index).dayId.day.toString() +
-                      "-" +
-                      days.elementAt(index).dayId.month.toString() +
-                      "-" +
-                      days.elementAt(index).dayId.year.toString(),
-                  color: Colors.black,
-
+  Widget schedules() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+        height: MediaQuery.of(context).size.height * 0.90,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: days.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.white,
                 ),
-                subtitle: Text("Hora de entrada: " +
-                    days.elementAt(index).checkIn +
-                    " hora de salida: " +
-                    days.elementAt(index).checkOut),
-                trailing: GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    child: Icon(
-                      Icons.restore_from_trash,
-                      color: Colors.black,
+                child: ListTile(
+                  onTap: () {
+                    _markedDateMap.removeAll(days.elementAt(index).dayId);
+                    dates.remove(days.elementAt(index).dayId);
+                  },
+                  dense: true,
+                  title: Text(
+                    days.elementAt(index).dayId.day.toString() +
+                        "-" +
+                        days.elementAt(index).dayId.month.toString() +
+                        "-" +
+                        days.elementAt(index).dayId.year.toString(),
+                  ),
+                  subtitle: Text('Hora de entrada: ' +
+                      days.elementAt(index).checkIn.toString() +
+                      ' hora de salida: ' +
+                      days.elementAt(index).checkOut.toString()),
+                  trailing: GestureDetector(
+                    child: Container(
+                      child: Icon(
+                        Icons.restore_from_trash,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          }),
-    );
-  }
+              );
+            }),
+      );
 
   @override
   Widget build(BuildContext context) {
