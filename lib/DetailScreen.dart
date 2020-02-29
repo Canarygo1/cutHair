@@ -125,11 +125,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                ConfirmScreen(detallesServicio.elementAt(0))));
+//                    Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) =>
+//                                ConfirmScreen(detallesServicio.elementAt(0))));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
