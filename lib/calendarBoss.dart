@@ -13,7 +13,6 @@ class CalendarBoss extends StatefulWidget {
 }
 
 class _CalendarBossState extends State<CalendarBoss> {
-
   DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
@@ -180,11 +179,13 @@ class _CalendarBossState extends State<CalendarBoss> {
               fontSize: 18.0,
             ),
           ),
-          onPressed: () {
-            days.clear();
-            for (var value in dates) {
-              days.add(new Day(value, checkIn, checkOut));
-            }
+          onPressed: () =>{
+            setState(() {
+              for (var value in dates) {
+                days.add(new Day(value, checkIn, checkOut));
+              }
+              _markedDateMap.clear();
+            }),
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -236,10 +237,6 @@ class _CalendarBossState extends State<CalendarBoss> {
                   color: Colors.white,
                 ),
                 child: ListTile(
-                  onTap: () {
-                    _markedDateMap.removeAll(days.elementAt(index).dayId);
-                    dates.remove(days.elementAt(index).dayId);
-                  },
                   dense: true,
                   title: Text(
                     days.elementAt(index).dayId.day.toString() +
@@ -253,6 +250,14 @@ class _CalendarBossState extends State<CalendarBoss> {
                       ' hora de salida: ' +
                       days.elementAt(index).checkOut.toString()),
                   trailing: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                      _markedDateMap.removeAll(days.elementAt(index).dayId);
+                          dates.remove(days.elementAt(index).dayId);
+                          days.removeAt(index);
+                    });
+
+                    },
                     child: Container(
                       child: Icon(
                         Icons.restore_from_trash,

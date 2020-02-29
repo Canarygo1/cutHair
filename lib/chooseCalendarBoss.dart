@@ -1,3 +1,5 @@
+import 'package:cuthair/calendarBoss.dart';
+import 'package:cuthair/globalMethods.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +54,9 @@ class ChooseCalendarBoss extends StatelessWidget {
                 itemCount: 4,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      globalMethods().pushPage(context, CalendarBoss());
+                    },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: Padding(

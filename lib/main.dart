@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: ChooseCalendarBoss(),
+      home: CalendarBoss(),
     );
   }
 }
