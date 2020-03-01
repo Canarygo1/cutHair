@@ -13,7 +13,7 @@ class loginCode{
    try {
      user = (await auth.signInWithEmailAndPassword(
          email: email, password: password)).user;
-       globalMethods().pushPage(context, home());
+       globalMethods().pushPage(context, Home());
    }catch(Exception){
      Toast.show(
        "Los datos no son correctos",

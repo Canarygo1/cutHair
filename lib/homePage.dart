@@ -1,23 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/chooseHairDresser.dart';
+import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/homePagePresenter.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
 
+import 'data/remote/HttpRemoteRepository.dart';
 import 'globalMethods.dart';
 
-class home extends StatelessWidget {
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> implements HomeView {
+  HomePagePresenter presenter;
+  RemoteRepository _remoteRepository;
+  List<HairDressing> peluquerias;
+
+  initState() {
+    peluquerias = [];
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    presenter = HomePagePresenter(this, _remoteRepository);
+    presenter.init();
+  }
+
   @override
   Widget build(BuildContext context) {
-    List<HairDressing> peluquerias = [];
-    peluquerias
-        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
-    peluquerias
-        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
-    peluquerias
-        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
-    peluquerias
-        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
-    peluquerias
-        .add(new HairDressing("Privilege", "Santa Cruz", "BarberShop", "Prueba"));
     return Scaffold(
       backgroundColor: Color.fromRGBO(44, 45, 47, 1),
       body: Column(
@@ -58,8 +67,9 @@ class home extends StatelessWidget {
                 itemCount: peluquerias.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
-                    onTap: (){
-                      globalMethods().pushPage(context, chooseHairDresserScreen());
+                    onTap: () {
+                      globalMethods()
+                          .pushPage(context, chooseHairDresserScreen());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -91,14 +101,14 @@ class home extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Privilege",
+                                      peluquerias[index].name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0),
                                     ),
                                     Text(
-                                      "BarberShop",
+                                      peluquerias[index].type,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15.0),
                                     ),
@@ -110,7 +120,7 @@ class home extends StatelessWidget {
                                           color: Colors.white,
                                         ),
                                         Text(
-                                          "Santa Cruz",
+                                          peluquerias[index].shortDirection,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12.0),
@@ -131,5 +141,13 @@ class home extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  showList(List<HairDressing> hairDressing) {
+    setState(() {
+      peluquerias = hairDressing;
+    });
+    return null;
   }
 }

@@ -36,7 +36,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: (){
-            globalMethods().pushPage(context, home());
+            globalMethods().pushPage(context, Home());
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
