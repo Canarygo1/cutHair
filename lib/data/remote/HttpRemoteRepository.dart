@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/model/Employe.dart';
+import 'package:cuthair/model/Service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
@@ -11,7 +13,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<List<HairDressing>> getAllHairdressing() async {
     // TODO: implement getAllHairdressing
     QuerySnapshot querySnapshot =
-        await Firestore.instance.collection("Peluquerias").getDocuments();
+        await firestore.collection("Peluquerias").getDocuments();
     List queryData = querySnapshot.documents;
     List<HairDressing> allHairDressing = [];
 
@@ -20,5 +22,29 @@ class HttpRemoteRepository implements RemoteRepository {
       allHairDressing.add(hairDressing);
     }
     return allHairDressing;
+  }
+
+  @override
+  Future<List<Service>> getAllServices() async {
+    Firestore firestore = Firestore.instance;
+    QuerySnapshot querySnapshot = await firestore
+        .collection("Peluquerias")
+        .document("PR01")
+        .collection("servicios")
+        .getDocuments();
+    List<Service> services = [];
+    for (int i = 0; i < querySnapshot.documents.length; i++) {
+      String tipo = querySnapshot.documents[i].documentID;
+      services.add(Service.fromMap(querySnapshot.documents[i].data, tipo));
+    }
+    return services;
+  }
+
+
+
+  @override
+  Future<List<Employe>> getAllEmployes() {
+
+    return null;
   }
 }

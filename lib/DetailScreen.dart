@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/ConfirmScreen.dart';
+import 'package:cuthair/DetailPresenter.dart';
 import 'package:cuthair/chooseHairDresser.dart';
+import 'package:cuthair/data/remote/HttpRemoteRepository.dart';
+import 'package:cuthair/data/remote/RemoteRepository.dart';
 import 'package:cuthair/model/Service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,17 +15,18 @@ class DetailScreen extends StatefulWidget {
   _DetailScreenState createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
+class _DetailScreenState extends State<DetailScreen> implements DetailView {
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
+  DetailPresenter presenter;
+  RemoteRepository remoteRepository;
+  List<Service> detallesServicio = [];
 
-  List<Service> detallesServicio = [
-    new Service("Corte Cabello", 20, 15.65),
-    new Service("Rapado al estilo Llanero Solitario", 15, 10.42),
-    new Service("Tinte", 120, 35),
-    new Service("Barba", 120, 35),
-    new Service("Cejas", 120, 35)
-  ];
+  initState() {
+    remoteRepository = HttpRemoteRepository(Firestore.instance);
+    presenter = DetailPresenter(this, remoteRepository);
+    presenter.init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,4 +148,13 @@ class _DetailScreenState extends State<DetailScreen> {
           ],
         ));
   }
+
+  @override
+  showServices(List servicios) {
+    setState(() {
+      detallesServicio = servicios;
+    });
+  }
+
+
 }
