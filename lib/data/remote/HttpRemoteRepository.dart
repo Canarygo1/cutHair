@@ -26,7 +26,6 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<List<Service>> getAllServices() async {
-    Firestore firestore = Firestore.instance;
     QuerySnapshot querySnapshot = await firestore
         .collection("Peluquerias")
         .document("PR01")
@@ -40,11 +39,18 @@ class HttpRemoteRepository implements RemoteRepository {
     return services;
   }
 
-
-
   @override
-  Future<List<Employe>> getAllEmployes() {
-
-    return null;
+  Future<List<Employe>> getAllEmployes() async {
+    QuerySnapshot querySnapshot = await firestore
+        .collection("Peluquerias")
+        .document("PR01")
+        .collection("empleados").getDocuments();
+    List<Employe>employes = [];
+    for(int i = 0;i<querySnapshot.documents.length;i++){
+      Employe employe = Employe(querySnapshot.documents[i].documentID);
+      print(employe.name);
+      employes.add(employe);
+    }
+    return employes;
   }
 }

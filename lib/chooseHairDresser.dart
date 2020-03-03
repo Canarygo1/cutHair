@@ -1,19 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/ChooseHairDresserPresenter.dart';
 import 'package:cuthair/chooseDate.dart';
+import 'package:cuthair/data/remote/HttpRemoteRepository.dart';
+import 'package:cuthair/data/remote/RemoteRepository.dart';
 import 'package:cuthair/homePage.dart';
+import 'package:cuthair/model/Employe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'globalMethods.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
   @override
-  _chooseHairDresserScreenState createState() => _chooseHairDresserScreenState();
+  _chooseHairDresserScreenState createState() =>
+      _chooseHairDresserScreenState();
 }
 
-class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
+class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
+    implements ChooseHairDresserView {
+  List<Employe> nombres = [];
+  RemoteRepository _remoteRepository;
+  ChooseHairDresserPresenter presenter;
 
-  List<String> nombres = ["Pepito", "Jose", "Juanito", "aleatorio", "Josito", "Antonio", "Carlos"];
-
-  Widget title(){
+  Widget title() {
     return Container(
       padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
       child: Row(
@@ -31,11 +39,11 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
     );
   }
 
-  Widget goBack(BuildContext context){
+  Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             globalMethods().pushPage(context, Home());
           },
           child: Row(
@@ -48,11 +56,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
               ),
             ],
           ),
-        )
-    );
+        ));
   }
 
-  Widget hairDressersButtons(){
+  Widget hairDressersButtons() {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
       height: MediaQuery.of(context).size.height * 0.80,
@@ -65,13 +72,13 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
               child: ButtonTheme(
                 child: RaisedButton(
                   child: Text(
-                    nombres.elementAt(index),
+                    nombres[index].name,
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18.0,
                     ),
                   ),
-                  onPressed: (){
+                  onPressed: () {
                     globalMethods().pushPage(context, chooseDateScreen());
                   },
                   shape: RoundedRectangleBorder(
@@ -87,19 +94,29 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
   }
 
   @override
+  void initState() {
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    presenter = ChooseHairDresserPresenter(this, _remoteRepository);
+    presenter.init();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
         color: Color.fromRGBO(300, 300, 300, 1),
         child: ListView(
-          children: <Widget>[
-            goBack(context),
-            title(),
-            hairDressersButtons()
-          ],
+          children: <Widget>[goBack(context), title(), hairDressersButtons()],
         ),
       ),
     );
+  }
+
+  @override
+  showEmployes(List employes) {
+    setState(() {
+      nombres = employes;
+    });
   }
 }
