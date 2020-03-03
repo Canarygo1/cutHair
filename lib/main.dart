@@ -1,11 +1,7 @@
 import 'package:cuthair/calendarBoss.dart';
 import 'package:cuthair/chooseCalendarBoss.dart';
 import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/home.dart';
 import 'package:flutter/material.dart';
-import 'detailScreen.dart';
-import 'chooseDate.dart';
-import 'login.dart';
 
 void main() => runApp(MyApp());
 
@@ -19,8 +15,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: chooseHairDresserScreen(),
     );
   }
 }
-

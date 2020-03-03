@@ -1,7 +1,10 @@
-import 'package:cuthair/confirmScreen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/ConfirmScreen.dart';
+import 'package:cuthair/DetailPresenter.dart';
 import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/model/service.dart';
+import 'package:cuthair/data/remote/HttpRemoteRepository.dart';
+import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/model/Service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,18 +16,18 @@ class DetailScreen extends StatefulWidget {
   _DetailScreenState createState() => _DetailScreenState();
 }
 
-class _DetailScreenState extends State<DetailScreen> {
-  Appointment appointment = Appointment();
+class _DetailScreenState extends State<DetailScreen> implements DetailView {
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
+  DetailPresenter presenter;
+  RemoteRepository remoteRepository;
+  List<Service> detallesServicio = [];
 
-  List<Service> detallesServicio = [
-    new Service("Corte Cabello", 20, 15.65),
-    new Service("Rapado al estilo Llanero Solitario", 15, 10.42),
-    new Service("Tinte", 120, 35),
-    new Service("Barba", 120, 35),
-    new Service("Cejas", 120, 35)
-  ];
+  initState() {
+    remoteRepository = HttpRemoteRepository(Firestore.instance);
+    presenter = DetailPresenter(this, remoteRepository);
+    presenter.init();
+  }
 
   Widget goBack(BuildContext context) {
     return Container(
@@ -148,7 +151,43 @@ class _DetailScreenState extends State<DetailScreen> {
                     );
                   }),
             ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
+              child: ButtonTheme(
+                child: RaisedButton(
+                  child: Text(
+                    'Reservar cita',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  onPressed: () {
+//                    Navigator.push(
+//                        context,
+//                        MaterialPageRoute(
+//                            builder: (context) =>
+//                                ConfirmScreen(detallesServicio.elementAt(0))));
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                ),
+                height: 60.0,
+                minWidth: 200,
+                buttonColor: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            )
           ],
         ));
   }
+
+  @override
+  showServices(List servicios) {
+    setState(() {
+      detallesServicio = servicios;
+    });
+  }
+
+
 }

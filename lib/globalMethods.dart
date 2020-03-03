@@ -7,4 +7,8 @@ class globalMethods{
       MaterialPageRoute<void>(builder: (_) => page),
     );
   }
+  
+  void popPage(BuildContext page){
+    Navigator.pop(page);
+  }
 }

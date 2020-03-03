@@ -1,9 +1,5 @@
-import 'schedule.dart';
-
-class Employe{
+class Employe {
   String name;
-  List<Schedule> schedules;
-  int privilegios;
 
-  Employe(this.name, this.schedules, this.privilegios);
+  Employe(this.name);
 }
