@@ -1,10 +1,11 @@
 import 'package:cuthair/chooseHairDresser.dart';
+import 'package:cuthair/detailScreen.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
 
 import 'globalMethods.dart';
 
-class home extends StatelessWidget {
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<HairDressing> peluquerias = [];
@@ -59,7 +60,7 @@ class home extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: (){
-                      globalMethods().pushPage(context, chooseHairDresserScreen());
+                      globalMethods().pushPage(context, DetailScreen());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,

@@ -1,10 +1,12 @@
 import 'package:cuthair/confirmScreen.dart';
 import 'package:cuthair/chooseHairDresser.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'globalMethods.dart';
+import 'home.dart';
 
 class DetailScreen extends StatefulWidget {
   @override
@@ -12,6 +14,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> {
+  Appointment appointment = Appointment();
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
 
@@ -23,14 +26,45 @@ class _DetailScreenState extends State<DetailScreen> {
     new Service("Cejas", 120, 35)
   ];
 
+  Widget goBack(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(0.0, 30.0, 350.0, 0.0),
+        child: GestureDetector(
+          onTap: () {
+            globalMethods().pushPage(context, Home());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.navigate_before,
+                color: Colors.black,
+                size: 40.0,
+              ),
+            ],
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
           children: <Widget>[
-            Image(
-              image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.33,
+              child: Column(
+                children: <Widget>[
+                  goBack(context),
+                ],
+              ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
             Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,7 +87,7 @@ class _DetailScreenState extends State<DetailScreen> {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.38,
+              height: MediaQuery.of(context).size.height * 0.50,
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: detallesServicio.length,
@@ -61,8 +95,9 @@ class _DetailScreenState extends State<DetailScreen> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
+                        appointment.service = detallesServicio.elementAt(index);
                         globalMethods()
-                            .pushPage(context, chooseHairDresserScreen());
+                            .pushPage(context, chooseHairDresserScreen(appointment));
                       },
                       child: new Card(
                           shape: BeveledRectangleBorder(
@@ -113,29 +148,6 @@ class _DetailScreenState extends State<DetailScreen> {
                     );
                   }),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
-              child: ButtonTheme(
-                child: RaisedButton(
-                  child: Text(
-                    'Reservar cita',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                  ),
-                ),
-                height: 60.0,
-                minWidth: 200,
-                buttonColor: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            )
           ],
         ));
   }

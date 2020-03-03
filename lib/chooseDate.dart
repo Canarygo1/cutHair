@@ -1,24 +1,44 @@
+import 'package:cuthair/chooseHairDresser.dart';
 import 'package:cuthair/confirmScreen.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'globalMethods.dart';
-import 'homePage.dart';
+import 'home.dart';
 import 'login.dart';
 
 class chooseDateScreen extends StatefulWidget {
+  Appointment appointment = Appointment();
+
+  chooseDateScreen(this.appointment);
+
   @override
-  _chooseDateScreenState createState() => _chooseDateScreenState();
+  _chooseDateScreenState createState() => _chooseDateScreenState(appointment);
 }
 
 class _chooseDateScreenState extends State<chooseDateScreen> {
+  Appointment appointment;
+  _chooseDateScreenState(this.appointment);
+  DateTime _currentDate = new DateTime.now();
+  DateTime _currentDate2;
+  DateTime _finalDate;
+  List<String> _freeHour = [
+    "10:30",
+    "11:00",
+    "11:30",
+    "15:00",
+    "15:45",
+    "17:00"
+  ];
+
   Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, home());
+            globalMethods().pushPage(context, chooseHairDresserScreen(appointment));
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -32,20 +52,6 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
           ),
         ));
   }
-
-  DateTime _currentDate = new DateTime.now();
-  DateTime _currentDate2;
-  DateTime _finalDate;
-  List<String> _freeHour = [
-    "10:30",
-    "11:00",
-    "11:30",
-    "15:00",
-    "15:45",
-    "17:00"
-  ];
-
-  EventList<Event> _markedDateMap = new EventList<Event>();
 
   Widget textHour() {
     return Container(
@@ -105,7 +111,6 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
           bool isThisMonthDay,
           DateTime day,
         ) {
-          _finalDate = null;
           if (day == _currentDate2 && day.isAfter(_currentDate)) {
             _finalDate = day;
             return Center(
@@ -151,7 +156,12 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                 ),
                 onPressed: () {
                   if (_finalDate != null) {
-                    globalMethods().pushPage(context, login());
+                    int hour = int.parse(_freeHour.elementAt(index).substring(0,2));
+                    int minute = int.parse(_freeHour.elementAt(index).substring(3,5));
+                    _finalDate = _finalDate.add(new Duration(hours: hour, minutes: minute));
+                    appointment.checkIn = _finalDate;
+                    appointment.checkOut = _finalDate.add(new Duration(minutes: appointment.service.duracion));
+                    globalMethods().pushPage(context, ConfirmScreen(appointment));
                   }
                 },
                 shape: RoundedRectangleBorder(

@@ -1,15 +1,23 @@
 import 'package:cuthair/chooseDate.dart';
-import 'package:cuthair/homePage.dart';
+import 'package:cuthair/detailScreen.dart';
+import 'package:cuthair/home.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'globalMethods.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
+  Appointment appointment;
+  chooseHairDresserScreen(this.appointment);
+
   @override
-  _chooseHairDresserScreenState createState() => _chooseHairDresserScreenState();
+  _chooseHairDresserScreenState createState() => _chooseHairDresserScreenState(appointment);
 }
 
 class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
+  Appointment appointment = Appointment();
+
+  _chooseHairDresserScreenState(this.appointment);
 
   List<String> nombres = ["Pepito", "Jose", "Juanito", "aleatorio", "Josito", "Antonio", "Carlos"];
 
@@ -36,7 +44,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: (){
-            globalMethods().pushPage(context, home());
+            globalMethods().pushPage(context, DetailScreen());
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -72,7 +80,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> {
                     ),
                   ),
                   onPressed: (){
-                    globalMethods().pushPage(context, chooseDateScreen());
+                    //appointment.employe = nombres.elementAt(index);
+                    globalMethods().pushPage(context, chooseDateScreen(appointment));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

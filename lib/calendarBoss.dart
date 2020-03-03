@@ -4,7 +4,7 @@ import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 import 'globalMethods.dart';
-import 'homePage.dart';
+import 'home.dart';
 import 'model/day.dart';
 
 class CalendarBoss extends StatefulWidget {
@@ -29,7 +29,7 @@ class _CalendarBossState extends State<CalendarBoss> {
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, home());
+            globalMethods().pushPage(context, Home());
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
