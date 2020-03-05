@@ -160,7 +160,7 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                     int minute = int.parse(_freeHour.elementAt(index).substring(3,5));
                     _finalDate = _finalDate.add(new Duration(hours: hour, minutes: minute));
                     appointment.checkIn = _finalDate;
-                    appointment.checkOut = _finalDate.add(new Duration(minutes: appointment.service.duracion));
+                    appointment.checkOut = _finalDate.add(new Duration(aminutes: appointment.service.duracion));
                     globalMethods().pushPage(context, ConfirmScreen(appointment));
                   }
                 },
