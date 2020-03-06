@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 
-import 'model/hairDressing.dart';
+import '../../model/hairDressing.dart';
 
 class HomePagePresenter {
   HomeView _view;

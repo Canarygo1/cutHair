@@ -1,42 +1,24 @@
-import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/confirmScreen.dart';
-import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/ui/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'globalMethods.dart';
+import '../../globalMethods.dart';
+import '../home/home.dart';
+import '../login/login.dart';
 
 class chooseDateScreen extends StatefulWidget {
-  Appointment appointment = Appointment();
-
-  chooseDateScreen(this.appointment);
-
   @override
-  _chooseDateScreenState createState() => _chooseDateScreenState(appointment);
+  _chooseDateScreenState createState() => _chooseDateScreenState();
 }
 
 class _chooseDateScreenState extends State<chooseDateScreen> {
-  Appointment appointment;
-  _chooseDateScreenState(this.appointment);
-  DateTime _currentDate = new DateTime.now();
-  DateTime _currentDate2;
-  DateTime _finalDate;
-  List<String> _freeHour = [
-    "10:30",
-    "11:00",
-    "11:30",
-    "15:00",
-    "15:45",
-    "17:00"
-  ];
-
   Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, chooseHairDresserScreen(appointment));
+            globalMethods().pushPage(context, Home());
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -51,9 +33,23 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
         ));
   }
 
+  DateTime _currentDate = new DateTime.now();
+  DateTime _currentDate2;
+  DateTime _finalDate;
+  List<String> _freeHour = [
+    "10:30",
+    "11:00",
+    "11:30",
+    "15:00",
+    "15:45",
+    "17:00"
+  ];
+
+  EventList<Event> _markedDateMap = new EventList<Event>();
+
   Widget textHour() {
     return Container(
-      padding: EdgeInsets.fromLTRB(10.0, 0, 0.0, 0.0),
+      padding: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
       child: Text(
         "Horas disponibles",
         style: TextStyle(
@@ -66,11 +62,11 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
 
   Widget calendar() {
     return Container(
-      height: MediaQuery.of(context).size.height * 0.57,
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
           this.setState(() => _currentDate2 = date);
         },
+
         weekendTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -83,9 +79,16 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
         showHeaderButton: false,
         showOnlyCurrentMonthDate: false,
         weekFormat: false,
+        markedDatesMap: _markedDateMap,
         height: 400.0,
         selectedDateTime: _currentDate2,
         customGridViewPhysics: NeverScrollableScrollPhysics(),
+        markedDateCustomShapeBorder:
+            CircleBorder(side: BorderSide(color: Colors.white)),
+        markedDateCustomTextStyle: TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+        ),
         todayTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -109,6 +112,7 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
           bool isThisMonthDay,
           DateTime day,
         ) {
+          _finalDate = null;
           if (day == _currentDate2 && day.isAfter(_currentDate)) {
             _finalDate = day;
             return Center(
@@ -128,9 +132,8 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                 ),
               ),
             );
-          } else {
-            return null;
           }
+          return null;
         },
       ),
     );
@@ -154,12 +157,7 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                 ),
                 onPressed: () {
                   if (_finalDate != null) {
-                    int hour = int.parse(_freeHour[index].substring(0,2));
-                    int minute = int.parse(_freeHour[index].substring(3,5));
-                    _finalDate = _finalDate.add(new Duration(hours: hour, minutes: minute));
-                    appointment.checkIn = _finalDate;
-                    appointment.checkOut = _finalDate.add(new Duration(minutes: int.parse(appointment.service.duracion)));
-                    globalMethods().pushPage(context, ConfirmScreen(appointment));
+                    globalMethods().pushPage(context, login());
                   }
                 },
                 shape: RoundedRectangleBorder(

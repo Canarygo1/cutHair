@@ -1,21 +1,20 @@
-import 'package:cuthair/resertPassword.dart';
+import 'package:cuthair/ui/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'loginCode.dart';
-import 'register.dart';
-import 'globalMethods.dart';
-import 'resertPassword.dart';
+import '../register/register.dart';
+import '../../globalMethods.dart';
+import '../reset_password/reset_password.dart';
+import 'login_presenter.dart';
 
 class login extends StatelessWidget {
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Widget emailTextField(){
+  Widget emailTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
@@ -38,51 +37,49 @@ class login extends StatelessWidget {
     );
   }
 
-  Widget passWordTextField(){
+  Widget passWordTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-      child: TextFormField(
-        controller: passwordController,
-        decoration: InputDecoration(
-          hintText: 'Contraseña',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.black, width: 1.5),
+        padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+        child: TextFormField(
+          controller: passwordController,
+          decoration: InputDecoration(
+            hintText: 'Contraseña',
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: const BorderSide(color: Colors.black, width: 1.5),
+            ),
+            hintStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+            ),
           ),
-          hintStyle: TextStyle(
-            color: Colors.black,
-            fontSize: 18.0,
-          ),
-        ),
-        obscureText: true,
-        style: TextStyle(
-          color: Colors.black,
-        ),
-      )
-    );
-  }
-
-  Widget TextForgetPassword(BuildContext context){
-    return Container(
-      padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-      child: GestureDetector(
-        onTap: (){
-          globalMethods().pushPage(context, resetPassword());
-        },
-        child: Text(
-          '¿Has olvidado tu contraseña?',
-          textAlign: TextAlign.right,
+          obscureText: true,
           style: TextStyle(
-            color: Color.fromRGBO(0, 144, 255, 1),
-            decoration: TextDecoration.underline,
-            decorationColor: Color.fromRGBO(0, 144, 255, 1),
-            fontSize: 16.0,
+            color: Colors.black,
           ),
-        ),
-      )
-    );
+        ));
   }
 
-  Widget buttonLoginIn(BuildContext context){
+  Widget TextForgetPassword(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+        child: GestureDetector(
+          onTap: () {
+            globalMethods().pushPage(context, resetPassword());
+          },
+          child: Text(
+            '¿Has olvidado tu contraseña?',
+            textAlign: TextAlign.right,
+            style: TextStyle(
+              color: Color.fromRGBO(0, 144, 255, 1),
+              decoration: TextDecoration.underline,
+              decorationColor: Color.fromRGBO(0, 144, 255, 1),
+              fontSize: 16.0,
+            ),
+          ),
+        ));
+  }
+
+  Widget buttonLoginIn(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -94,8 +91,9 @@ class login extends StatelessWidget {
               fontSize: 18.0,
             ),
           ),
-          onPressed: (){
-            loginCode().iniciarSesion(emailController.text.toString(), passwordController.text.toString(), context);
+          onPressed: () {
+            loginCode().iniciarSesion(emailController.text.toString(),
+                passwordController.text.toString(), context);
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -107,12 +105,11 @@ class login extends StatelessWidget {
     );
   }
 
-  Widget TextRegister(BuildContext context){
+  Widget TextRegister(BuildContext context) {
     return Container(
-
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             globalMethods().pushPage(context, register());
           },
           child: Text(
@@ -125,42 +122,41 @@ class login extends StatelessWidget {
               fontSize: 16.0,
             ),
           ),
-        )
-    );
+        ));
   }
 
-  Widget lineDivisor(){
+  Widget lineDivisor() {
     return Container(
       padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: Row(
         children: [
           Expanded(
-              child: Divider(
-                thickness: 2.0,
-                endIndent: 10.0,
-                color: Colors.black,
-                ),
+            child: Divider(
+              thickness: 2.0,
+              endIndent: 10.0,
+              color: Colors.black,
+            ),
           ),
           Text(
-              ' 0 ',
+            ' 0 ',
             style: TextStyle(
               fontSize: 18.0,
               color: Colors.black,
             ),
           ),
           Expanded(
-              child: Divider(
-                indent: 10.0,
-                thickness: 2.0,
-                color: Colors.black,
-              ),
+            child: Divider(
+              indent: 10.0,
+              thickness: 2.0,
+              color: Colors.black,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget facebookButton(BuildContext context){
+  Widget facebookButton(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -184,11 +180,10 @@ class login extends StatelessWidget {
               )
             ],
           ),
-          onPressed: (){
+          onPressed: () {
             facebookLogin(context).then((user) {
               if (user != null) {
                 print('Logged in successfully.');
-
               } else {
                 print('Error while Login.');
               }
@@ -207,7 +202,7 @@ class login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -232,19 +227,21 @@ class login extends StatelessWidget {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FacebookLogin fbLogin = new FacebookLogin();
+
   Future<FirebaseUser> facebookLogin(BuildContext context) async {
     FirebaseUser currentUser;
     // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
     // if you remove above comment then facebook login will take username and pasword for login in Webview
     try {
       final FacebookLoginResult facebookLoginResult =
-      await fbLogin.logIn(['email', 'public_profile']);
+          await fbLogin.logIn(['email', 'public_profile']);
       if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
         FacebookAccessToken facebookAccessToken =
             facebookLoginResult.accessToken;
         final AuthCredential credential = FacebookAuthProvider.getCredential(
             accessToken: facebookAccessToken.token);
-        final AuthResult authResult =  await auth.signInWithCredential(credential);
+        final AuthResult authResult =
+            await auth.signInWithCredential(credential);
         final FirebaseUser user = authResult.user;
         assert(user.email != null);
         assert(user.displayName != null);

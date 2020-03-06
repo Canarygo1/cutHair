@@ -1,11 +1,10 @@
-import 'package:cuthair/login.dart';
+import 'package:cuthair/ui/login/login.dart';
+import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'registerCode.dart';
-import 'globalMethods.dart';
+import '../../globalMethods.dart';
 
 class register extends StatelessWidget {
-
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController telefono = TextEditingController();
@@ -14,7 +13,7 @@ class register extends StatelessWidget {
   TextEditingController password2 = TextEditingController();
   GlobalKey<FormState> keyForm = new GlobalKey();
 
-  Widget nombreTextField(){
+  Widget nombreTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 50.0, 35.0, 20.0),
       child: TextFormField(
@@ -38,7 +37,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget apellidosTextField(){
+  Widget apellidosTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
@@ -62,7 +61,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget correoTextField(){
+  Widget correoTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
@@ -86,7 +85,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget passWordTextField(){
+  Widget passWordTextField() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
@@ -106,11 +105,10 @@ class register extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
           ),
-        )
-    );
+        ));
   }
 
-  Widget repeatPassWordTextField(){
+  Widget repeatPassWordTextField() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
@@ -130,11 +128,10 @@ class register extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
           ),
-        )
-    );
+        ));
   }
 
-  Widget numeroTelefono(){
+  Widget numeroTelefono() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
@@ -158,7 +155,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget buttonRegister(BuildContext context){
+  Widget buttonRegister(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 30.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -170,10 +167,12 @@ class register extends StatelessWidget {
               fontSize: 18.0,
             ),
           ),
-          onPressed: (){
-            if(registerCode().checkCampos(context, keyForm)){
-              registerCode().registerAuth(email.text.toString(), password.text.toString(), context);
-            };
+          onPressed: () {
+            if (registerCode().checkCampos(context, keyForm)) {
+              registerCode().registerAuth(
+                  email.text.toString(), password.text.toString(), context);
+            }
+            ;
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -185,11 +184,11 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget goBack(BuildContext context){
+  Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             globalMethods().pushPage(context, login());
           },
           child: Row(
@@ -212,14 +211,13 @@ class register extends StatelessWidget {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: keyForm,
         child: Container(
@@ -235,8 +233,7 @@ class register extends StatelessWidget {
                 numeroTelefono(),
                 buttonRegister(context),
               ],
-            )
-        ),
+            )),
       ),
     );
   }

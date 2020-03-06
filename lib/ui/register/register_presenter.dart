@@ -1,24 +1,23 @@
 import 'package:cuthair/globalMethods.dart';
-import 'package:cuthair/login.dart';
+import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login.dart';
 import 'package:toast/toast.dart';
 
-class registerCode{
-
+class registerCode {
   final FirebaseAuth auth = FirebaseAuth.instance;
   static String password1;
 
   void registerAuth(String email, String password, BuildContext context) async {
     FirebaseUser user;
-    try{
-    user = (await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )).user;
+    try {
+      user = (await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+          .user;
       globalMethods().pushPage(context, login());
-    }catch(e){
+    } catch (e) {
       Toast.show(
         "Los datos no son correctos",
         context,
@@ -41,25 +40,28 @@ class registerCode{
     return null;
   }
 
-  String checkEmail(String value){
-    bool pattern = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-    if(value.length == 0){
+  String checkEmail(String value) {
+    bool pattern = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value);
+    if (value.length == 0) {
       return "El campo email no puede estar vacio";
-    }else if(!pattern){
+    } else if (!pattern) {
       return 'Formato de email incorrecto';
     }
   }
 
-  String checkSecurityPassword(String value){
+  String checkSecurityPassword(String value) {
     password1 = value;
-    bool pattern = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
-    if(!pattern) {
+    bool pattern =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
+    if (!pattern) {
       return "La contraseña no tiene el formato correcto";
     }
   }
 
-  String checkSamePassword(String password2){
-    if(password1 != password2){
+  String checkSamePassword(String password2) {
+    if (password1 != password2) {
       return 'Las contraseñas no coinciden';
     }
   }
@@ -88,9 +90,8 @@ class registerCode{
       );
       keyForm.currentState.reset();
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 }
-

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employe.dart';
-import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/service.dart';
+import 'package:cuthair/model/hairDressing.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
@@ -44,10 +44,9 @@ class HttpRemoteRepository implements RemoteRepository {
     QuerySnapshot querySnapshot = await firestore
         .collection("Peluquerias")
         .document("PR01")
-        .collection("empleados")
-        .getDocuments();
-    List<Employe> employes = [];
-    for (int i = 0; i < querySnapshot.documents.length; i++) {
+        .collection("empleados").getDocuments();
+    List<Employe>employes = [];
+    for(int i = 0;i<querySnapshot.documents.length;i++){
       Employe employe = Employe(querySnapshot.documents[i].documentID);
       print(employe.name);
       employes.add(employe);
