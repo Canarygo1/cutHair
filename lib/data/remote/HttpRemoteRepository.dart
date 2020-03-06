@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/RemoteRepository.dart';
-import 'package:cuthair/model/Service.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/service.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;

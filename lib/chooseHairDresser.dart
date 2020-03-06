@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/ChooseHairDresserPresenter.dart';
-import 'package:cuthair/chooseDate.dart';
-import 'package:cuthair/data/remote/HttpRemoteRepository.dart';
-import 'package:cuthair/data/remote/RemoteRepository.dart';
-import 'package:cuthair/homePage.dart';
-import 'package:cuthair/model/Employe.dart';
+import 'package:cuthair/model/appointment.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'ChooseHairDresserPresenter.dart';
+import 'chooseDate.dart';
+import 'data/remote/HttpRemoteRepository.dart';
+import 'data/remote/RemoteRepository.dart';
 import 'globalMethods.dart';
+import 'home.dart';
+import 'model/employe.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
   Appointment appointment;
@@ -15,15 +16,17 @@ class chooseHairDresserScreen extends StatefulWidget {
 
   @override
   _chooseHairDresserScreenState createState() =>
-      _chooseHairDresserScreenState();
+      _chooseHairDresserScreenState(appointment);
 }
 
-class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
-    implements ChooseHairDresserView {
+class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> implements ChooseHairDresserView {
+  Appointment appointment;
   List<Employe> nombres = [];
   RemoteRepository _remoteRepository;
   ChooseHairDresserPresenter presenter;
 
+  _chooseHairDresserScreenState(this.appointment);
+  
   Widget title() {
     return Container(
       padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
@@ -82,7 +85,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                     ),
                   ),
                   onPressed: () {
-                    globalMethods().pushPage(context, chooseDateScreen());
+                    appointment.employe = nombres[index];
+                    globalMethods().pushPage(context, chooseDateScreen(appointment));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

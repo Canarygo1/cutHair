@@ -6,8 +6,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'globalMethods.dart';
-import 'home.dart';
-import 'login.dart';
 
 class chooseDateScreen extends StatefulWidget {
   Appointment appointment = Appointment();
@@ -156,11 +154,11 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
                 ),
                 onPressed: () {
                   if (_finalDate != null) {
-                    int hour = int.parse(_freeHour.elementAt(index).substring(0,2));
-                    int minute = int.parse(_freeHour.elementAt(index).substring(3,5));
+                    int hour = int.parse(_freeHour[index].substring(0,2));
+                    int minute = int.parse(_freeHour[index].substring(3,5));
                     _finalDate = _finalDate.add(new Duration(hours: hour, minutes: minute));
                     appointment.checkIn = _finalDate;
-                    appointment.checkOut = _finalDate.add(new Duration(aminutes: appointment.service.duracion));
+                    appointment.checkOut = _finalDate.add(new Duration(minutes: int.parse(appointment.service.duracion)));
                     globalMethods().pushPage(context, ConfirmScreen(appointment));
                   }
                 },

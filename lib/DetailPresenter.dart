@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cuthair/data/remote/RemoteRepository.dart';
 
