@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/ConfirmScreen.dart';
 import 'package:cuthair/DetailPresenter.dart';
 import 'package:cuthair/chooseHairDresser.dart';
 import 'package:cuthair/data/remote/HttpRemoteRepository.dart';
 import 'package:cuthair/data/remote/RemoteRepository.dart';
-import 'package:cuthair/model/Service.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'globalMethods.dart';
+import 'home.dart';
+import 'model/service.dart';
 
 class DetailScreen extends StatefulWidget {
   @override
@@ -16,6 +16,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
+  Appointment appointment = Appointment();
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
   DetailPresenter presenter;
@@ -28,14 +29,45 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     presenter.init();
   }
 
+  Widget goBack(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.fromLTRB(0.0, 30.0, 350.0, 0.0),
+        child: GestureDetector(
+          onTap: () {
+            globalMethods().pushPage(context, Home());
+          },
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.navigate_before,
+                color: Colors.black,
+                size: 40.0,
+              ),
+            ],
+          ),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
           children: <Widget>[
-            Image(
-              image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
+            Container(
+              height: MediaQuery.of(context).size.height * 0.33,
+              child: Column(
+                children: <Widget>[
+                  goBack(context),
+                ],
+              ),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
+                  fit: BoxFit.fill,
+                ),
+              ),
             ),
             Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +90,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.38,
+              height: MediaQuery.of(context).size.height * 0.50,
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: detallesServicio.length,
@@ -66,8 +98,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        globalMethods()
-                            .pushPage(context, chooseHairDresserScreen());
+                        appointment.service = detallesServicio[index];
+                        globalMethods().pushPage(
+                            context, chooseHairDresserScreen(appointment));
                       },
                       child: new Card(
                           shape: BeveledRectangleBorder(
@@ -78,16 +111,13 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                             child: new Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
-                                    " " +
-                                        detallesServicio.elementAt(index).tipo,
+                                Text(" " + detallesServicio[index].tipo,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 18.0),
                                     textAlign: TextAlign.center),
                                 Text(
                                     " " +
-                                        detallesServicio
-                                            .elementAt(index)
+                                        detallesServicio[index]
                                             .duracion
                                             .toString() +
                                         " minutos",
@@ -95,8 +125,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                         color: Colors.white, fontSize: 16.0)),
                                 Text(
                                     " " +
-                                        detallesServicio
-                                            .elementAt(index)
+                                        detallesServicio[index]
                                             .precio
                                             .toString() +
                                         " €",
@@ -118,33 +147,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     );
                   }),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
-              child: ButtonTheme(
-                child: RaisedButton(
-                  child: Text(
-                    'Reservar cita',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-//                    Navigator.push(
-//                        context,
-//                        MaterialPageRoute(
-//                            builder: (context) =>
-//                                ConfirmScreen(detallesServicio.elementAt(0))));
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                  ),
-                ),
-                height: 60.0,
-                minWidth: 200,
-                buttonColor: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            )
           ],
         ));
   }
@@ -155,6 +157,4 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
       detallesServicio = servicios;
     });
   }
-
-
 }

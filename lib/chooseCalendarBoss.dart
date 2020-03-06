@@ -1,29 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/data/remote/RemoteRepository.dart';
-import 'package:cuthair/homePagePresenter.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/calendarBoss.dart';
+import 'package:cuthair/globalMethods.dart';
+import 'package:cuthair/model/employe.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'data/remote/HttpRemoteRepository.dart';
-import 'globalMethods.dart';
-
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> implements HomeView {
-  HomePagePresenter presenter;
-  RemoteRepository _remoteRepository;
-  List<HairDressing> peluquerias;
-
-  initState() {
-    peluquerias = [];
-    _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    presenter = HomePagePresenter(this, _remoteRepository);
-    presenter.init();
-  }
+class ChooseCalendarBoss extends StatelessWidget {
+  List<Employe> employees;
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +21,13 @@ class _HomeState extends State<Home> implements HomeView {
               padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
               child: Row(
                 children: <Widget>[
-                  Icon(Icons.location_on),
-                  Text("Santa Cruz de Tenerife")
+                  Text(
+                    "Bienvenido",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -52,7 +39,7 @@ class _HomeState extends State<Home> implements HomeView {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Text(
-                    "Cercanas",
+                    "Asignar horarios",
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -64,12 +51,11 @@ class _HomeState extends State<Home> implements HomeView {
             height: MediaQuery.of(context).size.height * 0.35,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: peluquerias.length,
+                itemCount: 4,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      globalMethods()
-                          .pushPage(context, chooseHairDresserScreen());
+                      globalMethods().pushPage(context, CalendarBoss());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -101,14 +87,14 @@ class _HomeState extends State<Home> implements HomeView {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      peluquerias[index].name,
+                                      "Privilege",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0),
                                     ),
                                     Text(
-                                      peluquerias[index].type,
+                                      "BarberShop",
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15.0),
                                     ),
@@ -120,7 +106,7 @@ class _HomeState extends State<Home> implements HomeView {
                                           color: Colors.white,
                                         ),
                                         Text(
-                                          peluquerias[index].shortDirection,
+                                          "Santa Cruz",
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12.0),
@@ -141,13 +127,5 @@ class _HomeState extends State<Home> implements HomeView {
         ],
       ),
     );
-  }
-
-  @override
-  showList(List<HairDressing> hairDressing) {
-    setState(() {
-      peluquerias = hairDressing;
-    });
-    return null;
   }
 }

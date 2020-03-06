@@ -1,4 +1,4 @@
-import 'Day.dart';
+import 'day.dart';
 
 class Schedule{
 List<Day> days;
