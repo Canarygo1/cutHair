@@ -2,7 +2,7 @@ import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class ConfirmScreen extends StatefulWidget {
   Appointment detallesCita;

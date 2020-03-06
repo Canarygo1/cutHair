@@ -6,7 +6,7 @@ import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/remote/http_remote_repository.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class Home extends StatefulWidget {
   @override

@@ -2,7 +2,7 @@ import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class resetPassword extends StatelessWidget {
 

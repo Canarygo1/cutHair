@@ -1,4 +1,4 @@
-import 'package:cuthair/globalMethods.dart';
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
-import 'package:cuthair/calendarBoss.dart';
-import 'package:cuthair/globalMethods.dart';
+import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

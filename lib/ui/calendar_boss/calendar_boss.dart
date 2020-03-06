@@ -1,11 +1,10 @@
+import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-
-import 'globalMethods.dart';
-import 'home.dart';
-import 'model/day.dart';
+import '../../global_methods.dart';
+import '../../model/day.dart';
 
 class CalendarBoss extends StatefulWidget {
   @override

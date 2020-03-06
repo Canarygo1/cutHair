@@ -7,7 +7,7 @@ import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
   @override

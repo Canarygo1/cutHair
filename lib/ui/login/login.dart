@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../register/register.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 import '../reset_password/reset_password.dart';
 import 'login_presenter.dart';
 

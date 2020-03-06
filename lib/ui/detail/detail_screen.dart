@@ -8,7 +8,7 @@ import 'package:cuthair/model/service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class DetailScreen extends StatefulWidget {
   @override

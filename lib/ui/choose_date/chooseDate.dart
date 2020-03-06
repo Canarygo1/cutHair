@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 import '../home/home.dart';
 import '../login/login.dart';
 

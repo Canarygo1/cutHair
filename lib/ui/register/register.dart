@@ -2,7 +2,7 @@ import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../globalMethods.dart';
+import '../../global_methods.dart';
 
 class register extends StatelessWidget {
   TextEditingController nombre = TextEditingController();
