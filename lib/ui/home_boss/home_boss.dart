@@ -1,11 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/ui/home/home_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class ChooseCalendarBoss extends StatelessWidget {
-  List<Employe> employees;
+import 'home_boss_presenter.dart';
+
+class HomeBoss extends StatefulWidget {
+  @override
+  _HomeBossState createState() => _HomeBossState();
+}
+
+class _HomeBossState extends State<HomeBoss> implements HomeBossView {
+  List<Employe> employees = [];
+  RemoteRepository _remoteRepository;
+  HomeBossPresenter _homeBossPresenter;
+
+  @override
+  initState() {
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _homeBossPresenter = HomeBossPresenter(this, _remoteRepository);
+    _homeBossPresenter.init();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +72,12 @@ class ChooseCalendarBoss extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 4,
+                itemCount: employees.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      globalMethods().pushPage(context, CalendarBoss());
+                      globalMethods()
+                          .pushPage(context, CalendarBoss(employees[index]));
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -87,32 +109,12 @@ class ChooseCalendarBoss extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Privilege",
+                                      employees[index].name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0),
-                                    ),
-                                    Text(
-                                      "BarberShop",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 15.0),
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.location_on,
-                                          size: 12,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          "Santa Cruz",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12.0),
-                                        ),
-                                      ],
-                                    ),
+                                    )
                                   ],
                                 ),
                               ),
@@ -127,5 +129,12 @@ class ChooseCalendarBoss extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  showHairdresser(List<Employe> employes) {
+    setState(() {
+      employees = employes;
+    });
   }
 }

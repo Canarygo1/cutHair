@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/ui/confirm/confirm_screen.dart';
 import 'package:cuthair/ui/detail/detail_presenter.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -155,6 +154,4 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
       detallesServicio = servicios;
     });
   }
-
-
 }
