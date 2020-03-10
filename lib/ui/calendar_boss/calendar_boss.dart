@@ -1,5 +1,4 @@
 import 'package:cuthair/model/employe.dart';
-import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser_presenter.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -189,12 +188,15 @@ class _CalendarBossState extends State<CalendarBoss>
           ),
           onPressed: () => {
             setState(() {
+              int contador = 0;
               for (var value in dates) {
                 days.add(new Day(value, checkIn, checkOut));
-                print(days[0].checkIn);
+                _calendarBossPresenter.init(days[contador]);
+                contador++;
               }
 
               _markedDateMap.clear();
+              _currentDate2 = null;
             }),
           },
           shape: RoundedRectangleBorder(
@@ -281,8 +283,7 @@ class _CalendarBossState extends State<CalendarBoss>
 
   @override
   void initState() {
-    _calendarBossPresenter = CalendarBossPresenter(this,widget.employe);
-    _calendarBossPresenter.init();
+    _calendarBossPresenter = CalendarBossPresenter(this, widget.employe);
     super.initState();
   }
 

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
 
 class CalendarBossPresenter {
@@ -7,17 +8,19 @@ class CalendarBossPresenter {
 
   CalendarBossPresenter(this._calendarBossView, this.employe);
 
-  init() async {
-    print("hola");
+  init(Day day) async {
     final databaseReference = Firestore.instance;
+    print(day.dayId.toString());
     await databaseReference
         .collection("Peluquerias")
         .document("PR01")
         .collection("empleados")
         .document(employe.name)
         .collection("horarios")
-        .document("13-02-2020")
-        .setData({"disponibilidad": "prueba"}, merge: true);
+        .document(day.dayId.toString())
+        .setData({
+      "disponibilidad": day.checkIn.toString() + " - " + day.checkOut.toString()
+    }, merge: true);
   }
 }
 

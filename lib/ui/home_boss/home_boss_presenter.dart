@@ -1,4 +1,5 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/Day.dart';
 import 'package:cuthair/model/employe.dart';
 
 class HomeBossPresenter {
@@ -9,6 +10,7 @@ class HomeBossPresenter {
 
   init() async {
     _view.showHairdresser(await _remoteRepository.getAllEmployes());
+
   }
 }
 
