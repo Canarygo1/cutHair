@@ -1,3 +1,4 @@
+import 'package:cuthair/calendarBoss.dart';
 import 'package:cuthair/chooseCalendarBoss.dart';
 import 'package:cuthair/home.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: CalendarBoss(),
     );
   }
 }

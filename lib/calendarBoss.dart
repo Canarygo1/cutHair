@@ -18,8 +18,8 @@ class _CalendarBossState extends State<CalendarBoss> {
   EventList<Event> _markedDateMap = new EventList<Event>();
   List<DateTime> dates = List<DateTime>();
   List<Day> days = List<Day>();
-  String checkIn;
-  String checkOut;
+  String checkIn = "7:00";
+  String checkOut = "24:00";
 
   RangeValues values = RangeValues(7, 24);
   RangeLabels labels = RangeLabels('7:00', '24:00');
@@ -159,8 +159,8 @@ class _CalendarBossState extends State<CalendarBoss> {
             values = value;
             labels = RangeLabels('${value.start.toInt().toString()}\:00',
                 '${value.end.toInt().toString()}\:00');
-            checkIn = value.start.toInt().toString();
-            checkOut = value.end.toInt().toString();
+            checkIn = labels.start.toString();
+            checkOut = labels.end.toString();
           });
         },
       ),
@@ -179,10 +179,23 @@ class _CalendarBossState extends State<CalendarBoss> {
               fontSize: 18.0,
             ),
           ),
-          onPressed: () =>{
+          onPressed: () => {
             setState(() {
               for (var value in dates) {
-                days.add(new Day(value, checkIn, checkOut));
+                Day day = Day(value, checkIn, checkOut);
+                if (days.length > 0) {
+                  var checkDay = days.firstWhere(
+                      (Day) =>
+                          Day.dayId == day.dayId &&
+                          Day.checkIn == day.checkIn &&
+                          Day.checkOut == day.checkOut,
+                      orElse: () => null);
+                  if (checkDay == null) {
+                    days.add(day);
+                  }
+                }else{
+                  days.add(day);
+                }
               }
               _markedDateMap.clear();
             }),
@@ -252,11 +265,10 @@ class _CalendarBossState extends State<CalendarBoss> {
                   trailing: GestureDetector(
                     onTap: () {
                       setState(() {
-                      _markedDateMap.removeAll(days.elementAt(index).dayId);
-                          dates.remove(days.elementAt(index).dayId);
-                          days.removeAt(index);
-                    });
-
+                        _markedDateMap.removeAll(days.elementAt(index).dayId);
+                        dates.remove(days.elementAt(index).dayId);
+                        days.removeAt(index);
+                      });
                     },
                     child: Container(
                       child: Icon(
