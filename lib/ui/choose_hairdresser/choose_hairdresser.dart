@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/choose_date/chooseDate.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser_presenter.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -10,16 +11,23 @@ import 'package:flutter/widgets.dart';
 import '../../global_methods.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
+
+  Appointment appointment;
+  chooseHairDresserScreen(this.appointment);
+
   @override
   _chooseHairDresserScreenState createState() =>
-      _chooseHairDresserScreenState();
+      _chooseHairDresserScreenState(appointment);
+
 }
 
 class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     implements ChooseHairDresserView {
+  Appointment appointment;
   List<Employe> nombres = [];
   RemoteRepository _remoteRepository;
   ChooseHairDresserPresenter presenter;
+  _chooseHairDresserScreenState(this.appointment);
 
   Widget title() {
     return Container(
@@ -79,7 +87,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                     ),
                   ),
                   onPressed: () {
-                    globalMethods().pushPage(context, chooseDateScreen());
+                    appointment.employe = nombres[index];
+                    globalMethods().pushPage(context, chooseDateScreen(appointment));
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),

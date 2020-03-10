@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/ui/detail/detail_screen.dart';
 import 'package:cuthair/ui/home/home_presenter.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +70,7 @@ class _HomeState extends State<Home> implements HomeView {
                   return GestureDetector(
                     onTap: () {
                       globalMethods()
-                          .pushPage(context, chooseHairDresserScreen());
+                          .pushPage(context, DetailScreen());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
