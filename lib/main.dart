@@ -1,4 +1,5 @@
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
+import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: chooseHairDresserScreen(),
+      home: HairdreserHome(),
     );
   }
 }
