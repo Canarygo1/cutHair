@@ -69,8 +69,7 @@ class _HomeState extends State<Home> implements HomeView {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      globalMethods()
-                          .pushPage(context, DetailScreen());
+                      globalMethods().pushPage(context, DetailScreen());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
