@@ -15,11 +15,12 @@ class loginCode {
     FirebaseUser user;
     User userLogin = User();
     Widget widget;
+
     try {
       user = (await auth.signInWithEmailAndPassword(
               email: email, password: password))
           .user;
-
+      print(currentUser());
       switch (userLogin.permission) {
         case 1:
           widget = HomeBoss();
@@ -31,7 +32,6 @@ class loginCode {
           widget = Home();
           break;
       }
-
       globalMethods().pushPage(context, widget);
     } catch (Exception) {
       Toast.show(
@@ -44,4 +44,11 @@ class loginCode {
       );
     }
   }
+
+  Future<String> currentUser() async {
+    final FirebaseUser user = await auth.currentUser();
+    final String uid = user.uid;
+    return uid;
+  }
+
 }

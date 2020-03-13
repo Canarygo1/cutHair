@@ -8,4 +8,5 @@ abstract class RemoteRepository {
   Future<List<Service>> getAllServices();
 
   Future<List<Employe>> getAllEmployes();
+
 }
