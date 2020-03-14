@@ -1,10 +1,18 @@
+import 'dart:collection';
+
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../global_methods.dart';
 
-class register extends StatelessWidget {
+class register extends StatefulWidget {
+  @override
+  _registerState createState() => _registerState();
+}
+
+class _registerState extends State<register> {
+
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController telefono = TextEditingController();
@@ -168,9 +176,12 @@ class register extends StatelessWidget {
             ),
           ),
           onPressed: () {
+            String emailText = email.text.toString();
+            String passwordText = password.text.toString();
+            Map mapa = getData();
             if (registerCode().checkCampos(context, keyForm)) {
               registerCode().registerAuth(
-                  email.text.toString(), password.text.toString(), context);
+                  emailText, passwordText, context, mapa);
             }
           },
           shape: RoundedRectangleBorder(
@@ -235,5 +246,15 @@ class register extends StatelessWidget {
             )),
       ),
     );
+  }
+
+  Map<String, Object> getData(){
+    Map data = Map<String, Object>();
+    data.putIfAbsent("Apellidos", () => apellidos.text.toString());
+    data.putIfAbsent("Email", () => email.text.toString());
+    data.putIfAbsent("Nombre", () => nombre.text.toString());
+    data.putIfAbsent("Permisos", () => 3);
+    data.putIfAbsent("Telefono", () => telefono.text.toString());
+    return data;
   }
 }
