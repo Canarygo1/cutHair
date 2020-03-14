@@ -15,7 +15,7 @@ class registerCode {
       Map<String, Object> data) async {
     FirebaseUser user;
     try {
-      /*user = (await auth.createUserWithEmailAndPassword(
+      user = (await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       ))
@@ -23,7 +23,7 @@ class registerCode {
       if (user != null) {
         Firestore.instance.collection("Usuarios").document(user.uid).setData(data);
         globalMethods().pushPage(context, login());
-      }*/
+      }
     } catch (e) {
       print(e);
       Toast.show(
