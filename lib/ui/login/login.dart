@@ -19,6 +19,7 @@ class login extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
         controller: emailController,
+
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
           enabledBorder: const UnderlineInputBorder(

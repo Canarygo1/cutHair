@@ -1,20 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/availability.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 import '../../global_methods.dart';
 
 class CalendarEmployee extends StatefulWidget {
+  String nombre;
+  CalendarEmployee(this.nombre);
+
   @override
-  _CalendarEmployeeState createState() => _CalendarEmployeeState();
+  _CalendarEmployeeState createState() => _CalendarEmployeeState(nombre);
 }
 
-class _CalendarEmployeeState extends State<CalendarEmployee> {
+class _CalendarEmployeeState extends State<CalendarEmployee>{
+  String nombre;
+
+  _CalendarEmployeeState(this.nombre);
+
+  RemoteRepository _remoteRepository;
   DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   DateTime date = new DateTime.now();
+  List<Availability> availabilities;
 
   Widget goBack(BuildContext context) {
     return Container(
@@ -85,7 +97,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
           DateTime day,
         ) {
           if (day == _currentDate2 && day.isAfter(_currentDate)) {
-              date = day;
+            date = day;
             return null;
           } else {
             return null;
@@ -133,27 +145,33 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
     );
   }
 
-  Widget schedule() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.white,
-      ),
-      child: ListTile(
-        dense: true,
-        title: Text(
-          date.day.toString() +
-              '-' +
-              date.month.toString() +
-              '-' +
-              date.year.toString(),
-        ),
-        subtitle: Text(
-            'De: ' + date.hour.toString() + ' a ' + date.minute.toString()),
-      ),
-    );
-  }
+  Widget schedule() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+        height: MediaQuery.of(context).size.height * 0.90,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: availabilities.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.white,
+                ),
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    date.day.toString() +
+                        '-' +
+                        date.month.toString() +
+                        '-' +
+                        date.year.toString(),
+                  ),
+                  subtitle: Text('Horario: ' + availabilities[index].disponibilidad),
+                ),
+              );
+            }),
+      );
 
   @override
   Widget build(BuildContext context) {

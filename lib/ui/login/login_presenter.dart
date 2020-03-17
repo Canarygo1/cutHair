@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,13 +30,13 @@ class loginCode {
       userLogin = await _remoteRepository.getUser(uid);
       switch (userLogin.permission) {
         case 1:
-          widget = HomeBoss();
+          widget = Menu(0);
           break;
         case 2:
-          widget = Home();
+          widget = Menu(1);
           break;
         case 3:
-          widget = Home();
+          widget = Menu(2);
           break;
       }
       globalMethods().pushPage(context, widget);
