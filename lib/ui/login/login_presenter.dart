@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,6 +19,7 @@ class loginCode {
   void iniciarSesion(
       String email, String password, BuildContext context) async {
     FirebaseUser user;
+
     String uid;
     Widget widget;
 
@@ -38,6 +40,9 @@ class loginCode {
           widget = Home();
           break;
       }
+      DBProvider.db.delete(userLogin);
+      DBProvider.db.getUser();
+      //DBProvider.db.insert(userLogin);
       globalMethods().pushPage(context, widget);
     } catch (Exception) {
       Toast.show(
