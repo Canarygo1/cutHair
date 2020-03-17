@@ -125,33 +125,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     );
                   }),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0, 26, 0, 0),
-              child: ButtonTheme(
-                child: RaisedButton(
-                  child: Text(
-                    'Reservar cita',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-//                    Navigator.push(
-//                        context,
-//                        MaterialPageRoute(
-//                            builder: (context) =>
-//                                ConfirmScreen(detallesServicio.elementAt(0))));
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                  ),
-                ),
-                height: 60.0,
-                minWidth: 200,
-                buttonColor: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            )
           ],
         ));
   }

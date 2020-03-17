@@ -1,3 +1,4 @@
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
 import 'package:cuthair/ui/calendar_employee/calendar_employee.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: CalendarEmployee(),
+      home: Menu(),
     );
   }
 }
