@@ -1,22 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/availability.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
-import 'package:flutter_calendar_carousel/classes/event_list.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 import '../../global_methods.dart';
 
 class CalendarEmployee extends StatefulWidget {
+  String nombre;
+  CalendarEmployee(this.nombre);
+
   @override
-  _CalendarEmployeeState createState() => _CalendarEmployeeState();
+  _CalendarEmployeeState createState() => _CalendarEmployeeState(nombre);
 }
 
-class _CalendarEmployeeState extends State<CalendarEmployee> {
+class _CalendarEmployeeState extends State<CalendarEmployee>{
+  String nombre;
+
+  _CalendarEmployeeState(this.nombre);
+
+  RemoteRepository _remoteRepository;
   DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   DateTime date = new DateTime.now();
-  List<Availability> availabilities = [];
+  List<Availability> availabilities;
 
   Widget goBack(BuildContext context) {
     return Container(

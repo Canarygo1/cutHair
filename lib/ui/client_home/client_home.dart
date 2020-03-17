@@ -16,8 +16,7 @@ class _ClienteHomeState extends State<ClienteHome> {
       body: Container(
         decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
         child: ListView(
-          children: <Widget>[topTitle(),
-          myAppoiment()],
+          children: <Widget>[topTitle(), myAppoiment()],
         ),
       ),
     );
@@ -39,54 +38,50 @@ class _ClienteHomeState extends State<ClienteHome> {
         ));
   }
 
-  Widget myAppoiment() {
-    Widget schedules() => Container(
-          padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-          height: MediaQuery.of(context).size.height * 0.90,
-          child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: appoiments.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(5)),
-                    color: Colors.white,
+  Widget myAppoiment() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+        height: MediaQuery.of(context).size.height * 0.90,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: appoiments.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.white,
+                ),
+                child: ListTile(
+                  dense: true,
+                  title: Text('Tipo de servicio: ' +
+                      appoiments.elementAt(index).service.tipo),
+                  subtitle: ListView(
+                    children: <Widget>[
+                      Text('Fecha del servicio: ' +
+                          appoiments[index].checkIn.day.toString() +
+                          '/' +
+                          appoiments[index].checkIn.month.toString() +
+                          '/' +
+                          appoiments[index].checkIn.year.toString()),
+                      Text('Hora del servicio' +
+                          appoiments[index].checkIn.hour.toString() +
+                          ':' +
+                          appoiments[index].checkIn.minute.toString()),
+                    ],
                   ),
-                  child: ListTile(
-                    dense: true,
-                    title: Text('Tipo de servicio: ' +
-                        appoiments.elementAt(index).service.tipo),
-                    subtitle: ListView(
-                      children: <Widget>[
-                        Text('Fecha del servicio: ' +
-                            appoiments[index].checkIn.day.toString() +
-                            '/' +
-                            appoiments[index].checkIn.month.toString() +
-                            '/' +
-                            appoiments[index].checkIn.year.toString()),
-                        Text('Hora del servicio' +
-                            appoiments[index].checkIn.hour.toString() +
-                            ':' +
-                            appoiments[index].checkIn.minute.toString()),
-                      ],
-                    ),
-                    trailing: GestureDetector(
-                      onTap: () {
-                        setState(() {
-
-                        });
-                      },
-                      child: Container(
-                        child: Icon(
-                          Icons.restore_from_trash,
-                          color: Colors.black,
-                        ),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      setState(() {});
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.restore_from_trash,
+                        color: Colors.black,
                       ),
                     ),
                   ),
-                );
-              }),
-        );
-  }
+                ),
+              );
+            }),
+      );
 }

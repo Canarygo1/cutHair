@@ -1,5 +1,3 @@
-import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/calendar_employee/calendar_employee.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -54,9 +52,7 @@ class _HairdreserHomeState extends State<HairdreserHome> {
             ),
           ),
           GestureDetector(
-            onTap: () {
-              globalMethods().pushPage(context, CalendarEmployee());
-            },
+            onTap: () {},
             child: Container(
               padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
               width: MediaQuery.of(context).size.width * 0.39,
