@@ -1,24 +1,31 @@
-import 'package:cuthair/globalMethods.dart';
-import 'package:cuthair/login.dart';
+import 'dart:collection';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'login.dart';
 import 'package:toast/toast.dart';
 
-class registerCode{
-
+class registerCode {
   final FirebaseAuth auth = FirebaseAuth.instance;
   static String password1;
 
-  void registerAuth(String email, String password, BuildContext context) async {
+  void registerAuth(String email, String password, BuildContext context,
+      Map<String, Object> data) async {
     FirebaseUser user;
-    try{
-    user = (await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    )).user;
-      globalMethods().pushPage(context, login());
-    }catch(e){
+    try {
+      user = (await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+          .user;
+      if (user != null) {
+        Firestore.instance.collection("Usuarios").document(user.uid).setData(data);
+        globalMethods().pushPage(context, login());
+      }
+    } catch (e) {
+      print(e);
       Toast.show(
         "Los datos no son correctos",
         context,
@@ -30,36 +37,40 @@ class registerCode{
     }
   }
 
-  String validateNameAndPassword(String value) {
-    String pattern = r'(^[a-zA-Z ]*$)';
+  String validateNameAndSurname(String value) {
+    print(value);
+    String pattern = r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "El nombre es necesario";
     } else if (!regExp.hasMatch(value)) {
       return "El nombre debe de ser a-z y A-Z";
     }
-    return null;
+    print("hola");
   }
 
-  String checkEmail(String value){
-    bool pattern = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
-    if(value.length == 0){
+  String checkEmail(String value) {
+    bool pattern = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(value);
+    if (value.length == 0) {
       return "El campo email no puede estar vacio";
-    }else if(!pattern){
+    } else if (!pattern) {
       return 'Formato de email incorrecto';
     }
   }
 
-  String checkSecurityPassword(String value){
+  String checkSecurityPassword(String value) {
     password1 = value;
-    bool pattern = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
-    if(!pattern) {
+    bool pattern =
+        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
+    if (!pattern) {
       return "La contraseña no tiene el formato correcto";
     }
   }
 
-  String checkSamePassword(String password2){
-    if(password1 != password2){
+  String checkSamePassword(String password2) {
+    if (password1 != password2) {
       return 'Las contraseñas no coinciden';
     }
   }
@@ -68,16 +79,14 @@ class registerCode{
     String patttern = r'(^[0-9]*$)';
     RegExp regExp = new RegExp(patttern);
     if (value.length == 0) {
-      return "El telefono es necesariod";
+      return "El telefono es necesario";
     } else if (value.length != 9) {
       return "El numero debe tener 10 digitos";
     }
-    return null;
   }
 
   bool checkCampos(BuildContext context, GlobalKey<FormState> keyForm) {
     if (keyForm.currentState.validate()) {
-      globalMethods().pushPage(context, login());
       Toast.show(
         'Datos insertados correctamente',
         context,
@@ -88,9 +97,8 @@ class registerCode{
       );
       keyForm.currentState.reset();
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 }
-

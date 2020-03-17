@@ -1,7 +1,7 @@
-import 'package:cuthair/login.dart';
+import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'globalMethods.dart';
+import '../../global_methods.dart';
 
 class sendSMS extends StatelessWidget {
 

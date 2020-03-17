@@ -1,11 +1,30 @@
-import 'package:cuthair/calendarBoss.dart';
-import 'package:cuthair/globalMethods.dart';
-import 'package:cuthair/model/employe.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/ui/detail/detail_screen.dart';
+import 'package:cuthair/ui/home/home_presenter.dart';
+import 'package:cuthair/model/hairDressing.dart';
 import 'package:flutter/material.dart';
 
-class ChooseCalendarBoss extends StatelessWidget {
-  List<Employe> employees;
+import '../../data/remote/http_remote_repository.dart';
+import '../../global_methods.dart';
+
+class Home extends StatefulWidget {
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> implements HomeView {
+  HomePagePresenter presenter;
+  RemoteRepository _remoteRepository;
+  List<HairDressing> peluquerias;
+
+  initState() {
+    peluquerias = [];
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    presenter = HomePagePresenter(this, _remoteRepository);
+    presenter.init();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +40,8 @@ class ChooseCalendarBoss extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
               child: Row(
                 children: <Widget>[
-                  Text(
-                    "Bienvenido",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                    ),
-                  ),
+                  Icon(Icons.location_on),
+                  Text("Santa Cruz de Tenerife")
                 ],
               ),
             ),
@@ -39,7 +53,7 @@ class ChooseCalendarBoss extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                   child: Text(
-                    "Asignar horarios",
+                    "Cercanas",
                     style: TextStyle(color: Colors.white),
                   ),
                 )
@@ -51,11 +65,11 @@ class ChooseCalendarBoss extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 4,
+                itemCount: peluquerias.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      globalMethods().pushPage(context, CalendarBoss());
+                      globalMethods().pushPage(context, DetailScreen());
                     },
                     child: Container(
                       width: MediaQuery.of(context).size.width * 0.3,
@@ -87,14 +101,14 @@ class ChooseCalendarBoss extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Privilege",
+                                      peluquerias[index].name,
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0),
                                     ),
                                     Text(
-                                      "BarberShop",
+                                      peluquerias[index].type,
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 15.0),
                                     ),
@@ -106,7 +120,7 @@ class ChooseCalendarBoss extends StatelessWidget {
                                           color: Colors.white,
                                         ),
                                         Text(
-                                          "Santa Cruz",
+                                          peluquerias[index].shortDirection,
                                           style: TextStyle(
                                               color: Colors.white,
                                               fontSize: 12.0),
@@ -127,5 +141,13 @@ class ChooseCalendarBoss extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  showList(List<HairDressing> hairDressing) {
+    setState(() {
+      peluquerias = hairDressing;
+    });
+    return null;
   }
 }

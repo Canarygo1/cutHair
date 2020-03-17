@@ -1,10 +1,17 @@
-import 'package:cuthair/login.dart';
+import 'dart:collection';
+
+import 'package:cuthair/ui/login/login.dart';
+import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'registerCode.dart';
-import 'globalMethods.dart';
+import '../../global_methods.dart';
 
-class register extends StatelessWidget {
+class register extends StatefulWidget {
+  @override
+  _registerState createState() => _registerState();
+}
+
+class _registerState extends State<register> {
 
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
@@ -14,12 +21,12 @@ class register extends StatelessWidget {
   TextEditingController password2 = TextEditingController();
   GlobalKey<FormState> keyForm = new GlobalKey();
 
-  Widget nombreTextField(){
+  Widget nombreTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 50.0, 35.0, 20.0),
       child: TextFormField(
         controller: nombre,
-        validator: registerCode().validateNameAndPassword,
+        validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Nombre',
           enabledBorder: const UnderlineInputBorder(
@@ -38,12 +45,12 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget apellidosTextField(){
+  Widget apellidosTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
         controller: apellidos,
-        validator: registerCode().validateNameAndPassword,
+        validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Apellidos',
           enabledBorder: const UnderlineInputBorder(
@@ -62,7 +69,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget correoTextField(){
+  Widget correoTextField() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
@@ -86,7 +93,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget passWordTextField(){
+  Widget passWordTextField() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
@@ -106,11 +113,10 @@ class register extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
           ),
-        )
-    );
+        ));
   }
 
-  Widget repeatPassWordTextField(){
+  Widget repeatPassWordTextField() {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
@@ -130,11 +136,10 @@ class register extends StatelessWidget {
           style: TextStyle(
             color: Colors.white,
           ),
-        )
-    );
+        ));
   }
 
-  Widget numeroTelefono(){
+  Widget numeroTelefono() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
@@ -158,7 +163,7 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget buttonRegister(BuildContext context){
+  Widget buttonRegister(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 30.0, 35.0, 20.0),
       child: ButtonTheme(
@@ -170,10 +175,14 @@ class register extends StatelessWidget {
               fontSize: 18.0,
             ),
           ),
-          onPressed: (){
-            if(registerCode().checkCampos(context, keyForm)){
-              registerCode().registerAuth(email.text.toString(), password.text.toString(), context);
-            };
+          onPressed: () {
+            String emailText = email.text.toString();
+            String passwordText = password.text.toString();
+            Map mapa = getData();
+            if (registerCode().checkCampos(context, keyForm)) {
+              registerCode().registerAuth(
+                  emailText, passwordText, context, mapa);
+            }
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -185,11 +194,11 @@ class register extends StatelessWidget {
     );
   }
 
-  Widget goBack(BuildContext context){
+  Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
         child: GestureDetector(
-          onTap: (){
+          onTap: () {
             globalMethods().pushPage(context, login());
           },
           child: Row(
@@ -212,14 +221,13 @@ class register extends StatelessWidget {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset: false,
       body: Form(
         key: keyForm,
         child: Container(
@@ -235,9 +243,18 @@ class register extends StatelessWidget {
                 numeroTelefono(),
                 buttonRegister(context),
               ],
-            )
-        ),
+            )),
       ),
     );
+  }
+
+  Map<String, Object> getData(){
+    Map data = Map<String, Object>();
+    data.putIfAbsent("Apellidos", () => apellidos.text.toString());
+    data.putIfAbsent("Email", () => email.text.toString());
+    data.putIfAbsent("Nombre", () => nombre.text.toString());
+    data.putIfAbsent("Permisos", () => 3);
+    data.putIfAbsent("Telefono", () => telefono.text.toString());
+    return data;
   }
 }

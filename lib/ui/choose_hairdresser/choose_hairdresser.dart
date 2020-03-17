@@ -1,32 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:cuthair/ui/choose_date/chooseDate.dart';
+import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser_presenter.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/ui/home/home.dart';
+import 'package:cuthair/model/employe.dart';
 import 'package:flutter/material.dart';
-import 'ChooseHairDresserPresenter.dart';
-import 'chooseDate.dart';
-import 'data/remote/HttpRemoteRepository.dart';
-import 'data/remote/RemoteRepository.dart';
-import 'globalMethods.dart';
-import 'home.dart';
-import 'model/employe.dart';
+import 'package:flutter/widgets.dart';
+import '../../global_methods.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
+
   Appointment appointment;
   chooseHairDresserScreen(this.appointment);
 
   @override
   _chooseHairDresserScreenState createState() =>
       _chooseHairDresserScreenState(appointment);
+
 }
 
-class _chooseHairDresserScreenState extends State<chooseHairDresserScreen> implements ChooseHairDresserView {
+class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
+    implements ChooseHairDresserView {
   Appointment appointment;
   List<Employe> nombres = [];
   RemoteRepository _remoteRepository;
   ChooseHairDresserPresenter presenter;
-
   _chooseHairDresserScreenState(this.appointment);
-  
+
   Widget title() {
     return Container(
       padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),

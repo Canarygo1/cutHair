@@ -1,9 +1,8 @@
-import 'package:cuthair/home.dart';
-import 'package:cuthair/login.dart';
+import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'globalMethods.dart';
+import '../../global_methods.dart';
 
 class ConfirmScreen extends StatefulWidget {
   Appointment detallesCita;
@@ -42,7 +41,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Peluquero: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text("hola",//details.employe.name,
+                  child: Text(details.employe.name,
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -56,7 +55,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Dia: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.checkIn.day.toString() + "/" + details.checkIn.month.toString() + "/" + details.checkIn.year.toString(),
+                  child: Text(details.checkIn.day.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -70,7 +69,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                     child: Text("Hora: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.checkIn.hour.toString() + ":" + details.checkIn.minute.toString(),
+                  child: Text(details.checkIn.hour.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -114,7 +113,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                         style: TextStyle(color: Colors.white, fontSize: 17.0))
                 ),
                 Expanded(
-                  child: Text(details.service.precio.toString() + " €",
+                  child: Text(details.service.precio.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -132,7 +131,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   ),
                 ),
                 onPressed: (){
-                  globalMethods().pushPage(context, Home());
+                  globalMethods().pushPage(context, login());
                   Toast.show(
                     "Cita reservada",
                     context,

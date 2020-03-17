@@ -1,4 +1,4 @@
-import 'package:cuthair/data/remote/RemoteRepository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 
 class ChooseHairDresserPresenter {
   ChooseHairDresserView _view;

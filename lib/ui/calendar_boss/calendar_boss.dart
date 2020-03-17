@@ -1,18 +1,25 @@
+import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-
-import 'globalMethods.dart';
-import 'home.dart';
-import 'model/day.dart';
+import '../../global_methods.dart';
+import '../../model/day.dart';
+import 'calendar_boss_presenter.dart';
 
 class CalendarBoss extends StatefulWidget {
+  Employe employe;
+
+  CalendarBoss(this.employe);
+
   @override
   _CalendarBossState createState() => _CalendarBossState();
 }
 
-class _CalendarBossState extends State<CalendarBoss> {
+class _CalendarBossState extends State<CalendarBoss>
+    implements CalendarBossView {
+  CalendarBossPresenter _calendarBossPresenter;
   DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
@@ -181,6 +188,7 @@ class _CalendarBossState extends State<CalendarBoss> {
           ),
           onPressed: () => {
             setState(() {
+              int contador = 0;
               for (var value in dates) {
                 Day day = Day(value, checkIn, checkOut);
                 if (days.length > 0) {
@@ -198,6 +206,7 @@ class _CalendarBossState extends State<CalendarBoss> {
                 }
               }
               _markedDateMap.clear();
+              _currentDate2 = null;
             }),
           },
           shape: RoundedRectangleBorder(
@@ -281,6 +290,12 @@ class _CalendarBossState extends State<CalendarBoss> {
               );
             }),
       );
+
+  @override
+  void initState() {
+    _calendarBossPresenter = CalendarBossPresenter(this, widget.employe);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

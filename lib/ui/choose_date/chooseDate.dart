@@ -1,11 +1,12 @@
-import 'package:cuthair/chooseHairDresser.dart';
-import 'package:cuthair/confirmScreen.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/ui/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'globalMethods.dart';
+import '../../global_methods.dart';
+import '../home/home.dart';
+import '../login/login.dart';
 
 class chooseDateScreen extends StatefulWidget {
   Appointment appointment = Appointment();
@@ -36,7 +37,7 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, chooseHairDresserScreen(appointment));
+            globalMethods().pushPage(context, Home());
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,17 +99,17 @@ class _chooseDateScreenState extends State<chooseDateScreen> {
           color: Colors.transparent,
         ),
         customDayBuilder: (
-          /// you can provide your own build function to make custom day containers
-          bool isSelectable,
-          int index,
-          bool isSelectedDay,
-          bool isToday,
-          bool isPrevMonthDay,
-          TextStyle textStyle,
-          bool isNextMonthDay,
-          bool isThisMonthDay,
-          DateTime day,
-        ) {
+            /// you can provide your own build function to make custom day containers
+            bool isSelectable,
+            int index,
+            bool isSelectedDay,
+            bool isToday,
+            bool isPrevMonthDay,
+            TextStyle textStyle,
+            bool isNextMonthDay,
+            bool isThisMonthDay,
+            DateTime day,
+            ) {
           if (day == _currentDate2 && day.isAfter(_currentDate)) {
             _finalDate = day;
             return Center(
