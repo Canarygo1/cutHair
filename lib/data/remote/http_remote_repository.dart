@@ -11,7 +11,6 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<List<HairDressing>> getAllHairdressing() async {
-    // TODO: implement getAllHairdressing
     QuerySnapshot querySnapshot =
         await firestore.collection("Peluquerias").getDocuments();
     List queryData = querySnapshot.documents;
@@ -21,6 +20,7 @@ class HttpRemoteRepository implements RemoteRepository {
       HairDressing hairDressing = HairDressing.fromMap(queryData[i].data);
       allHairDressing.add(hairDressing);
     }
+
     return allHairDressing;
   }
 

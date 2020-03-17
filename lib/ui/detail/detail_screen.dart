@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/ui/confirm/confirm_screen.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/detail/detail_presenter.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -16,6 +16,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
+  Appointment appointment = Appointment();
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
   DetailPresenter presenter;
@@ -47,18 +48,21 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     style: TextStyle(color: Colors.white)),
                 Container(
                     child: Row(children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1.0,
-                      endIndent: 0.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ]))
+                      Expanded(
+                        child: Divider(
+                          thickness: 1.0,
+                          endIndent: 0.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]))
               ],
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.38,
+              height: MediaQuery
+                  .of(context)
+                  .size
+                  .height * 0.38,
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: detallesServicio.length,
@@ -66,8 +70,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        globalMethods()
-                            .pushPage(context, chooseHairDresserScreen());
+                        appointment.service = detallesServicio[index];
+                        globalMethods().pushPage(
+                            context, chooseHairDresserScreen(appointment));
                       },
                       child: new Card(
                           shape: BeveledRectangleBorder(
@@ -80,7 +85,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                               children: <Widget>[
                                 Text(
                                     " " +
-                                        detallesServicio.elementAt(index).tipo,
+                                        detallesServicio
+                                            .elementAt(index)
+                                            .tipo,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 18.0),
                                     textAlign: TextAlign.center),
@@ -104,14 +111,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                         color: Colors.white, fontSize: 14.0)),
                                 Container(
                                     child: Row(children: [
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2.0,
-                                      endIndent: 0.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ]))
+                                      Expanded(
+                                        child: Divider(
+                                          thickness: 2.0,
+                                          endIndent: 0.0,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ]))
                               ],
                             ),
                           )),
@@ -155,6 +162,4 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
       detallesServicio = servicios;
     });
   }
-
-
 }

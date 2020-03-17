@@ -13,19 +13,6 @@ class HomePagePresenter {
   init() async {
     print("dentro");
     _view.showList(await _remoteRepository.getAllHairdressing());
-
-    //Conseguir documents.
-//    DocumentReference querySnapshot = await firestore
-//        .collection("Peluquerias")
-//        .document("PR01")
-//        .collection("empleados")
-//        .document("Carlos");
-//
-//    querySnapshot.get().then((datasnapshot) {
-//      if (datasnapshot.exists) {
-//        print(datasnapshot.data);
-//      }
-//    });
   }
 }
 
