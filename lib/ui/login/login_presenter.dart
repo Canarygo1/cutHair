@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:firebase_auth/firebase_auth.dart';
