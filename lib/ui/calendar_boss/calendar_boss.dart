@@ -200,13 +200,10 @@ class _CalendarBossState extends State<CalendarBoss>
                       orElse: () => null);
                   if (checkDay == null) {
                     days.add(day);
-                    _calendarBossPresenter.init(days[contador]);
                   }
-                } else {
+                }else{
                   days.add(day);
-                  _calendarBossPresenter.init(days[contador]);
                 }
-                contador++;
               }
               _markedDateMap.clear();
               _currentDate2 = null;
