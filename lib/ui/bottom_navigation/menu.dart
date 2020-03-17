@@ -1,23 +1,30 @@
-import 'package:cuthair/ui/detail/detail_screen.dart';
+import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
+import 'package:cuthair/ui/info/info.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
+  int aux;
+  Menu(this.aux);
+
   @override
-  _menuState createState() => _menuState();
+  _menuState createState() => _menuState(aux);
 }
 
-class _menuState extends State<Menu>{
+class _menuState extends State<Menu> {
+  int selectedItem = 0;
+  int aux;
+  _menuState(this.aux);
 
   List<Widget> screens;
 
   void initState() {
     super.initState();
-    screens = [Home(),  HomeBoss(), DetailScreen()];
+    if(aux == 0)screens = [HomeBoss(), Home(), Info()];
+    else if(aux == 1)screens = [HairdreserHome(), Home(), Info()];
+    else screens = [HairdreserHome(), Home(), Info()];
   }
-
-  int selectedItem = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +44,13 @@ class _menuState extends State<Menu>{
                   Icons.add,
                   color: Colors.white,
                 ),
-                title: Text("prueba")),
+                title: Text("")),
             BottomNavigationBarItem(
                 icon: Icon(
                   Icons.account_circle,
                   color: Colors.white,
                 ),
-                title: Text("prueba")),
+                title: Text("")),
           ],
           onTap: showScreen,
           currentIndex: selectedItem,

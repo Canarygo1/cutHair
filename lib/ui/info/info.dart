@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 
 import '../../global_methods.dart';
 
-class info extends StatefulWidget {
+class Info extends StatefulWidget {
   @override
   _InfoScreenState createState() => _InfoScreenState();
 }
 
-class _InfoScreenState extends State<info> {
+class _InfoScreenState extends State<Info> {
   User user;
 
   Widget ButtonChangePassword(BuildContext context) {
