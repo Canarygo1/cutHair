@@ -5,6 +5,7 @@ import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,7 @@ class DetailScreen extends StatefulWidget {
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
+  var url;
   Appointment appointment = Appointment();
   String nombrePeluqueria = "Privilege";
   String direccionPeluqueria = "Calle San Patricio";
@@ -26,6 +28,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
+    getImagen();
     presenter.init();
   }
 
@@ -35,9 +38,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
           children: <Widget>[
-            Image(
-              image: ExactAssetImage("assets/images/privilegeLogo.jpg"),
-            ),
+            url != null
+                ? Image.network(url)
+                : Image(
+                    image: ExactAssetImage('assets/images/ImageNotFound.jpg')),
             Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -48,21 +52,18 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     style: TextStyle(color: Colors.white)),
                 Container(
                     child: Row(children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 1.0,
-                          endIndent: 0.0,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ]))
+                  Expanded(
+                    child: Divider(
+                      thickness: 1.0,
+                      endIndent: 0.0,
+                      color: Colors.white,
+                    ),
+                  ),
+                ]))
               ],
             ),
             Container(
-              height: MediaQuery
-                  .of(context)
-                  .size
-                  .height * 0.38,
+              height: MediaQuery.of(context).size.height * 0.38,
               child: ListView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: detallesServicio.length,
@@ -85,9 +86,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                               children: <Widget>[
                                 Text(
                                     " " +
-                                        detallesServicio
-                                            .elementAt(index)
-                                            .tipo,
+                                        detallesServicio.elementAt(index).tipo,
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 18.0),
                                     textAlign: TextAlign.center),
@@ -111,14 +110,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                         color: Colors.white, fontSize: 14.0)),
                                 Container(
                                     child: Row(children: [
-                                      Expanded(
-                                        child: Divider(
-                                          thickness: 2.0,
-                                          endIndent: 0.0,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ]))
+                                  Expanded(
+                                    child: Divider(
+                                      thickness: 2.0,
+                                      endIndent: 0.0,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ]))
                               ],
                             ),
                           )),
@@ -127,6 +126,15 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             ),
           ],
         ));
+  }
+
+  getImagen() async {
+    String nombreimagen = "privilege/privilege1.jpeg";
+    var ref = FirebaseStorage.instance.ref().child(nombreimagen);
+    //ref.getMetadata().
+    //Directory direct = ref.getParent().
+    url = await ref.getDownloadURL();
+    print(url);
   }
 
   @override
