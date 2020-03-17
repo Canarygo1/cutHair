@@ -1,3 +1,4 @@
+import 'package:cuthair/ui/client_home/client_home.dart';
 import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
@@ -23,7 +24,7 @@ class _menuState extends State<Menu> {
     super.initState();
     if(aux == 0)screens = [HomeBoss(), Home(), Info()];
     else if(aux == 1)screens = [HairdreserHome(), Home(), Info()];
-    else screens = [HairdreserHome(), Home(), Info()];
+    else screens = [ClienteHome(), Home(), Info()];
   }
 
   @override
