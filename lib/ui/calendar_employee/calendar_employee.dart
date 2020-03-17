@@ -1,3 +1,4 @@
+import 'package:cuthair/model/availability.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -15,6 +16,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
   DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   DateTime date = new DateTime.now();
+  List<Availability> availabilities = [];
 
   Widget goBack(BuildContext context) {
     return Container(
@@ -85,7 +87,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
           DateTime day,
         ) {
           if (day == _currentDate2 && day.isAfter(_currentDate)) {
-              date = day;
+            date = day;
             return null;
           } else {
             return null;
@@ -133,27 +135,33 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
     );
   }
 
-  Widget schedule() {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        color: Colors.white,
-      ),
-      child: ListTile(
-        dense: true,
-        title: Text(
-          date.day.toString() +
-              '-' +
-              date.month.toString() +
-              '-' +
-              date.year.toString(),
-        ),
-        subtitle: Text(
-            'De: ' + date.hour.toString() + ' a ' + date.minute.toString()),
-      ),
-    );
-  }
+  Widget schedule() => Container(
+        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+        height: MediaQuery.of(context).size.height * 0.90,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: availabilities.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.white,
+                ),
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    date.day.toString() +
+                        '-' +
+                        date.month.toString() +
+                        '-' +
+                        date.year.toString(),
+                  ),
+                  subtitle: Text('Horario: ' + availabilities[index].disponibilidad),
+                ),
+              );
+            }),
+      );
 
   @override
   Widget build(BuildContext context) {
