@@ -41,7 +41,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             url != null
                 ? Image.network(url)
                 : Image(
-                    image: ExactAssetImage('assets/images/ImageNotFound.jpg')),
+                    image: ExactAssetImage('assets/images/Login.jpg')),
             Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
