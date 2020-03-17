@@ -8,7 +8,7 @@ import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import '../../global_methods.dart';
 
 class loginCode {
