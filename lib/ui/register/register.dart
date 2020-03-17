@@ -18,7 +18,7 @@ class register extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(40.0, 50.0, 35.0, 20.0),
       child: TextFormField(
         controller: nombre,
-        validator: registerCode().validateNameAndPassword,
+        validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Nombre',
           enabledBorder: const UnderlineInputBorder(
@@ -42,7 +42,7 @@ class register extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
         controller: apellidos,
-        validator: registerCode().validateNameAndPassword,
+        validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Apellidos',
           enabledBorder: const UnderlineInputBorder(
@@ -172,7 +172,6 @@ class register extends StatelessWidget {
               registerCode().registerAuth(
                   email.text.toString(), password.text.toString(), context);
             }
-            ;
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),

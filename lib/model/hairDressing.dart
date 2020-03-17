@@ -1,5 +1,3 @@
-
-
 class HairDressing {
   var name;
   var shortDirection;

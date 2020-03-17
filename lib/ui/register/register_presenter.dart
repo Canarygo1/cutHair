@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,7 +31,7 @@ class registerCode {
     }
   }
 
-  String validateNameAndPassword(String value) {
+  String validateNameAndSurname(String value) {
     String pattern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {

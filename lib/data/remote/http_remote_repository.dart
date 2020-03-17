@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/user.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
@@ -12,7 +13,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<HairDressing>> getAllHairdressing() async {
     QuerySnapshot querySnapshot =
-        await firestore.collection("Peluquerias").getDocuments();
+    await firestore.collection("Peluquerias").getDocuments();
     List queryData = querySnapshot.documents;
     List<HairDressing> allHairDressing = [];
 
@@ -46,11 +47,18 @@ class HttpRemoteRepository implements RemoteRepository {
         .document("PR01")
         .collection("empleados").getDocuments();
     List<Employe>employes = [];
-    for(int i = 0;i<querySnapshot.documents.length;i++){
+    for (int i = 0; i < querySnapshot.documents.length; i++) {
       Employe employe = Employe(querySnapshot.documents[i].documentID);
       print(employe.name);
       employes.add(employe);
     }
     return employes;
+  }
+
+  @override
+  Future<User> getUser(String uid) async {
+    DocumentSnapshot document = await firestore.collection("Usuarios").document(uid).get();
+    User user = User.fromMap(document.data);
+    return user;
   }
 }

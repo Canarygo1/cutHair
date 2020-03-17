@@ -1,48 +1,21 @@
 class User{
-  String _phone;
-  String _surname;
-  String _name;
-  String _email;
-  String _tipo;
-  int _permission;
+  String phone;
+  String surname;
+  String name;
+  String email;
+  int permission;
 
 
-  User();
+  User(this.surname, this.name, this.email,
+      this.permission, this.phone);
 
-  String get phone => _phone;
-
-  set phone(String value) {
-    _phone = value;
-  }
-
-  String get surname => _surname;
-
-  int get permission => _permission;
-
-  set permission(int value) {
-    _permission = value;
-  }
-
-  String get tipo => _tipo;
-
-  set tipo(String value) {
-    _tipo = value;
-  }
-
-  String get email => _email;
-
-  set email(String value) {
-    _email = value;
-  }
-
-  String get name => _name;
-
-  set name(String value) {
-    _name = value;
-  }
-
-  set surname(String value) {
-    _surname = value;
+  factory User.fromMap(Map values) {
+    String phone = values['Telefono'];
+    String surname = values['Apellidos'];
+    String name = values['Nombre'];
+    String email = values['Email'];
+    int permission = values['Permisos'];
+    return User(surname, name, email, permission, phone);
   }
 
 }
