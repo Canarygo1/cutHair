@@ -35,6 +35,7 @@ class _HairdreserHomeState extends State<HairdreserHome> {
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
+
           ),
         ));
   }
