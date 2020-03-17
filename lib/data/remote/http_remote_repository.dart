@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employe.dart';
@@ -58,7 +59,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<User> getUser(String uid) async {
     DocumentSnapshot document = await firestore.collection("Usuarios").document(uid).get();
-    User user = User.fromMap(document.data);
+    User user = User.fromMap(document.data,uid);
     return user;
   }
 }
