@@ -188,23 +188,28 @@ class _CalendarBossState extends State<CalendarBoss>
           ),
           onPressed: () => {
             setState(() {
+              int contador = 0;
               for (var value in dates) {
                 Day day = Day(value, checkIn, checkOut);
                 if (days.length > 0) {
                   var checkDay = days.firstWhere(
-                          (Day) =>
-                      Day.dayId == day.dayId &&
+                      (Day) =>
+                          Day.dayId == day.dayId &&
                           Day.checkIn == day.checkIn &&
                           Day.checkOut == day.checkOut,
                       orElse: () => null);
                   if (checkDay == null) {
                     days.add(day);
+                    _calendarBossPresenter.init(days[contador]);
                   }
-                }else{
+                } else {
                   days.add(day);
+                  _calendarBossPresenter.init(days[contador]);
                 }
+                contador++;
               }
               _markedDateMap.clear();
+              _currentDate2 = null;
             }),
           },
           shape: RoundedRectangleBorder(
