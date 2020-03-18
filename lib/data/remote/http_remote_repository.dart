@@ -22,7 +22,6 @@ class HttpRemoteRepository implements RemoteRepository {
       HairDressing hairDressing = HairDressing.fromMap(queryData[i].data);
       allHairDressing.add(hairDressing);
     }
-
     return allHairDressing;
   }
 
