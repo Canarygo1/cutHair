@@ -49,7 +49,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("empleados").getDocuments();
     List<Employe>employes = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      Employe employe = Employe(querySnapshot.documents[i].documentID);
+      Employe employe = Employe(querySnapshot.documents[i].data['Nombre']);
       print(employe.name);
       employes.add(employe);
     }
