@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: login(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cuthair/global_methods.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -7,20 +8,26 @@ class HairdreserHome extends StatefulWidget {
 }
 
 class _HairdreserHomeState extends State<HairdreserHome> {
+
+  globalMethods global = globalMethods();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
-        child: ListView(
-          children: <Widget>[
-            topTitle('Bienvenido'),
-            onClickImage(),
-          ],
-        ),
-      ),
-    );
+    global.context = context;
+    return new WillPopScope(
+        onWillPop: global.onWillPop,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
+            child: ListView(
+              children: <Widget>[
+                topTitle('Bienvenido'),
+                onClickImage(),
+              ],
+            ),
+          ),
+        ));
   }
 
   Widget topTitle(String mensaje) {
@@ -35,7 +42,6 @@ class _HairdreserHomeState extends State<HairdreserHome> {
           style: TextStyle(
             color: Colors.white,
             fontSize: 20,
-
           ),
         ));
   }

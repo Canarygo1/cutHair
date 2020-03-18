@@ -12,6 +12,7 @@ class Info extends StatefulWidget {
 
 class _InfoScreenState extends State<Info> {
   User user;
+  globalMethods global = globalMethods();
 
   Widget ButtonChangePassword(BuildContext context) {
     return Container(
@@ -42,114 +43,117 @@ class _InfoScreenState extends State<Info> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-      body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
-          Widget>[
-        Container(
-          margin: new EdgeInsets.only(bottom: 50),
-          height: 90,
-          color: Color.fromRGBO(230, 73, 90, 1),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(30, 40, 0, 0),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  "Mis datos",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                  ),
+    global.context = context;
+    return new WillPopScope(
+        onWillPop: global.onWillPop,
+        child: Scaffold(
+          backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+          body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
+              Widget>[
+            Container(
+              margin: new EdgeInsets.only(bottom: 50),
+              height: 90,
+              color: Color.fromRGBO(230, 73, 90, 1),
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(30, 40, 0, 0),
+                child: Row(
+                  children: <Widget>[
+                    Text(
+                      "Mis datos",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-        Container(
-          padding: EdgeInsets.fromLTRB(40.0, 20.0, 0.0, 20.0),
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: new EdgeInsets.only(right: 30.0),
-                      child: Text("Nombre: ",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
+            Container(
+              padding: EdgeInsets.fromLTRB(40.0, 20.0, 0.0, 20.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: new EdgeInsets.only(right: 30.0),
+                          child: Text("Nombre: ",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ),
+                        Container(
+                            child: Expanded(
+                          child: Text(user.name,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ))
+                      ],
                     ),
-                    Container(
-                        child: Expanded(
-                      child: Text(user.name,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ))
-                  ],
-                ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: new EdgeInsets.only(right: 30.0),
+                          child: Text("Apellido: ",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ),
+                        Container(
+                            child: Expanded(
+                          child: Text(user.surname,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: new EdgeInsets.only(right: 40.0),
+                          child: Text("Correo: ",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ),
+                        Container(
+                            child: Expanded(
+                          child: Text(user.email,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        )),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, bottom: 0.0),
+                    child: Row(
+                      children: <Widget>[
+                        Container(
+                          margin: new EdgeInsets.only(right: 25.0),
+                          child: Text("Teléfono: ",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ),
+                        Container(
+                            child: Expanded(
+                          child: Text(user.phone,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 17.0)),
+                        ))
+                      ],
+                    ),
+                  )
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: new EdgeInsets.only(right: 30.0),
-                      child: Text("Apellido: ",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ),
-                    Container(
-                        child: Expanded(
-                      child: Text(user.surname,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ))
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 30.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: new EdgeInsets.only(right: 40.0),
-                      child: Text("Correo: ",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ),
-                    Container(
-                        child: Expanded(
-                      child: Text(user.email,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    )),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, bottom: 0.0),
-                child: Row(
-                  children: <Widget>[
-                    Container(
-                      margin: new EdgeInsets.only(right: 25.0),
-                      child: Text("Teléfono: ",
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ),
-                    Container(
-                        child: Expanded(
-                      child: Text(user.phone,
-                          style:
-                              TextStyle(color: Colors.white, fontSize: 17.0)),
-                    ))
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        ButtonChangePassword(context)
-      ]),
-    );
+            ),
+            ButtonChangePassword(context)
+          ]),
+        ));
   }
 }

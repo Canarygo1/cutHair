@@ -1,3 +1,4 @@
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 
@@ -8,18 +9,22 @@ class ClienteHome extends StatefulWidget {
 
 class _ClienteHomeState extends State<ClienteHome> {
   List<Appointment> appoiments = [];
+  globalMethods global = globalMethods();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
-        child: ListView(
-          children: <Widget>[topTitle(), myAppoiment()],
-        ),
-      ),
-    );
+    global.context = context;
+    return new WillPopScope(
+        onWillPop: global.onWillPop,
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
+            child: ListView(
+              children: <Widget>[topTitle(), myAppoiment()],
+            ),
+          ),
+        ));
   }
 
   Widget topTitle() {
