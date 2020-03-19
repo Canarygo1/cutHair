@@ -1,17 +1,27 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/home/home_presenter.dart';
+import 'package:cuthair/ui/info/info_presenter.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import '../../global_methods.dart';
 
 class Info extends StatefulWidget {
+  User user;
+
+  Info(this.user);
+
   @override
-  _InfoScreenState createState() => _InfoScreenState();
+  _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<Info> {
+class _InfoScreenState extends State<Info>{
   User user;
+  _InfoScreenState(this.user);
   globalMethods global = globalMethods();
 
   Widget ButtonChangePassword(BuildContext context) {
