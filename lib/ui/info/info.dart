@@ -1,13 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/http_remote_repository.dart';
-import 'package:cuthair/data/remote/remote_repository.dart';
+
+
+import 'dart:io';
+
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:cuthair/ui/home/home_presenter.dart';
-import 'package:cuthair/ui/info/info_presenter.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+
 import '../../global_methods.dart';
 
 class Info extends StatefulWidget {
@@ -19,9 +19,10 @@ class Info extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<Info>{
+class _InfoScreenState extends State<Info> {
   User user;
   _InfoScreenState(this.user);
+
   globalMethods global = globalMethods();
 
   Widget ButtonChangePassword(BuildContext context) {
@@ -68,11 +69,20 @@ class _InfoScreenState extends State<Info>{
                 padding: const EdgeInsets.fromLTRB(30, 40, 0, 0),
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      "Mis datos",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
+                    Expanded(
+                      child: Text(
+                        "Mis datos",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: logOut,
+                      child: Container(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Icon(FontAwesomeIcons.solidCaretSquareLeft, color: Colors.white,),
                       ),
                     ),
                   ],
@@ -165,5 +175,10 @@ class _InfoScreenState extends State<Info>{
             ButtonChangePassword(context)
           ]),
         ));
+  }
+
+  Future<void> logOut() async {
+    DBProvider.db.delete();
+    exit(0);
   }
 }

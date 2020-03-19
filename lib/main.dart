@@ -1,17 +1,25 @@
+import 'dart:io';
+import 'package:cuthair/charge_screen.dart';
 import 'package:cuthair/ui/bottom_navigation/menu.dart';
-import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
-import 'package:cuthair/ui/calendar_employee/calendar_employee.dart';
-import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
-import 'package:cuthair/ui/detail/detail_screen.dart';
-import 'package:cuthair/ui/home/home.dart';
-import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'data/local/db_sqlite.dart';
+import 'model/user.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -20,7 +28,7 @@ class MyApp extends StatelessWidget {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: login(),
+      home: SplashScreen(),
     );
   }
 }

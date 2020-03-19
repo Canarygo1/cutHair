@@ -32,18 +32,18 @@ class loginCode {
       userLogin = await _remoteRepository.getUser(uid);
       switch (userLogin.permission) {
         case 1:
-          widget = Menu(0, userLogin);
-          break;
-        case 2:
           widget = Menu(1, userLogin);
           break;
-        case 3:
+        case 2:
           widget = Menu(2, userLogin);
           break;
+        case 3:
+          widget = Menu(3, userLogin);
+          break;
       }
-      DBProvider.db.delete(userLogin);
-      DBProvider.db.getUser();
-      //DBProvider.db.insert(userLogin);
+      /*DBProvider.db.delete();
+      DBProvider.db.getUser();*/
+      DBProvider.db.insert(userLogin);
       globalMethods().pushPage(context, widget);
     } catch (Exception) {
       Toast.show(
