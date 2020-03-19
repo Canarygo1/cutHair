@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/home/home_presenter.dart';
@@ -12,11 +13,18 @@ import 'package:flutter/material.dart';
 import 'home_boss_presenter.dart';
 
 class HomeBoss extends StatefulWidget {
+  User user;
+
+  HomeBoss(this.user);
+
   @override
-  _HomeBossState createState() => _HomeBossState();
+  _HomeBossState createState() => _HomeBossState(user);
 }
 
 class _HomeBossState extends State<HomeBoss> implements HomeBossView {
+  User user;
+  _HomeBossState(this.user);
+
   List<Employe> employees = [];
   List<Appointment> appointments = [];
   RemoteRepository _remoteRepository;
@@ -74,7 +82,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                 ),
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 17, vertical: 24.0),
+                padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
                 height: MediaQuery.of(context).size.height * 0.28,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
@@ -181,7 +189,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                                             CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
-                                            "Prueba",
+                                            user.name,
                                             style: TextStyle(
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white,

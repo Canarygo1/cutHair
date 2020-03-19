@@ -1,15 +1,23 @@
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/model/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HairdreserHome extends StatefulWidget {
+  User user;
+
+  HairdreserHome(this.user);
+
   @override
-  _HairdreserHomeState createState() => _HairdreserHomeState();
+  _HairdreserHomeState createState() => _HairdreserHomeState(user);
 }
 
-class _HairdreserHomeState extends State<HairdreserHome> {
+class _HairdreserHomeState extends State<HairdreserHome>{
 
   globalMethods global = globalMethods();
+  User user;
+
+  _HairdreserHomeState(this.user);
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +98,7 @@ class _HairdreserHomeState extends State<HairdreserHome> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Nombre",
+                              user.name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

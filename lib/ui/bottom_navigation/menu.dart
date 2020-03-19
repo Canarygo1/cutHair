@@ -25,8 +25,8 @@ class _menuState extends State<Menu>{
 
   void initState() {
     super.initState();
-    if(aux == 1)screens = [HomeBoss(), Home(), Info(user)];
-    else if(aux == 2)screens = [HairdreserHome(), Home(), Info(user)];
+    if(aux == 1)screens = [HomeBoss(user), Home(), Info(user)];
+    else if(aux == 2)screens = [HairdreserHome(user), Home(), Info(user)];
     else screens = [ClienteHome(), Home(), Info(user)];
   }
 
