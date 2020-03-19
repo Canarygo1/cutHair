@@ -178,7 +178,7 @@ class _InfoScreenState extends State<Info> {
   }
 
   Future<void> logOut() async {
-    DBProvider.db.delete();
+    await DBProvider.db.delete();
     exit(0);
   }
 }
