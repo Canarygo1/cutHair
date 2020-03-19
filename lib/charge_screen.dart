@@ -64,7 +64,6 @@ class _SplashScreenState extends State {
     if (lista != null) {
       print("hola");
       screen = Menu(lista[0].permission, lista[0]);
-      lista = null;
     } else{
       print("adios");
       screen = login();
