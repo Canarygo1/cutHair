@@ -9,7 +9,7 @@ import 'package:collection/collection.dart';
 class DBProvider {
   static Database _db = null;
   static final DBProvider db = DBProvider._private();
-
+  static List<User> listaNueva = [];
   DBProvider._private();
 
   Future<Database> get database async {
@@ -51,7 +51,7 @@ class DBProvider {
   static Future<int> update(User user) async => await _db
       .update("User", user.toMap(), where: 'name = ?', whereArgs: [user.name]);
 
-  Future<int> delete(User user) async {
+  Future<int> delete() async {
     final databaseObject = await database;
     List<Map<String, dynamic>> lista = null;
     lista = await databaseObject.rawQuery("DELETE FROM User");
@@ -61,7 +61,7 @@ class DBProvider {
     final databaseObject = await database;
     List<Map<String, dynamic>> lista =
         await databaseObject.rawQuery('SELECT * FROM User');
-    List<User> listaNueva = List.generate(lista.length, (i) {
+    listaNueva = List.generate(lista.length, (i) {
       return User(lista[i]['surname'], lista[i]['name'], lista[i]['email'],
           lista[i]['permission'], lista[i]['phone'], lista[i]['uid']);
     });
