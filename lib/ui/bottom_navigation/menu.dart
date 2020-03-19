@@ -1,14 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/http_remote_repository.dart';
-import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/client_home/client_home.dart';
 import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/home_boss/home_boss.dart';
 import 'package:cuthair/ui/info/info.dart';
-import 'package:cuthair/ui/info/info_presenter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatefulWidget {
@@ -22,9 +17,6 @@ class Menu extends StatefulWidget {
 
 class _menuState extends State<Menu>{
   User user;
-  RemoteRepository _remoteRepository;
-  InfoPagePresenter presenter;
-  final FirebaseAuth auth = FirebaseAuth.instance;
   int selectedItem = 0;
   int aux;
   _menuState(this.aux, this.user);

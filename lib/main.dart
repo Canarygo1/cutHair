@@ -1,39 +1,34 @@
+import 'dart:io';
+import 'package:cuthair/charge_screen.dart';
 import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'data/local/db_sqlite.dart';
 import 'model/user.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-  Widget widget;
-  List<User> lista;
-  // This widget is the root of your application.
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    play();
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: widget,
+      home: SplashScreen(),
     );
-  }
-
-
-  void play(){
-    DBProvider.db.getUser();
-    lista = DBProvider.listaNueva;
-    if(lista.length > 0 ){
-      print("hola");
-      widget = Menu(lista[0].permission, lista[0]);
-    }else if (lista.length == 0){
-      print("adios");
-      widget = login();
-    }
   }
 }

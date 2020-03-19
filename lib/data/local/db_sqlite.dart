@@ -4,7 +4,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import '../../model/user.dart';
 import 'package:path/path.dart';
-import 'package:collection/collection.dart';
 
 class DBProvider {
   static Database _db = null;
