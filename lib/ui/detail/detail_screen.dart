@@ -40,8 +40,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             FutureBuilder(
                 future: cargarImagenes(),
                 builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.none &&
-                      snapshot.hasData == null || listaImagenesFirebase.isEmpty) {
+                  if ((snapshot.connectionState == ConnectionState.none &&
+                      snapshot.hasData == null) || listaImagenesFirebase.isEmpty) {
                     return Container(
                         height: MediaQuery.of(context).size.height * 0.38,
                         margin: EdgeInsets.only(right: 5),

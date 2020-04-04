@@ -19,7 +19,7 @@ class HttpRemoteRepository implements RemoteRepository {
     List<HairDressing> allHairDressing = [];
 
     for (int i = 0; i < queryData.length; i++) {
-      HairDressing hairDressing = HairDressing.fromMap(queryData[i].data);
+      HairDressing hairDressing = HairDressing.fromMap(queryData[i].data, queryData[i].documentID);
       allHairDressing.add(hairDressing);
     }
     return allHairDressing;
