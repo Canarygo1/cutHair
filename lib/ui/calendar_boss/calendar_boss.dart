@@ -19,13 +19,12 @@ class CalendarBoss extends StatefulWidget {
 class _CalendarBossState extends State<CalendarBoss>
     implements CalendarBossView {
   CalendarBossPresenter _calendarBossPresenter;
-  DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
   List<DateTime> dates = List<DateTime>();
   List<Day> days = List<Day>();
-  String checkIn = "7:00";
-  String checkOut = "24:00";
+  String checkIn = "7.0";
+  String checkOut = "24.0";
 
   RangeValues values = RangeValues(7, 24);
   RangeLabels labels = RangeLabels('7:00', '24:00');
@@ -51,17 +50,17 @@ class _CalendarBossState extends State<CalendarBoss>
   }
 
   Widget _presentIcon(String day) => Container(
-    height: 55,
-    width: 55,
-    decoration: BoxDecoration(
-      color: Colors.red,
-      borderRadius: BorderRadius.all(Radius.circular(90)),
-    ),
-    child: Icon(
-      Icons.content_cut,
-      color: Colors.black,
-    ),
-  );
+        height: 55,
+        width: 55,
+        decoration: BoxDecoration(
+          color: Colors.red,
+          borderRadius: BorderRadius.all(Radius.circular(90)),
+        ),
+        child: Icon(
+          Icons.content_cut,
+          color: Colors.black,
+        ),
+      );
 
   Widget calendar() {
     return Container(
@@ -108,18 +107,18 @@ class _CalendarBossState extends State<CalendarBoss>
           color: Colors.transparent,
         ),
         customDayBuilder: (
-            /// you can provide your own build function to make custom day containers
-            bool isSelectable,
-            int index,
-            bool isSelectedDay,
-            bool isToday,
-            bool isPrevMonthDay,
-            TextStyle textStyle,
-            bool isNextMonthDay,
-            bool isThisMonthDay,
-            DateTime day,
-            ) {
-          if (day == _currentDate2 && day.isAfter(_currentDate)) {
+          /// you can provide your own build function to make custom day containers
+          bool isSelectable,
+          int index,
+          bool isSelectedDay,
+          bool isToday,
+          bool isPrevMonthDay,
+          TextStyle textStyle,
+          bool isNextMonthDay,
+          bool isThisMonthDay,
+          DateTime day,
+        ) {
+          if (day == _currentDate2 && day.isAfter(DateTime.now())) {
             _markedDateMap.getEvents(day).clear();
             _markedDateMap.add(
                 day, new Event(date: day, icon: _presentIcon(day.toString())));
@@ -165,8 +164,8 @@ class _CalendarBossState extends State<CalendarBoss>
             values = value;
             labels = RangeLabels('${value.start.toInt().toString()}\:00',
                 '${value.end.toInt().toString()}\:00');
-            checkIn = labels.start.toString();
-            checkOut = labels.end.toString();
+            checkIn = value.start.toString();
+            checkOut = value.end.toString();
           });
         },
       ),
@@ -185,31 +184,19 @@ class _CalendarBossState extends State<CalendarBoss>
               fontSize: 18.0,
             ),
           ),
-          onPressed: () => {
+          onPressed: () {
             setState(() {
-              int contador = 0;
-              for (var value in dates) {
-                Day day = Day(value, checkIn, checkOut);
-                if (days.length > 0) {
-                  var checkDay = days.firstWhere(
-                          (Day) =>
-                      Day.dayId == day.dayId &&
-                          Day.checkIn == day.checkIn &&
-                          Day.checkOut == day.checkOut,
-                      orElse: () => null);
-                  if (checkDay == null) {
-                    days.add(day);
-                    _calendarBossPresenter.init(days[contador]);
-                  }
-                } else {
+              print(checkIn);
+              if (dates.length > 0) {
+                for (int i = 0; i < dates.length; i++) {
+                  Day day = Day(dates[i], checkIn, checkOut);
                   days.add(day);
-                  _calendarBossPresenter.init(days[contador]);
                 }
-                contador++;
+                _calendarBossPresenter.init(days);
+                days.clear();
+                _markedDateMap.clear();
               }
-              _markedDateMap.clear();
-              _currentDate2 = null;
-            }),
+            });
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -248,50 +235,50 @@ class _CalendarBossState extends State<CalendarBoss>
   }
 
   Widget schedules() => Container(
-    padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-    height: MediaQuery.of(context).size.height * 0.90,
-    child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        itemCount: days.length,
-        itemBuilder: (context, index) {
-          return Container(
-            margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.white,
-            ),
-            child: ListTile(
-              dense: true,
-              title: Text(
-                days.elementAt(index).dayId.day.toString() +
-                    "-" +
-                    days.elementAt(index).dayId.month.toString() +
-                    "-" +
-                    days.elementAt(index).dayId.year.toString(),
-              ),
-              subtitle: Text('Hora de entrada: ' +
-                  days.elementAt(index).checkIn.toString() +
-                  ' hora de salida: ' +
-                  days.elementAt(index).checkOut.toString()),
-              trailing: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    _markedDateMap.removeAll(days.elementAt(index).dayId);
-                    dates.remove(days.elementAt(index).dayId);
-                    days.removeAt(index);
-                  });
-                },
-                child: Container(
-                  child: Icon(
-                    Icons.restore_from_trash,
-                    color: Colors.black,
+        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
+        height: MediaQuery.of(context).size.height * 0.90,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: days.length,
+            itemBuilder: (context, index) {
+              return Container(
+                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.white,
+                ),
+                child: ListTile(
+                  dense: true,
+                  title: Text(
+                    days.elementAt(index).dayId.day.toString() +
+                        "-" +
+                        days.elementAt(index).dayId.month.toString() +
+                        "-" +
+                        days.elementAt(index).dayId.year.toString(),
+                  ),
+                  subtitle: Text('Hora de entrada: ' +
+                      days.elementAt(index).checkIn.toString() +
+                      ' hora de salida: ' +
+                      days.elementAt(index).checkOut.toString()),
+                  trailing: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _markedDateMap.removeAll(days.elementAt(index).dayId);
+                        dates.remove(days.elementAt(index).dayId);
+                        days.removeAt(index);
+                      });
+                    },
+                    child: Container(
+                      child: Icon(
+                        Icons.restore_from_trash,
+                        color: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          );
-        }),
-  );
+              );
+            }),
+      );
 
   @override
   void initState() {
