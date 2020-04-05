@@ -2,6 +2,7 @@ import 'dart:collection';
 
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/ui/register/register_presenter.dart';
+import 'package:cuthair/ui/send_sms/send_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../global_methods.dart';
@@ -15,7 +16,6 @@ class _registerState extends State<register> {
 
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
-  TextEditingController telefono = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
@@ -139,30 +139,6 @@ class _registerState extends State<register> {
         ));
   }
 
-  Widget numeroTelefono() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-      child: TextFormField(
-        controller: telefono,
-        validator: registerCode().validateMobile,
-        decoration: InputDecoration(
-          hintText: 'Número de teléfono',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
-          ),
-          hintStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-          ),
-        ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-        ),
-      ),
-    );
-  }
-
   Widget buttonRegister(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 30.0, 35.0, 20.0),
@@ -176,13 +152,7 @@ class _registerState extends State<register> {
             ),
           ),
           onPressed: () {
-            String emailText = email.text.toString();
-            String passwordText = password.text.toString();
-            Map mapa = getData();
-            if (registerCode().checkCampos(context, keyForm)) {
-              registerCode().registerAuth(
-                  emailText, passwordText, context, mapa);
-            }
+
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -240,7 +210,6 @@ class _registerState extends State<register> {
                 correoTextField(),
                 passWordTextField(),
                 repeatPassWordTextField(),
-                numeroTelefono(),
                 buttonRegister(context),
               ],
             )),
@@ -254,7 +223,15 @@ class _registerState extends State<register> {
     data.putIfAbsent("Email", () => email.text.toString());
     data.putIfAbsent("Nombre", () => nombre.text.toString());
     data.putIfAbsent("Permisos", () => 3);
-    data.putIfAbsent("Telefono", () => telefono.text.toString());
+    //data.putIfAbsent("Telefono", () => telefono.text.toString());
     return data;
   }
+
+  /*String emailText = email.text.toString();
+            String passwordText = password.text.toString();
+            Map mapa = getData();
+            if (registerCode().checkCampos(context, keyForm)) {
+              registerCode().registerAuth(
+                  emailText, passwordText, context, mapa);
+            }*/
 }
