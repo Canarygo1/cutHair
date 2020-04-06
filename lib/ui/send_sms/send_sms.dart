@@ -1,6 +1,7 @@
 import 'package:cuthair/ui/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../global_methods.dart';
 
 class sendSMS extends StatefulWidget {
@@ -11,7 +12,11 @@ class sendSMS extends StatefulWidget {
 class _sendSMSState extends State<sendSMS> {
   TextEditingController _smsCodeController = TextEditingController();
   TextEditingController _phoneNumberController = TextEditingController();
+
+  String phoneNo;
+  String smsOTP;
   String verificationId;
+  String errorMessage = '';
 
   TextEditingController codeController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -26,8 +31,9 @@ class _sendSMSState extends State<sendSMS> {
           children: <Widget>[
             goBack(context),
             numeroTelefono(),
-            codigoTextField(),
             botonEnviarCode(context),
+            codigoTextField(),
+            botonEnviarCode2(context),
           ],
         ),
       ),
@@ -69,7 +75,30 @@ class _sendSMSState extends State<sendSMS> {
               fontSize: 20.0,
             ),
           ),
-          onPressed:  () => _sendCodeToPhoneNumber(),
+          onPressed: () => verifyPhone(),
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+        ),
+        height: 60.0,
+        buttonColor: Color.fromRGBO(230, 73, 90, 1),
+      ),
+    );
+  }
+
+  Widget botonEnviarCode2(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
+      child: ButtonTheme(
+        child: RaisedButton(
+          child: Text(
+            'Enviar',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            ),
+          ),
+          //onPressed: () => _signInWithPhoneNumber(codeController.text.toString()),
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
           ),
@@ -85,7 +114,7 @@ class _sendSMSState extends State<sendSMS> {
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, login());
+            globalMethods().popPage(context);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -133,35 +162,86 @@ class _sendSMSState extends State<sendSMS> {
     );
   }
 
-  Future<void> _sendCodeToPhoneNumber() async {
-    final PhoneVerificationCompleted verificationCompleted = (AuthCredential auth) {
-      print("hola");
+  Future<void> verifyPhone() async {
+    final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
+      this.verificationId = verId;
+      smsOTPDialog(context).then((value) {
+        print('sign in');
+      });
     };
+    try {
+      await auth.verifyPhoneNumber(
+          phoneNumber: "+15555215554",
+          // PHONE NUMBER TO SEND OTP
+          codeAutoRetrievalTimeout: (String verId) {
+            //Starts the phone number verification process for the given phone number.
+            //Either sends an SMS with a 6 digit code to the phone number specified, or sign's the user in and [verificationCompleted] is called.
+            this.verificationId = verId;
+          },
+          codeSent: smsOTPSent,
+          // WHEN CODE SENT THEN WE OPEN DIALOG TO ENTER OTP.
+          timeout: const Duration(seconds: 20),
+          verificationCompleted: (AuthCredential phoneAuthCredential) {
+            print(phoneAuthCredential);
+          },
+          verificationFailed: (AuthException exceptio) {
+            print('${exceptio.message}');
+          });
+    } catch (e) {
+      print(e);
+    }
+  }
 
-    final PhoneVerificationFailed verificationFailed = (AuthException authException) {
-      setState(() {
-        print('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');}
+  Future<bool> smsOTPDialog(BuildContext context) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+            title: Text('Enter SMS Code'),
+            content: Container(
+              height: 85,
+              child: Column(children: [
+                TextField(
+                  onChanged: (value) {
+                    this.smsOTP = value;
+                  },
+                ),
+                (errorMessage != ''
+                    ? Text(
+                        errorMessage,
+                        style: TextStyle(color: Colors.red),
+                      )
+                    : Container())
+              ]),
+            ),
+            contentPadding: EdgeInsets.all(10),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Done'),
+                onPressed: () {
+                  auth.currentUser().then((user) {
+                    signIn();
+                  });
+                },
+              )
+            ],
+          );
+        });
+  }
+
+  signIn() async {
+    try {
+      final AuthCredential credential = PhoneAuthProvider.getCredential(
+        verificationId: verificationId,
+        smsCode: smsOTP,
       );
-    };
-
-    final PhoneCodeSent codeSent =
-        (String verificationId, [int forceResendingToken]) async {
-      this.verificationId = verificationId;
-      print("code sent to " + _phoneNumberController.text);
-    };
-
-    final PhoneCodeAutoRetrievalTimeout codeAutoRetrievalTimeout =
-        (String verificationId) {
-      this.verificationId = verificationId;
-      print("time out");
-    };
-
-    await auth.verifyPhoneNumber(
-        phoneNumber: _phoneNumberController.text,
-        timeout: const Duration(seconds: 5),
-        verificationCompleted: verificationCompleted,
-        verificationFailed: verificationFailed,
-        codeSent: codeSent,
-        codeAutoRetrievalTimeout: codeAutoRetrievalTimeout);
+      await auth.signInWithCredential(credential);
+      FirebaseUser user = await auth.currentUser();
+      print(user.uid);
+      Navigator.of(context).pop();
+    } catch (e) {
+      print(e);
+    }
   }
 }

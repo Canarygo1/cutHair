@@ -22,6 +22,7 @@ class HomeBoss extends StatefulWidget {
 
 class _HomeBossState extends State<HomeBoss> implements HomeBossView {
   User user;
+
   _HomeBossState(this.user);
 
   List<Employe> employees = [];
@@ -142,70 +143,74 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                     }),
               ),
               Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      children: <Widget>[
-                        Container(
-                          child: Text(
-                            "Mis horarios",
-                            style: TextStyle(color: Colors.white, fontSize: 18),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Container(
+                            child: Text(
+                              "Mis horarios",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
                           ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
-                            width: MediaQuery.of(context).size.width * 0.39,
-                            child: Padding(
-                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                              child: Container(
-                                child: Column(
-                                  children: <Widget>[
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(10.0),
-                                      child: Center(
-                                        child: Container(
-                                          child: AspectRatio(
-                                            aspectRatio: 4 / 4,
-                                            child: Image(
-                                              fit: BoxFit.fill,
-                                              height: 10,
-                                              width: 10,
-                                              image: ExactAssetImage(
-                                                  "assets/images/privilegeLogo.jpg"),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
+                              width: MediaQuery.of(context).size.width * 0.39,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                child: Container(
+                                  child: Column(
+                                    children: <Widget>[
+                                      ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                        child: Center(
+                                          child: Container(
+                                            child: AspectRatio(
+                                              aspectRatio: 4 / 4,
+                                              child: Image(
+                                                fit: BoxFit.fill,
+                                                height: 10,
+                                                width: 10,
+                                                image: ExactAssetImage(
+                                                    "assets/images/privilegeLogo.jpg"),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          7, 10, 0, 0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Text(
-                                            user.name,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white,
-                                                fontSize: 18.0),
-                                          )
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            7, 10, 0, 0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Text(
+                                              user.name,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.white,
+                                                  fontSize: 18.0),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
