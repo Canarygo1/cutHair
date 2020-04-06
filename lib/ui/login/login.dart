@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../global_methods.dart';
 import '../reset_password/reset_password.dart';

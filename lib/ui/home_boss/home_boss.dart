@@ -8,7 +8,6 @@ import 'package:cuthair/ui/calendar_boss/calendar_boss.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'home_boss_presenter.dart';
 
 class HomeBoss extends StatefulWidget {
