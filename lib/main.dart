@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cuthair/charge_screen.dart';
 import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
+import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreen(),
+      home: Home(),
     );
   }
 }

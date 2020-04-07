@@ -12,8 +12,9 @@ dependencies:
     sdk: flutter
   meta: ^1.1.8
   font_awesome_flutter: ^8.5.0
-  firebase_core: ^0.4.3+2
-  firebase_auth: ^0.15.3+1
+  firebase_core: 0.4.4
+  firebase_auth: 0.15.4
+  http: ^0.12.0+4
   flutter_auth_buttons: ^0.6.0
   toast: ^0.1.5
   flutter_facebook_login: ^3.0.0

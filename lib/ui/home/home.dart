@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/ui/detail/detail_screen.dart';
 import 'package:cuthair/ui/home/home_presenter.dart';
