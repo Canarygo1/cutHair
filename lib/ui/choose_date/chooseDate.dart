@@ -82,7 +82,8 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   dayChanged(DateTime date) {
     _currentDate2 = date;
-    this._presenter.init(appointment.service.duracion.toString(), _currentDate2.toString(), appointment.employe.name);
+    //Todo:Para poder coger las horas bien hay que hacer dos cosas cambiar (- -> :) y (0 --> 00)
+//    this._presenter.init(appointment.service.duracion.toString(), _currentDate2.toString(), appointment.employe.name);
   }
 
   Widget calendar() {

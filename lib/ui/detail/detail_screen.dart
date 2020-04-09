@@ -39,6 +39,21 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         scrollDirection: Axis.vertical,
         child: Stack(
           children: <Widget>[
+            FutureBuilder(
+                future: cargarImagenes(),
+                builder: (context, snapshot) {
+                  if ((snapshot.connectionState == ConnectionState.none &&
+                      snapshot.hasData == null) || listaImagenesFirebase.isEmpty) {
+                    return Container(
+                        height: MediaQuery.of(context).size.height * 0.38,
+                        margin: EdgeInsets.only(right: 5),
+                        child: new Image(
+                            image:
+                            AssetImage('assets/images/noencontrado.jpg')));
+                  }else {
+                    return getListImages();
+                  }
+                }),
             Column(
               children: <Widget>[
                 FutureBuilder(
@@ -124,14 +139,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                         color: Colors.white, fontSize: 14.0)),
                                 Container(
                                     child: Row(children: [
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2.0,
-                                      endIndent: 0.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ]))
+                                      Expanded(
+                                        child: Divider(
+                                          thickness: 2.0,
+                                          endIndent: 0.0,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ]))
                               ],
                             ),
                           ),
@@ -174,7 +189,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height * 0.38)
                   : new Image(
-                      image: AssetImage('assets/images/noencontrado.jpg'))
+                  image: AssetImage('assets/images/noencontrado.jpg'))
             ],
           ),
         ));
