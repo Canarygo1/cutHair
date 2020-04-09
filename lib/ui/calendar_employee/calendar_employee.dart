@@ -33,7 +33,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
         padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, Home());
+            globalMethods().popPage(context);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

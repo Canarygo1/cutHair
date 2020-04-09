@@ -1,3 +1,4 @@
+import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
@@ -13,4 +14,6 @@ abstract class RemoteRepository {
   Future<User> getUser(String uid);
 
   Future<List<String>> getAllImages(HairDressing hairDressing);
+  
+  Future<bool> insertAppointment(Appointment appointment,String uid);
 }

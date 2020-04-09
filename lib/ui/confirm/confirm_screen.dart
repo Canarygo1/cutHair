@@ -1,11 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/ui/confirm/confirm_screen_presenter.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import '../../global_methods.dart';
 
 class ConfirmScreen extends StatefulWidget {
   Appointment detallesCita;
+
 
   ConfirmScreen(this.detallesCita);
 
@@ -13,18 +17,25 @@ class ConfirmScreen extends StatefulWidget {
   _ConfirmScreenState createState() => _ConfirmScreenState(detallesCita);
 }
 
-class _ConfirmScreenState extends State<ConfirmScreen> {
+class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenView {
   Appointment details;
 
+  RemoteRepository _remoteRepository;
+  ConfirmScreenPresenter _confirmScreenPresenter;
+  
   _ConfirmScreenState(this.details);
 
+  initState() {
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _confirmScreenPresenter = ConfirmScreenPresenter(this,_remoteRepository);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-
         children: <Widget>[
           Container(
               padding: EdgeInsets.fromLTRB(20.0, 120.0, 35.0, 20.0),
@@ -95,8 +106,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
               children: <Widget>[
                 Expanded(
                     child: Text("Duracion cita: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))
-                ),
+                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
                   child: Text(details.service.duracion.toString() + " minutos",
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -110,8 +120,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
               children: <Widget>[
                 Expanded(
                     child: Text("Precio cita: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))
-                ),
+                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
                   child: Text(details.service.precio.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -120,39 +129,94 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
             ),
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(0, 45, 0, 0),
-            child: ButtonTheme(
-              child: RaisedButton(
-                child: Text(
-                  'Confirmar cita',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
+            padding: EdgeInsets.fromLTRB(10, 45, 10, 0),
+            margin: EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 10),
+                    child: ButtonTheme(
+                      child: RaisedButton(
+                        child: Text(
+                          'Cancelar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          play();
+                          Toast.show(
+                            "Cita cancelada",
+                            context,
+                            gravity: Toast.BOTTOM,
+                            textColor: Colors.black,
+                            duration: Toast.LENGTH_LONG,
+                            backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+                          );
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      height: 60.0,
+                      minWidth: 150,
+                      buttonColor: Color.fromRGBO(230, 73, 90, 1),
+                    ),
                   ),
                 ),
-                onPressed: (){
-                  globalMethods().pushPage(context, login());
-                  Toast.show(
-                    "Cita reservada",
-                    context,
-                    gravity: Toast.BOTTOM,
-                    textColor: Colors.black,
-                    duration: Toast.LENGTH_LONG,
-                    backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-                  );
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0),
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: ButtonTheme(
+                      child: RaisedButton(
+                        child: Text(
+                          'Confirmar',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          play();
+                          Toast.show(
+                            "Cita reservada",
+                            context,
+                            gravity: Toast.BOTTOM,
+                            textColor: Colors.black,
+                            duration: Toast.LENGTH_LONG,
+                            backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+                          );
+                        },
+                        shape: RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(10.0),
+                        ),
+                      ),
+                      height: 60.0,
+                      minWidth: 150,
+                      buttonColor: Color.fromRGBO(230, 73, 90, 1),
+                    ),
+                  ),
                 ),
-              ),
-              height: 60.0,
-              minWidth: 200,
-              buttonColor: Color.fromRGBO(230, 73, 90, 1),
+              ],
             ),
-          )
-
+          ),
         ],
       ),
     );
+  }
+
+  void play() async {
+    await DBProvider.db.getUser();
+    if(DBProvider.listaNueva.length > 0) lista = DBProvider.listaNueva;
+    if (lista != null) {
+      screen = Menu(lista[0]);
+    }
+    new Timer(Duration(seconds: 1), changeScreen);
+  }
+
+  changeScreen() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
   }
 }

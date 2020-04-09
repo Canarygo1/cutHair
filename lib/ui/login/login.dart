@@ -1,11 +1,10 @@
 import 'package:cuthair/ui/reset_password/reset_password.dart';
+import 'package:cuthair/ui/send_sms/send_sms.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../register/register.dart';
 import '../../global_methods.dart';
 import '../reset_password/reset_password.dart';
 import 'login_presenter.dart';
@@ -111,7 +110,7 @@ class login extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, register());
+            globalMethods().pushPage(context, sendSMS());
           },
           child: Text(
             'Registrarse',
@@ -228,7 +227,6 @@ class login extends StatelessWidget {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FacebookLogin fbLogin = new FacebookLogin();
-
   Future<FirebaseUser> facebookLogin(BuildContext context) async {
     FirebaseUser currentUser;
     // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
