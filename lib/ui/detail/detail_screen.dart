@@ -96,7 +96,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Stack(
+        child: Column(
           children: <Widget>[
             sliderImages(context),
             Column(
@@ -106,71 +106,69 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     style: TextStyle(color: Colors.white, fontSize: 22.0)),
                 Text(hairDressing.direction,
                     style: TextStyle(color: Colors.white)),
-                Container(
-                  child: ListView.builder(
-                    itemCount: detallesServicio.length,
-                    shrinkWrap: true,
-                    primary: false,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          appointment.service = detallesServicio[index];
-                          globalMethods().pushPage(
-                              context, chooseHairDresserScreen(appointment));
-                        },
-                        child: new Card(
-                          shape: BeveledRectangleBorder(
-                              side: BorderSide(
-                                  color: Color.fromRGBO(300, 300, 300, 1))),
-                          child: new Container(
-                            color: Color.fromRGBO(300, 300, 300, 1),
-                            child: new Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                    " " +
-                                        detallesServicio.elementAt(index).tipo,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 18.0),
-                                    textAlign: TextAlign.center),
-                                Text(
-                                    " " +
-                                        detallesServicio
-                                            .elementAt(index)
-                                            .duracion
-                                            .toString() +
-                                        " minutos",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16.0)),
-                                Text(
-                                    " " +
-                                        detallesServicio
-                                            .elementAt(index)
-                                            .precio
-                                            .toString() +
-                                        " €",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 14.0)),
-                                Container(
-                                    child: Row(children: [
-                                      Expanded(
-                                        child: Divider(
-                                          thickness: 2.0,
-                                          endIndent: 0.0,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ]))
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
               ],
-            )
+            ),
+            ListView.builder(
+              itemCount: detallesServicio.length,
+              shrinkWrap: true,
+              primary: false,
+              itemBuilder: (context, index) {
+                return GestureDetector(
+                  onTap: () {
+                    appointment.service = detallesServicio[index];
+                    globalMethods().pushPage(
+                        context, chooseHairDresserScreen(appointment));
+                  },
+                  child: new Card(
+                    elevation: 0.0,
+                    shape: BeveledRectangleBorder(
+                        side: BorderSide(
+                            color: Color.fromRGBO(300, 300, 300, 1))),
+                    child: new Container(
+                      color: Color.fromRGBO(300, 300, 300, 1),
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(" " + detallesServicio.elementAt(index).tipo,
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 18.0),
+                              textAlign: TextAlign.center),
+                          Text(
+                              " " +
+                                  detallesServicio
+                                      .elementAt(index)
+                                      .duracion
+                                      .toString() +
+                                  " minutos",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 16.0)),
+                          Text(
+                              " " +
+                                  detallesServicio
+                                      .elementAt(index)
+                                      .precio
+                                      .toString() +
+                                  " €",
+                              style: TextStyle(
+                                  color: Colors.white, fontSize: 14.0)),
+                          Container(
+                              child: Row(children: [
+                            Expanded(
+                              child: Divider(
+                                thickness: 1.0,
+                                endIndent: 10.0,
+                                indent: 5.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ]))
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
