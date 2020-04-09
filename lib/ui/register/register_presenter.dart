@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/login/login.dart';
@@ -21,7 +19,10 @@ class registerCode {
       ))
           .user;
       if (user != null) {
-        Firestore.instance.collection("Usuarios").document(user.uid).setData(data);
+        Firestore.instance
+            .collection("Usuarios")
+            .document(user.uid)
+            .setData(data);
         globalMethods().pushPage(context, login());
       }
     } catch (e) {
@@ -39,7 +40,8 @@ class registerCode {
 
   String validateNameAndSurname(String value) {
     print(value);
-    String pattern = r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$';
+    String pattern =
+        r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "El nombre es necesario";
@@ -72,16 +74,6 @@ class registerCode {
   String checkSamePassword(String password2) {
     if (password1 != password2) {
       return 'Las contraseñas no coinciden';
-    }
-  }
-
-  String validateMobile(String value) {
-    String patttern = r'(^[0-9]*$)';
-    RegExp regExp = new RegExp(patttern);
-    if (value.length == 0) {
-      return "El telefono es necesario";
-    } else if (value.length != 9) {
-      return "El numero debe tener 10 digitos";
     }
   }
 
