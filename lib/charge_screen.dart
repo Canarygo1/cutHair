@@ -58,14 +58,12 @@ class _SplashScreenState extends State {
     ));
   }
 
-  Future<Widget> play() async {
+  void play() async {
     await DBProvider.db.getUser();
     if(DBProvider.listaNueva.length > 0) lista = DBProvider.listaNueva;
     if (lista != null) {
-      print("hola");
-      screen = Menu(lista[0].permission, lista[0]);
+      screen = Menu(lista[0]);
     } else{
-      print("adios");
       screen = login();
     }
     new Timer(Duration(seconds: 3), changeScreen);

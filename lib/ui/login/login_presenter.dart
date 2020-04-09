@@ -29,13 +29,13 @@ class loginCode {
       userLogin = await _remoteRepository.getUser(uid);
       switch (userLogin.permission) {
         case 1:
-          widget = Menu(1, userLogin);
+          widget = Menu(userLogin);
           break;
         case 2:
-          widget = Menu(2, userLogin);
+          widget = Menu(userLogin);
           break;
         case 3:
-          widget = Menu(3, userLogin);
+          widget = Menu(userLogin);
           break;
       }
       /*DBProvider.db.delete();

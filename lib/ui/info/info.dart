@@ -1,13 +1,9 @@
-
-
 import 'dart:io';
-
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import '../../global_methods.dart';
 
 class Info extends StatefulWidget {
