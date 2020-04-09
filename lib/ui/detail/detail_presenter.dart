@@ -1,5 +1,6 @@
 
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/hairDressing.dart';
 
 class DetailPresenter {
   DetailView _view;
@@ -7,16 +8,10 @@ class DetailPresenter {
 
   DetailPresenter(this._view, this._remoteRepository);
 
-  init() async {
-    print("dentro");
-//    Firestore firestore = Firestore.instance;
-//    QuerySnapshot querySnapshot = await firestore
-//        .collection("Peluquerias")
-//        .document("PR01")
-//        .collection("servicios")
-//        .getDocuments();
-//    print(querySnapshot.documents[0].data);
+  init(HairDressing hairDressing) async {
     _view.showServices(await _remoteRepository.getAllServices());
+    _view.showImages(await _remoteRepository.getAllImages(hairDressing));
+
   }
 }
 
@@ -33,4 +28,5 @@ class DetailPresenter {
 //    });
 abstract class DetailView {
   showServices(List servicios);
+  showImages(List imagenes);
 }

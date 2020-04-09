@@ -1,34 +1,93 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/ui/detail/detail_presenter.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import '../../global_methods.dart';
 
 class DetailScreen extends StatefulWidget {
+  HairDressing hairDressing;
+
+  DetailScreen(this.hairDressing);
+
   @override
-  _DetailScreenState createState() => _DetailScreenState();
+  _DetailScreenState createState() => _DetailScreenState(hairDressing);
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
+  HairDressing hairDressing;
   Appointment appointment = Appointment();
-  String nombrePeluqueria = "Privilege";
-  String direccionPeluqueria = "Calle San Patricio";
   DetailPresenter presenter;
   RemoteRepository remoteRepository;
   List<Service> detallesServicio = [];
   List<String> listaImagenesFirebase = [];
+  List<Widget> child = [];
+
+  _DetailScreenState(this.hairDressing);
+
+  int _current = 0;
 
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
-    presenter.init();
+    presenter.init(hairDressing);
+    print(child.length);
+  }
+
+  List<Widget> getChilds() {
+    List prueba = map<Widget>(listaImagenesFirebase, (index, i) {
+      return Container(
+        margin: EdgeInsets.all(5.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          child: Stack(children: <Widget>[
+            Image.network(i, fit: BoxFit.cover, width: 1000.0),
+            Positioned(
+              bottom: 0.0,
+              left: 0.0,
+              right: 0.0,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(200, 0, 0, 0),
+                      Color.fromARGB(0, 0, 0, 0)
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+                child: Text(
+                  'No. $index image',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ]),
+        ),
+      );
+    }).toList();
+    return prueba;
+  }
+
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
   }
 
   @override
@@ -37,28 +96,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: Column(
           children: <Widget>[
-            FutureBuilder(
-                future: cargarImagenes(),
-                builder: (context, snapshot) {
-                  if ((snapshot.connectionState == ConnectionState.none &&
-                      snapshot.hasData == null) || listaImagenesFirebase.isEmpty) {
-                    return Container(
-                        height: MediaQuery.of(context).size.height * 0.38,
-                        margin: EdgeInsets.only(right: 5),
-                        child: new Image(
-                            image:
-                                AssetImage('assets/images/noencontrado.jpg')));
-                  }else {
-                    return getListImages();
-                  }
-                }),
+            sliderImages(context),
             Column(
               //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(""),
-                Text(nombrePeluqueria,
+                Text(hairDressing.name,
                     style: TextStyle(color: Colors.white, fontSize: 22.0)),
-                Text(direccionPeluqueria,
+                Text(hairDressing.direction,
                     style: TextStyle(color: Colors.white)),
                 Container(
                     child: Row(children: [
@@ -138,56 +183,67 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         ));
   }
 
-  getListImages() {
-    return Container(
-        height: MediaQuery.of(context).size.height * 0.38,
-        child: ListView.builder(
-            itemCount: listaImagenesFirebase.length,
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemBuilder: (context, position) {
-              return getUnicaImagen(position);
-            }));
-  }
-
-  getUnicaImagen(int index) {
-    String url = listaImagenesFirebase.elementAt(index);
-    print(url);
-
-    return new Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(right: 5),
-        child: Card(
-          child: Wrap(
-            children: <Widget>[
-              url != null
-                  ? new Image.network(url, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.38)
-                  : new Image(
-                      image: AssetImage('assets/images/noencontrado.jpg'))
-            ],
-          ),
-        ));
-  }
-
-  cargarImagenes() async {
-    List<String> lista = [];
-    listaImagenesFirebase = [];
-
-    //cambiar el 7 por el valor del hairDressing
-    for (int i = 0; i < 7; i++) {
-      //modificar nombre para la utilización de la carpeta según la peluqueria
-      String nombre = "PRO1/" + i.toString() + ".jpeg";
-      String url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
-      lista.add(url);
-    }
-
-    listaImagenesFirebase = lista;
-  }
-
   @override
   showServices(List servicios) {
     setState(() {
       detallesServicio = servicios;
     });
+  }
+
+  @override
+  showImages(List imagenes) {
+    setState(() {
+      listaImagenesFirebase = imagenes;
+      child = getChilds();
+    });
+  }
+
+  Widget sliderImages(BuildContext context) {
+    if (child.length > 0) {
+      return Container(
+        margin: EdgeInsets.only(top: 20),
+        child: Column(children: [
+          CarouselSlider(
+            height: MediaQuery.of(context).size.height * 0.25,
+            items: child,
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 2.0,
+            onPageChanged: (index) {
+              setState(() {
+                _current = index;
+              });
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: map<Widget>(
+              listaImagenesFirebase,
+              (index, url) {
+                return Container(
+                  width: 8.0,
+                  height: 8.0,
+                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? Color.fromRGBO(230, 73, 90, 1)
+                          : Colors.white),
+                );
+              },
+            ),
+          ),
+        ]),
+      );
+    } else {
+      return Container(
+        margin: EdgeInsets.only(top: 20),
+        height: MediaQuery.of(context).size.height * 0.25,
+        child: SpinKitWave(
+          color: Color.fromRGBO(230, 73, 90, 1),
+          type: SpinKitWaveType.start,
+        ),
+      );
+    }
   }
 }

@@ -11,4 +11,6 @@ abstract class RemoteRepository {
   Future<List<Employe>> getAllEmployes();
 
   Future<User> getUser(String uid);
+
+  Future<List<String>> getAllImages(HairDressing hairDressing);
 }
