@@ -227,7 +227,6 @@ class login extends StatelessWidget {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FacebookLogin fbLogin = new FacebookLogin();
-
   Future<FirebaseUser> facebookLogin(BuildContext context) async {
     FirebaseUser currentUser;
     // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;

@@ -18,17 +18,36 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb493927641521806</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.846026419673-j959a9a1sbjsm8erq2i7ik7hr0icmj6j</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-
-    <key>LSApplicationQueriesSchemes</key>
-    <array> <string>fbapi</string> <string>fb-messenger-share-api</string>
-    <string>fbauth2</string> <string>fbshareextension</string> </array>
-    <key>CFBundleURLTypes</key> <array>
-     <dict> <key>CFBundleURLSchemes</key>
-     <array> <string>fb493927641521806</string> </array> </dict> </array>
-     <key>FacebookAppID</key> <string>493927641521806</string> <key>FacebookDisplayName</key>
-     <string>cutHair</string>
+	<key>FacebookAppID</key>
+	<string>493927641521806</string>
+	<key>FacebookDisplayName</key>
+	<string>cutHair</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+		<string>fbauth2</string>
+		<string>fbshareextension</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
