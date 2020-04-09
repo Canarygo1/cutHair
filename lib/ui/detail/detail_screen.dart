@@ -152,7 +152,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   getUnicaImagen(int index) {
     String url = listaImagenesFirebase.elementAt(index);
-    print(url);
 
     return new Container(
         width: MediaQuery.of(context).size.width,
