@@ -1,6 +1,11 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/confirm/confirm_screen_presenter.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/model/appointment.dart';
@@ -8,22 +13,22 @@ import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
 class ConfirmScreen extends StatefulWidget {
-  Appointment detallesCita;
+  Appointment appointment;
 
 
-  ConfirmScreen(this.detallesCita);
+  ConfirmScreen(this.appointment);
 
   @override
-  _ConfirmScreenState createState() => _ConfirmScreenState(detallesCita);
+  _ConfirmScreenState createState() => _ConfirmScreenState(appointment);
 }
 
 class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenView {
-  Appointment details;
-
+  Appointment appointment;
   RemoteRepository _remoteRepository;
   ConfirmScreenPresenter _confirmScreenPresenter;
-  
-  _ConfirmScreenState(this.details);
+  Widget screen;
+  List<User> lista;
+  _ConfirmScreenState(this.appointment);
 
   initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
@@ -52,7 +57,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Peluquero: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.employe.name,
+                  child: Text(appointment.employe.name,
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -66,7 +71,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Dia: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.checkIn.day.toString(),
+                  child: Text(appointment.checkIn.day.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -80,7 +85,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Hora: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.checkIn.hour.toString(),
+                  child: Text(appointment.checkIn.hour.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -94,7 +99,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Tipo servicio: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.service.tipo,
+                  child: Text(appointment.service.tipo,
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -108,7 +113,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Duracion cita: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.service.duracion.toString() + " minutos",
+                  child: Text(appointment.service.duracion.toString() + " minutos",
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -122,7 +127,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: Text("Precio cita: ",
                         style: TextStyle(color: Colors.white, fontSize: 17.0))),
                 Expanded(
-                  child: Text(details.service.precio.toString(),
+                  child: Text(appointment.service.precio.toString(),
                       style: TextStyle(color: Colors.white, fontSize: 17.0)),
                 )
               ],
@@ -139,7 +144,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     child: ButtonTheme(
                       child: RaisedButton(
                         child: Text(
-                          'Cancelar',
+                          'Cancelar cita',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 18.0,
@@ -148,7 +153,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                         onPressed: () {
                           play();
                           Toast.show(
-                            "Cita cancelada",
+                            "Cancelar",
                             context,
                             gravity: Toast.BOTTOM,
                             textColor: Colors.black,
@@ -180,6 +185,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                         ),
                         onPressed: () {
                           play();
+                          _confirmScreenPresenter.init(appointment);
                           Toast.show(
                             "Cita reservada",
                             context,
