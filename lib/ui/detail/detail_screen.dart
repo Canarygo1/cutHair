@@ -34,58 +34,62 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-        body: Column(
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Stack(
           children: <Widget>[
-            FutureBuilder(
-                future: cargarImagenes(),
-                builder: (context, snapshot) {
-                  if ((snapshot.connectionState == ConnectionState.none &&
-                      snapshot.hasData == null) || listaImagenesFirebase.isEmpty) {
-                    return Container(
-                        height: MediaQuery.of(context).size.height * 0.38,
-                        margin: EdgeInsets.only(right: 5),
-                        child: new Image(
-                            image:
-                                AssetImage('assets/images/noencontrado.jpg')));
-                  }else {
-                    return getListImages();
-                  }
-                }),
             Column(
-              //crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(""),
-                Text(nombrePeluqueria,
-                    style: TextStyle(color: Colors.white, fontSize: 22.0)),
-                Text(direccionPeluqueria,
-                    style: TextStyle(color: Colors.white)),
+                FutureBuilder(
+                    future: cargarImagenes(),
+                    builder: (context, snapshot) {
+                      if ((snapshot.connectionState == ConnectionState.none &&
+                              snapshot.hasData == null) ||
+                          listaImagenesFirebase.isEmpty) {
+                        return Container(
+                            height: MediaQuery.of(context).size.height * 0.38,
+                            margin: EdgeInsets.only(right: 5),
+                            child: new Image(
+                                image: AssetImage(
+                                    'assets/images/privilegeLogo.jpg')));
+                      } else {
+                        return getListImages();
+                      }
+                    }),
+                Column(
+                  //crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(""),
+                    Text(nombrePeluqueria,
+                        style: TextStyle(color: Colors.white, fontSize: 22.0)),
+                    Text(direccionPeluqueria,
+                        style: TextStyle(color: Colors.white)),
+                    Container(
+                        child: Row(children: [
+                      Expanded(
+                        child: Divider(
+                          thickness: 1.0,
+                          endIndent: 0.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]))
+                  ],
+                ),
                 Container(
-                    child: Row(children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1.0,
-                      endIndent: 0.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ]))
-              ],
-            ),
-            Container(
-              height: MediaQuery.of(context).size.height * 0.38,
-              child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  itemCount: detallesServicio.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        appointment.service = detallesServicio[index];
-                        globalMethods().pushPage(
-                            context, chooseHairDresserScreen(appointment));
-                      },
-                      child: new Card(
+                  child: ListView.builder(
+                    itemCount: detallesServicio.length,
+                    shrinkWrap: true,
+                    primary: false,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          appointment.service = detallesServicio[index];
+                          globalMethods().pushPage(
+                              context, chooseHairDresserScreen(appointment));
+                        },
+                        child: new Card(
                           shape: BeveledRectangleBorder(
                               side: BorderSide(
                                   color: Color.fromRGBO(300, 300, 300, 1))),
@@ -130,12 +134,18 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                 ]))
                               ],
                             ),
-                          )),
-                    );
-                  }),
-            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            )
           ],
-        ));
+        ),
+      ),
+    );
   }
 
   getListImages() {
@@ -160,7 +170,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
           child: Wrap(
             children: <Widget>[
               url != null
-                  ? new Image.network(url, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.38)
+                  ? new Image.network(url,
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height * 0.38)
                   : new Image(
                       image: AssetImage('assets/images/noencontrado.jpg'))
             ],
@@ -176,7 +188,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     for (int i = 0; i < 7; i++) {
       //modificar nombre para la utilización de la carpeta según la peluqueria
       String nombre = "PRO1/" + i.toString() + ".jpeg";
-      String url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+      String url =
+          await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
       lista.add(url);
     }
 
