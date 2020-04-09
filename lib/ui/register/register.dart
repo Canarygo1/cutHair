@@ -169,7 +169,7 @@ class _registerState extends State<register> {
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, login());
+            globalMethods().popPage(context);
           },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
