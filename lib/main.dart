@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: SplashScreen(),
     );
   }
 }

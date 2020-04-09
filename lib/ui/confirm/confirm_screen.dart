@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/ui/confirm/confirm_screen_presenter.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:flutter/material.dart';
@@ -7,17 +11,25 @@ import '../../global_methods.dart';
 class ConfirmScreen extends StatefulWidget {
   Appointment detallesCita;
 
+
   ConfirmScreen(this.detallesCita);
 
   @override
   _ConfirmScreenState createState() => _ConfirmScreenState(detallesCita);
 }
 
-class _ConfirmScreenState extends State<ConfirmScreen> {
+class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenView {
   Appointment details;
+  RemoteRepository _remoteRepository;
+  ConfirmScreenPresenter _confirmScreenPresenter;
 
   _ConfirmScreenState(this.details);
 
+  initState() {
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _confirmScreenPresenter = ConfirmScreenPresenter(this,_remoteRepository);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +143,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> {
                   ),
                 ),
                 onPressed: (){
-                  globalMethods().pushPage(context, login());
+                  _confirmScreenPresenter.init(details);
                   Toast.show(
                     "Cita reservada",
                     context,

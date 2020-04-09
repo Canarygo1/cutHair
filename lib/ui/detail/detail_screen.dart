@@ -47,7 +47,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                         margin: EdgeInsets.only(right: 5),
                         child: new Image(
                             image:
-                                AssetImage('assets/images/noencontrado.jpg')));
+                            AssetImage('assets/images/noencontrado.jpg')));
                   }else {
                     return getListImages();
                   }
@@ -62,14 +62,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     style: TextStyle(color: Colors.white)),
                 Container(
                     child: Row(children: [
-                  Expanded(
-                    child: Divider(
-                      thickness: 1.0,
-                      endIndent: 0.0,
-                      color: Colors.white,
-                    ),
-                  ),
-                ]))
+                      Expanded(
+                        child: Divider(
+                          thickness: 1.0,
+                          endIndent: 0.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ]))
               ],
             ),
             Container(
@@ -120,14 +120,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                                         color: Colors.white, fontSize: 14.0)),
                                 Container(
                                     child: Row(children: [
-                                  Expanded(
-                                    child: Divider(
-                                      thickness: 2.0,
-                                      endIndent: 0.0,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ]))
+                                      Expanded(
+                                        child: Divider(
+                                          thickness: 2.0,
+                                          endIndent: 0.0,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ]))
                               ],
                             ),
                           )),
@@ -163,7 +163,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               url != null
                   ? new Image.network(url, width: MediaQuery.of(context).size.width, height: MediaQuery.of(context).size.height * 0.38)
                   : new Image(
-                      image: AssetImage('assets/images/noencontrado.jpg'))
+                  image: AssetImage('assets/images/noencontrado.jpg'))
             ],
           ),
         ));
