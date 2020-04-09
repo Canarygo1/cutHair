@@ -13,5 +13,7 @@ abstract class RemoteRepository {
 
   Future<User> getUser(String uid);
 
+  Future<List<String>> getAllImages(HairDressing hairDressing);
+  
   Future<bool> insertAppointment(Appointment appointment,String uid);
 }

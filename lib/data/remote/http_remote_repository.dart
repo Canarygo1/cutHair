@@ -5,6 +5,7 @@ import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
@@ -41,6 +42,8 @@ class HttpRemoteRepository implements RemoteRepository {
     return services;
   }
 
+
+
   @override
   Future<List<Employe>> getAllEmployes() async {
     QuerySnapshot querySnapshot = await firestore
@@ -66,6 +69,17 @@ class HttpRemoteRepository implements RemoteRepository {
     return user;
   }
 
+  @override
+  Future<List<String>> getAllImages(HairDressing hairDressing) async {
+    List<String> lista = [];
+    for (int i = 0; i < hairDressing.numeroFotos; i++) {
+      String nombre = hairDressing.uid + "/" + i.toString() + ".jpeg";
+      String url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+      lista.add(url);
+    }
+    return lista;
+  }
+  
   @override
   Future<bool> insertAppointment(Appointment appointment, String uid) async {
     print("hola");
