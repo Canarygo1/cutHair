@@ -30,6 +30,8 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent
       ),
       home: SplashScreen(),
     );
