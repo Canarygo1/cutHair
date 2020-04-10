@@ -11,20 +11,24 @@ class sendSMS extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        color: Color.fromRGBO(300, 300, 300, 1),
-        child: ListView(
-          children: <Widget>[
-            goBack(context),
-            telefonoTextField(),
-            botonEnviarCode(context),
-            codigoTextField(),
-            confirmarCode(context)
-          ],
-        ),
-      ),
-    );
+        resizeToAvoidBottomInset: false,
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
+            color: Color.fromRGBO(300, 300, 300, 1),
+            child: ListView(
+              children: <Widget>[
+                goBack(context),
+                telefonoTextField(),
+                botonEnviarCode(context),
+                codigoTextField(),
+                confirmarCode(context)
+              ],
+            ),
+          ),
+        ));
   }
 
   _verifyPhoneNumber(BuildContext context) async {
@@ -101,6 +105,7 @@ class sendSMS extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
+        keyboardType: TextInputType.number,
         controller: phoneController,
         decoration: InputDecoration(
           hintText: 'Introduce Telefono',
@@ -195,5 +200,4 @@ class sendSMS extends StatelessWidget {
           ),
         ));
   }
-
 }

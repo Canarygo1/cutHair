@@ -6,7 +6,10 @@ import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../global_methods.dart';
+import '../register/register.dart';
+import '../register/register.dart';
 import '../reset_password/reset_password.dart';
+import '../send_sms/send_sms.dart';
 import 'login_presenter.dart';
 
 class login extends StatelessWidget {
@@ -18,7 +21,6 @@ class login extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
         controller: emailController,
-
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
           enabledBorder: const UnderlineInputBorder(
@@ -110,7 +112,7 @@ class login extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, sendSMS());
+            globalMethods().pushPage(context, register());
           },
           child: Text(
             'Registrarse',
@@ -202,31 +204,36 @@ class login extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: ExactAssetImage('assets/images/Login_6.jpg'),
-            fit: BoxFit.cover,
+        resizeToAvoidBottomInset: false,
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: ExactAssetImage('assets/images/Login_6.jpg'),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: ListView(
+              children: <Widget>[
+                emailTextField(),
+                passWordTextField(),
+                TextForgetPassword(context),
+                buttonLoginIn(context),
+                TextRegister(context),
+                lineDivisor(),
+                facebookButton(context),
+              ],
+            ),
           ),
-        ),
-        child: ListView(
-          children: <Widget>[
-            emailTextField(),
-            passWordTextField(),
-            TextForgetPassword(context),
-            buttonLoginIn(context),
-            TextRegister(context),
-            lineDivisor(),
-            facebookButton(context),
-          ],
-        ),
-      ),
-    );
+        ));
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FacebookLogin fbLogin = new FacebookLogin();
+
   Future<FirebaseUser> facebookLogin(BuildContext context) async {
     FirebaseUser currentUser;
     // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;

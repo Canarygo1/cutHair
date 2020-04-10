@@ -13,7 +13,6 @@ class register extends StatefulWidget {
 }
 
 class _registerState extends State<register> {
-
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -151,9 +150,7 @@ class _registerState extends State<register> {
               fontSize: 18.0,
             ),
           ),
-          onPressed: () {
-
-          },
+          onPressed: () {},
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
           ),
@@ -167,7 +164,7 @@ class _registerState extends State<register> {
   Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
-        child: GestureDetector(
+        child: new GestureDetector(
           onTap: () {
             globalMethods().popPage(context);
           },
@@ -197,27 +194,31 @@ class _registerState extends State<register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Form(
-        key: keyForm,
-        child: Container(
-            color: Color.fromRGBO(300, 300, 300, 1),
-            child: ListView(
-              children: <Widget>[
-                goBack(context),
-                nombreTextField(),
-                apellidosTextField(),
-                correoTextField(),
-                passWordTextField(),
-                repeatPassWordTextField(),
-                buttonRegister(context),
-              ],
-            )),
-      ),
-    );
+        //resizeToAvoidBottomInset: false,
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Form(
+            key: keyForm,
+            child: Container(
+                color: Color.fromRGBO(300, 300, 300, 1),
+                child: ListView(
+                  children: <Widget>[
+                    goBack(context),
+                    nombreTextField(),
+                    apellidosTextField(),
+                    correoTextField(),
+                    passWordTextField(),
+                    repeatPassWordTextField(),
+                    buttonRegister(context),
+                  ],
+                )),
+          ),
+        ));
   }
 
-  Map<String, Object> getData(){
+  Map<String, Object> getData() {
     Map data = Map<String, Object>();
     data.putIfAbsent("Apellidos", () => apellidos.text.toString());
     data.putIfAbsent("Email", () => email.text.toString());
@@ -227,7 +228,7 @@ class _registerState extends State<register> {
     return data;
   }
 
-  /*String emailText = email.text.toString();
+/*String emailText = email.text.toString();
             String passwordText = password.text.toString();
             Map mapa = getData();
             if (registerCode().checkCampos(context, keyForm)) {
