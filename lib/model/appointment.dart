@@ -2,12 +2,15 @@ import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/user.dart';
 
+import 'hairDressing.dart';
+
 class Appointment {
   User _user;
   Employe _employe;
   Service _service;
   DateTime _checkIn;
   DateTime _checkOut;
+  HairDressing _hairDressing;
 
   Appointment();
 
@@ -39,6 +42,12 @@ class Appointment {
 
   set user(User value) {
     _user = value;
+  }
+
+  HairDressing get hairDressing => _hairDressing;
+
+  set hairDressing(HairDressing value){
+    _hairDressing = value;
   }
 
 }

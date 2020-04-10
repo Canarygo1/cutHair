@@ -115,7 +115,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+
                     appointment.service = detallesServicio[index];
+                    appointment.hairDressing = hairDressing;
+
                     globalMethods().pushPage(
                         context, chooseHairDresserScreen(appointment));
                   },
