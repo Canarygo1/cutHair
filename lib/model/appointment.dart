@@ -40,5 +40,4 @@ class Appointment {
   set user(User value) {
     _user = value;
   }
-
 }

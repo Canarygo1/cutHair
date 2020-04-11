@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
@@ -42,8 +43,6 @@ class HttpRemoteRepository implements RemoteRepository {
     return services;
   }
 
-
-
   @override
   Future<List<Employe>> getAllEmployes() async {
     QuerySnapshot querySnapshot = await firestore
@@ -74,20 +73,19 @@ class HttpRemoteRepository implements RemoteRepository {
     List<String> lista = [];
     for (int i = 0; i < hairDressing.numeroFotos; i++) {
       String nombre = hairDressing.uid + "/" + i.toString() + ".jpeg";
-      String url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+      String url =
+          await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
       lista.add(url);
     }
     return lista;
   }
-  
+
   @override
   Future<bool> insertAppointment(Appointment appointment, String uid) async {
-    print("hola");
     var val = [];
     var duration =
         appointment.checkOut.difference(appointment.checkIn).inMinutes;
     duration ~/= 10;
-    print(duration);
     for (int i = 0; duration > i; i++) {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
       val.add(date.hour.toString() + "-" + date.minute.toString());
@@ -100,7 +98,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("empleados")
         .document("Carlos")
         .collection("horarios")
-        .document("2020-04-10 00:00:00.000")
+        .document("2020-04-13 00:00:00.000")
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
@@ -109,21 +107,42 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("citas")
         .add({
       "Peluquero": appointment.employe.name,
-      "idUsuario": "123",
+      "idUsuario":uid,
       "CheckIn": appointment.checkIn.toString(),
-      "CheckOut": appointment.checkOut.toString()
+      "CheckOut": appointment.checkOut.toString(),
+      "Peluqueria":"Privilege",
+      "Servicio":appointment.service.tipo,
+      "Precio":appointment.service.precio
     });
     List refList = [docRef];
     await firestore
         .collection("Usuarios")
         .document(uid)
-        .setData({"citas":FieldValue.arrayUnion(refList)}, merge: true);
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 //Todo:Hay que hacer qu la peluqueria sea una variable
     await firestore
-        .collection("Peluquerias").document("PR01").collection("empleados")
+        .collection("Peluquerias")
+        .document("PR01")
+        .collection("empleados")
         .document("Carlos")
-        .setData({"citas":FieldValue.arrayUnion(refList)}, merge: true);
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     return null;
+  }
+
+  @override
+  Future<List<MyAppointment>> getUserAppointments(String uid) async {
+    List<MyAppointment> myAppointments =[];
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection("Usuarios").document(uid).get();
+        for(int i= 0;i<documentSnapshot.data['citas'].length;i++){
+          await documentSnapshot.data['citas'][i].get().then((datasnapshot){
+            MyAppointment myAppointment = MyAppointment.fromMap(datasnapshot.data);
+            return myAppointment;
+          }).then((myAppointment){
+            myAppointments.add(myAppointment);
+          });
+        }
+    return myAppointments;
   }
 }
