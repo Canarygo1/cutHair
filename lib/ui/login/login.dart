@@ -1,3 +1,4 @@
+import 'package:cuthair/ui/register/register.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
 import 'package:cuthair/ui/send_sms/send_sms.dart';
 import 'package:flutter/material.dart';
@@ -110,7 +111,7 @@ class login extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: GestureDetector(
           onTap: () {
-            globalMethods().pushPage(context, sendSMS());
+            globalMethods().pushPage(context, register());
           },
           child: Text(
             'Registrarse',

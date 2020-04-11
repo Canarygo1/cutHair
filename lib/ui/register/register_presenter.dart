@@ -87,7 +87,6 @@ class registerCode {
         duration: Toast.LENGTH_LONG,
         backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
       );
-      keyForm.currentState.reset();
       return true;
     } else {
       return false;
