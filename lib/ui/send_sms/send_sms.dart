@@ -19,8 +19,6 @@ class sendSMS extends StatelessWidget {
             goBack(context),
             telefonoTextField(),
             botonEnviarCode(context),
-            codigoTextField(),
-            confirmarCode(context)
           ],
         ),
       ),

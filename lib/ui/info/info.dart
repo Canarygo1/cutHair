@@ -22,9 +22,7 @@ class _InfoScreenState extends State<Info> {
   globalMethods global = globalMethods();
 
   Widget ButtonChangePassword(BuildContext context) {
-    return Container(
-      margin: new EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+    return Center(
       child: ButtonTheme(
         child: RaisedButton(
           child: Text(
@@ -41,8 +39,7 @@ class _InfoScreenState extends State<Info> {
             borderRadius: new BorderRadius.circular(10.0),
           ),
         ),
-        height: 60.0,
-        minWidth: MediaQuery.of(context).size.width / 2,
+        height: MediaQuery.of(context).size.height * 0.10,
         buttonColor: Color.fromRGBO(230, 73, 90, 1),
       ),
     );

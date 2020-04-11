@@ -65,7 +65,7 @@ class _HomeState extends State<Home> implements HomeView {
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 17, vertical: 24.0),
-                height: MediaQuery.of(context).size.height * 0.35,
+                height: MediaQuery.of(context).size.height * 0.40,
                 child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     itemCount: peluquerias.length,
@@ -76,7 +76,7 @@ class _HomeState extends State<Home> implements HomeView {
                           globalMethods().pushPage(context, DetailScreen(hairDressing));
                         },
                         child: Container(
-                          width: MediaQuery.of(context).size.width * 0.3,
+                          width: MediaQuery.of(context).size.width * 0.34,
                           child: Padding(
                             padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
                             child: Container(
