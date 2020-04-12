@@ -34,6 +34,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   int _current = 0;
 
+
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
@@ -90,6 +91,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return result;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -128,7 +130,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+
                     appointment.service = detallesServicio[index];
+                    appointment.hairDressing = hairDressing;
+
                     globalMethods().pushPage(
                         context, chooseHairDresserScreen(appointment));
                   },

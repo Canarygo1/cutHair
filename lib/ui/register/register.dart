@@ -154,7 +154,6 @@ class _registerState extends State<register> {
             if (registerCode().checkCampos(context, keyForm)) {
               globalMethods().pushPage(
                   context, sendSMS(getData(), password.text.toString()));
-
             }
           },
           shape: RoundedRectangleBorder(
@@ -170,7 +169,7 @@ class _registerState extends State<register> {
   Widget goBack(BuildContext context) {
     return Container(
         padding: const EdgeInsets.fromLTRB(10.0, 20.0, 230.0, 0.0),
-        child: GestureDetector(
+        child: new GestureDetector(
           onTap: () {
             globalMethods().popPage(context);
           },
@@ -200,24 +199,28 @@ class _registerState extends State<register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Form(
-        key: keyForm,
-        child: Container(
-            color: Color.fromRGBO(300, 300, 300, 1),
-            child: ListView(
-              children: <Widget>[
-                goBack(context),
-                nombreTextField(),
-                apellidosTextField(),
-                correoTextField(),
-                passWordTextField(),
-                repeatPassWordTextField(),
-                buttonRegister(context),
-              ],
-            )),
-      ),
-    );
+        //resizeToAvoidBottomInset: false,
+        body: new GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Form(
+            key: keyForm,
+            child: Container(
+                color: Color.fromRGBO(300, 300, 300, 1),
+                child: ListView(
+                  children: <Widget>[
+                    goBack(context),
+                    nombreTextField(),
+                    apellidosTextField(),
+                    correoTextField(),
+                    passWordTextField(),
+                    repeatPassWordTextField(),
+                    buttonRegister(context),
+                  ],
+                )),
+          ),
+        ));
   }
 
   Map<String, Object> getData() {
