@@ -97,8 +97,15 @@ class sendSMS extends StatelessWidget {
 
   Widget codigoTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
+      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
       child: TextFormField(
+        toolbarOptions: ToolbarOptions(
+          copy: false,
+          cut: false,
+          selectAll: false,
+          paste: true,
+        ),
+        keyboardType: TextInputType.number,
         controller: codeController,
         decoration: InputDecoration(
           hintText: 'Codigo',
@@ -122,6 +129,7 @@ class sendSMS extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
       child: TextFormField(
+        enableInteractiveSelection: false,
         keyboardType: TextInputType.number,
         controller: phoneController,
         decoration: InputDecoration(
