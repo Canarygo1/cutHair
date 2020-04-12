@@ -91,6 +91,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return result;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
