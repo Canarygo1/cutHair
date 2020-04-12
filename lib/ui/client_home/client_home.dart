@@ -42,7 +42,6 @@ class _ClienteHomeState extends State<ClienteHome>
 
   Widget topTitle() {
     return Container(
-      margin: new EdgeInsets.only(bottom: 50),
       height: 90,
       color: Color.fromRGBO(230, 73, 90, 1),
       child: Padding(
@@ -67,137 +66,148 @@ class _ClienteHomeState extends State<ClienteHome>
   Widget myAppointment() {
     return myAppointments.length == 0
         ? SpinKitPulse(
-            color: Colors.red,
-          )
+      color: Colors.red,
+    )
         : ListView.builder(
-            shrinkWrap: true,
-            primary: false,
-            itemCount: 1,
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Card(
-                  color: Color.fromRGBO(60, 60, 62, 1),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                        child: Column(
+        shrinkWrap: true,
+        primary: false,
+        itemCount: 1,
+        itemBuilder: (context, index) {
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            child: Card(
+              color: Color.fromRGBO(60, 60, 62, 1),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                    child: Column(
+                      children: <Widget>[
+                        AspectRatio(
+                            aspectRatio: 50.0 / 11.0,
+                            child: Image.asset(
+                              "assets/images/privilegeLogo.jpg",
+                              fit: BoxFit.cover,
+                            ))
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            AspectRatio(
-                                aspectRatio: 50.0 / 11.0,
-                                child: Image.asset(
-                                  "assets/images/privilegeLogo.jpg",
-                                  fit: BoxFit.cover,
-                                ))
-                          ],
-                        ),
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Peluqueria Privilege",
+                            Text(
+                              "Peluqueria Privilege",
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Container(
+                              width: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .width * 0.62,
+                              child: Text(
+                                  "Direccion Avenida de los Majuelos 54",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                            Text("Peluquero Carlos",
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.62,
-                                child: Text(
-                                    "Direccion Avenida de los Majuelos 54",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Text("Peluquero Carlos",
+                                    fontWeight: FontWeight.bold)),
+                            Text("Servicio Corte",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 19, left: 12),
+                          child: Column(
+                            children: <Widget>[
+                              Text("17-05-2020",
                                   style: TextStyle(
                                       color: Colors.white,
+                                      fontSize: 11,
                                       fontWeight: FontWeight.bold)),
-                              Text("Servicio Corte",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
+                              Stack(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: Text(
+                                      "12:30",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 35),
+                                    child: Text(
+                                      "13:00",
+                                      style: TextStyle(
+                                          fontSize: 10, color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 8, left: 38),
+                                    child: Container(
+                                        height: 30,
+                                        child: VerticalDivider(
+                                          indent: 5,
+                                          thickness: 1.1,
+                                          width: 4,
+                                          color: Colors.white,
+                                        )),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top:4,left: 34.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Color.fromRGBO(
+                                                  230, 73, 90, 1),
+                                              width: 7)),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 37, left: 35),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                              color: Colors.white, width: 5)),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12),
-                            child: Column(
-                              children: <Widget>[
-                                Text("17-05-2020",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold)),
-                                Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        "12:30",
-                                        style: TextStyle(
-                                            fontSize: 9, color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 35),
-                                      child: Text(
-                                        "13:00",
-                                        style: TextStyle(
-                                            fontSize: 9, color: Colors.white,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 8, left: 38),
-                                      child: Container(
-                                          height: 30,
-                                          child: VerticalDivider(
-                                            indent: 5,
-                                            thickness: 1.1,
-                                            width: 4,
-                                            color: Colors.white,
-                                          )),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left:34.0),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Color.fromRGBO(
-                                                    230, 73, 90, 1),
-                                                width: 7)),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          top: 37, left: 35),
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                                color: Colors.white, width: 5)),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            });
+                   Center(
+                     child: RaisedButton( shape:RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),child:Text("Cancelar",style: TextStyle(color:Colors.white),),color:Color.fromRGBO(230, 73, 90, 1),onPressed: () {
+                        print("Hola");
+                      }),
+                   ),
+                ],
+              ),
+            ),
+          );
+        });
   }
 
   @override
