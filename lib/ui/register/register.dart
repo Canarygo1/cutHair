@@ -13,7 +13,6 @@ class register extends StatefulWidget {
 }
 
 class _registerState extends State<register> {
-
   TextEditingController nombre = TextEditingController();
   TextEditingController apellidos = TextEditingController();
   TextEditingController email = TextEditingController();
@@ -152,7 +151,11 @@ class _registerState extends State<register> {
             ),
           ),
           onPressed: () {
+            if (registerCode().checkCampos(context, keyForm)) {
+              globalMethods().pushPage(
+                  context, sendSMS(getData(), password.text.toString()));
 
+            }
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -217,21 +220,12 @@ class _registerState extends State<register> {
     );
   }
 
-  Map<String, Object> getData(){
+  Map<String, Object> getData() {
     Map data = Map<String, Object>();
     data.putIfAbsent("Apellidos", () => apellidos.text.toString());
     data.putIfAbsent("Email", () => email.text.toString());
     data.putIfAbsent("Nombre", () => nombre.text.toString());
     data.putIfAbsent("Permisos", () => 3);
-    //data.putIfAbsent("Telefono", () => telefono.text.toString());
     return data;
   }
-
-  /*String emailText = email.text.toString();
-            String passwordText = password.text.toString();
-            Map mapa = getData();
-            if (registerCode().checkCampos(context, keyForm)) {
-              registerCode().registerAuth(
-                  emailText, passwordText, context, mapa);
-            }*/
 }

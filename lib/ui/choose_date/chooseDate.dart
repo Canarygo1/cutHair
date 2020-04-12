@@ -49,13 +49,13 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   Widget goBack(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(0.0, 20.0, 350.0, 0.0),
+      padding: EdgeInsets.only(top: 10,),
         child: GestureDetector(
           onTap: () {
             globalMethods().popPage(context);
           },
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(
                 Icons.navigate_before,
