@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        buttonTheme:ButtonThemeData(minWidth:5),
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
         splashColor: Colors.transparent,
