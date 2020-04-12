@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
@@ -12,6 +14,7 @@ import '../../global_methods.dart';
 class loginCode {
   final FirebaseAuth auth = FirebaseAuth.instance;
   User userLogin;
+  Widget screen;
   RemoteRepository _remoteRepository = HttpRemoteRepository(Firestore.instance);
 
   void iniciarSesion(
@@ -19,29 +22,13 @@ class loginCode {
     FirebaseUser user;
 
     String uid;
-    Widget widget;
-
     try {
       user = (await auth.signInWithEmailAndPassword(
               email: email, password: password))
           .user;
       uid = await currentUser();
       userLogin = await _remoteRepository.getUser(uid);
-      switch (userLogin.permission) {
-        case 1:
-          widget = Menu(userLogin);
-          break;
-        case 2:
-          widget = Menu(userLogin);
-          break;
-        case 3:
-          widget = Menu(userLogin);
-          break;
-      }
-      /*DBProvider.db.delete();
-      DBProvider.db.getUser();*/
-      DBProvider.db.insert(userLogin);
-      globalMethods().pushPage(context, widget);
+      play(context);
     } catch (Exception) {
       Toast.show(
         "Los datos no son correctos",
@@ -58,5 +45,22 @@ class loginCode {
     final FirebaseUser user = await auth.currentUser();
     final String uid = user.uid;
     return uid;
+  }
+
+  void play(BuildContext context) async {
+    switch (userLogin.permission) {
+      case 1:
+        screen = Menu(userLogin);
+        break;
+      case 2:
+        screen = Menu(userLogin);
+        break;
+      case 3:
+        screen = Menu(userLogin);
+        break;
+    }
+    DBProvider.db.insert(userLogin);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) => screen));
   }
 }

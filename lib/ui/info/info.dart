@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/bottom_navigation/menu.dart';
+import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../global_methods.dart';
@@ -17,14 +21,14 @@ class Info extends StatefulWidget {
 
 class _InfoScreenState extends State<Info> {
   User user;
+  Widget screen;
+
   _InfoScreenState(this.user);
 
   globalMethods global = globalMethods();
 
   Widget ButtonChangePassword(BuildContext context) {
-    return Container(
-      margin: new EdgeInsets.symmetric(horizontal: 50, vertical: 50),
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+    return Center(
       child: ButtonTheme(
         child: RaisedButton(
           child: Text(
@@ -41,8 +45,7 @@ class _InfoScreenState extends State<Info> {
             borderRadius: new BorderRadius.circular(10.0),
           ),
         ),
-        height: 60.0,
-        minWidth: MediaQuery.of(context).size.width / 2,
+        height: MediaQuery.of(context).size.height * 0.10,
         buttonColor: Color.fromRGBO(230, 73, 90, 1),
       ),
     );
@@ -78,7 +81,10 @@ class _InfoScreenState extends State<Info> {
                       onTap: logOut,
                       child: Container(
                         padding: const EdgeInsets.only(right: 20),
-                        child: Icon(FontAwesomeIcons.solidCaretSquareLeft, color: Colors.white,),
+                        child: Icon(
+                          FontAwesomeIcons.solidCaretSquareLeft,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ],
@@ -175,6 +181,13 @@ class _InfoScreenState extends State<Info> {
 
   Future<void> logOut() async {
     await DBProvider.db.delete();
-    exit(0);
+    screen = login();
+    await FirebaseAuth.instance.signOut();
+    new Timer(Duration(seconds: 1), changeScreen);
+  }
+
+  changeScreen() {
+    globalMethods().popPage(context);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
   }
 }

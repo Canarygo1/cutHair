@@ -1,92 +1,210 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/ui/client_home/my_appointments_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ClienteHome extends StatefulWidget {
   @override
   _ClienteHomeState createState() => _ClienteHomeState();
 }
 
-class _ClienteHomeState extends State<ClienteHome> {
-  List<Appointment> appoiments = [];
+class _ClienteHomeState extends State<ClienteHome>
+    implements MyAppointmentsView {
+  List<MyAppointment> myAppointments = [];
   globalMethods global = globalMethods();
+  RemoteRepository _remoteRepository;
+  MyAppointmentsPresenter _presenter;
+
+  @override
+  initState() {
+    super.initState();
+
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _presenter = MyAppointmentsPresenter(this, _remoteRepository);
+    _presenter.init();
+  }
 
   @override
   Widget build(BuildContext context) {
     global.context = context;
-    return new WillPopScope(
-        onWillPop: global.onWillPop,
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: Container(
-            decoration: BoxDecoration(color: Color.fromRGBO(300, 300, 300, 1)),
-            child: ListView(
-              children: <Widget>[topTitle(), myAppoiment()],
-            ),
-          ),
-        ));
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[topTitle(), myAppointment()],
+      ),
+    );
   }
 
   Widget topTitle() {
     return Container(
-        height: 90,
-        padding: const EdgeInsets.fromLTRB(10, 30, 0, 0),
-        decoration: BoxDecoration(
-          color: Color.fromRGBO(230, 73, 90, 1),
+      margin: new EdgeInsets.only(bottom: 50),
+      height: 90,
+      color: Color.fromRGBO(230, 73, 90, 1),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(30, 40, 0, 0),
+        child: Row(
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                "Mis citas",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                ),
+              ),
+            ),
+          ],
         ),
-        child: Text(
-          'Mis citas',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
-          ),
-        ));
+      ),
+    );
   }
 
-  Widget myAppoiment() => Container(
-        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-        height: MediaQuery.of(context).size.height * 0.90,
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: appoiments.length,
+  Widget myAppointment() {
+    return myAppointments.length == 0
+        ? SpinKitPulse(
+            color: Colors.red,
+          )
+        : ListView.builder(
+            shrinkWrap: true,
+            primary: false,
+            itemCount: 1,
             itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white,
-                ),
-                child: ListTile(
-                  dense: true,
-                  title: Text('Tipo de servicio: ' +
-                      appoiments.elementAt(index).service.tipo),
-                  subtitle: ListView(
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Card(
+                  color: Color.fromRGBO(60, 60, 62, 1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text('Fecha del servicio: ' +
-                          appoiments[index].checkIn.day.toString() +
-                          '/' +
-                          appoiments[index].checkIn.month.toString() +
-                          '/' +
-                          appoiments[index].checkIn.year.toString()),
-                      Text('Hora del servicio' +
-                          appoiments[index].checkIn.hour.toString() +
-                          ':' +
-                          appoiments[index].checkIn.minute.toString()),
-                    ],
-                  ),
-                  trailing: GestureDetector(
-                    onTap: () {
-                      setState(() {});
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.restore_from_trash,
-                        color: Colors.black,
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                        child: Column(
+                          children: <Widget>[
+                            AspectRatio(
+                                aspectRatio: 50.0 / 11.0,
+                                child: Image.asset(
+                                  "assets/images/privilegeLogo.jpg",
+                                  fit: BoxFit.cover,
+                                ))
+                          ],
+                        ),
                       ),
-                    ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Peluqueria Privilege",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width * 0.62,
+                                child: Text(
+                                    "Direccion Avenida de los Majuelos 54",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold)),
+                              ),
+                              Text("Peluquero Carlos",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Text("Servicio Corte",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10, left: 12),
+                            child: Column(
+                              children: <Widget>[
+                                Text("17-05-2020",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold)),
+                                Stack(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 3),
+                                      child: Text(
+                                        "12:30",
+                                        style: TextStyle(
+                                            fontSize: 9, color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 35),
+                                      child: Text(
+                                        "13:00",
+                                        style: TextStyle(
+                                            fontSize: 9, color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, left: 38),
+                                      child: Container(
+                                          height: 30,
+                                          child: VerticalDivider(
+                                            indent: 5,
+                                            thickness: 1.1,
+                                            width: 4,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:34.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Color.fromRGBO(
+                                                    230, 73, 90, 1),
+                                                width: 7)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 37, left: 35),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.white, width: 5)),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               );
-            }),
-      );
+            });
+  }
+
+  @override
+  showAppointments(List<MyAppointment> myAppointment) {
+    setState(() {
+      print(myAppointment.length);
+      myAppointments = myAppointment;
+    });
+  }
 }

@@ -110,6 +110,19 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     style: TextStyle(color: Colors.white)),
               ],
             ),
+            Column(
+              children: <Widget>[
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top:40.0,left: 8.0),
+                      child: Text(
+                        "Servicios",
+                        style: TextStyle(color: Colors.white,fontSize: 18),
+                      ),
+                    )),
+              ],
+            ),
             ListView.builder(
               itemCount: detallesServicio.length,
               shrinkWrap: true,
@@ -138,32 +151,41 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                               style: TextStyle(
                                   color: Colors.white, fontSize: 18.0),
                               textAlign: TextAlign.center),
-                          Text(
-                              " " +
-                                  detallesServicio
-                                      .elementAt(index)
-                                      .duracion
-                                      .toString() +
-                                  " minutos",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 16.0)),
-                          Text(
-                              " " +
-                                  detallesServicio
-                                      .elementAt(index)
-                                      .precio
-                                      .toString() +
-                                  " €",
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 14.0)),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                                " " +
+                                    detallesServicio
+                                        .elementAt(index)
+                                        .duracion
+                                        .toString() +
+                                    " minutos",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16.0)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Text(
+                                " " +
+                                    detallesServicio
+                                        .elementAt(index)
+                                        .precio
+                                        .toString() +
+                                    " €",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16.0)),
+                          ),
                           Container(
                               child: Row(children: [
                             Expanded(
-                              child: Divider(
-                                thickness: 1.0,
-                                endIndent: 10.0,
-                                indent: 5.0,
-                                color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Divider(
+                                  thickness: 0.6,
+                                  endIndent: 10.0,
+                                  indent: 5.0,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
                           ]))

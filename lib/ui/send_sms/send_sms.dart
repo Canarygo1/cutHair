@@ -1,12 +1,18 @@
 import 'package:cuthair/ui/login/login.dart';
+import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
 import '../../global_methods.dart';
 
 class sendSMS extends StatelessWidget {
+  Map mapa;
+  String password;
   TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
+
+  sendSMS(this.mapa, this.password);
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +55,25 @@ class sendSMS extends StatelessWidget {
 
   _verificationComplete(BuildContext context) async {
     try {
+      mapa.putIfAbsent("Telefono", () => phoneController.text);
+      print(mapa.toString());
       final AuthCredential credential = PhoneAuthProvider.getCredential(
         verificationId: _smsVerificationCode,
         smsCode: codeController.text.toString(),
       );
       await auth.signInWithCredential(credential);
-      FirebaseUser user = await auth.currentUser();
+      print(mapa["Email"]);
+      registerCode().registerAuth(
+          mapa["Email"], password, context, mapa);
     } catch (e) {
-      print("hola");
+      Toast.show(
+        "El código introducido no es correcto",
+        context,
+        gravity: Toast.BOTTOM,
+        textColor: Colors.black,
+        duration: Toast.LENGTH_LONG,
+        backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+      );
     }
   }
 

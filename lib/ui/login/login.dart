@@ -1,3 +1,4 @@
+import 'package:cuthair/ui/register/register.dart';
 import 'package:cuthair/ui/reset_password/reset_password.dart';
 import 'package:cuthair/ui/send_sms/send_sms.dart';
 import 'package:flutter/material.dart';

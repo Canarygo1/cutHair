@@ -49,5 +49,4 @@ class Appointment {
   set hairDressing(HairDressing value){
     _hairDressing = value;
   }
-
 }
