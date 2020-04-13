@@ -23,9 +23,6 @@ class _CalendarBossState extends State<CalendarBoss>
   EventList<Event> _markedDateMap = new EventList<Event>();
   List<DateTime> dates = List<DateTime>();
   List<Day> days = List<Day>();
-  String checkIn = "7.0";
-  String checkOut = "24.0";
-
   RangeValues values = RangeValues(7, 24);
   RangeLabels labels = RangeLabels('7:00', '24:00');
 
@@ -50,10 +47,10 @@ class _CalendarBossState extends State<CalendarBoss>
   }
 
   Widget _presentIcon(String day) => Container(
-        height: 55,
-        width: 55,
+        height: 60,
+        width: 60,
         decoration: BoxDecoration(
-          color: Colors.red,
+          color: Color.fromRGBO(230, 73, 90, 1),
           borderRadius: BorderRadius.all(Radius.circular(90)),
         ),
         child: Icon(
@@ -79,17 +76,16 @@ class _CalendarBossState extends State<CalendarBoss>
           fontSize: 23.0,
         ),
         showHeaderButton: false,
-        showOnlyCurrentMonthDate: false,
+        showOnlyCurrentMonthDate: true,
         weekFormat: false,
         markedDateShowIcon: true,
-        markedDateMoreShowTotal: false,
+        markedDateMoreShowTotal: true,
         markedDateIconBorderColor: Colors.transparent,
         markedDateIconBuilder: (event) {
           return event.icon;
         },
         markedDatesMap: _markedDateMap,
-        height: 400.0,
-        selectedDateTime: _currentDate2,
+        height: MediaQuery.of(context).size.height * 0.52,
         customGridViewPhysics: NeverScrollableScrollPhysics(),
         markedDateCustomTextStyle: TextStyle(
           fontSize: 18,
@@ -99,7 +95,7 @@ class _CalendarBossState extends State<CalendarBoss>
           color: Colors.white,
         ),
         selectedDayButtonColor: Colors.transparent,
-        todayButtonColor: Colors.green,
+        todayButtonColor: Color.fromRGBO(230, 73, 90, 1),
         daysTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -118,28 +114,25 @@ class _CalendarBossState extends State<CalendarBoss>
           bool isThisMonthDay,
           DateTime day,
         ) {
-          if (day == _currentDate2 && day.isAfter(DateTime.now())) {
+          if (day == _currentDate2 &&
+              (day.isAfter(DateTime.now()) || isToday)) {
             _markedDateMap.getEvents(day).clear();
             _markedDateMap.add(
                 day, new Event(date: day, icon: _presentIcon(day.toString())));
             if (!dates.contains(day)) {
               dates.add(day);
             }
-
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(90),
-                  ),
-                  child: Icon(
-                    Icons.content_cut,
-                    color: Colors.black,
-                  ),
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(230, 73, 90, 1),
+                  borderRadius: BorderRadius.circular(90),
+                ),
+                child: Icon(
+                  Icons.content_cut,
+                  color: Colors.black,
                 ),
               ),
             );
@@ -164,8 +157,6 @@ class _CalendarBossState extends State<CalendarBoss>
             values = value;
             labels = RangeLabels('${value.start.toInt().toString()}\:00',
                 '${value.end.toInt().toString()}\:00');
-            checkIn = value.start.toString();
-            checkOut = value.end.toString();
           });
         },
       ),
@@ -186,13 +177,16 @@ class _CalendarBossState extends State<CalendarBoss>
           ),
           onPressed: () {
             setState(() {
-              print(checkIn);
               if (dates.length > 0) {
                 for (int i = 0; i < dates.length; i++) {
-                  Day day = Day(dates[i], checkIn, checkOut);
+                  Day day = Day(dates[i], labels.start.toString(), labels.end.toString());
                   days.add(day);
+                  print(day.checkIn);
+                  print(day.checkOut);
+                  print(day.dayId);
                 }
                 _calendarBossPresenter.init(days);
+                _currentDate2 = null;
                 days.clear();
                 _markedDateMap.clear();
               }

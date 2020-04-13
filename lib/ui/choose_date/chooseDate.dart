@@ -49,7 +49,9 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   Widget goBack(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(top: 10,),
+        padding: EdgeInsets.only(
+          top: 10,
+        ),
         child: GestureDetector(
           onTap: () {
             globalMethods().popPage(context);
@@ -82,7 +84,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   dayChanged(DateTime date) {
     _currentDate2 = date;
-    //Todo:Para poder coger las horas bien hay que hacer dos cosas cambiar (- -> :) y (0 --> 00)
 //    this._presenter.init(appointment.service.duracion.toString(), _currentDate2.toString(), appointment.employe.name);
   }
 
@@ -103,7 +104,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
           fontSize: 23.0,
         ),
         showHeaderButton: false,
-        showOnlyCurrentMonthDate: false,
+        showOnlyCurrentMonthDate: true,
         weekFormat: false,
         height: 400.0,
         selectedDateTime: _currentDate2,
@@ -112,7 +113,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
           color: Colors.white,
         ),
         selectedDayButtonColor: Colors.transparent,
-        todayButtonColor: Colors.green,
+        todayButtonColor: Color.fromRGBO(230, 73, 90, 1),
         daysTextStyle: TextStyle(
           color: Colors.white,
         ),
@@ -131,28 +132,24 @@ class _chooseDateScreenState extends State<chooseDateScreen>
           bool isThisMonthDay,
           DateTime day,
         ) {
-          if (day == _currentDate2 && day.isAfter(_currentDate)) {
+          if (day == _currentDate2 && (day.isAfter(_currentDate)|| isToday)) {
             _finalDate = day;
             return Center(
-              child: Padding(
-                padding: const EdgeInsets.all(0.0),
-                child: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(90),
-                  ),
-                  child: Icon(
-                    Icons.content_cut,
-                    color: Colors.black,
-                  ),
+              child: Container(
+                height: 60,
+                width: 60,
+                decoration: BoxDecoration(
+                  color: Color.fromRGBO(230, 73, 90, 1),
+                  borderRadius: BorderRadius.circular(90),
+                ),
+                child: Icon(
+                  Icons.content_cut,
+                  color: Colors.black,
                 ),
               ),
             );
-          } else {
-            return null;
           }
+          return null;
         },
       ),
     );

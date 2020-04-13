@@ -1,8 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/availability.dart';
-import 'package:cuthair/ui/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -11,22 +8,23 @@ import '../../global_methods.dart';
 
 class CalendarEmployee extends StatefulWidget {
   String nombre;
+
   CalendarEmployee(this.nombre);
 
   @override
   _CalendarEmployeeState createState() => _CalendarEmployeeState(nombre);
 }
 
-class _CalendarEmployeeState extends State<CalendarEmployee>{
+class _CalendarEmployeeState extends State<CalendarEmployee> {
   String nombre;
 
   _CalendarEmployeeState(this.nombre);
 
+  DateTime _currentDate = DateTime.now();
   RemoteRepository _remoteRepository;
-  DateTime _currentDate = new DateTime.now();
   DateTime _currentDate2;
   DateTime date = new DateTime.now();
-  List<Availability> availabilities;
+  List<Availability> availabilities = [];
 
   Widget goBack(BuildContext context) {
     return Container(
@@ -54,8 +52,13 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
           this.setState(() {
-            _currentDate2 = date;
-            this.date = date;
+            if (date.isAfter(_currentDate) ||
+                (date.year == _currentDate.year &&
+                    date.month == _currentDate.month &&
+                    date.day == _currentDate.day)) {
+              _currentDate2 = date;
+              this.date = date;
+            }
           });
         },
         weekendTextStyle: TextStyle(
@@ -68,7 +71,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
           fontSize: 23.0,
         ),
         showHeaderButton: false,
-        showOnlyCurrentMonthDate: false,
+        showOnlyCurrentMonthDate: true,
         weekFormat: false,
         height: 400.0,
         selectedDateTime: _currentDate2,
@@ -76,7 +79,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
         todayTextStyle: TextStyle(
           color: Colors.white,
         ),
-        selectedDayButtonColor: Colors.red,
+        selectedDayButtonColor: Color.fromRGBO(230, 73, 90, 1),
         todayButtonColor: Colors.green,
         daysTextStyle: TextStyle(
           color: Colors.white,
@@ -84,25 +87,6 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
         prevDaysTextStyle: TextStyle(
           color: Colors.transparent,
         ),
-        customDayBuilder: (
-          /// you can provide your own build function to make custom day containers
-          bool isSelectable,
-          int index,
-          bool isSelectedDay,
-          bool isToday,
-          bool isPrevMonthDay,
-          TextStyle textStyle,
-          bool isNextMonthDay,
-          bool isThisMonthDay,
-          DateTime day,
-        ) {
-          if (day == _currentDate2 && day.isAfter(_currentDate)) {
-            date = day;
-            return null;
-          } else {
-            return null;
-          }
-        },
       ),
     );
   }
@@ -167,7 +151,8 @@ class _CalendarEmployeeState extends State<CalendarEmployee>{
                         '-' +
                         date.year.toString(),
                   ),
-                  subtitle: Text('Horario: ' + availabilities[index].disponibilidad),
+                  subtitle:
+                      Text('Horario: ' + availabilities[index].disponibilidad),
                 ),
               );
             }),
