@@ -32,6 +32,12 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   DateTime _finalDate;
   ApiRemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
+  String _partDay;
+  bool _amButton = true;
+  bool _pmButton = false;
+  Color amColorButton = Color.fromRGBO(230, 73, 90, 1);
+  Color pmColorButton = Color.fromRGBO(230, 73, 90, 0.5);
+
 
   initState() {
     _remoteRepository = HttpApiRemoteRepository(Client());
@@ -46,6 +52,8 @@ class _chooseDateScreenState extends State<chooseDateScreen>
     "15:45",
     "17:00"
   ];
+
+  List<String> availablesHours = [];
 
   Widget goBack(BuildContext context) {
     return Container(
@@ -67,6 +75,79 @@ class _chooseDateScreenState extends State<chooseDateScreen>
             ],
           ),
         ));
+  }
+
+  Widget buttonsDay() {
+    return Container(
+        child: Wrap(direction: Axis.horizontal,
+            children: <Widget>[
+      ButtonTheme(
+        child: RaisedButton(
+          child: Text(
+            "AM",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+            ),
+          ),
+          onPressed: () {
+            availablesHours.clear();
+
+            List<String> auxList = [];
+
+            for(int i = 0; i < availability.length; i++){
+              if(int.parse(availability.elementAt(i).substring(0, 2)) < 14){
+                auxList.add(availability.elementAt(i));
+              }
+            }
+
+            setState(() {
+              availablesHours = auxList;
+              _partDay = "am";
+              amColorButton = Color.fromRGBO(230, 73, 90, 1);
+              pmColorButton = Color.fromRGBO(230, 73, 90, 0.5);
+            });
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+        ),
+        buttonColor: amColorButton,
+      ),
+      ButtonTheme(
+        child: RaisedButton(
+          child: Text(
+            "PM",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18.0,
+            ),
+          ),
+          onPressed: () {
+            availablesHours.clear();
+            List<String> auxList = [];
+
+            for(int i = 0; i < availability.length; i++){
+              if(int.parse(availability.elementAt(i).substring(0, 2)) > 14){
+                auxList.add(availability.elementAt(i));
+              }
+            }
+
+            setState(() {
+              availablesHours = auxList;
+
+              _partDay = "pm";
+              pmColorButton = Color.fromRGBO(230, 73, 90, 1);
+              amColorButton = Color.fromRGBO(230, 73, 90, 0.5);
+            });
+          },
+          shape: RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(10.0),
+          ),
+        ),
+        buttonColor: pmColorButton,
+      )
+    ]));
   }
 
   Widget textHour() {
@@ -156,44 +237,52 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   }
 
   Widget buttonsHour(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height * 0.60,
-      child: GridView.count(
-        crossAxisCount: 4,
-        children: List.generate(availability.length, (index) {
-          return Center(
-            child: ButtonTheme(
-              child: RaisedButton(
-                child: Text(
-                  availability.elementAt(index),
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
+      return Container(
+        height: MediaQuery
+            .of(context)
+            .size
+            .height * 0.60,
+        child: GridView.count(
+          crossAxisCount: 4,
+          children: List.generate(availablesHours.length, (index) {
+            return Center(
+              child: ButtonTheme(
+                child: RaisedButton(
+                  child: Text(
+                    availablesHours.elementAt(index),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                    ),
+                  ),
+                  onPressed: () {
+                    print(_finalDate);
+                    if (_finalDate != null) {
+                      int hour = int.parse(availablesHours[index].substring(0, 2));
+                      int minute = int.parse(availablesHours[index].substring(
+                          3, 5));
+                      print(hour);
+                      print(minute);
+
+                      _finalDate = _finalDate
+                          .add(new Duration(hours: hour, minutes: minute));
+                      appointment.checkIn = _finalDate;
+                      appointment.checkOut = _finalDate.add(new Duration(
+                          minutes: int.parse(appointment.service.duracion)));
+                      globalMethods()
+                          .pushPage(context, ConfirmScreen(appointment));
+                    }
+                  },
+                  shape: RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
                   ),
                 ),
-                onPressed: () {
-                  if (_finalDate != null) {
-                    int hour = int.parse(availability[index].substring(0, 2));
-                    int minute = int.parse(availability[index].substring(3, 5));
-                    _finalDate = _finalDate
-                        .add(new Duration(hours: hour, minutes: minute));
-                    appointment.checkIn = _finalDate;
-                    appointment.checkOut = _finalDate.add(new Duration(
-                        minutes: int.parse(appointment.service.duracion)));
-                    globalMethods()
-                        .pushPage(context, ConfirmScreen(appointment));
-                  }
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0),
-                ),
+                buttonColor: Color.fromRGBO(230, 73, 90, 1),
               ),
-              buttonColor: Color.fromRGBO(230, 73, 90, 1),
-            ),
-          );
-        }),
-      ),
-    );
+            );
+          }),
+        ),
+      );
   }
 
   @override
@@ -206,6 +295,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
           children: <Widget>[
             goBack(context),
             calendar(),
+            buttonsDay(),
             textHour(),
             buttonsHour(context),
           ],
