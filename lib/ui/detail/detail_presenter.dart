@@ -1,6 +1,7 @@
 
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/hairDressing.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailPresenter {
   DetailView _view;
@@ -19,4 +20,6 @@ class DetailPresenter {
 abstract class DetailView {
   showServices(List servicios);
   showImages(List imagenes);
+  makecall(String number);
 }
+

@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../global_methods.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -33,7 +34,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   _DetailScreenState(this.hairDressing);
 
   int _current = 0;
-
 
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
@@ -91,115 +91,74 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return result;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          children: <Widget>[
-            sliderImages(context),
-            Column(
-              children: <Widget>[
-                Text(""),
-                Text(hairDressing.name,
-                    style: TextStyle(color: Colors.white, fontSize: 22.0)),
-                Text(hairDressing.direction,
-                    style: TextStyle(color: Colors.white)),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top:40.0,left: 8.0),
-                      child: Text(
-                        "Servicios",
-                        style: TextStyle(color: Colors.white,fontSize: 18),
-                      ),
-                    )),
-              ],
-            ),
-            ListView.builder(
-              itemCount: detallesServicio.length,
-              shrinkWrap: true,
-              primary: false,
-              itemBuilder: (context, index) {
-                return GestureDetector(
-                  onTap: () {
+        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: <Widget>[
+              sliderImages(context),
+              Text(hairDressing.name,
+                  style: TextStyle(color: Colors.white, fontSize: 22.0)),
+              Text(hairDressing.direction,
+                  style: TextStyle(color: Colors.white)),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  child: Text(
+                    "Servicios",
+                    style: TextStyle(
+                        color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
+                  ),
+                ),
+              ),
+              ListView.builder(
+                itemCount: detallesServicio.length,
+                shrinkWrap: true,
+                primary: false,
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                    onTap: () {
+                      appointment.service = detallesServicio[index];
+                      appointment.hairDressing = hairDressing;
 
-                    appointment.service = detallesServicio[index];
-                    appointment.hairDressing = hairDressing;
-
-                    globalMethods().pushPage(
-                        context, chooseHairDresserScreen(appointment));
-                  },
-                  child: new Card(
-                    elevation: 0.0,
-                    shape: BeveledRectangleBorder(
-                        side: BorderSide(
-                            color: Color.fromRGBO(300, 300, 300, 1))),
-                    child: new Container(
-                      color: Color.fromRGBO(300, 300, 300, 1),
-                      child: new Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(" " + detallesServicio.elementAt(index).tipo,
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 18.0),
-                              textAlign: TextAlign.center),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                                " " +
-                                    detallesServicio
-                                        .elementAt(index)
-                                        .duracion
-                                        .toString() +
-                                    " minutos",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16.0)),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10),
-                            child: Text(
-                                " " +
-                                    detallesServicio
-                                        .elementAt(index)
-                                        .precio
-                                        .toString() +
-                                    " €",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16.0)),
-                          ),
-                          Container(
-                              child: Row(children: [
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 10),
-                                child: Divider(
-                                  thickness: 0.6,
-                                  endIndent: 10.0,
-                                  indent: 5.0,
-                                  color: Colors.white,
+                      globalMethods().pushPage(
+                          context, chooseHairDresserScreen(appointment));
+                    },
+                    child: new Card(
+                      elevation: 0.0,
+                      shape: BeveledRectangleBorder(
+                          side: BorderSide(
+                              color: Color.fromRGBO(300, 300, 300, 1))),
+                      child: new Container(
+                          color: Color.fromRGBO(300, 300, 300, 1),
+                          child: Column(children: [
+                            cardServices(context, index),
+                            Container(
+                                child: Row(children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 10),
+                                  child: Divider(
+                                    thickness: 0.6,
+                                    endIndent: 10.0,
+                                    indent: 5.0,
+                                    color: Colors.white,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ]))
-                        ],
-                      ),
+                            ]))
+                          ])),
                     ),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+                  );
+                },
+              ),
+            ],
+          ),
+        ));
   }
 
   @override
@@ -217,10 +176,73 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     });
   }
 
+  Widget cardServices(BuildContext context, int index) {
+    if (detallesServicio.elementAt(index).duracion == "llamada") {
+      return GestureDetector(
+        onTap: () {
+          print("Realizando llamada");
+          makecall(hairDressing.phoneNumber.toString());
+        },
+        child: ListTile(
+          contentPadding:
+              EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+          dense: true,
+          title: Text(detallesServicio.elementAt(index).tipo,
+              style: TextStyle(color: Colors.white, fontSize: 18.0),
+              textAlign: TextAlign.start),
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(top: 10),
+                child: Text("Llame al número para más información",
+                    style: TextStyle(color: Colors.white, fontSize: 16.0)),
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(
+                      "Teléfono: " + hairDressing.phoneNumber.toString(),
+                      style: TextStyle(color: Colors.white, fontSize: 16.0)))
+            ],
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.phone, color: Color.fromRGBO(230, 73, 90, 1)),
+          ),
+        ),
+      );
+    } else {
+      return ListTile(
+        contentPadding:
+            EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+        dense: true,
+        title: Text(detallesServicio.elementAt(index).tipo,
+            style: TextStyle(color: Colors.white, fontSize: 18.0),
+            textAlign: TextAlign.left),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(detallesServicio.elementAt(index).duracion.toString() +
+                      " minutos",
+                  style: TextStyle(color: Colors.white, fontSize: 16.0)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10),
+              child: Text(detallesServicio.elementAt(index).precio.toString() +
+                      " €",
+                  style: TextStyle(color: Colors.white, fontSize: 16.0)),
+            )
+          ],
+        ),
+      );
+    }
+  }
+
   Widget sliderImages(BuildContext context) {
     if (child.length > 0) {
       return Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: 20),
         child: Column(children: [
           CarouselSlider(
             height: MediaQuery.of(context).size.height * 0.25,
@@ -264,5 +286,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         ),
       );
     }
+  }
+
+  @override
+  makecall(String number) async {
+    await launch("tel:" + number);
   }
 }

@@ -5,6 +5,7 @@ import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'data/local/db_sqlite.dart';
 import 'model/user.dart';
@@ -21,6 +22,10 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
   }
 
   @override
@@ -28,6 +33,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        buttonTheme:ButtonThemeData(minWidth:5),
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
         splashColor: Colors.transparent,

@@ -17,24 +17,27 @@ class login extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  Widget emailTextField() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
-      child: TextFormField(
-        controller: emailController,
-        decoration: InputDecoration(
-          hintText: 'Correo Electronico',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.black, width: 1.5),
+  Widget emailTextField(BuildContext context) {
+    return Container(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
+        child: TextFormField(
+          enableInteractiveSelection: false,
+          controller: emailController,
+          decoration: InputDecoration(
+            hintText: 'Correo Electronico',
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: const BorderSide(color: Colors.black, width: 1.5),
+            ),
+            hintStyle: TextStyle(
+              color: Colors.black,
+              fontSize: 18.0,
+            ),
           ),
-          hintStyle: TextStyle(
+          style: TextStyle(
             color: Colors.black,
             fontSize: 18.0,
           ),
-        ),
-        style: TextStyle(
-          color: Colors.black,
-          fontSize: 18.0,
         ),
       ),
     );
@@ -44,6 +47,7 @@ class login extends StatelessWidget {
     return Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
+          enableInteractiveSelection: false,
           controller: passwordController,
           decoration: InputDecoration(
             hintText: 'Contraseña',
@@ -63,23 +67,25 @@ class login extends StatelessWidget {
   }
 
   Widget TextForgetPassword(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-        child: GestureDetector(
-          onTap: () {
-            globalMethods().pushPage(context, resetPassword());
-          },
-          child: Text(
-            '¿Has olvidado tu contraseña?',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Color.fromRGBO(0, 144, 255, 1),
-              decoration: TextDecoration.underline,
-              decorationColor: Color.fromRGBO(0, 144, 255, 1),
-              fontSize: 16.0,
-            ),
-          ),
-        ));
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+            padding: EdgeInsets.only(
+                bottom: 20.0, right: MediaQuery.of(context).size.width * 0.10),
+            child: GestureDetector(
+              onTap: () {
+                globalMethods().pushPage(context, resetPassword());
+              },
+              child: Text(
+                '¿Has olvidado tu contraseña?',
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 144, 255, 1),
+                  decoration: TextDecoration.underline,
+                  decorationColor: Color.fromRGBO(0, 144, 255, 1),
+                  fontSize: 16.0,
+                ),
+              ),
+            )));
   }
 
   Widget buttonLoginIn(BuildContext context) {
@@ -109,23 +115,25 @@ class login extends StatelessWidget {
   }
 
   Widget TextRegister(BuildContext context) {
-    return Container(
-        padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-        child: GestureDetector(
-          onTap: () {
-            globalMethods().pushPage(context, register());
-          },
-          child: Text(
-            'Registrarse',
-            textAlign: TextAlign.right,
-            style: TextStyle(
-              color: Color.fromRGBO(0, 144, 255, 1),
-              decoration: TextDecoration.underline,
-              decorationColor: Color.fromRGBO(0, 144, 255, 1),
-              fontSize: 16.0,
-            ),
-          ),
-        ));
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+            padding: EdgeInsets.only(
+                bottom: 20.0, right: MediaQuery.of(context).size.width * 0.10),
+            child: GestureDetector(
+              onTap: () {
+                globalMethods().pushPage(context, register());
+              },
+              child: Text(
+                'Registrarse',
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 144, 255, 1),
+                  decoration: TextDecoration.underline,
+                  decorationColor: Color.fromRGBO(0, 144, 255, 1),
+                  fontSize: 16.0,
+                ),
+              ),
+            )));
   }
 
   Widget lineDivisor() {
@@ -219,7 +227,7 @@ class login extends StatelessWidget {
             ),
             child: ListView(
               children: <Widget>[
-                emailTextField(),
+                emailTextField(context),
                 passWordTextField(),
                 TextForgetPassword(context),
                 buttonLoginIn(context),

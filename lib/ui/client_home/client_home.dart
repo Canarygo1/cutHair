@@ -22,7 +22,6 @@ class _ClienteHomeState extends State<ClienteHome>
   @override
   initState() {
     super.initState();
-
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = MyAppointmentsPresenter(this, _remoteRepository);
     _presenter.init();
@@ -42,6 +41,7 @@ class _ClienteHomeState extends State<ClienteHome>
 
   Widget topTitle() {
     return Container(
+      margin: new EdgeInsets.only(bottom: 50),
       height: 90,
       color: Color.fromRGBO(230, 73, 90, 1),
       child: Padding(
@@ -76,9 +76,6 @@ class _ClienteHomeState extends State<ClienteHome>
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.0)
-                  ),
                   color: Color.fromRGBO(60, 60, 62, 1),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,61 +176,46 @@ class _ClienteHomeState extends State<ClienteHome>
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8, left: 38),
-                                        child: Container(
-                                            height: 30,
-                                            child: VerticalDivider(
-                                              indent: 5,
-                                              thickness: 1.1,
-                                              width: 4,
-                                              color: Colors.white,
-                                            )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 8, left: 38),
+                                      child: Container(
+                                          height: 30,
+                                          child: VerticalDivider(
+                                            indent: 5,
+                                            thickness: 1.1,
+                                            width: 4,
+                                            color: Colors.white,
+                                          )),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(left:34.0),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Color.fromRGBO(
+                                                    230, 73, 90, 1),
+                                                width: 7)),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 4, left: 34.0),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Color.fromRGBO(
-                                                      230, 73, 90, 1),
-                                                  width: 7)),
-                                        ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 37, left: 35),
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                                color: Colors.white, width: 5)),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 37, left: 35),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              border: Border.all(
-                                                  color: Colors.white,
-                                                  width: 5)),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Center(
-                        child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13.0)),
-                            child: Text(
-                              "Cancelar",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            color: Color.fromRGBO(230, 73, 90, 1),
-                            onPressed: () {
-                              print("Hola");
-                            }),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -245,7 +227,6 @@ class _ClienteHomeState extends State<ClienteHome>
   @override
   showAppointments(List<MyAppointment> myAppointment) {
     setState(() {
-      print(myAppointment.length);
       myAppointments = myAppointment;
     });
   }
