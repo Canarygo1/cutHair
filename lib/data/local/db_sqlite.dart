@@ -32,6 +32,7 @@ class DBProvider {
           'name TEXT,'
           'email TEXT,'
           'phone TEXT,'
+          'hairdresserUid TEXT DEFAULT " ",'
           'permission INTEGER,'
           'uid TEXT PRIMARY KEY'
           ')');
@@ -62,7 +63,7 @@ class DBProvider {
         await databaseObject.rawQuery('SELECT * FROM User');
     listaNueva = List.generate(lista.length, (i) {
       return User(lista[i]['surname'], lista[i]['name'], lista[i]['email'],
-          lista[i]['permission'], lista[i]['phone'], lista[i]['uid']);
+          lista[i]['permission'], lista[i]['phone'], lista[i]['uid'],hairdressingUid:lista[i]['hairdresserUid']);
     });
 
     for (var name in lista) {

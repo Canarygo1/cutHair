@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/choose_date/chooseDate.dart';
 import 'package:cuthair/ui/choose_hairdresser/choose_hairdresser_presenter.dart';
@@ -6,6 +7,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/ui/home/home.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/ui/time_selection/time_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../global_methods.dart';
@@ -88,7 +90,12 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                   ),
                   onPressed: () {
                     appointment.employe = nombres[index];
-                    globalMethods().pushPage(context, chooseDateScreen(appointment));
+                    if(appointment.user.permission==3){
+                      globalMethods().pushPage(context, chooseDateScreen(appointment));
+                    }
+                    if(appointment.user.permission==1){
+                      globalMethods().pushPage(context, TimeSelection(appointment));
+                    }
                   },
                   shape: RoundedRectangleBorder(
                     borderRadius: new BorderRadius.circular(10.0),
@@ -127,5 +134,11 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     setState(() {
       nombres = employes;
     });
+  }
+
+  @override
+  goToNextScreen(int index) {
+
+    return null;
   }
 }
