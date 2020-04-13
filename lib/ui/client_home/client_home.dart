@@ -93,63 +93,88 @@ class _ClienteHomeState extends State<ClienteHome>
                           ],
                         ),
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                "Peluqueria Privilege",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Container(
-                                width: MediaQuery.of(context).size.width * 0.62,
-                                child: Text(
-                                    "Direccion Avenida de los Majuelos 54",
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold)),
-                              ),
-                              Text("Peluquero Carlos",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Text("Servicio Corte",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10, left: 12),
-                            child: Column(
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text("17-05-2020",
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                    myAppointments.elementAt(index).hairdressing,
                                     style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold)),
-                                Stack(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 3),
-                                      child: Text(
-                                        "12:30",
-                                        style: TextStyle(
-                                            fontSize: 9, color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                  const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                      myAppointments.elementAt(index).type,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18)),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.62,
+                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                    //Direccion
+                                      "Falta direccion",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                      myAppointments.elementAt(index).hairdresser,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 19, left: 1),
+                              child: Column(
+                                children: <Widget>[
+                                  Text(
+                              DateTime.parse(myAppointments.elementAt(index).checkIn).day.toString() + "-" + DateTime.parse(myAppointments.elementAt(index).checkIn).month.toString() + "-" + DateTime.parse(myAppointments.elementAt(index).checkIn).year.toString(),
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          DateTime.parse(myAppointments.elementAt(index).checkIn).hour.toString() +  ":" + getFullTimeIfHasOneValue(DateTime.parse(myAppointments.elementAt(index).checkIn).minute.toString()),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 35),
-                                      child: Text(
-                                        "13:00",
-                                        style: TextStyle(
-                                            fontSize: 9, color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 35),
+                                        child: Text(
+                                          DateTime.parse(myAppointments.elementAt(index).checkOut).hour.toString() +  ":" + getFullTimeIfHasOneValue(DateTime.parse(myAppointments.elementAt(index).checkOut).minute.toString()),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
                                     Padding(
@@ -204,5 +229,13 @@ class _ClienteHomeState extends State<ClienteHome>
     setState(() {
       myAppointments = myAppointment;
     });
+  }
+
+  getFullTimeIfHasOneValue(String time){
+    if(time.length == 1){
+      return time + "0";
+    }else{
+      return time;
+    }
   }
 }
