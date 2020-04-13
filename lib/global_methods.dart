@@ -12,41 +12,13 @@ class globalMethods{
       MaterialPageRoute<void>(builder: (_) => page),
     );
   }
-  
-  void popPage(BuildContext page){
-    Navigator.pop(page);
+
+  void PushAndReplacement(BuildContext context, Widget widget){
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
-  Future<bool> onWillPop() {
-    return showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(10.0),
-        ),
-        title: Text('¿Seguro que quieres salir?'),
-        actions: <Widget>[
-          FlatButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(
-              'No',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-          FlatButton(
-            onPressed: () => exit(0),
-            child: Text(
-              'Sí',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ],
-      ),
-    ) ??
-        false;
+  void popPage(BuildContext page){
+    Navigator.pop(page);
   }
 }

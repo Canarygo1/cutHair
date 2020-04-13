@@ -53,7 +53,6 @@ class HttpRemoteRepository implements RemoteRepository {
     List<Employe> employes = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
       Employe employe = Employe(querySnapshot.documents[i].data['Nombre']);
-      print(employe.name);
       employes.add(employe);
     }
     return employes;
@@ -89,7 +88,6 @@ class HttpRemoteRepository implements RemoteRepository {
     for (int i = 0; duration > i; i++) {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
       val.add(date.hour.toString() + "-" + date.minute.toString());
-      print(val[i]);
     }
 
     firestore

@@ -1,15 +1,8 @@
-import 'dart:io';
 import 'package:cuthair/charge_screen.dart';
-import 'package:cuthair/ui/bottom_navigation/menu.dart';
-import 'package:cuthair/ui/hairdresser_home/hairdresser_home_screen.dart';
-import 'package:cuthair/ui/home/home.dart';
-import 'package:cuthair/ui/login/login.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'data/local/db_sqlite.dart';
-import 'model/user.dart';
-import 'ui/detail/detail_screen.dart';
 
 void main() => runApp(MyApp());
 

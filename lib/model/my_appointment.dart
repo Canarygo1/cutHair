@@ -10,7 +10,6 @@ class MyAppointment {
       this.checkIn, this.checkOut);
 
   factory MyAppointment.fromMap(Map values){
-    print(values);
     return MyAppointment(
         values["Peluqueria"], values['Peluquero'], values["Servicio"],
         values['Precio'], values["CheckIn"], values["CheckOut"]);

@@ -17,9 +17,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
       "duration":duration
     });
 
-    print(uri);
     var response = await _client.get(uri);
-    print(response.body);
     availabity = json.decode(response.body).cast<String>();
 
     return availabity;

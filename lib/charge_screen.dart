@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:io';
-
-import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/bottom_navigation/menu.dart';
-import 'package:cuthair/ui/login/login.dart';
+import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
+import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'data/local/db_sqlite.dart';
 import 'model/user.dart';
@@ -60,7 +57,7 @@ class _SplashScreenState extends State {
 
   void play() async {
     await DBProvider.db.getUser();
-    if(DBProvider.listaNueva.length > 0) lista = DBProvider.listaNueva;
+    if(DBProvider.users.length > 0) lista = DBProvider.users;
     if (lista != null) {
       screen = Menu(lista[0]);
     } else{
@@ -70,6 +67,7 @@ class _SplashScreenState extends State {
   }
 
   changeScreen() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) => screen));
   }
 }

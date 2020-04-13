@@ -8,7 +8,7 @@ import 'package:path/path.dart';
 class DBProvider {
   static Database _db = null;
   static final DBProvider db = DBProvider._private();
-  static List<User> listaNueva = [];
+  static List<User> users = [];
   DBProvider._private();
 
   Future<Database> get database async {
@@ -23,8 +23,6 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'CurrentUserDB.db');
-    print(1);
-    print(path);
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
       await db.execute('CREATE TABLE User ('
@@ -61,14 +59,10 @@ class DBProvider {
     final databaseObject = await database;
     List<Map<String, dynamic>> lista =
         await databaseObject.rawQuery('SELECT * FROM User');
-    listaNueva = List.generate(lista.length, (i) {
+    users = List.generate(lista.length, (i) {
       return User(lista[i]['surname'], lista[i]['name'], lista[i]['email'],
           lista[i]['permission'], lista[i]['phone'], lista[i]['uid'],hairdressingUid:lista[i]['hairdresserUid']);
     });
-
-    for (var name in lista) {
-      print(name);
-    }
   }
 
   static closeDB() async {
