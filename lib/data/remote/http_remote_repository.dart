@@ -132,7 +132,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<List<MyAppointment>> getUserAppointments(String uid) async {
-    List<MyAppointment> myAppointments =[];
+    List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
         await firestore.collection("Usuarios").document(uid).get();
         for(int i= 0;i<documentSnapshot.data['citas'].length;i++){
