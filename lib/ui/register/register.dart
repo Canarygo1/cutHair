@@ -27,6 +27,7 @@ class _registerState extends State<register> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 50.0, 35.0, 20.0),
       child: TextFormField(
+        enableInteractiveSelection: false,
         controller: nombre,
         validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
@@ -51,6 +52,7 @@ class _registerState extends State<register> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
+        enableInteractiveSelection: false,
         controller: apellidos,
         validator: registerCode().validateNameAndSurname,
         decoration: InputDecoration(
@@ -75,6 +77,7 @@ class _registerState extends State<register> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: TextFormField(
+        enableInteractiveSelection: false,
         controller: email,
         validator: registerCode().checkEmail,
         decoration: InputDecoration(
@@ -100,6 +103,7 @@ class _registerState extends State<register> {
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
           controller: password,
+          enableInteractiveSelection: false,
           validator: registerCode().checkSecurityPassword,
           decoration: InputDecoration(
             hintText: 'Contraseña',
@@ -123,6 +127,7 @@ class _registerState extends State<register> {
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
           controller: password2,
+          enableInteractiveSelection: false,
           validator: registerCode().checkSamePassword,
           decoration: InputDecoration(
             hintText: 'Repetir contraseña',
