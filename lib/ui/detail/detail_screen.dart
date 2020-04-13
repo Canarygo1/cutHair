@@ -242,7 +242,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   Widget sliderImages(BuildContext context) {
     if (child.length > 0) {
       return Container(
-        margin: EdgeInsets.only(top: 30),
+        margin: EdgeInsets.only(top: 20),
         child: Column(children: [
           CarouselSlider(
             height: MediaQuery.of(context).size.height * 0.25,

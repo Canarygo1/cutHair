@@ -38,7 +38,7 @@ class sendSMS extends StatelessWidget {
   }
 
   _verifyPhoneNumber(BuildContext context) async {
-    String phoneNumber = "+34 638749875";
+    String phoneNumber = "+1 5555215554";
     final FirebaseAuth _auth = FirebaseAuth.instance;
     await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
