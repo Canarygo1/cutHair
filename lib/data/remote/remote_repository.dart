@@ -19,4 +19,6 @@ abstract class RemoteRepository {
   Future<bool> insertAppointment(Appointment appointment,String uid);
 
   Future<List<MyAppointment>> getUserAppointments(String uid);
+
+  Future<HairDressing> getHairdressingByUid(String hairdressingUid);
 }

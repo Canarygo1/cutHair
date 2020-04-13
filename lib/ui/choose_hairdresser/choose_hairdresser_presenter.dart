@@ -8,10 +8,12 @@ class ChooseHairDresserPresenter {
 
   init() async {
     _view.showEmployes(await _remoteRepository.getAllEmployes());
+
   }
 }
 
 abstract class ChooseHairDresserView {
-  showEmployes(List employes) {
-  }
+  showEmployes(List employes) {}
+  goToNextScreen(int index);
 }
+// User user = DBProvider.db.getUser();

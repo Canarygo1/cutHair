@@ -119,7 +119,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Usuarios")
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-//Todo:Hay que hacer qu la peluqueria sea una variable
+//Todo:Hay que hacer que la peluqueria sea una variable
     await firestore
         .collection("Peluquerias")
         .document("PR01")
@@ -144,5 +144,12 @@ class HttpRemoteRepository implements RemoteRepository {
           });
         }
     return myAppointments;
+  }
+
+  @override
+  Future<HairDressing> getHairdressingByUid(String hairdressingUid) async {
+    DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias").document(hairdressingUid).get();
+    HairDressing hairDressing = HairDressing.fromMap(documentSnapshot.data, hairdressingUid);
+    return hairDressing;
   }
 }
