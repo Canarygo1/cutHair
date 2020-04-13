@@ -3,8 +3,10 @@ import 'dart:collection';
 import 'package:cuthair/ui/login/login.dart';
 import 'package:cuthair/ui/register/register_presenter.dart';
 import 'package:cuthair/ui/send_sms/send_sms.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:toast/toast.dart';
 import '../../global_methods.dart';
 
 class register extends StatefulWidget {
@@ -19,6 +21,7 @@ class _registerState extends State<register> {
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
   GlobalKey<FormState> keyForm = new GlobalKey();
+  bool checkIn = false;
 
   Widget nombreTextField() {
     return Padding(
@@ -151,10 +154,7 @@ class _registerState extends State<register> {
             ),
           ),
           onPressed: () {
-            if (registerCode().checkCampos(context, keyForm)) {
-              globalMethods().pushPage(
-                  context, sendSMS(getData(), password.text.toString()));
-            }
+            checkEmail();
           },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
@@ -201,26 +201,26 @@ class _registerState extends State<register> {
     return Scaffold(
         //resizeToAvoidBottomInset: false,
         body: new GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Form(
-            key: keyForm,
-            child: Container(
-                color: Color.fromRGBO(300, 300, 300, 1),
-                child: ListView(
-                  children: <Widget>[
-                    goBack(context),
-                    nombreTextField(),
-                    apellidosTextField(),
-                    correoTextField(),
-                    passWordTextField(),
-                    repeatPassWordTextField(),
-                    buttonRegister(context),
-                  ],
-                )),
-          ),
-        ));
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Form(
+        key: keyForm,
+        child: Container(
+            color: Color.fromRGBO(300, 300, 300, 1),
+            child: ListView(
+              children: <Widget>[
+                goBack(context),
+                nombreTextField(),
+                apellidosTextField(),
+                correoTextField(),
+                passWordTextField(),
+                repeatPassWordTextField(),
+                buttonRegister(context),
+              ],
+            )),
+      ),
+    ));
   }
 
   Map<String, Object> getData() {
@@ -230,5 +230,22 @@ class _registerState extends State<register> {
     data.putIfAbsent("Nombre", () => nombre.text.toString());
     data.putIfAbsent("Permisos", () => 3);
     return data;
+  }
+
+  checkEmail() async {
+    checkIn = await registerCode().CheckUserExist(email.text, password.text);
+    if (registerCode().checkCampos(context, keyForm) && checkIn) {
+      globalMethods().pushPage(
+          context, sendSMS(getData(), password.text.toString()));
+    } else {
+      Toast.show(
+        "El email introducido ya existe",
+        context,
+        gravity: Toast.BOTTOM,
+        textColor: Colors.black,
+        duration: Toast.LENGTH_LONG,
+        backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+      );
+    }
   }
 }

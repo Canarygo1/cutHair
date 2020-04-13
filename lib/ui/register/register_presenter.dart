@@ -39,7 +39,6 @@ class registerCode {
   }
 
   String validateNameAndSurname(String value) {
-    print(value);
     String pattern =
         r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$';
     RegExp regExp = new RegExp(pattern);
@@ -48,7 +47,6 @@ class registerCode {
     } else if (!regExp.hasMatch(value)) {
       return "El nombre debe de ser a-z y A-Z";
     }
-    print("hola");
   }
 
   String checkEmail(String value) {
@@ -65,7 +63,7 @@ class registerCode {
   String checkSecurityPassword(String value) {
     password1 = value;
     bool pattern =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
+        RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
     if (!pattern) {
       return "La contraseña no tiene el formato correcto";
     }
@@ -79,16 +77,22 @@ class registerCode {
 
   bool checkCampos(BuildContext context, GlobalKey<FormState> keyForm) {
     if (keyForm.currentState.validate()) {
-      Toast.show(
-        'Datos insertados correctamente',
-        context,
-        gravity: Toast.BOTTOM,
-        textColor: Colors.black,
-        duration: Toast.LENGTH_LONG,
-        backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-      );
       return true;
     } else {
+      return false;
+    }
+  }
+
+  CheckUserExist(String email, String password) async {
+    try {
+      await auth.fetchSignInMethodsForEmail(email: email);
+      FirebaseUser user = (await auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      ))
+          .user;
+      return true;
+    } catch (e) {
       return false;
     }
   }

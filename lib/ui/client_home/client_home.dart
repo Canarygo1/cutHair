@@ -22,7 +22,6 @@ class _ClienteHomeState extends State<ClienteHome>
   @override
   initState() {
     super.initState();
-
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = MyAppointmentsPresenter(this, _remoteRepository);
     _presenter.init();
@@ -239,7 +238,6 @@ class _ClienteHomeState extends State<ClienteHome>
   @override
   showAppointments(List<MyAppointment> myAppointment) {
     setState(() {
-      print(myAppointment.length);
       myAppointments = myAppointment;
     });
   }
