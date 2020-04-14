@@ -102,9 +102,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                     width: MediaQuery.of(context).size.width *
                                         0.62,
                                     padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                                    child: MediumText(
-                                        //Direccion
-                                        "Falta direccion")),
+                                    child: MediumText(myAppointments.elementAt(index).direction)),
                                 Padding(
                                   padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
                                   child: MediumText(myAppointments
