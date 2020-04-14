@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -37,7 +38,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   Color amColorButton = Color.fromRGBO(230, 73, 90, 1);
   Color pmColorButton = Color.fromRGBO(230, 73, 90, 0.5);
 
-
   initState() {
     _remoteRepository = HttpApiRemoteRepository(Client());
     _presenter = ChooseDatePresenter(this, _remoteRepository);
@@ -56,24 +56,17 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   Widget buttonsDay() {
     return Container(
-        child: Wrap(direction: Axis.horizontal,
-            children: <Widget>[
+        child: Wrap(direction: Axis.horizontal, children: <Widget>[
       ButtonTheme(
         child: RaisedButton(
-          child: Text(
-            "AM",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
+          child: LargeText("AM"),
           onPressed: () {
             availablesHours.clear();
 
             List<String> auxList = [];
 
-            for(int i = 0; i < availability.length; i++){
-              if(int.parse(availability.elementAt(i).substring(0, 2)) < 14){
+            for (int i = 0; i < availability.length; i++) {
+              if (int.parse(availability.elementAt(i).substring(0, 2)) < 14) {
                 auxList.add(availability.elementAt(i));
               }
             }
@@ -93,19 +86,13 @@ class _chooseDateScreenState extends State<chooseDateScreen>
       ),
       ButtonTheme(
         child: RaisedButton(
-          child: Text(
-            "PM",
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
+          child: LargeText("PM"),
           onPressed: () {
             availablesHours.clear();
             List<String> auxList = [];
 
-            for(int i = 0; i < availability.length; i++){
-              if(int.parse(availability.elementAt(i).substring(0, 2)) > 14){
+            for (int i = 0; i < availability.length; i++) {
+              if (int.parse(availability.elementAt(i).substring(0, 2)) > 14) {
                 auxList.add(availability.elementAt(i));
               }
             }
@@ -128,15 +115,9 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   }
 
   Widget textHour() {
-    return Container(
+    return Padding(
       padding: EdgeInsets.fromLTRB(10.0, 0, 0.0, 0.0),
-      child: Text(
-        "Horas disponibles",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 20.0,
-        ),
-      ),
+      child: LargeText("Horas disponibles"),
     );
   }
 
@@ -190,7 +171,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
           bool isThisMonthDay,
           DateTime day,
         ) {
-          if (day == _currentDate2 && (day.isAfter(_currentDate)|| isToday)) {
+          if (day == _currentDate2 && (day.isAfter(_currentDate) || isToday)) {
             _finalDate = day;
             return Center(
               child: Container(
@@ -214,49 +195,41 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   }
 
   Widget buttonsHour(BuildContext context) {
-      return Container(
-        height: MediaQuery
-            .of(context)
-            .size
-            .height * 0.60,
-        child: GridView.count(
-          crossAxisCount: 4,
-          children: List.generate(availablesHours.length, (index) {
-            return Center(
-              child: ButtonTheme(
-                child: RaisedButton(
-                  child: Text(
-                    availablesHours.elementAt(index),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                    ),
-                  ),
-                  onPressed: () {
-                    if (_finalDate != null) {
-                      int hour = int.parse(availablesHours[index].substring(0, 2));
-                      int minute = int.parse(availablesHours[index].substring(
-                          3, 5));
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.60,
+      child: GridView.count(
+        crossAxisCount: 4,
+        children: List.generate(availablesHours.length, (index) {
+          return Center(
+            child: ButtonTheme(
+              child: RaisedButton(
+                child: LargeText(availablesHours.elementAt(index)),
+                onPressed: () {
+                  if (_finalDate != null) {
+                    int hour =
+                        int.parse(availablesHours[index].substring(0, 2));
+                    int minute =
+                        int.parse(availablesHours[index].substring(3, 5));
 
-                      _finalDate = _finalDate
-                          .add(new Duration(hours: hour, minutes: minute));
-                      appointment.checkIn = _finalDate;
-                      appointment.checkOut = _finalDate.add(new Duration(
-                          minutes: int.parse(appointment.service.duracion)));
-                      globalMethods()
-                          .pushPage(context, ConfirmScreen(appointment));
-                    }
-                  },
-                  shape: RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(10.0),
-                  ),
+                    _finalDate = _finalDate
+                        .add(new Duration(hours: hour, minutes: minute));
+                    appointment.checkIn = _finalDate;
+                    appointment.checkOut = _finalDate.add(new Duration(
+                        minutes: int.parse(appointment.service.duracion)));
+                    globalMethods()
+                        .pushPage(context, ConfirmScreen(appointment));
+                  }
+                },
+                shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(10.0),
                 ),
-                buttonColor: Color.fromRGBO(230, 73, 90, 1),
               ),
-            );
-          }),
-        ),
-      );
+              buttonColor: Color.fromRGBO(230, 73, 90, 1),
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   @override
@@ -270,7 +243,10 @@ class _chooseDateScreenState extends State<chooseDateScreen>
             GoBack(context, "Volver"),
             calendar(),
             buttonsDay(),
-            textHour(),
+            Padding(
+              padding: EdgeInsets.fromLTRB(10.0, 0, 0.0, 0.0),
+              child: LargeText("Horas disponibles"),
+            ),
             buttonsHour(context),
           ],
         ),

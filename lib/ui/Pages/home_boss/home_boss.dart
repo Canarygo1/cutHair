@@ -6,6 +6,9 @@ import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/appbar.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
+import 'package:cuthair/ui/Components/medium_text.dart';
+import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:cuthair/ui/Pages/calendar_boss/calendar_boss.dart';
 import 'package:cuthair/ui/Pages/calendar_employee/calendar_employee.dart';
 import 'package:flutter/cupertino.dart';
@@ -52,10 +55,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                   Appbar("Bienvenido jefe"),
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      "Asignar horarios",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: MediumText("Asignar horarios"),
                   ),
                   Container(
                     padding: EdgeInsets.only(
@@ -103,13 +103,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Text(
-                                              employees[index].name,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white,
-                                                  fontSize: 18.0),
-                                            )
+                                            LargeText(employees[index].name),
                                           ],
                                         ),
                                       ),
@@ -130,11 +124,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                         Column(
                           children: <Widget>[
                             Container(
-                              child: Text(
-                                "Mis horarios",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
+                              child: LargeText("Mis horarios"),
                             ),
                             GestureDetector(
                               onTap: () {
@@ -175,13 +165,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              Text(
-                                                user.name,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
-                                                    fontSize: 18.0),
-                                              )
+                                              LargeText(user.name),
                                             ],
                                           ),
                                         ),

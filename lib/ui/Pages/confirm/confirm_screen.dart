@@ -5,6 +5,8 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
+import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
@@ -13,26 +15,28 @@ import 'confirm_screen_presenter.dart';
 class ConfirmScreen extends StatefulWidget {
   Appointment appointment;
 
-
   ConfirmScreen(this.appointment);
 
   @override
   _ConfirmScreenState createState() => _ConfirmScreenState(appointment);
 }
 
-class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenView {
+class _ConfirmScreenState extends State<ConfirmScreen>
+    implements ConfirmScreenView {
   Appointment appointment;
   RemoteRepository _remoteRepository;
   ConfirmScreenPresenter _confirmScreenPresenter;
   Widget screen;
   List<User> lista;
+
   _ConfirmScreenState(this.appointment);
 
   initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _confirmScreenPresenter = ConfirmScreenPresenter(this,_remoteRepository);
+    _confirmScreenPresenter = ConfirmScreenPresenter(this, _remoteRepository);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +46,14 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
         children: <Widget>[
           Container(
               padding: EdgeInsets.fromLTRB(20.0, 120.0, 35.0, 20.0),
-              child: Text("¿Desea confirmar la cita?",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18.0,
-                  ))),
+              child: LargeText("¿Desea confirmar la cita?")),
           Container(
             padding: EdgeInsets.fromLTRB(100.0, 30.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
+                Expanded(child: MediumText("Peluquero: ")),
                 Expanded(
-                    child: Text("Peluquero: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.employe.name,
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
+                  child: MediumText(appointment.employe.name),
                 )
               ],
             ),
@@ -65,12 +62,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
             padding: EdgeInsets.fromLTRB(100.0, 10.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
+                Expanded(child: MediumText("Dia: ")),
                 Expanded(
-                    child: Text("Dia: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.checkIn.day.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
+                  child: MediumText(appointment.checkIn.day.toString()),
                 )
               ],
             ),
@@ -79,12 +73,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
             padding: EdgeInsets.fromLTRB(100.0, 10.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
+                Expanded(child: MediumText("Hora: ")),
                 Expanded(
-                    child: Text("Hora: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.checkIn.hour.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
+                  child: MediumText(appointment.checkIn.hour.toString()),
                 )
               ],
             ),
@@ -93,13 +84,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
             padding: EdgeInsets.fromLTRB(100.0, 10.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
-                Expanded(
-                    child: Text("Tipo servicio: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.service.tipo,
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
-                )
+                Expanded(child: MediumText("Tipo servicio: ")),
+                Expanded(child: MediumText(appointment.service.tipo)),
               ],
             ),
           ),
@@ -107,13 +93,10 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
             padding: EdgeInsets.fromLTRB(100.0, 10.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
+                Expanded(child: MediumText("Duracion cita: ")),
                 Expanded(
-                    child: Text("Duracion cita: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.service.duracion.toString() + " minutos",
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
-                )
+                    child: MediumText(
+                        appointment.service.duracion.toString() + " minutos")),
               ],
             ),
           ),
@@ -121,13 +104,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
             padding: EdgeInsets.fromLTRB(100.0, 10.0, 35.0, 20.0),
             child: Row(
               children: <Widget>[
+                Expanded(child: MediumText("Precio cita: ")),
                 Expanded(
-                    child: Text("Precio cita: ",
-                        style: TextStyle(color: Colors.white, fontSize: 17.0))),
-                Expanded(
-                  child: Text(appointment.service.precio.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 17.0)),
-                )
+                    child: MediumText(appointment.service.precio.toString())),
               ],
             ),
           ),
@@ -141,13 +120,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     padding: EdgeInsets.only(right: 10),
                     child: ButtonTheme(
                       child: RaisedButton(
-                        child: Text(
-                          'Cancelar cita',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
-                        ),
+                        child: LargeText('Cancelar cita'),
                         onPressed: () {
                           play();
                           Toast.show(
@@ -174,13 +147,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
                     padding: EdgeInsets.only(left: 10),
                     child: ButtonTheme(
                       child: RaisedButton(
-                        child: Text(
-                          'Confirmar',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18.0,
-                          ),
-                        ),
+                        child: LargeText('Confirmar'),
                         onPressed: () {
                           play();
                           _confirmScreenPresenter.init(appointment);
@@ -213,7 +180,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmScreenV
 
   void play() async {
     await DBProvider.db.getUser();
-    if(DBProvider.users.length > 0) lista = DBProvider.users;
+    if (DBProvider.users.length > 0) lista = DBProvider.users;
     if (lista != null) {
       screen = Menu(lista[0]);
     }

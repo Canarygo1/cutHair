@@ -1,4 +1,5 @@
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_facebook_login/flutter_facebook_login.dart';
@@ -86,22 +87,16 @@ class login extends StatelessWidget {
 
   Widget buttonLoginIn(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
         child: RaisedButton(
-          child: Text(
-            'Entrar',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
+          child: LargeText('Entrar'),
           onPressed: () {
             loginCode().iniciarSesion(emailController.text.toString(),
                 passwordController.text.toString(), context);
           },
           shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
         height: 60.0,

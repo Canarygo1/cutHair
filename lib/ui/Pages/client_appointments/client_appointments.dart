@@ -4,6 +4,8 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/ui/Components/appbar.dart';
+import 'package:cuthair/ui/Components/medium_text.dart';
+import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'client_appointments_presenter.dart';
@@ -19,6 +21,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   globalMethods global = globalMethods();
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
+  double HEIGHT;
+  double WIDHT;
 
   @override
   initState() {
@@ -31,6 +35,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     global.context = context;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -52,8 +58,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             itemCount: 1,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.06),
                 child: Card(
+                  elevation: 4,
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15.0)),
                   color: Color.fromRGBO(60, 60, 62, 1),
@@ -61,7 +68,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                        padding: EdgeInsets.fromLTRB(WIDHT * 0.025, HEIGHT * 0.01, WIDHT * 0.025, 0),
                         child: Column(
                           children: <Widget>[
                             AspectRatio(
@@ -74,7 +81,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.013),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -82,83 +89,56 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  child: Text(
-                                    myAppointments
-                                        .elementAt(index)
-                                        .hairdressing,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18),
-                                  ),
+                                  padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                  child: MediumText(myAppointments
+                                      .elementAt(index)
+                                      .hairdressing),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  child: Text(
-                                      myAppointments.elementAt(index).type,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18)),
-                                ),
+                                    padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                    child: MediumText(
+                                        myAppointments.elementAt(index).type)),
                                 Container(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.62,
-                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  child: Text(
-                                      //Direccion
-                                      "Falta direccion",
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
-                                ),
+                                    width: MediaQuery.of(context).size.width *
+                                        0.62,
+                                    padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                    child: MediumText(
+                                        //Direccion
+                                        "Falta direccion")),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                  child: Text(
-                                      myAppointments
-                                          .elementAt(index)
-                                          .hairdresser,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold)),
+                                  padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                  child: MediumText(myAppointments
+                                      .elementAt(index)
+                                      .hairdresser),
                                 ),
                               ],
                             ),
                             Padding(
-                              padding: const EdgeInsets.only(top: 19, left: 1),
+                              padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                               child: Column(
                                 children: <Widget>[
-                                  Text(
+                                  SmallText(DateTime.parse(myAppointments
+                                              .elementAt(index)
+                                              .checkIn)
+                                          .day
+                                          .toString() +
+                                      "-" +
                                       DateTime.parse(myAppointments
-                                                  .elementAt(index)
-                                                  .checkIn)
-                                              .day
-                                              .toString() +
-                                          "-" +
-                                          DateTime.parse(myAppointments
-                                                  .elementAt(index)
-                                                  .checkIn)
-                                              .month
-                                              .toString() +
-                                          "-" +
-                                          DateTime.parse(myAppointments
-                                                  .elementAt(index)
-                                                  .checkIn)
-                                              .year
-                                              .toString(),
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.bold)),
+                                              .elementAt(index)
+                                              .checkIn)
+                                          .month
+                                          .toString() +
+                                      "-" +
+                                      DateTime.parse(myAppointments
+                                              .elementAt(index)
+                                              .checkIn)
+                                          .year
+                                          .toString()),
                                   Stack(
                                     children: <Widget>[
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 5),
-                                        child: Text(
+                                        padding: EdgeInsets.only(top: HEIGHT * 0.006),
+                                        child: SmallText(
                                           DateTime.parse(myAppointments
                                                       .elementAt(index)
                                                       .checkIn)
@@ -171,36 +151,26 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                                           .checkIn)
                                                       .minute
                                                       .toString()),
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(top: 35),
-                                        child: Text(
-                                          DateTime.parse(myAppointments
-                                                      .elementAt(index)
-                                                      .checkOut)
-                                                  .hour
-                                                  .toString() +
-                                              ":" +
-                                              getFullTimeIfHasOneValue(
-                                                  DateTime.parse(myAppointments
-                                                          .elementAt(index)
-                                                          .checkOut)
-                                                      .minute
-                                                      .toString()),
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
-                                        ),
+                                        padding: EdgeInsets.only(top: HEIGHT * 0.045),
+                                        child: SmallText(DateTime.parse(
+                                                    myAppointments
+                                                        .elementAt(index)
+                                                        .checkOut)
+                                                .hour
+                                                .toString() +
+                                            ":" +
+                                            getFullTimeIfHasOneValue(
+                                                DateTime.parse(myAppointments
+                                                        .elementAt(index)
+                                                        .checkOut)
+                                                    .minute
+                                                    .toString())),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 8, left: 38),
+                                        padding: EdgeInsets.only(top: HEIGHT * 0.01, left: WIDHT * 0.098),
                                         child: Container(
                                             height: 30,
                                             child: VerticalDivider(
@@ -211,8 +181,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                             )),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 4, left: 34.0),
+                                        padding: EdgeInsets.only(top: HEIGHT * 0.005, left: WIDHT * 0.086),
                                         child: Container(
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
@@ -223,8 +192,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                         ),
                                       ),
                                       Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 37, left: 35),
+                                        padding: EdgeInsets.only(top: HEIGHT * 0.048, left: WIDHT * 0.09),
                                         child: Container(
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,

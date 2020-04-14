@@ -11,10 +11,10 @@ class CalendarBossPresenter {
   CalendarBossPresenter(this._calendarBossView, this.employe);
 
   init(List<Day> days) async {
-    String initialHour = days[0].checkIn.length == 3
+    String initialHour = days[0].checkIn.length == 4
         ? days[0].checkIn.substring(0, 1)
         : days[0].checkIn.substring(0, 2);
-    String finalHour = days[0].checkOut.length == 3
+    String finalHour = days[0].checkOut.length == 4
         ? days[0].checkOut.substring(0, 1)
         : days[0].checkOut.substring(0, 2);
     DateTime initialTime = days[0].dayId;
@@ -25,7 +25,7 @@ class CalendarBossPresenter {
         finalTime.add(Duration(hours: int.parse(finalHour), minutes: 0));
     while (initialTime.hour < finalTime.hour) {
       hours.add(
-          initialTime.hour.toString() + "-" + initialTime.minute.toString());
+          initialTime.hour.toString() + ":" + initialTime.minute.toString());
       initialTime = initialTime.add(Duration(minutes: 10));
     }
     for (Day day in days) {
@@ -44,7 +44,6 @@ class CalendarBossPresenter {
         .collection("horarios")
         .document(day.dayId.toString())
         .setData({"disponibilidad": hours}, merge: true);
-    hours.clear();
   }
 }
 

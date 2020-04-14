@@ -4,9 +4,9 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/ui/Components/appbar.dart';
+import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
 import 'package:flutter/material.dart';
-
 import 'home_client_presenter.dart';
 
 class ClientHome extends StatefulWidget {
@@ -40,10 +40,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                    child: Text(
-                      "Disponibles",
-                      style: TextStyle(color: Colors.white),
-                    ),
+                    child: MediumText("Disponibles"),
                   )
                 ],
               ),

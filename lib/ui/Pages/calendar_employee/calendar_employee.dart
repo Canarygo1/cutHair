@@ -2,6 +2,7 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/availability.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -85,30 +86,6 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
     );
   }
 
-  Widget simpleText2() {
-    return Container(
-      child: Text(
-        "Horarios añadidos",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ),
-      ),
-    );
-  }
-
-  Widget simpleText() {
-    return Container(
-      child: Text(
-        "Horarios asignados",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ),
-      ),
-    );
-  }
-
   Widget schedule() => Container(
         padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
         height: MediaQuery.of(context).size.height * 0.90,
@@ -148,10 +125,10 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
           children: <Widget>[
             GoBack(context, "Volver"),
             calendar(),
-            simpleText(),
+            LargeText("Horarios asignados"),
             schedule(),
             divider(),
-            simpleText2(),
+            LargeText("Horarios añadidos"),
           ],
         ),
       ),

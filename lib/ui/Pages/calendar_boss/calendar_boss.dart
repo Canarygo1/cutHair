@@ -5,7 +5,6 @@ import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import '../../../global_methods.dart';
 import 'calendar_boss_presenter.dart';
 
 class CalendarBoss extends StatefulWidget {
@@ -149,12 +148,8 @@ class _CalendarBossState extends State<CalendarBoss>
       padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
       child: ButtonTheme(
         child: RaisedButton(
-          child: Text(
+          child: LargeText(
             'Añadir horario',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
           ),
           onPressed: () {
             setState(() {
@@ -166,7 +161,6 @@ class _CalendarBossState extends State<CalendarBoss>
                 }
                 _calendarBossPresenter.init(days);
                 _currentDate2 = null;
-                days.clear();
                 _markedDateMap.clear();
               }
             });
@@ -192,12 +186,6 @@ class _CalendarBossState extends State<CalendarBoss>
           ),
         ),
       ]),
-    );
-  }
-
-  Widget simpleText() {
-    return Container(
-      child: LargeText("Horarios añadidos"),
     );
   }
 
@@ -266,7 +254,7 @@ class _CalendarBossState extends State<CalendarBoss>
             calendar(),
             buttonAddSchedule(),
             divider(),
-            simpleText(),
+            LargeText("Horarios añadidos"),
             schedules(),
           ],
         ),
