@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -57,15 +58,15 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                 color: Color.fromRGBO(230, 73, 90, 1),
                 child: MediumText(nombres[index].name),
                 onPressed: () {
-                  appointment.employe = nombres[index];
-                  if (appointment.user.permission == 3) {
-                    globalMethods()
-                        .pushPage(context, chooseDateScreen(appointment));
-                  }
-                  if (appointment.user.permission == 1) {
-                    globalMethods()
-                        .pushPage(context, TimeSelection(appointment));
-                  }
+                  presenter.nextScreen();
+//                  if (appointment.user.permission == 3) {
+//                    globalMethods()
+//                        .pushPage(context, chooseDateScreen(appointment));
+//                  }
+//                  if (appointment.user.permission == 1) {
+//                    globalMethods()
+//                        .pushPage(context, TimeSelection(appointment));
+//                  }
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),
