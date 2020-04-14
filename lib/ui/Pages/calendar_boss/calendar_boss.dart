@@ -1,6 +1,7 @@
 import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
@@ -159,7 +160,8 @@ class _CalendarBossState extends State<CalendarBoss>
             setState(() {
               if (dates.length > 0) {
                 for (int i = 0; i < dates.length; i++) {
-                  Day day = Day(dates[i], labels.start.toString(), labels.end.toString());
+                  Day day = Day(
+                      dates[i], labels.start.toString(), labels.end.toString());
                   days.add(day);
                 }
                 _calendarBossPresenter.init(days);
@@ -195,13 +197,7 @@ class _CalendarBossState extends State<CalendarBoss>
 
   Widget simpleText() {
     return Container(
-      child: Text(
-        "Horarios añadidos",
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ),
-      ),
+      child: LargeText("Horarios añadidos"),
     );
   }
 

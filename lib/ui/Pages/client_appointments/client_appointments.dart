@@ -44,192 +44,234 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   Widget myAppointment() {
     return myAppointments.length == 0
         ? SpinKitPulse(
-      color: Colors.red,
-    )
+            color: Colors.red,
+          )
         : ListView.builder(
-        shrinkWrap: true,
-        primary: false,
-        itemCount: 1,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
-            child: Card(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0)
-              ),
-              color: Color.fromRGBO(60, 60, 62, 1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
-                    child: Column(
-                      children: <Widget>[
-                        AspectRatio(
-                            aspectRatio: 50.0 / 11.0,
-                            child: Image.asset(
-                              "assets/images/privilegeLogo.jpg",
-                              fit: BoxFit.cover,
-                            ))
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            shrinkWrap: true,
+            primary: false,
+            itemCount: 1,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0)),
+                  color: Color.fromRGBO(60, 60, 62, 1),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 8, 10, 0),
+                        child: Column(
                           children: <Widget>[
-                            Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                myAppointments.elementAt(index).hairdressing,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
-                            ),
-                            Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                  myAppointments.elementAt(index).type,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18)),
-                            ),
-                            Container(
-                              width:
-                              MediaQuery.of(context).size.width * 0.62,
-                              padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                //Direccion
-                                  "Falta direccion",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ),
-                            Padding(
-                              padding:
-                              const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                              child: Text(
-                                  myAppointments.elementAt(index).hairdresser,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                            ),
+                            AspectRatio(
+                                aspectRatio: 50.0 / 11.0,
+                                child: Image.asset(
+                                  "assets/images/privilegeLogo.jpg",
+                                  fit: BoxFit.cover,
+                                ))
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 19, left: 1),
-                          child: Column(
-                            children: <Widget>[
-                              Text(
-                                  DateTime.parse(myAppointments.elementAt(index).checkIn).day.toString() + "-" + DateTime.parse(myAppointments.elementAt(index).checkIn).month.toString() + "-" + DateTime.parse(myAppointments.elementAt(index).checkIn).year.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.bold)),
-                              Stack(
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                    myAppointments
+                                        .elementAt(index)
+                                        .hairdressing,
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                      myAppointments.elementAt(index).type,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18)),
+                                ),
+                                Container(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.62,
+                                  padding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                      //Direccion
+                                      "Falta direccion",
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                  child: Text(
+                                      myAppointments
+                                          .elementAt(index)
+                                          .hairdresser,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 19, left: 1),
+                              child: Column(
                                 children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5),
-                                    child: Text(
-                                      DateTime.parse(myAppointments.elementAt(index).checkIn).hour.toString() +  ":" + getFullTimeIfHasOneValue(DateTime.parse(myAppointments.elementAt(index).checkIn).minute.toString()),
+                                  Text(
+                                      DateTime.parse(myAppointments
+                                                  .elementAt(index)
+                                                  .checkIn)
+                                              .day
+                                              .toString() +
+                                          "-" +
+                                          DateTime.parse(myAppointments
+                                                  .elementAt(index)
+                                                  .checkIn)
+                                              .month
+                                              .toString() +
+                                          "-" +
+                                          DateTime.parse(myAppointments
+                                                  .elementAt(index)
+                                                  .checkIn)
+                                              .year
+                                              .toString(),
                                       style: TextStyle(
+                                          color: Colors.white,
                                           fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 35),
-                                    child: Text(
-                                      DateTime.parse(myAppointments.elementAt(index).checkOut).hour.toString() +  ":" + getFullTimeIfHasOneValue(DateTime.parse(myAppointments.elementAt(index).checkOut).minute.toString()),
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 8, left: 38),
-                                    child: Container(
-                                        height: 30,
-                                        child: VerticalDivider(
-                                          indent: 5,
-                                          thickness: 1.1,
-                                          width: 4,
-                                          color: Colors.white,
-                                        )),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 4, left: 34.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
-                                              color: Color.fromRGBO(
-                                                  230, 73, 90, 1),
-                                              width: 7)),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(
-                                        top: 37, left: 35),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          border: Border.all(
+                                          fontWeight: FontWeight.bold)),
+                                  Stack(
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 5),
+                                        child: Text(
+                                          DateTime.parse(myAppointments
+                                                      .elementAt(index)
+                                                      .checkIn)
+                                                  .hour
+                                                  .toString() +
+                                              ":" +
+                                              getFullTimeIfHasOneValue(
+                                                  DateTime.parse(myAppointments
+                                                          .elementAt(index)
+                                                          .checkIn)
+                                                      .minute
+                                                      .toString()),
+                                          style: TextStyle(
+                                              fontSize: 12,
                                               color: Colors.white,
-                                              width: 5)),
-                                    ),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 35),
+                                        child: Text(
+                                          DateTime.parse(myAppointments
+                                                      .elementAt(index)
+                                                      .checkOut)
+                                                  .hour
+                                                  .toString() +
+                                              ":" +
+                                              getFullTimeIfHasOneValue(
+                                                  DateTime.parse(myAppointments
+                                                          .elementAt(index)
+                                                          .checkOut)
+                                                      .minute
+                                                      .toString()),
+                                          style: TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 8, left: 38),
+                                        child: Container(
+                                            height: 30,
+                                            child: VerticalDivider(
+                                              indent: 5,
+                                              thickness: 1.1,
+                                              width: 4,
+                                              color: Colors.white,
+                                            )),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4, left: 34.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Color.fromRGBO(
+                                                      230, 73, 90, 1),
+                                                  width: 7)),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 37, left: 35),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              border: Border.all(
+                                                  color: Colors.white,
+                                                  width: 5)),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Center(
+                        child: RaisedButton(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(13.0)),
+                            child: Text(
+                              "Cancelar",
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            color: Color.fromRGBO(230, 73, 90, 1),
+                            onPressed: () {}),
+                      ),
+                    ],
                   ),
-                  Center(
-                    child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(13.0)),
-                        child: Text(
-                          "Cancelar",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        color: Color.fromRGBO(230, 73, 90, 1),
-                        onPressed: () {
-                        }),
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
+                ),
+              );
+            });
   }
 
   @override
   showAppointments(List<MyAppointment> myAppointment) {
-    setState(() {
-      myAppointments = myAppointment;
-    });
+    if (mounted) {
+      setState(() {
+        myAppointments = myAppointment;
+      });
+    }
   }
 
-  getFullTimeIfHasOneValue(String time){
-    if(time.length == 1){
+  getFullTimeIfHasOneValue(String time) {
+    if (time.length == 1) {
       return time + "0";
-    }else{
+    } else {
       return time;
     }
   }
