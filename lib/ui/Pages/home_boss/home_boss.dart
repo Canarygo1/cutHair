@@ -69,7 +69,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                           return GestureDetector(
                             onTap: () {
                               globalMethods().pushPage(
-                                  context, CalendarBoss(employees[index]));
+                                  context, CalendarBoss(employees[index], user.hairdressingUid));
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width * 0.3,
