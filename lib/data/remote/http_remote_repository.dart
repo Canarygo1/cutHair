@@ -89,26 +89,25 @@ class HttpRemoteRepository implements RemoteRepository {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
       val.add(date.hour.toString() + "-" + date.minute.toString());
     }
-
     firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .collection("horarios")
-        .document("2020-04-13 00:00:00.000")
+        .document(appointment.day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("citas")
         .add({
       "Peluquero": appointment.employe.name,
       "idUsuario":uid,
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
-      "Peluqueria":"Privilege",
+      "Peluqueria": appointment.hairDressing.name,
       "Servicio":appointment.service.tipo,
       "Precio":appointment.service.precio
     });
@@ -117,12 +116,11 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Usuarios")
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-//Todo:Hay que hacer que la peluqueria sea una variable
     await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     return null;

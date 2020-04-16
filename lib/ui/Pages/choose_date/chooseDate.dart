@@ -210,7 +210,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
                         int.parse(availablesHours[index].substring(0, 2));
                     int minute =
                         int.parse(availablesHours[index].substring(3, 5));
-
+                      appointment.day = _finalDate;
                     _finalDate = _finalDate
                         .add(new Duration(hours: hour, minutes: minute));
                     appointment.checkIn = _finalDate;

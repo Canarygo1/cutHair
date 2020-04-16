@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'data/local/db_sqlite.dart';
-import 'model/user.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -12,8 +12,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State {
   Widget screen;
-  List<User> lista;
-
   @override
   void initState() {
     super.initState();
@@ -57,10 +55,15 @@ class _SplashScreenState extends State {
 
   void play() async {
     await DBProvider.db.getUser();
-    if(DBProvider.users.length > 0) lista = DBProvider.users;
-    if (lista != null) {
-      screen = Menu(lista[0]);
-    } else{
+    if (DBProvider.users.length > 0) {
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      if (user.uid == DBProvider.users[0].uid) {
+        screen = Menu(DBProvider.users[0]);
+      } else {
+        DBProvider.db.delete();
+        screen = login();
+      }
+    } else {
       screen = login();
     }
     new Timer(Duration(seconds: 3), changeScreen);

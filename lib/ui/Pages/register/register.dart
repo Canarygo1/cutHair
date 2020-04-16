@@ -2,6 +2,7 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toast/toast.dart';

@@ -8,11 +8,11 @@ class Appbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: new EdgeInsets.only(bottom: 50),
-      height: MediaQuery.of(context).size.height * 0.12,
+      margin: EdgeInsets.only(bottom: 50),
+      height: MediaQuery.of(context).size.height * 0.13,
       color: Color.fromRGBO(230, 73, 90, 1),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(30, 40, 0, 0),
+        padding: EdgeInsets.fromLTRB(30, 20, 0, 0),
         child: Row(
           children: <Widget>[
             Expanded(
