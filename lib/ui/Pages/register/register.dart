@@ -208,7 +208,7 @@ class _registerState extends State<register> {
     checkIn = await registerCode().CheckUserExist(email.text, password.text);
     if (registerCode().checkCampos(context, keyForm) && checkIn) {
       globalMethods().pushPage(
-          context, sendSMS(getData(), password.text.toString()));
+          context, sendSMS());
     } else {
       Toast.show(
         "El email introducido ya existe",
