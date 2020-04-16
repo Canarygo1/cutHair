@@ -139,7 +139,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("horarios")
         .document(day)
         .setData({"turnos": FieldValue.arrayUnion(schedules),
-      "disponibilidad": FieldValue.arrayUnion(hours), "Uid": day}, merge: true);
+      "disponibilidad": FieldValue.arrayUnion(hours)}, merge: true);
   }
 
   @override
@@ -183,7 +183,7 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<bool> removeRange(DateTime day, Employe employe, String hairDressingUid, Map ranges){
+  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, Map ranges){
     var val = [];
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
@@ -203,7 +203,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Peluquerias")
         .document(hairDressingUid)
         .collection("empleados")
-        .document(employe.name)
+        .document(name)
         .collection("horarios")
         .document(day.toString())
         .updateData({"turnos": FieldValue.arrayRemove(maplist)});
@@ -213,7 +213,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Peluquerias")
         .document(hairDressingUid)
         .collection("empleados")
-        .document(employe.name)
+        .document(name)
         .collection("horarios")
         .document(day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
