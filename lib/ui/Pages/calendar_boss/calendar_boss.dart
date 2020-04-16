@@ -51,7 +51,18 @@ class _CalendarBossState extends State<CalendarBoss>
       height: MediaQuery.of(context).size.height * 0.57,
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
-          this.setState(() => _currentDate2 = date);
+          this.setState((){
+            if(dates.contains(date)){
+              dates.remove(date);
+              _markedDateMap.getEvents(date).clear();
+              days.removeWhere( (item) => item.uid == date);
+              _currentDate2 = null;
+            }else{
+
+              _currentDate2 = date;
+            }
+
+          });
         },
         weekendTextStyle: TextStyle(
           color: Colors.white,
@@ -108,10 +119,15 @@ class _CalendarBossState extends State<CalendarBoss>
             _markedDateMap.getEvents(day).clear();
             _markedDateMap.add(
                 day, new Event(date: day, icon: _presentIcon(day.toString())));
+
             if (!dates.contains(day)) {
               dates.add(day);
               _calendarBossPresenter.init(day.toString());
             }
+
+
+
+
             return Center(
               child: Container(
                 height: 60,
@@ -242,9 +258,13 @@ class _CalendarBossState extends State<CalendarBoss>
                           trailing: GestureDetector(
                             onTap: () {
                               setState(() {
-                                _markedDateMap.removeAll(days[index].uid);
-                                dates.remove(days[index].uid);
-                                days.removeAt(index);
+
+                                removeSchedule(days[index].uid, this.widget.employe, this.widget.hairDressingUid, days[index].ranges[indexranges]);
+                                /*_markedDateMap.removeAll(days[index].uid);
+                                dates.remove(days[index].uid);*/
+                                days[index].ranges.removeAt(indexranges);
+                                //days.removeAt(index);
+
                               });
                             },
                             child: Container(
@@ -300,5 +320,11 @@ class _CalendarBossState extends State<CalendarBoss>
     setState(() {
       if(schedule != null) this.days.add(schedule);
     });
+  }
+
+  @override
+  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges) {
+    _calendarBossPresenter.removeSchedule(day, employe, hairDressingUid, ranges);
+    return null;
   }
 }
