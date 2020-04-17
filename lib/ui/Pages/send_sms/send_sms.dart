@@ -30,49 +30,48 @@ class MyAppPage extends StatefulWidget {
 }
 
 class _MyAppPageState extends State<MyAppPage> {
-  String phoneNo ="+34671606191";
-  String smsOTP = "123456";
+  String phoneNo;
+  String smsOTP;
   String verificationId;
   String errorMessage = '';
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  Future<void> verifyPhone() async {
-    final PhoneCodeSent smsOTPSent = (String verId, [int forceCodeResend]) {
+  Future<void> verifyPhone() async{
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId){
       this.verificationId = verId;
     };
-      await _auth.verifyPhoneNumber(
-          phoneNumber: phoneController.text,
-          codeAutoRetrievalTimeout: (String verId) {
-            this.verificationId = verId;
-          },
-          codeSent:
-          smsOTPSent,
-          timeout: const Duration(seconds: 20),
-          verificationCompleted: (AuthCredential phoneAuthCredential) {
-            print(phoneAuthCredential);
-          },
-          verificationFailed: (AuthException exceptio) {
-            print('${exceptio.message}');
-          });
-
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]){
+      this.verificationId = verId;
+    };
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth){
+      print('verified');
+    };
+    final PhoneVerificationFailed verifyFailed = (AuthException e) {
+      print('${e.message}');
+    };
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneController.text,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verifyFailed,
+      codeSent: smsCodeSent,
+      codeAutoRetrievalTimeout: autoRetrieve,
+    );
   }
 
-  signIn() async {
-    try {
-      final AuthCredential credential = PhoneAuthProvider.getCredential(
-        verificationId: verificationId,
-        smsCode: "123456",
-      );
-      final FirebaseUser user = (await _auth.signInWithCredential(credential)) as FirebaseUser;
-      final FirebaseUser currentUser = await _auth.currentUser();
-
-      assert(user.uid == currentUser.uid);
-      Navigator.of(context).pop();
-    } catch (e) {
-      handleError(e);
-    }
+  Future<void> signIn(String smsCode) async {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    await FirebaseAuth.instance.signInWithCredential(credential)
+        .then((user){
+      Navigator.of(context).pushReplacementNamed('/loginpage');
+    }).catchError((e){
+      print(e);
+    });
   }
 
   handleError(PlatformException error) {
@@ -191,7 +190,7 @@ class _MyAppPageState extends State<MyAppPage> {
               if (user != null) {
                 Navigator.of(context).pop();
               } else {
-                signIn();
+                signIn(codeController.text);
               }
             });
           },
