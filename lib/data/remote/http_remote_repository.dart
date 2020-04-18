@@ -146,6 +146,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<HairDressing> getHairdressingByUid(String hairdressingUid) async {
+    print(hairdressingUid);
     DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias").document(hairdressingUid).get();
     HairDressing hairDressing = HairDressing.fromMap(documentSnapshot.data, hairdressingUid);
     return hairDressing;
