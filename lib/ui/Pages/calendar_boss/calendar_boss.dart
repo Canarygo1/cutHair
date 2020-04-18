@@ -1,5 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +13,9 @@ import 'calendar_boss_presenter.dart';
 
 class CalendarBoss extends StatefulWidget {
   Employe employe;
+  String hairDressingUid;
 
-  CalendarBoss(this.employe);
+  CalendarBoss(this.employe, this.hairDressingUid);
 
   @override
   _CalendarBossState createState() => _CalendarBossState();
@@ -21,10 +26,12 @@ class _CalendarBossState extends State<CalendarBoss>
   CalendarBossPresenter _calendarBossPresenter;
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
-  List<DateTime> dates = List<DateTime>();
-  List<Day> days = List<Day>();
+  List<DateTime> dates = [];
+  List<Schedule> days = [];
   RangeValues values = RangeValues(7, 24);
   RangeLabels labels = RangeLabels('7:00', '24:00');
+  RemoteRepository _remoteRepository;
+  List<Day> newdays = List<Day>();
 
   Widget _presentIcon(String day) => Container(
         height: 60,
@@ -94,6 +101,8 @@ class _CalendarBossState extends State<CalendarBoss>
           bool isThisMonthDay,
           DateTime day,
         ) {
+
+
           if (day == _currentDate2 &&
               (day.isAfter(DateTime.now()) || isToday)) {
             _markedDateMap.getEvents(day).clear();
@@ -101,6 +110,7 @@ class _CalendarBossState extends State<CalendarBoss>
                 day, new Event(date: day, icon: _presentIcon(day.toString())));
             if (!dates.contains(day)) {
               dates.add(day);
+              _calendarBossPresenter.init(day.toString());
             }
             return Center(
               child: Container(
@@ -154,12 +164,16 @@ class _CalendarBossState extends State<CalendarBoss>
           onPressed: () {
             setState(() {
               if (dates.length > 0) {
+                newdays.clear();
                 for (int i = 0; i < dates.length; i++) {
                   Day day = Day(
                       dates[i], labels.start.toString(), labels.end.toString());
-                  days.add(day);
+                  newdays.add(day);
                 }
-                _calendarBossPresenter.init(days);
+
+                insertSchedule();
+                dates.clear();
+                days.clear();
                 _currentDate2 = null;
                 _markedDateMap.clear();
               }
@@ -193,51 +207,65 @@ class _CalendarBossState extends State<CalendarBoss>
         padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
         height: MediaQuery.of(context).size.height * 0.90,
         child: ListView.builder(
-            scrollDirection: Axis.vertical,
+          scrollDirection: Axis.vertical,
+            shrinkWrap: true,
             itemCount: days.length,
             itemBuilder: (context, index) {
               return Container(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white,
-                ),
-                child: ListTile(
-                  dense: true,
-                  title: Text(
-                    days.elementAt(index).dayId.day.toString() +
-                        "-" +
-                        days.elementAt(index).dayId.month.toString() +
-                        "-" +
-                        days.elementAt(index).dayId.year.toString(),
-                  ),
-                  subtitle: Text('Hora de entrada: ' +
-                      days.elementAt(index).checkIn.toString() +
-                      ' hora de salida: ' +
-                      days.elementAt(index).checkOut.toString()),
-                  trailing: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _markedDateMap.removeAll(days.elementAt(index).dayId);
-                        dates.remove(days.elementAt(index).dayId);
-                        days.removeAt(index);
-                      });
-                    },
-                    child: Container(
-                      child: Icon(
-                        Icons.restore_from_trash,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: days[index].ranges.length,
+                    itemBuilder: (context, indexranges) {
+                      return Container(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          color: Colors.white,
+                        ),
+                        child: ListTile(
+                          dense: true,
+                          title: Text(
+                            days[index].uid.day.toString() +
+                                "-" +
+                                days[index].uid.month.toString() +
+                                "-" +
+                                days[index].uid.year.toString(),
+                          ),
+                          subtitle: Text('Hora de entrada: ' +
+                              days[index].ranges[indexranges]["Entrada"] +
+                              ":00" +
+                              ' hora de salida: ' +
+                              days[index].ranges[indexranges]["Salida"] +
+                              ":00"),
+                          trailing: GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _markedDateMap.removeAll(days[index].uid);
+                                dates.remove(days[index].uid);
+                                days.removeAt(index);
+                              });
+                            },
+                            child: Container(
+                              child: Icon(
+                                Icons.restore_from_trash,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
               );
             }),
       );
 
   @override
   void initState() {
-    _calendarBossPresenter = CalendarBossPresenter(this, widget.employe);
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _calendarBossPresenter = CalendarBossPresenter(
+        this, widget.employe, this.widget.hairDressingUid, _remoteRepository);
     super.initState();
   }
 
@@ -260,5 +288,17 @@ class _CalendarBossState extends State<CalendarBoss>
         ),
       ),
     );
+  }
+
+  @override
+  insertSchedule() {
+    _calendarBossPresenter.insertSchedule(newdays);
+  }
+
+  @override
+  updateList(Schedule schedule) {
+    setState(() {
+      if(schedule != null) this.days.add(schedule);
+    });
   }
 }

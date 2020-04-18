@@ -1,6 +1,8 @@
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
@@ -21,4 +23,8 @@ abstract class RemoteRepository {
   Future<List<MyAppointment>> getUserAppointments(String uid);
 
   Future<HairDressing> getHairdressingByUid(String hairdressingUid);
+
+  Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours);
+
+  Future<Schedule> getRange(String day, Employe employe, String hairDressingUid);
 }

@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
@@ -129,6 +130,19 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
+  Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours) async{
+    await firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe)
+        .collection("horarios")
+        .document(day)
+        .setData({"turnos": FieldValue.arrayUnion(schedules),
+      "disponibilidad": FieldValue.arrayUnion(hours), "Uid": day}, merge: true);
+  }
+
+  @override
   Future<List<MyAppointment>> getUserAppointments(String uid) async {
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
@@ -146,9 +160,25 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<HairDressing> getHairdressingByUid(String hairdressingUid) async {
-    print(hairdressingUid);
     DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias").document(hairdressingUid).get();
     HairDressing hairDressing = HairDressing.fromMap(documentSnapshot.data, hairdressingUid);
     return hairDressing;
+  }
+
+  @override
+  Future<Schedule> getRange(String day, Employe employe, String hairDressingUid) async{
+    DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe.name)
+        .collection("horarios")
+        .document(day).get();
+
+    if(documentSnapshot.data != null) {
+      Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
+      return schedule;
+    }else{
+      return null;
+    }
   }
 }
