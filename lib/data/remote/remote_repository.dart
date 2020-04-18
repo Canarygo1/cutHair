@@ -27,4 +27,6 @@ abstract class RemoteRepository {
   Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours);
 
   Future<Schedule> getRange(String day, Employe employe, String hairDressingUid);
+
+  Future<bool> removeRange(DateTime day, Employe employe, String hairDressingUid, Map ranges);
 }

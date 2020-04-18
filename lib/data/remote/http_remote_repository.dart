@@ -181,4 +181,41 @@ class HttpRemoteRepository implements RemoteRepository {
       return null;
     }
   }
+
+  @override
+  Future<bool> removeRange(DateTime day, Employe employe, String hairDressingUid, Map ranges){
+    var val = [];
+    DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
+    DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
+
+    var duration =
+        checkOut.difference(checkIn).inMinutes;
+    duration ~/= 10;
+    for (int i = 0; duration > i; i++) {
+      DateTime date = checkIn.add(Duration(minutes: (10 * i)));
+      val.add(date.hour.toString() + "-" + date.minute.toString());
+    }
+
+    var maplist = [];
+    maplist.add(ranges);
+
+    firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe.name)
+        .collection("horarios")
+        .document(day.toString())
+        .updateData({"turnos": FieldValue.arrayRemove(maplist)});
+
+
+    firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe.name)
+        .collection("horarios")
+        .document(day.toString())
+        .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
+  }
 }

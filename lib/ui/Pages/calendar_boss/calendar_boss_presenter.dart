@@ -50,12 +50,16 @@ class CalendarBossPresenter {
 
   }
 
+  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges){
+    _remoteRepository.removeRange(day, employe, hairDressingUid, ranges);
+  }
+
 
 }
 
 abstract class CalendarBossView {
   insertSchedule();
-
+  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges);
   updateList(Schedule schedule);
 
 }
