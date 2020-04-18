@@ -104,9 +104,11 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   @override
   showEmployes(List employes) {
-    setState(() {
-      nombres = employes;
-    });
+    if (mounted) {
+      setState(() {
+        nombres = employes;
+      });
+    }
   }
 
   @override

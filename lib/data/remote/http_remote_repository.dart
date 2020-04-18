@@ -38,8 +38,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .getDocuments();
     List<Service> services = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      String tipo = querySnapshot.documents[i].documentID;
-      services.add(Service.fromMap(querySnapshot.documents[i].data, tipo));
+      services.add(Service.fromMap(querySnapshot.documents[i].data));
     }
     return services;
   }
@@ -109,8 +108,8 @@ class HttpRemoteRepository implements RemoteRepository {
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
       "Peluqueria": appointment.hairDressing.name,
-      "Servicio":appointment.service.tipo,
-      "Precio":appointment.service.precio
+      "Servicio":appointment.service.type,
+      "Precio":appointment.service.price
     });
     List refList = [docRef];
     await firestore

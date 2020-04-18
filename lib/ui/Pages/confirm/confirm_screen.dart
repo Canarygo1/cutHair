@@ -85,7 +85,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
             child: Row(
               children: <Widget>[
                 Expanded(child: MediumText("Tipo servicio: ")),
-                Expanded(child: MediumText(appointment.service.tipo)),
+                Expanded(child: MediumText(appointment.service.type)),
               ],
             ),
           ),
@@ -96,7 +96,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                 Expanded(child: MediumText("Duracion cita: ")),
                 Expanded(
                     child: MediumText(
-                        appointment.service.duracion.toString() + " minutos")),
+                        appointment.service.duration.toString() + " minutos")),
               ],
             ),
           ),
@@ -106,7 +106,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
               children: <Widget>[
                 Expanded(child: MediumText("Precio cita: ")),
                 Expanded(
-                    child: MediumText(appointment.service.precio.toString())),
+                    child: MediumText(appointment.service.price.toString())),
               ],
             ),
           ),
