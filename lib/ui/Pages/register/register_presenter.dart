@@ -64,7 +64,7 @@ class registerCode {
     bool pattern =
         RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
     if (!pattern) {
-      return "La contraseña no tiene el formato correcto";
+      return "La contraseña debe tener o dígitos y mínimo una letra y un número";
     }
   }
 
@@ -78,20 +78,6 @@ class registerCode {
     if (keyForm.currentState.validate()) {
       return true;
     } else {
-      return false;
-    }
-  }
-
-  CheckUserExist(String email, String password) async {
-    try {
-      FirebaseUser user = (await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      ))
-          .user;
-      user.delete();
-      return true;
-    } catch (e) {
       return false;
     }
   }

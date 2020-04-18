@@ -1,35 +1,28 @@
+import 'dart:async';
 
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Pages/login/login.dart';
+import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../main.dart';
+import 'package:toast/toast.dart';
 
-class sendSMS extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Phone Authentication',
-      routes: <String, WidgetBuilder>{
-        '/loginpage': (BuildContext context) => MyApp(),
-      },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyAppPage(title: 'Phone Authentication'),
-    );
-  }
-}
-
-class MyAppPage extends StatefulWidget {
-  MyAppPage({Key key, this.title}) : super(key: key);
-  final String title;
+class SendSMS extends StatefulWidget {
+  Map data;
+  String password;
+  SendSMS(this.data, this.password);
 
   @override
-  _MyAppPageState createState() => _MyAppPageState();
+  _SendSMSState createState() => _SendSMSState(this.data, this.password);
 }
 
-class _MyAppPageState extends State<MyAppPage> {
+class _SendSMSState extends State<SendSMS> {
+  Map data;
+  String password;
+  _SendSMSState(this.data, this.password);
+
   String phoneNo;
   String smsOTP;
   String verificationId;
@@ -38,19 +31,51 @@ class _MyAppPageState extends State<MyAppPage> {
   TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
 
-  Future<void> verifyPhone() async{
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId){
+  Future<void> verifyPhone() async {
+    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationId = verId;
     };
-    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]){
+
+    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
+      Timer(Duration(minutes: 1, seconds: 30), (){
+        Toast.show(
+          "Tiempo expirado",
+          context,
+          gravity: Toast.BOTTOM,
+          textColor: Colors.black,
+          duration: Toast.LENGTH_LONG,
+          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+        );
+        globalMethods().PushAndReplacement(context, login());
+      });
     };
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth){
-      print('verified');
+
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
     };
+
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
-      print('${e.message}');
+      if(e.message == "ERROR_INVALID_VERIFICATION_CODE"){
+        Toast.show(
+          "El código introducido no es correcto",
+          context,
+          gravity: Toast.BOTTOM,
+          textColor: Colors.black,
+          duration: Toast.LENGTH_LONG,
+          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+        );
+      }else{
+        Toast.show(
+          "Lo sentimos ha ocurrido un error. Intentelo más tarde.",
+          context,
+          gravity: Toast.BOTTOM,
+          textColor: Colors.black,
+          duration: Toast.LENGTH_LONG,
+          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+        );
+      }
     };
+
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneController.text,
       timeout: const Duration(seconds: 5),
@@ -66,12 +91,9 @@ class _MyAppPageState extends State<MyAppPage> {
       verificationId: verificationId,
       smsCode: smsCode,
     );
-    await FirebaseAuth.instance.signInWithCredential(credential)
-        .then((user){
-      Navigator.of(context).pushReplacementNamed('/loginpage');
-    }).catchError((e){
-      print(e);
-    });
+    await _auth.signInWithCredential(credential);
+    data.putIfAbsent("Telefono", () => phoneController.text);
+    registerCode().registerAuth(data["Email"], password, context, data);
   }
 
   handleError(PlatformException error) {
@@ -171,6 +193,7 @@ class _MyAppPageState extends State<MyAppPage> {
       ),
     );
   }
+
   Widget confirmarCode(BuildContext context) {
     return Container(
       padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
@@ -187,13 +210,7 @@ class _MyAppPageState extends State<MyAppPage> {
             borderRadius: new BorderRadius.circular(10.0),
           ),
           onPressed: () {
-            _auth.currentUser().then((user) {
-              if (user != null) {
-                Navigator.of(context).pop();
-              } else {
-                signIn(codeController.text);
-              }
-            });
+            signIn(codeController.text);
           },
         ),
         height: 60.0,
