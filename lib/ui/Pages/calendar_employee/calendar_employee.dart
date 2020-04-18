@@ -1,26 +1,32 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/availability.dart';
+import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
+import 'package:cuthair/ui/Components/schedules_screen.dart';
+import 'package:cuthair/ui/Pages/calendar_boss/calendar_presenter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 
 class CalendarEmployee extends StatefulWidget {
-  String nombre;
-
-  CalendarEmployee(this.nombre);
+  String name;
+  String hairdresingUid;
+  CalendarEmployee(this.name, this.hairdresingUid);
 
   @override
-  _CalendarEmployeeState createState() => _CalendarEmployeeState(nombre);
+  _CalendarEmployeeState createState() => _CalendarEmployeeState(this.name, this.hairdresingUid);
 }
 
-class _CalendarEmployeeState extends State<CalendarEmployee> {
-  String nombre;
-
-  _CalendarEmployeeState(this.nombre);
-
+class _CalendarEmployeeState extends State<CalendarEmployee> implements CalendarView{
+  String name;
+  String hairdresingUid;
+  CalendarPresenter calendarPresenter;
+  _CalendarEmployeeState(this.name, this.hairdresingUid);
+  List<Schedule> days = [];
   DateTime _currentDate = DateTime.now();
   RemoteRepository _remoteRepository;
   DateTime _currentDate2;
@@ -38,6 +44,7 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
                     date.month == _currentDate.month &&
                     date.day == _currentDate.day)) {
               _currentDate2 = date;
+              calendarPresenter.init(date.toString());
               this.date = date;
             }
           });
@@ -86,34 +93,14 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
     );
   }
 
-  Widget schedule() => Container(
-        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-        height: MediaQuery.of(context).size.height * 0.90,
-        child: ListView.builder(
-            scrollDirection: Axis.vertical,
-            itemCount: availabilities.length,
-            itemBuilder: (context, index) {
-              return Container(
-                margin: EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Colors.white,
-                ),
-                child: ListTile(
-                  dense: true,
-                  title: Text(
-                    date.day.toString() +
-                        '-' +
-                        date.month.toString() +
-                        '-' +
-                        date.year.toString(),
-                  ),
-                  subtitle:
-                      Text('Horario: ' + availabilities[index].disponibilidad),
-                ),
-              );
-            }),
-      );
+  @override
+  void initState() {
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    Employe employe = Employe(name);
+    calendarPresenter = CalendarPresenter(
+        this, employe, this.hairdresingUid, _remoteRepository);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,12 +113,23 @@ class _CalendarEmployeeState extends State<CalendarEmployee> {
             GoBack(context, "Volver"),
             calendar(),
             LargeText("Horarios asignados"),
-            schedule(),
-            divider(),
-            LargeText("Horarios añadidos"),
+            ScheduleScreen(this.days, this.name, this.hairdresingUid),
           ],
         ),
       ),
     );
+  }
+
+  @override
+  insertSchedule() {
+    return null;
+  }
+
+  @override
+  updateList(Schedule schedule) {
+    setState(() {
+      days.clear();
+      if(schedule != null) this.days.add(schedule);
+    });
   }
 }

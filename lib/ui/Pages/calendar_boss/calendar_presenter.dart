@@ -1,26 +1,23 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/schedule.dart';
 
-
-class CalendarBossPresenter {
-  CalendarBossView _calendarBossView;
+class CalendarPresenter {
+  CalendarView _calendarBossView;
   Employe employe;
   List<String> hours = [];
   RemoteRepository _remoteRepository;
   String hairDressingUid;
 
-  CalendarBossPresenter(this._calendarBossView, this.employe, this.hairDressingUid, this._remoteRepository);
+  CalendarPresenter(this._calendarBossView, this.employe, this.hairDressingUid, this._remoteRepository);
 
   init(String day) async {
     _calendarBossView.updateList(await _remoteRepository.getRange(day, employe, hairDressingUid));
   }
 
-  insertSchedule(List<Day> days){
+  insertSchedule(List<Day> days) async {
     hours.clear();
-
     String initialHour = days[0].checkIn.length == 4
         ? days[0].checkIn.substring(0, 1)
         : days[0].checkIn.substring(0, 2);
@@ -45,21 +42,13 @@ class CalendarBossPresenter {
 
     for (Day day in days) {
       schedules[0].update("Uid", (index) => day.dayId.toString(), ifAbsent: () => day.dayId.toString());
-      _remoteRepository.insertSchedule(employe.name, hairDressingUid, day.dayId.toString(), schedules, hours);
+      await _remoteRepository.insertSchedule(employe.name, hairDressingUid, day.dayId.toString(), schedules, hours);
     }
-
   }
-
-  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges){
-    _remoteRepository.removeRange(day, employe, hairDressingUid, ranges);
-  }
-
-
 }
 
-abstract class CalendarBossView {
+abstract class CalendarView {
   insertSchedule();
-  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges);
   updateList(Schedule schedule);
 
 }
