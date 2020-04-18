@@ -216,7 +216,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                               style: TextStyle(color: Colors.white),
                             ),
                             color: Color.fromRGBO(230, 73, 90, 1),
-                            onPressed: () {}),
+                            onPressed: () {
+                                _presenter.removeAppointment(myAppointments[index], index);
+                            }),
                       ),
                     ],
                   ),

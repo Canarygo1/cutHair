@@ -1,4 +1,5 @@
 class MyAppointment {
+  String uid;
   String hairdressing;
   String hairdresser;
   String type;
@@ -7,11 +8,11 @@ class MyAppointment {
   String checkOut;
   String direction;
 
-  MyAppointment(this.hairdressing, this.hairdresser, this.type, this.price,
+  MyAppointment(this.uid, this.hairdressing, this.hairdresser, this.type, this.price,
       this.checkIn, this.checkOut, this.direction);
 
-  factory MyAppointment.fromMap(Map values){
-    return MyAppointment(
+  factory MyAppointment.fromMap(Map values, String uid){
+    return MyAppointment(uid,
         values["Peluqueria"], values['Peluquero'], values["Servicio"],
         values['Precio'], values["CheckIn"], values["CheckOut"], values["Direccion"]);
   }

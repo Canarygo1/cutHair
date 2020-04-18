@@ -8,15 +8,20 @@ class DetailPresenter {
   DetailPresenter(this._view, this._remoteRepository);
 
   init(HairDressing hairDressing) async {
-
-    _view.showServices(await _remoteRepository.getAllServices());
-    _view.showImages(await _remoteRepository.getAllImages(hairDressing));
+    try {
+      _view.showServices(await _remoteRepository.getAllServices());
+      _view.showImages(await _remoteRepository.getAllImages(hairDressing));
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 
 abstract class DetailView {
   showServices(List servicios);
+
   showImages(List imagenes);
+
   makecall(String number);
 }
 

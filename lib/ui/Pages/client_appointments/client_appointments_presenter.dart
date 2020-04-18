@@ -8,8 +8,18 @@ class ClientAppointmentsPresenter {
   ClientAppointmentsPresenter(this._view, this._remoteRepository);
 
   init() async {
-    List<MyAppointment> myAppointments = await _remoteRepository.getUserAppointments("BCEcwbhSYNVf68upkb8RQ9QHxdA2");
-    await _view.showAppointments(myAppointments);
+    try {
+      List<MyAppointment> myAppointments = await _remoteRepository
+          .getUserAppointments("BCEcwbhSYNVf68upkb8RQ9QHxdA2");
+      await _view.showAppointments(myAppointments);
+    }catch(e){
+      print(e.toString());
+    }
+  }
+
+
+  removeAppointment(MyAppointment appointment, int index){
+    _remoteRepository.removeAppointment(appointment, index);
   }
 }
 

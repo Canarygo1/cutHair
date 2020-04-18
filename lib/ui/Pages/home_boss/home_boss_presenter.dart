@@ -8,11 +8,17 @@ class HomeBossPresenter {
   HomeBossPresenter(this._view, this._remoteRepository);
 
   init() async {
-    _view.showHairdresser(await _remoteRepository.getAllEmployes());
+    try{
+      _view.showHairdresser(await _remoteRepository.getAllEmployes());
+    }catch(e){
+      _view.showButtonRecharge();
+    }
 
   }
 }
 
 abstract class HomeBossView {
   showHairdresser(List<Employe> employes);
+  showHairdresserEmpty(String error);
+  showButtonRecharge();
 }

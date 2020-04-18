@@ -11,8 +11,12 @@ class InfoPagePresenter {
   InfoPagePresenter(this._view, this._remoteRepository);
 
   init() async {
-    await currentUser();
-    _view.showList(await _remoteRepository.getUser(uid));
+    try {
+      await currentUser();
+      _view.showList(await _remoteRepository.getUser(uid));
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   Future<void> currentUser() async {

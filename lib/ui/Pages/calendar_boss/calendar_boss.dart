@@ -58,7 +58,6 @@ class _CalendarBossState extends State<CalendarBoss>
               days.removeWhere( (item) => item.uid == date);
               _currentDate2 = null;
             }else{
-
               _currentDate2 = date;
             }
 

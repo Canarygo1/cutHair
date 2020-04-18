@@ -7,8 +7,11 @@ class ChooseHairDresserPresenter {
   ChooseHairDresserPresenter(this._view, this._remoteRepository);
 
   init() async {
-    _view.showEmployes(await _remoteRepository.getAllEmployes());
-
+    try {
+      _view.showEmployes(await _remoteRepository.getAllEmployes());
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 
