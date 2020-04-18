@@ -163,6 +163,31 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
+  Future<User> getUserByPhoneNumber(String phoneNumber) async {
+    User user;
+    CollectionReference collectionReference = firestore.collection("Usuarios");
+    var query = await collectionReference.where('Telefono',isEqualTo: phoneNumber).getDocuments().then((snapshot) {
+        if(snapshot.documents.length < 1){
+          throw Exception;
+        }
+      return [snapshot.documents[0].data,snapshot.documents[0].documentID];
+
+    }).then((data) async {
+      user =User.fromMap(data[0],data[1]);
+    });
+    return user;
+  }
+
+  @override
+  Future<User> insertAnonymousUser(User user) async {
+    DocumentReference docRef = await firestore
+        .collection("Anonimos").add({
+      "Nombre": user.name,
+      "Telefono":user.phone,
+    });
+    user.uid = docRef.documentID;
+    return user;
+    
   Future<Schedule> getRange(String day, Employe employe, String hairDressingUid) async{
     DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias")
         .document(hairDressingUid)
