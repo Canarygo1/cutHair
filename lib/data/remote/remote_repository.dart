@@ -21,4 +21,8 @@ abstract class RemoteRepository {
   Future<List<MyAppointment>> getUserAppointments(String uid);
 
   Future<HairDressing> getHairdressingByUid(String hairdressingUid);
+
+  Future<User> getUserByPhoneNumber(String phoneNumber);
+
+  Future<User> insertAnonymousUser(User user);
 }

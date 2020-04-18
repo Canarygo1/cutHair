@@ -58,15 +58,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                 color: Color.fromRGBO(230, 73, 90, 1),
                 child: MediumText(nombres[index].name),
                 onPressed: () {
-                  presenter.nextScreen();
-//                  if (appointment.user.permission == 3) {
-//                    globalMethods()
-//                        .pushPage(context, chooseDateScreen(appointment));
-//                  }
-//                  if (appointment.user.permission == 1) {
-//                    globalMethods()
-//                        .pushPage(context, TimeSelection(appointment));
-//                  }
+                  appointment.employe = nombres[index];
+                  presenter.nextScreen(appointment);
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),
@@ -110,7 +103,15 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   }
 
   @override
-  goToNextScreen(int index) {
-    return null;
+  goToCalendar() {
+    globalMethods()
+          .pushPage(context, chooseDateScreen(appointment));
   }
+
+  @override
+  goToTimeSelection() {
+    globalMethods()
+        .pushPage(context, TimeSelection(appointment));
+  }
+
 }
