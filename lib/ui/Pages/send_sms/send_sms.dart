@@ -22,7 +22,7 @@ class _SendSMSState extends State<SendSMS> {
   Map data;
   String password;
   _SendSMSState(this.data, this.password);
-
+  var timer;
   String phoneNo;
   String smsOTP;
   String verificationId;
@@ -38,7 +38,7 @@ class _SendSMSState extends State<SendSMS> {
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      Timer(Duration(minutes: 1, seconds: 30), (){
+      timer = Timer(Duration(minutes: 1, seconds: 30), (){
         Toast.show(
           "Tiempo expirado",
           context,
@@ -55,7 +55,31 @@ class _SendSMSState extends State<SendSMS> {
     };
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
-      if(e.message == "ERROR_INVALID_VERIFICATION_CODE"){
+      this.errorMessage = e.message;
+    };
+
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneController.text,
+      timeout: const Duration(seconds: 5),
+      verificationCompleted: verifiedSuccess,
+      verificationFailed: verifyFailed,
+      codeSent: smsCodeSent,
+      codeAutoRetrievalTimeout: autoRetrieve,
+    );
+  }
+
+  Future<void> signIn(String smsCode) async {
+    try {
+      final AuthCredential credential = PhoneAuthProvider.getCredential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      await _auth.signInWithCredential(credential);
+      data.putIfAbsent("Telefono", () => phoneController.text);
+      registerCode().registerAuth(data["Email"], password, context, data);
+      timer.cancel();
+    }on PlatformException catch(e){
+      if(e.code == ("ERROR_INVALID_VERIFICATION_CODE")){
         Toast.show(
           "El código introducido no es correcto",
           context,
@@ -74,46 +98,10 @@ class _SendSMSState extends State<SendSMS> {
           backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
         );
       }
-    };
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneController.text,
-      timeout: const Duration(seconds: 5),
-      verificationCompleted: verifiedSuccess,
-      verificationFailed: verifyFailed,
-      codeSent: smsCodeSent,
-      codeAutoRetrievalTimeout: autoRetrieve,
-    );
-  }
-
-  Future<void> signIn(String smsCode) async {
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: smsCode,
-    );
-    await _auth.signInWithCredential(credential);
-    data.putIfAbsent("Telefono", () => phoneController.text);
-    registerCode().registerAuth(data["Email"], password, context, data);
-  }
-
-  handleError(PlatformException error) {
-    print(error);
-    switch (error.code) {
-      case 'ERROR_INVALID_VERIFICATION_CODE':
-        FocusScope.of(context).requestFocus(new FocusNode());
-        setState(() {
-          errorMessage = 'Invalid Code';
-        });
-        Navigator.of(context).pop();
-        break;
-      default:
-        setState(() {
-          errorMessage = error.message;
-        });
-
-        break;
     }
   }
+
+
 
   Widget codigoTextField() {
     return Padding(

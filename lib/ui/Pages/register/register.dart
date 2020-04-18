@@ -207,7 +207,7 @@ class _registerState extends State<register> {
   checkEmail() async {
     var tokkens = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email.text);
     if (registerCode().checkCampos(context, keyForm)) {
-      if(tokkens.length > 0){
+      if(tokkens.length == 0){
         globalMethods().pushPage(
             context, SendSMS(getData(), password.text));
       }else{
