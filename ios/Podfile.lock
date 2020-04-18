@@ -327,6 +327,12 @@ PODS:
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
+  - url_launcher (0.0.1):
+    - Flutter
+  - url_launcher_macos (0.0.1):
+    - Flutter
+  - url_launcher_web (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
@@ -343,6 +349,9 @@ DEPENDENCIES:
   - path_provider_macos (from `.symlinks/plugins/path_provider_macos/ios`)
   - sms (from `.symlinks/plugins/sms/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
+  - url_launcher_macos (from `.symlinks/plugins/url_launcher_macos/ios`)
+  - url_launcher_web (from `.symlinks/plugins/url_launcher_web/ios`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
@@ -401,6 +410,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sms/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
+  url_launcher_macos:
+    :path: ".symlinks/plugins/url_launcher_macos/ios"
+  url_launcher_web:
+    :path: ".symlinks/plugins/url_launcher_web/ios"
 
 SPEC CHECKSUMS:
   abseil: 18063d773f5366ff8736a050fe035a28f635fd27
@@ -441,6 +456,9 @@ SPEC CHECKSUMS:
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
   sms: 1e6c3082da09f2a4961d61bc254cc86865993ffd
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
+  url_launcher: a1c0cc845906122c4784c542523d8cacbded5626
+  url_launcher_macos: fd7894421cd39320dce5f292fc99ea9270b2a313
+  url_launcher_web: e5527357f037c87560776e36436bf2b0288b965c
 
 PODFILE CHECKSUM: e45c292f618eeca3034958d33b444b6e1249b55f
 
