@@ -50,7 +50,7 @@ class _EmployeeHomeState extends State<EmployeeHome>{
           GestureDetector(
             onTap: () {
               globalMethods().pushPage(
-                  context, CalendarEmployee(user.name));
+                  context, CalendarEmployee(user.name, user.hairdressingUid));
             },
             child: Container(
               padding: EdgeInsets.fromLTRB(15, 20, 0, 0),

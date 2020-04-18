@@ -2,6 +2,7 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:toast/toast.dart';
@@ -18,7 +19,6 @@ class _registerState extends State<register> {
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
   GlobalKey<FormState> keyForm = new GlobalKey();
-  bool checkIn = false;
 
   Widget nombreTextField() {
     return Padding(
@@ -205,13 +205,24 @@ class _registerState extends State<register> {
   }
 
   checkEmail() async {
-    checkIn = await registerCode().CheckUserExist(email.text, password.text);
-    if (registerCode().checkCampos(context, keyForm) && checkIn) {
-      globalMethods().pushPage(
-          context, sendSMS(getData(), password.text.toString()));
+    var tokkens = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email.text);
+    if (registerCode().checkCampos(context, keyForm)) {
+      if(tokkens.length == 0){
+        globalMethods().pushPage(
+            context, SendSMS(getData(), password.text));
+      }else{
+        Toast.show(
+          "El email introducido ya existe",
+          context,
+          gravity: Toast.BOTTOM,
+          textColor: Colors.black,
+          duration: Toast.LENGTH_LONG,
+          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
+        );
+      }
     } else {
       Toast.show(
-        "El email introducido ya existe",
+        "Rellene los campos de forma correcta",
         context,
         gravity: Toast.BOTTOM,
         textColor: Colors.black,

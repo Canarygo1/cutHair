@@ -3,6 +3,7 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
@@ -37,8 +38,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .getDocuments();
     List<Service> services = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      String tipo = querySnapshot.documents[i].documentID;
-      services.add(Service.fromMap(querySnapshot.documents[i].data, tipo));
+      services.add(Service.fromMap(querySnapshot.documents[i].data));
     }
     return services;
   }
@@ -89,43 +89,54 @@ class HttpRemoteRepository implements RemoteRepository {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
       val.add(date.hour.toString() + "-" + date.minute.toString());
     }
-
     firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .collection("horarios")
-        .document("2020-04-13 00:00:00.000")
+        .document(appointment.day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("citas")
         .add({
       "Peluquero": appointment.employe.name,
       "idUsuario":uid,
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
-      "Peluqueria":"Privilege",
-      "Servicio":appointment.service.tipo,
-      "Precio":appointment.service.precio
+      "Peluqueria": appointment.hairDressing.name,
+      "Servicio":appointment.service.type,
+      "Precio":appointment.service.price
     });
     List refList = [docRef];
     await firestore
         .collection("Usuarios")
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-//Todo:Hay que hacer que la peluqueria sea una variable
     await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     return null;
+  }
+
+  @override
+  Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours) async{
+    await firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe)
+        .collection("horarios")
+        .document(day)
+        .setData({"turnos": FieldValue.arrayUnion(schedules),
+      "disponibilidad": FieldValue.arrayUnion(hours)}, merge: true);
   }
 
   @override
@@ -176,5 +187,57 @@ class HttpRemoteRepository implements RemoteRepository {
     });
     user.uid = docRef.documentID;
     return user;
+    
+  Future<Schedule> getRange(String day, Employe employe, String hairDressingUid) async{
+    DocumentSnapshot documentSnapshot = await firestore.collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(employe.name)
+        .collection("horarios")
+        .document(day).get();
+
+    if(documentSnapshot.data != null) {
+      Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
+      return schedule;
+    }else{
+      return null;
+    }
+  }
+
+  @override
+  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, Map ranges){
+    var val = [];
+    DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
+    DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
+
+    var duration =
+        checkOut.difference(checkIn).inMinutes;
+    duration ~/= 10;
+    for (int i = 0; duration > i; i++) {
+      DateTime date = checkIn.add(Duration(minutes: (10 * i)));
+      val.add(date.hour.toString() + "-" + date.minute.toString());
+    }
+
+    var maplist = [];
+    maplist.add(ranges);
+
+    firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(name)
+        .collection("horarios")
+        .document(day.toString())
+        .updateData({"turnos": FieldValue.arrayRemove(maplist)});
+
+
+    firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(name)
+        .collection("horarios")
+        .document(day.toString())
+        .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
   }
 }

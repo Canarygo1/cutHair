@@ -8,7 +8,6 @@ import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Info extends StatefulWidget {
   User user;
@@ -52,16 +51,26 @@ class _InfoScreenState extends State<Info> {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <
           Widget>[
-        Appbar("Mis datos"),
-        GestureDetector(
-          onTap: logOut,
-          child: Container(
-            padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              FontAwesomeIcons.solidCaretSquareLeft,
-              color: Colors.white,
+        Stack(
+          children: <Widget>[
+            Appbar("Mis datos"),
+            Container(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: GestureDetector(
+                  onTap: logOut,
+                  child: Container(
+                    padding: EdgeInsets.only(right: 20, top: MediaQuery.of(context).size.height * 0.06),
+                    child: Icon(
+                      Icons.exit_to_app,
+                      size: 30,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
         Container(
           padding: EdgeInsets.fromLTRB(

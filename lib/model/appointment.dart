@@ -11,6 +11,13 @@ class Appointment {
   DateTime _checkIn;
   DateTime _checkOut;
   HairDressing _hairDressing;
+  DateTime _day;
+
+  DateTime get day => _day;
+
+  set day(DateTime value) {
+    _day = value;
+  }
 
   Appointment();
 

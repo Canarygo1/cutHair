@@ -101,6 +101,8 @@ class login extends StatelessWidget {
         ),
         height: 60.0,
         buttonColor: Color.fromRGBO(230, 73, 90, 1),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
     );
   }
@@ -192,6 +194,8 @@ class login extends StatelessWidget {
         ),
         height: 50.0,
         buttonColor: Color.fromRGBO(59, 89, 152, 1),
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
       ),
     );
   }
