@@ -15,17 +15,22 @@ import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 class CalendarEmployee extends StatefulWidget {
   String name;
   String hairdresingUid;
+
   CalendarEmployee(this.name, this.hairdresingUid);
 
   @override
-  _CalendarEmployeeState createState() => _CalendarEmployeeState(this.name, this.hairdresingUid);
+  _CalendarEmployeeState createState() =>
+      _CalendarEmployeeState(this.name, this.hairdresingUid);
 }
 
-class _CalendarEmployeeState extends State<CalendarEmployee> implements CalendarView{
+class _CalendarEmployeeState extends State<CalendarEmployee>
+    implements CalendarView {
   String name;
   String hairdresingUid;
   CalendarPresenter calendarPresenter;
+
   _CalendarEmployeeState(this.name, this.hairdresingUid);
+
   List<Schedule> days = [];
   DateTime _currentDate = DateTime.now();
   RemoteRepository _remoteRepository;
@@ -127,9 +132,11 @@ class _CalendarEmployeeState extends State<CalendarEmployee> implements Calendar
 
   @override
   updateList(Schedule schedule) {
-    setState(() {
-      days.clear();
-      if(schedule != null) this.days.add(schedule);
-    });
+    if (mounted) {
+      setState(() {
+        days.clear();
+        if (schedule != null) this.days.add(schedule);
+      });
+    }
   }
 }

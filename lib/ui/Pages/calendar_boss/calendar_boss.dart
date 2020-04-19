@@ -22,8 +22,7 @@ class CalendarBoss extends StatefulWidget {
   _CalendarBossState createState() => _CalendarBossState();
 }
 
-class _CalendarBossState extends State<CalendarBoss>
-    implements CalendarView {
+class _CalendarBossState extends State<CalendarBoss> implements CalendarView {
   CalendarPresenter calendarPresenter;
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
@@ -52,16 +51,15 @@ class _CalendarBossState extends State<CalendarBoss>
       height: MediaQuery.of(context).size.height * 0.57,
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
-          this.setState((){
-            if(dates.contains(date)){
+          this.setState(() {
+            if (dates.contains(date)) {
               dates.remove(date);
               _markedDateMap.getEvents(date).clear();
-              days.removeWhere( (item) => item.uid == date);
+              days.removeWhere((item) => item.uid == date);
               _currentDate2 = null;
-            }else{
+            } else {
               _currentDate2 = date;
             }
-
           });
         },
         weekendTextStyle: TextStyle(
@@ -112,8 +110,6 @@ class _CalendarBossState extends State<CalendarBoss>
           bool isThisMonthDay,
           DateTime day,
         ) {
-
-
           if (day == _currentDate2 &&
               (day.isAfter(DateTime.now()) || isToday)) {
             _markedDateMap.getEvents(day).clear();
@@ -237,7 +233,8 @@ class _CalendarBossState extends State<CalendarBoss>
             buttonAddSchedule(),
             divider(),
             LargeText("Horarios añadidos"),
-            ScheduleScreen(this.days, this.widget.employe.name, this.widget.hairDressingUid),
+            ScheduleScreen(this.days, this.widget.employe.name,
+                this.widget.hairDressingUid),
           ],
         ),
       ),
@@ -246,13 +243,17 @@ class _CalendarBossState extends State<CalendarBoss>
 
   @override
   insertSchedule() {
-    calendarPresenter.insertSchedule(newdays);
+    if (mounted) {
+      calendarPresenter.insertSchedule(newdays);
+    }
   }
 
   @override
   updateList(Schedule schedule) {
-    setState(() {
-      if(schedule != null) this.days.add(schedule);
-    });
+    if (mounted) {
+      setState(() {
+        if (schedule != null) this.days.add(schedule);
+      });
+    }
   }
 }

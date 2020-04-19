@@ -58,14 +58,14 @@ class CardService extends StatelessWidget {
   }
 
   Widget cardServices(BuildContext context, int index) {
-    if (detallesServicio.elementAt(index).duracion == "llamada") {
+    if (detallesServicio[index].duration == "llamada") {
       return GestureDetector(
         onTap: funcion,
         child: ListTile(
           contentPadding:
           EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
           dense: true,
-          title: LargeText(detallesServicio.elementAt(index).tipo),
+          title: LargeText(detallesServicio[index].type),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -91,23 +91,21 @@ class CardService extends StatelessWidget {
         contentPadding:
         EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
         dense: true,
-        title: Text(detallesServicio.elementAt(index).tipo,
-            style: TextStyle(color: Colors.white, fontSize: 18.0),
-            textAlign: TextAlign.left),
+        title: LargeText(detallesServicio[index].type),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
-                  detallesServicio.elementAt(index).duracion.toString() +
+                  detallesServicio[index].duration.toString() +
                       " minutos",
                   style: TextStyle(color: Colors.white, fontSize: 16.0)),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Text(
-                  detallesServicio.elementAt(index).precio.toString() + " €",
+                  detallesServicio[index].price.toString() + " €",
                   style: TextStyle(color: Colors.white, fontSize: 16.0)),
             )
           ],
