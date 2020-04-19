@@ -34,6 +34,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
   RemoteRepository _remoteRepository;
   HomeBossPresenter _homeBossPresenter;
   globalMethods global = globalMethods();
+  bool buttonRecharge = false;
 
   @override
   initState() {
@@ -57,64 +58,7 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
                     padding: const EdgeInsets.only(left: 20),
                     child: MediumText("Asignar horarios"),
                   ),
-                  Container(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.03,
-                        left: MediaQuery.of(context).size.width * 0.05),
-                    height: MediaQuery.of(context).size.height * 0.28,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: employees.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              globalMethods().pushPage(
-                                  context, CalendarBoss(employees[index], user.hairdressingUid));
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width * 0.3,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
-                                child: Container(
-                                  child: Column(
-                                    children: <Widget>[
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                        child: Center(
-                                          child: Container(
-                                            child: AspectRatio(
-                                              aspectRatio: 4 / 4,
-                                              child: Image(
-                                                fit: BoxFit.fill,
-                                                height: 10,
-                                                width: 10,
-                                                image: ExactAssetImage(
-                                                    "assets/images/privilegeLogo.jpg"),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.fromLTRB(7, 10, 0, 0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            LargeText(employees[index].name),
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
+                  buttonRecharge ? showHairdresserEmpty("No hay empleados") : listEmployees(),
                   Padding(
                     padding: EdgeInsets.only(
                         top: MediaQuery.of(context).size.height * 0.01),
@@ -185,10 +129,118 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
             ));
   }
 
+  listEmployees(){
+    return Container(
+      padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.height * 0.03,
+          left: MediaQuery.of(context).size.width * 0.05),
+      height: MediaQuery.of(context).size.height * 0.28,
+      child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: employees.length,
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () {
+                globalMethods().pushPage(
+                    context, CalendarBoss(employees[index], user.hairdressingUid));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.3,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        ClipRRect(
+                          borderRadius:
+                          BorderRadius.circular(10.0),
+                          child: Center(
+                            child: Container(
+                              child: AspectRatio(
+                                aspectRatio: 4 / 4,
+                                child: Image(
+                                  fit: BoxFit.fill,
+                                  height: 10,
+                                  width: 10,
+                                  image: ExactAssetImage(
+                                      "assets/images/privilegeLogo.jpg"),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding:
+                          EdgeInsets.fromLTRB(7, 10, 0, 0),
+                          child: Column(
+                            crossAxisAlignment:
+                            CrossAxisAlignment.start,
+                            children: <Widget>[
+                              LargeText(employees[index].name),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
+    );
+  }
+
   @override
   showHairdresser(List<Employe> employes) {
     setState(() {
       employees = employes;
     });
+  }
+
+  @override
+  showButtonRecharge() {
+    setState(() {
+      buttonRecharge = true;
+    });
+  }
+
+  @override
+  showHairdresserEmpty(String error) {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.only(
+            top: MediaQuery.of(context).size.height * 0.03),
+        height: MediaQuery.of(context).size.height * 0.15,
+        child: Column(
+          children: <Widget>[
+            MediumText(error),
+            buttonRecharge ? buttonError() : Container()
+          ],
+        ),
+      ),
+    );
+  }
+
+  buttonError(){
+    buttonRecharge = false;
+    return Center(
+      child: Container(
+        child: ButtonTheme(
+          child: RaisedButton(
+            child: LargeText('Volver a intentar'),
+            onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context) {
+                return HomeBoss(this.widget.user);
+              }));
+            },
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+          ),
+          height: 30.0,
+          buttonColor: Color.fromRGBO(230, 73, 90, 1),
+        ),
+      ),
+    );
   }
 }

@@ -9,10 +9,15 @@ class ConfirmScreenPresenter{
   DBProvider _dbProvider;
   FirebaseUser auth;
   ConfirmScreenPresenter(this._view, this._remoteRepository);
+
   init(Appointment appointment) async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    final FirebaseUser user = await auth.currentUser();
-        _remoteRepository.insertAppointment(appointment, user.uid);
+    try {
+      final FirebaseAuth auth = FirebaseAuth.instance;
+      final FirebaseUser user = await auth.currentUser();
+      _remoteRepository.insertAppointment(appointment, user.uid);
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 

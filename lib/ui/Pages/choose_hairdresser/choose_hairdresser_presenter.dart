@@ -1,6 +1,4 @@
-import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/user.dart';
 
 class ChooseHairDresserPresenter {
   ChooseHairDresserView _view;
@@ -9,15 +7,11 @@ class ChooseHairDresserPresenter {
   ChooseHairDresserPresenter(this._view, this._remoteRepository);
 
   init() async {
-    _view.showEmployes(await _remoteRepository.getAllEmployes());
-  }
-
-  nextScreen()async{
-    await DBProvider.db.getUser();
-
-    User user  = DBProvider.users[0];
-
-    print(user.toString());
+    try {
+      _view.showEmployes(await _remoteRepository.getAllEmployes());
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 

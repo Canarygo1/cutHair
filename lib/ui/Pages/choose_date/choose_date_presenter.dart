@@ -7,8 +7,13 @@ class ChooseDatePresenter{
   ChooseDatePresenter(this._view, this._remoteRepository);
 
   init(String duration,String date,String hairdresser) async {
-    List availability = await _remoteRepository.getAvailability(duration, hairdresser, date);
-    _view.showAvailability(availability);
+    try {
+      List availability = await _remoteRepository.getAvailability(
+          duration, hairdresser, date);
+      _view.showAvailability(availability);
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 

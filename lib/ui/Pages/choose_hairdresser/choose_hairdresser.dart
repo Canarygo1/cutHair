@@ -58,7 +58,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                 color: Color.fromRGBO(230, 73, 90, 1),
                 child: MediumText(nombres[index].name),
                 onPressed: () {
-                  presenter.nextScreen();
+                  //presenter.nextScreen();
 //                  if (appointment.user.permission == 3) {
 //                    globalMethods()
 //                        .pushPage(context, chooseDateScreen(appointment));

@@ -13,7 +13,12 @@ class CalendarPresenter {
   CalendarPresenter(this._calendarBossView, this.employe, this.hairDressingUid, this._remoteRepository);
 
   init(String day) async {
-    _calendarBossView.updateList(await _remoteRepository.getRange(day, employe, hairDressingUid));
+    try {
+      _calendarBossView.updateList(
+          await _remoteRepository.getRange(day, employe, hairDressingUid));
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   insertSchedule(List<Day> days) async {
@@ -50,5 +55,4 @@ class CalendarPresenter {
 abstract class CalendarView {
   insertSchedule();
   updateList(Schedule schedule);
-
 }

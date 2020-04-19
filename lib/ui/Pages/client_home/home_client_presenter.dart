@@ -9,7 +9,11 @@ class HomeClientPresenter {
   HomeClientPresenter(this._view, this._remoteRepository);
 
   init() async {
-    _view.showList(await _remoteRepository.getAllHairdressing());
+    try {
+      _view.showList(await _remoteRepository.getAllHairdressing());
+    }catch(e){
+      print(e.toString());
+    }
   }
 }
 

@@ -11,10 +11,14 @@ class resetPassword extends StatelessWidget {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Future<void> changePassword() async {
-    auth.setLanguageCode("es");
-    await auth.sendPasswordResetEmail(
+    try {
+      auth.setLanguageCode("es");
+      await auth.sendPasswordResetEmail(
         email: emailControler.text.toString(),
-    );
+      );
+    }catch(e){
+      print(e.toString());
+    }
   }
 
   @override
