@@ -18,20 +18,20 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<HairDressing>> getAllHairdressing() async {
     QuerySnapshot querySnapshot =
-    await firestore.collection("Peluquerias").getDocuments();
+        await firestore.collection("Peluquerias").getDocuments();
     List queryData = querySnapshot.documents;
     List<HairDressing> allHairDressing = [];
 
     for (int i = 0; i < queryData.length; i++) {
       HairDressing hairDressing =
-      HairDressing.fromMap(queryData[i].data, queryData[i].documentID);
+          HairDressing.fromMap(queryData[i].data, queryData[i].documentID);
       allHairDressing.add(hairDressing);
     }
 
     if (allHairDressing.length >= 1) {
       return allHairDressing;
     } else {
-      throw("No existen peluquerias");
+      throw ("No existen peluquerias");
     }
   }
 
@@ -50,7 +50,7 @@ class HttpRemoteRepository implements RemoteRepository {
     if (services.length >= 1) {
       return services;
     } else {
-      throw("No existen servicios de esta peluqueria");
+      throw ("No existen servicios de esta peluqueria");
     }
   }
 
@@ -70,20 +70,20 @@ class HttpRemoteRepository implements RemoteRepository {
     if (employes.length >= 1) {
       return employes;
     } else {
-      throw("No existen empleados");
+      throw ("No existen empleados");
     }
   }
 
   @override
   Future<User> getUser(String uid) async {
     DocumentSnapshot document =
-    await firestore.collection("Usuarios").document(uid).get();
+        await firestore.collection("Usuarios").document(uid).get();
     User user = User.fromMap(document.data, uid);
 
     if (user != null) {
       return user;
     } else {
-      throw("No existe ese usuario");
+      throw ("No existe ese usuario");
     }
   }
 
@@ -93,14 +93,14 @@ class HttpRemoteRepository implements RemoteRepository {
     for (int i = 0; i < hairDressing.numeroFotos; i++) {
       String nombre = hairDressing.uid + "/" + i.toString() + ".jpeg";
       String url =
-      await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+          await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
       list.add(url);
     }
 
     if (list.length >= 1) {
       return list;
     } else {
-      throw("No existe imagenes en la base de datos de esta peluqueria");
+      throw ("No existe imagenes en la base de datos de esta peluqueria");
     }
   }
 
@@ -108,9 +108,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<bool> insertAppointment(Appointment appointment, String uid) async {
     var val = [];
     var duration =
-        appointment.checkOut
-            .difference(appointment.checkIn)
-            .inMinutes;
+        appointment.checkOut.difference(appointment.checkIn).inMinutes;
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
@@ -134,9 +132,9 @@ class HttpRemoteRepository implements RemoteRepository {
       "idUsuario": uid,
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
-      "Peluqueria":"Privilege",
-      "Servicio":appointment.service.tipo,
-      "Precio":appointment.service.precio
+      "Peluqueria": appointment.hairDressing.name,
+      "Servicio": appointment.service.type,
+      "Precio": appointment.service.price
     });
 
     List refList = [docRef];
@@ -178,7 +176,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<List<MyAppointment>> getUserAppointments(String uid) async {
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
-    await firestore.collection("Usuarios").document(uid).get();
+        await firestore.collection("Usuarios").document(uid).get();
     for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
       await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
         DocumentReference documentReference = documentSnapshot.data['citas'][i];
@@ -193,69 +191,23 @@ class HttpRemoteRepository implements RemoteRepository {
     if (myAppointments.length >= 1) {
       return myAppointments;
     } else {
-      throw("No existen citas de esta peluqueria");
+      throw ("No existen citas de esta peluqueria");
     }
   }
 
   @override
   Future<HairDressing> getHairdressingByUid(String hairdressingUid) async {
-    DocumentSnapshot documentSnapshot = await firestore.collection(
-        "Peluquerias").document(hairdressingUid).get();
-    HairDressing hairDressing = HairDressing.fromMap(
-        documentSnapshot.data, hairdressingUid);
-
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection("Peluquerias")
+        .document(hairdressingUid)
+        .get();
+    HairDressing hairDressing =
+        HairDressing.fromMap(documentSnapshot.data, hairdressingUid);
 
     if (hairDressing != null) {
       return hairDressing;
     } else {
-      throw("No existen peluquerias");
-    }
-  }
-
-  @override
-  Future<Schedule> getRange(String day, Employe employe,
-      String hairDressingUid) async {
-    DocumentSnapshot documentSnapshot = await firestore.collection(
-        "Peluquerias")
-  Future<User> getUserByPhoneNumber(String phoneNumber) async {
-    User user;
-    CollectionReference collectionReference = firestore.collection("Usuarios");
-    var query = await collectionReference
-        .where('Telefono', isEqualTo: phoneNumber)
-        .getDocuments()
-        .then((snapshot) {
-      if (snapshot.documents.length < 1) {
-        throw Exception;
-      }
-      return [snapshot.documents[0].data, snapshot.documents[0].documentID];
-    }).then((data) async {
-      user = User.fromMap(data[0], data[1]);
-    });
-    return user;
-  }
-
-  @override
-  Future<User> insertAnonymousUser(User user) async {
-    DocumentReference docRef = await firestore.collection("Anonimos").add({
-      "Nombre": user.name,
-      "Telefono": user.phone,
-    });
-    user.uid = docRef.documentID;
-    return user;
-  }
-
-        .document(hairDressingUid)
-        .collection("empleados")
-        .document(employe.name)
-        .collection("horarios")
-        .document(day)
-        .get();
-
-    if (documentSnapshot.data != null) {
-      Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
-      return schedule;
-    } else {
-      throw Exception("No hay horarios");
+      throw ("No existen peluquerias");
     }
   }
 
@@ -296,34 +248,77 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<bool> removeAppointment(MyAppointment appointment, int index) async{
-
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-
-    DocumentSnapshot documentsnap = await firestore.collection("Usuarios")
-        .document(user.uid)
+  Future<Schedule> getRange(
+      String day, String name, String hairDressingUid) async {
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection("Peluquerias")
+        .document(hairDressingUid)
+        .collection("empleados")
+        .document(name)
+        .collection("horarios")
+        .document(day)
         .get();
 
+    if (documentSnapshot.data != null) {
+      Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
+      return schedule;
+    } else {
+      throw Exception("No hay horarios");
+    }
+  }
+
+  @override
+  Future<bool> removeAppointment(MyAppointment appointment, int index) async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+
+    DocumentSnapshot documentsnap =
+    await firestore.collection("Usuarios").document(user.uid).get();
 
     DocumentReference documentReference = documentsnap.data["citas"][index];
     String idPeluqueria = documentReference.parent().parent().documentID;
 
     List ref = [];
     ref.add(documentReference.path);
-    
+
     await firestore
         .collection("Peluquerias")
         .document(idPeluqueria)
         .collection("empleados")
         .document(appointment.hairdresser)
         .updateData({"citas": FieldValue.arrayRemove(ref)});
-    
+
     await firestore
         .collection("Usuarios")
         .document(user.uid)
         .updateData({"citas": FieldValue.arrayRemove(ref)});
 
-
     documentReference.delete();
+  }
+
+  @override
+  Future<User> insertAnonymousUser(User user) async {
+    DocumentReference docRef = await firestore.collection("Anonimos").add({
+      "Nombre": user.name,
+      "Telefono": user.phone,
+    });
+    user.uid = docRef.documentID;
+    return user;
+  }
+
+  Future<User> getUserByPhoneNumber(String phoneNumber) async {
+    User user;
+    CollectionReference collectionReference = firestore.collection("Usuarios");
+    var query = await collectionReference
+        .where('Telefono', isEqualTo: phoneNumber)
+        .getDocuments()
+        .then((snapshot) {
+      if (snapshot.documents.length < 1) {
+        throw Exception;
+      }
+      return [snapshot.documents[0].data, snapshot.documents[0].documentID];
+    }).then((data) async {
+      user = User.fromMap(data[0], data[1]);
+    });
+    return user;
   }
 }

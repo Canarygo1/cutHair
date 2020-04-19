@@ -300,14 +300,4 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
       ),
     );
   }
-
-  @override
-  showButtonRecharge() {
-    return null;
-  }
-
-  @override
-  showHairdresserEmpty(String error) {
-    return null;
-  }
 }

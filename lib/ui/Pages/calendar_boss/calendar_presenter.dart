@@ -15,7 +15,7 @@ class CalendarPresenter {
   init(String day) async {
     try {
       _calendarBossView.updateList(
-          await _remoteRepository.getRange(day, employe, hairDressingUid));
+          await _remoteRepository.getRange(day, employe.name, hairDressingUid));
     }catch(e){
       print(e.toString());
     }

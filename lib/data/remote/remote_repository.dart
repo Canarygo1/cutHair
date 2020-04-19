@@ -17,7 +17,7 @@ abstract class RemoteRepository {
   Future<User> getUser(String uid);
 
   Future<List<String>> getAllImages(HairDressing hairDressing);
-  
+
   Future<bool> insertAppointment(Appointment appointment,String uid);
 
   Future<List<MyAppointment>> getUserAppointments(String uid);
@@ -27,12 +27,12 @@ abstract class RemoteRepository {
   Future<User> getUserByPhoneNumber(String phoneNumber);
 
   Future<User> insertAnonymousUser(User user);
-  
+
   Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours);
 
-  Future<Schedule> getRange(String day, Employe employe, String hairDressingUid);
+  Future<Schedule> getRange(String day, String name, String hairDressingUid);
 
-  Future<bool> removeRange(DateTime day, Employe employe, String hairDressingUid, Map ranges);
+  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, Map ranges);
 
   Future<bool> removeAppointment(MyAppointment appointment, int index);
 }
