@@ -112,105 +112,153 @@ class _TimeSelectionState extends State<TimeSelection>
         ? Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              MediumText("Los datos del usuario son:"),
-              MediumText(user.name + " " + user.surname),
-              MediumText(user.email),
-              Center(child: sendButton())
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.34),
+                child: MediumText("Datos de reserva"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.34,
+                top: MediaQuery.of(context).size.width * 0.05),
+                child: MediumText(user.name + " " + user.surname),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.34),
+                child: MediumText(user.email),
+              ),
+              Padding(
+              padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.34),
+                child: MediumText(user.phone),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.05),
+                child: Center(child: sendButton()),
+              )
             ],
           )
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SmallText("Introduce un nombre para crear la cita"),
-              TextField(
-                controller: nameController,
-                cursorColor: Color.fromRGBO(230, 73, 90, 1),
-                decoration: InputDecoration(
-                    counterStyle: TextStyle(color: Colors.white),
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white)),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white))),
-                style: TextStyle(color: Colors.white),
+              Padding(
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.15),
+                child: MediumText("Introduce un nombre para crear la cita"),
               ),
-              Center(child: sendButton())
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.05),
+                child: TextField(
+                  textAlign: TextAlign.center,
+                  controller: nameController,
+                  cursorColor: Color.fromRGBO(230, 73, 90, 1),
+                  decoration: InputDecoration(
+                      hintText: "Nombre de la cita",
+                      hintStyle: TextStyle(color:Colors.white),
+                      counterStyle: TextStyle(color: Colors.white),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color:Color.fromRGBO(230, 73, 90, 1))
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color:Color.fromRGBO(230, 73, 90, 1))
+                      )),
+                  style: TextStyle(color: Colors.white),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.15),
+                child: Center(child: sendButton()),
+              )
             ],
           );
   }
 
   Widget numberTextField() {
-    return TextField(
-      controller: phoneController,
-        cursorColor: Color.fromRGBO(230, 73, 90, 1),
-        decoration: InputDecoration(
-            counterStyle: TextStyle(color: Colors.white),
-            enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white)),
-            focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: Colors.white))),
-        style: TextStyle(color: Colors.white),
-        maxLength: 9,
-        onChanged: (content) => onSizeChange(content));
+    return Padding(
+      padding: EdgeInsets.only(top:MediaQuery.of(context).size.width * 0.1),
+      child: TextField(
+        textAlign: TextAlign.center,
+        controller: phoneController,
+          cursorColor: Color.fromRGBO(230, 73, 90, 1),
+          decoration: InputDecoration(
+              counterStyle: TextStyle(color: Colors.white),
+              hintText: "Número de teléfono",
+              hintStyle: TextStyle(color:Colors.white),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(color:Color.fromRGBO(230, 73, 90, 1))
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color:Color.fromRGBO(230, 73, 90, 1))
+              )),
+          style: TextStyle(color: Colors.white),
+          maxLength: 9,
+          onChanged: (content) => onSizeChange(content)),
+    );
   }
 
   Widget cardInfo() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.1),
       child: Container(
-        child: Card(
-          color: Color.fromRGBO(230, 73, 90, 1),
-          child: Padding(
-            padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height *0.02),
-            child: Row(
-              children: <Widget>[
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.03),
+          child: Container(
+            child: Card(
+              color: Color.fromRGBO(230, 73, 90, 1),
+              child: Padding(
+                padding:  EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height *0.02),
+                child: Row(
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                           left: MediaQuery.of(context).size.width * 0.1),
-                      child: MediumText("Tipo"),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                               left: MediaQuery.of(context).size.width * 0.1),
+                          child: MediumText("Tipo"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                               left: MediaQuery.of(context).size.width * 0.1),
+                          child: SmallText(widget.appointment.service.type),
+                        )
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                           left: MediaQuery.of(context).size.width * 0.1),
-                      child: SmallText(widget.appointment.service.type),
-                    )
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                               left: MediaQuery.of(context).size.width * 0.1),
+                          child: MediumText("Duracion"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                               left: MediaQuery.of(context).size.width * 0.1),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.04),
+                            child: SmallText(positionSelected == null
+                                ? " "
+                                : timer["show"][positionSelected]),
+                          ),
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(
+                               left: MediaQuery.of(context).size.width * 0.1),
+                          child: MediumText("Nombre"),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width * 0.12),
+                          child: SmallText(user == null ? " " : user.name),
+                        )
+                      ],
+                    ),
                   ],
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                           left: MediaQuery.of(context).size.width * 0.1),
-                      child: MediumText("Duracion"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                           left: MediaQuery.of(context).size.width * 0.1),
-                      child: SmallText(positionSelected == null
-                          ? " "
-                          : timer["show"][positionSelected]),
-                    )
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(
-                           left: MediaQuery.of(context).size.width * 0.1),
-                      child: MediumText("Nombre"),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: MediaQuery.of(context).size.width * 0.1),
-                      child: SmallText(user == null ? " " : user.name),
-                    )
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
         ),
@@ -220,12 +268,19 @@ class _TimeSelectionState extends State<TimeSelection>
 
   Widget timeSelector() {
     return Padding(
-      padding: const EdgeInsets.only(top: 50),
+      padding: EdgeInsets.only(
+        top: MediaQuery.of(context).size.width * 0.05),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          MediumText(
-            "Duracion del servicio",
+          Padding(
+            padding: EdgeInsets.only(
+              left: MediaQuery.of(context).size.width * 0.3,
+              right: MediaQuery.of(context).size.width * 0.3
+            ),
+            child: MediumText(
+              "Duracion del servicio",
+            ),
           ),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 17, vertical: 4),
