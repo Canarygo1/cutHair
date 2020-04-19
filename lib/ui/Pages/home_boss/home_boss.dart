@@ -48,85 +48,140 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
   Widget build(BuildContext context) {
     global.context = context;
     return Scaffold(
-            backgroundColor: Color.fromRGBO(44, 45, 47, 1),
-            body: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Appbar("Bienvenido jefe"),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: MediumText("Asignar horarios"),
-                  ),
-                  buttonRecharge ? showHairdresserEmpty("No hay empleados") : listEmployees(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: MediaQuery.of(context).size.height * 0.01),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              child: LargeText("Mis horarios"),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                globalMethods().pushPage(
-                                    context, CalendarEmployee(user.name));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
-                                width: MediaQuery.of(context).size.width * 0.39,
-                                child: Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(0, 0, 10, 0),
-                                  child: Container(
+        backgroundColor: Color.fromRGBO(44, 45, 47, 1),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Appbar("Bienvenido jefe"),
+              Padding(
+                padding: const EdgeInsets.only(left: 20),
+                child: MediumText("Asignar horarios"),
+              ),
+              Container(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.03,
+                    left: MediaQuery.of(context).size.width * 0.05),
+                height: MediaQuery.of(context).size.height * 0.28,
+                child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: employees.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          globalMethods().pushPage(
+                              context,
+                              CalendarBoss(
+                                  employees[index], user.hairdressingUid));
+                        },
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 18, 0),
+                            child: Container(
+                              child: Column(
+                                children: <Widget>[
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: Center(
+                                      child: Container(
+                                        child: AspectRatio(
+                                          aspectRatio: 4 / 4,
+                                          child: Image(
+                                            fit: BoxFit.fill,
+                                            height: 10,
+                                            width: 10,
+                                            image: ExactAssetImage(
+                                                "assets/images/privilegeLogo.jpg"),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.fromLTRB(7, 10, 0, 0),
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: Center(
-                                            child: Container(
-                                              child: AspectRatio(
-                                                aspectRatio: 4 / 4,
-                                                child: Image(
-                                                  fit: BoxFit.fill,
-                                                  height: 10,
-                                                  width: 10,
-                                                  image: ExactAssetImage(
-                                                      "assets/images/privilegeLogo.jpg"),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              7, 10, 0, 0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              LargeText(user.name),
-                                            ],
-                                          ),
-                                        ),
+                                        LargeText(employees[index].name),
                                       ],
                                     ),
                                   ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ),
+              Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.01),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Column(
+                      children: <Widget>[
+                        Container(
+                          child: LargeText("Mis horarios"),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            globalMethods().pushPage(context,
+                                CalendarEmployee("Maxi", user.hairdressingUid));
+                          },
+                          child: Container(
+                            padding: EdgeInsets.fromLTRB(15, 20, 0, 0),
+                            width: MediaQuery.of(context).size.width * 0.39,
+                            child: Padding(
+                              padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+                              child: Container(
+                                child: Column(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                      child: Center(
+                                        child: Container(
+                                          child: AspectRatio(
+                                            aspectRatio: 4 / 4,
+                                            child: Image(
+                                              fit: BoxFit.fill,
+                                              height: 10,
+                                              width: 10,
+                                              image: ExactAssetImage(
+                                                  "assets/images/privilegeLogo.jpg"),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(
+                                          7, 10, 0, 0),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          LargeText(user.name),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ));
+            ],
+          ),
+        ));
   }
 
   listEmployees(){
@@ -192,9 +247,11 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
 
   @override
   showHairdresser(List<Employe> employes) {
-    setState(() {
-      employees = employes;
-    });
+    if (mounted) {
+      setState(() {
+        employees = employes;
+      });
+    }
   }
 
   @override
@@ -242,5 +299,15 @@ class _HomeBossState extends State<HomeBoss> implements HomeBossView {
         ),
       ),
     );
+  }
+
+  @override
+  showButtonRecharge() {
+    return null;
+  }
+
+  @override
+  showHairdresserEmpty(String error) {
+    return null;
   }
 }

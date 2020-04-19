@@ -31,7 +31,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   List<Service> detallesServicio = [];
   List<String> listaImagenesFirebase = [];
   List<Widget> child = [];
+
   _DetailScreenState(this.hairDressing);
+
   int _current = 0;
 
   initState() {
@@ -104,7 +106,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                   ),
                 ),
               ),
-              CardService(hairDressing, detallesServicio, () => makecall(hairDressing.phoneNumber.toString())),
+              CardService(hairDressing, detallesServicio,
+                  () => makecall(hairDressing.phoneNumber.toString())),
             ],
           ),
         ));
@@ -112,17 +115,21 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   @override
   showServices(List servicios) {
-    setState(() {
-      detallesServicio = servicios;
-    });
+    if (mounted) {
+      setState(() {
+        detallesServicio = servicios;
+      });
+    }
   }
 
   @override
   showImages(List imagenes) {
-    setState(() {
-      listaImagenesFirebase = imagenes;
-      child = getChilds();
-    });
+    if (mounted) {
+      setState(() {
+        listaImagenesFirebase = imagenes;
+        child = getChilds();
+      });
+    }
   }
 
   Widget sliderImages(BuildContext context) {
@@ -178,6 +185,4 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   makecall(String number) async {
     await launch("tel:" + "+34" + number);
   }
-
-
 }

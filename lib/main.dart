@@ -18,6 +18,7 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
+
   }
 
   @override
@@ -29,7 +30,8 @@ class _MyAppState extends State<MyApp> {
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
         splashColor: Colors.transparent,
-        highlightColor: Colors.transparent
+        highlightColor: Colors.transparent,
+
       ),
       home: SplashScreen(),
     );

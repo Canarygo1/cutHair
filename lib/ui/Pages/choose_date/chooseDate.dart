@@ -210,12 +210,12 @@ class _chooseDateScreenState extends State<chooseDateScreen>
                         int.parse(availablesHours[index].substring(0, 2));
                     int minute =
                         int.parse(availablesHours[index].substring(3, 5));
-
+                    appointment.day = _finalDate;
                     _finalDate = _finalDate
                         .add(new Duration(hours: hour, minutes: minute));
                     appointment.checkIn = _finalDate;
                     appointment.checkOut = _finalDate.add(new Duration(
-                        minutes: int.parse(appointment.service.duracion)));
+                        minutes: int.parse(appointment.service.duration)));
                     globalMethods()
                         .pushPage(context, ConfirmScreen(appointment));
                   }
@@ -256,8 +256,10 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   @override
   showAvailability(List<String> availability) {
-    setState(() {
-      this.availability = availability;
-    });
+    if (mounted) {
+      setState(() {
+        this.availability = availability;
+      });
+    }
   }
 }

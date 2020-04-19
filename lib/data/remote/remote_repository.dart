@@ -24,6 +24,10 @@ abstract class RemoteRepository {
 
   Future<HairDressing> getHairdressingByUid(String hairdressingUid);
 
+  Future<User> getUserByPhoneNumber(String phoneNumber);
+
+  Future<User> insertAnonymousUser(User user);
+  
   Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours);
 
   Future<Schedule> getRange(String day, Employe employe, String hairDressingUid);

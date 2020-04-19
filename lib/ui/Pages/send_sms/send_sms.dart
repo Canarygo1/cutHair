@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
-class sendSMS extends StatelessWidget {
+class SendSMS extends StatelessWidget {
   Map mapa;
   String password;
   TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  sendSMS(this.mapa, this.password);
+  SendSMS(this.mapa, this.password);
 
   @override
   Widget build(BuildContext context) {

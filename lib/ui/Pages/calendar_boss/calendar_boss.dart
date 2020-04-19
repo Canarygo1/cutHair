@@ -6,10 +6,11 @@ import 'package:cuthair/model/employe.dart';
 import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
+import 'package:cuthair/ui/Components/schedules_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
-import 'calendar_boss_presenter.dart';
+import 'calendar_presenter.dart';
 
 class CalendarBoss extends StatefulWidget {
   Employe employe;
@@ -21,9 +22,8 @@ class CalendarBoss extends StatefulWidget {
   _CalendarBossState createState() => _CalendarBossState();
 }
 
-class _CalendarBossState extends State<CalendarBoss>
-    implements CalendarBossView {
-  CalendarBossPresenter _calendarBossPresenter;
+class _CalendarBossState extends State<CalendarBoss> implements CalendarView {
+  CalendarPresenter calendarPresenter;
   DateTime _currentDate2;
   EventList<Event> _markedDateMap = new EventList<Event>();
   List<DateTime> dates = [];
@@ -51,16 +51,15 @@ class _CalendarBossState extends State<CalendarBoss>
       height: MediaQuery.of(context).size.height * 0.57,
       child: CalendarCarousel<Event>(
         onDayPressed: (DateTime date, List<Event> events) {
-          this.setState((){
-            if(dates.contains(date)){
+          this.setState(() {
+            if (dates.contains(date)) {
               dates.remove(date);
               _markedDateMap.getEvents(date).clear();
-              days.removeWhere( (item) => item.uid == date);
+              days.removeWhere((item) => item.uid == date);
               _currentDate2 = null;
-            }else{
+            } else {
               _currentDate2 = date;
             }
-
           });
         },
         weekendTextStyle: TextStyle(
@@ -111,8 +110,6 @@ class _CalendarBossState extends State<CalendarBoss>
           bool isThisMonthDay,
           DateTime day,
         ) {
-
-
           if (day == _currentDate2 &&
               (day.isAfter(DateTime.now()) || isToday)) {
             _markedDateMap.getEvents(day).clear();
@@ -121,11 +118,8 @@ class _CalendarBossState extends State<CalendarBoss>
 
             if (!dates.contains(day)) {
               dates.add(day);
-              _calendarBossPresenter.init(day.toString());
+              calendarPresenter.init(day.toString());
             }
-
-
-
 
             return Center(
               child: Container(
@@ -185,7 +179,6 @@ class _CalendarBossState extends State<CalendarBoss>
                       dates[i], labels.start.toString(), labels.end.toString());
                   newdays.add(day);
                 }
-
                 insertSchedule();
                 dates.clear();
                 days.clear();
@@ -218,72 +211,10 @@ class _CalendarBossState extends State<CalendarBoss>
     );
   }
 
-  Widget schedules() => Container(
-        padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-        height: MediaQuery.of(context).size.height * 0.90,
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-            shrinkWrap: true,
-            itemCount: days.length,
-            itemBuilder: (context, index) {
-              return Container(
-                child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: days[index].ranges.length,
-                    itemBuilder: (context, indexranges) {
-                      return Container(
-                        margin:
-                            EdgeInsets.symmetric(horizontal: 0, vertical: 10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                          color: Colors.white,
-                        ),
-                        child: ListTile(
-                          dense: true,
-                          title: Text(
-                            days[index].uid.day.toString() +
-                                "-" +
-                                days[index].uid.month.toString() +
-                                "-" +
-                                days[index].uid.year.toString(),
-                          ),
-                          subtitle: Text('Hora de entrada: ' +
-                              days[index].ranges[indexranges]["Entrada"] +
-                              ":00" +
-                              ' hora de salida: ' +
-                              days[index].ranges[indexranges]["Salida"] +
-                              ":00"),
-                          trailing: GestureDetector(
-                            onTap: () {
-                              setState(() {
-
-                                removeSchedule(days[index].uid, this.widget.employe, this.widget.hairDressingUid, days[index].ranges[indexranges]);
-                                /*_markedDateMap.removeAll(days[index].uid);
-                                dates.remove(days[index].uid);*/
-                                days[index].ranges.removeAt(indexranges);
-                                //days.removeAt(index);
-
-                              });
-                            },
-                            child: Container(
-                              child: Icon(
-                                Icons.restore_from_trash,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-              );
-            }),
-      );
-
   @override
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _calendarBossPresenter = CalendarBossPresenter(
+    calendarPresenter = CalendarPresenter(
         this, widget.employe, this.widget.hairDressingUid, _remoteRepository);
     super.initState();
   }
@@ -302,7 +233,8 @@ class _CalendarBossState extends State<CalendarBoss>
             buttonAddSchedule(),
             divider(),
             LargeText("Horarios añadidos"),
-            schedules(),
+            ScheduleScreen(this.days, this.widget.employe.name,
+                this.widget.hairDressingUid),
           ],
         ),
       ),
@@ -311,19 +243,17 @@ class _CalendarBossState extends State<CalendarBoss>
 
   @override
   insertSchedule() {
-    _calendarBossPresenter.insertSchedule(newdays);
+    if (mounted) {
+      calendarPresenter.insertSchedule(newdays);
+    }
   }
 
   @override
   updateList(Schedule schedule) {
-    setState(() {
-      if(schedule != null) this.days.add(schedule);
-    });
-  }
-
-  @override
-  removeSchedule(DateTime day, Employe employe, String hairDressingUid, Map ranges) {
-    _calendarBossPresenter.removeSchedule(day, employe, hairDressingUid, ranges);
-    return null;
+    if (mounted) {
+      setState(() {
+        if (schedule != null) this.days.add(schedule);
+      });
+    }
   }
 }

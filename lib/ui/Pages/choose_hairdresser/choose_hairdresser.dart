@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -58,14 +59,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
                 child: MediumText(nombres[index].name),
                 onPressed: () {
                   appointment.employe = nombres[index];
-                  if (appointment.user.permission == 3) {
-                    globalMethods()
-                        .pushPage(context, chooseDateScreen(appointment));
-                  }
-                  if (appointment.user.permission == 1) {
-                    globalMethods()
-                        .pushPage(context, TimeSelection(appointment));
-                  }
+                  presenter.nextScreen(appointment);
                 },
                 shape: RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0),
@@ -103,13 +97,23 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   @override
   showEmployes(List employes) {
-    setState(() {
-      nombres = employes;
-    });
+    if (mounted) {
+      setState(() {
+        nombres = employes;
+      });
+    }
   }
 
   @override
-  goToNextScreen(int index) {
-    return null;
+  goToCalendar() {
+    globalMethods()
+          .pushPage(context, chooseDateScreen(appointment));
   }
+
+  @override
+  goToTimeSelection() {
+    globalMethods()
+        .pushPage(context, TimeSelection(appointment));
+  }
+
 }

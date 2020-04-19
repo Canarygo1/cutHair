@@ -44,8 +44,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .getDocuments();
     List<Service> services = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      String tipo = querySnapshot.documents[i].documentID;
-      services.add(Service.fromMap(querySnapshot.documents[i].data, tipo));
+      services.add(Service.fromMap(querySnapshot.documents[i].data));
     }
 
     if (services.length >= 1) {
@@ -115,30 +114,29 @@ class HttpRemoteRepository implements RemoteRepository {
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
-      val.add(date.hour.toString() + "-" + date.minute.toString());
+      val.add(date.hour.toString() + '-' + date.minute.toString());
     }
-
     firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .collection("horarios")
-        .document("2020-04-13 00:00:00.000")
+        .document(appointment.day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("citas")
         .add({
       "Peluquero": appointment.employe.name,
       "idUsuario": uid,
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
-      "Peluqueria": "Privilege",
-      "Servicio": appointment.service.tipo,
-      "Precio": appointment.service.precio
+      "Peluqueria":"Privilege",
+      "Servicio":appointment.service.tipo,
+      "Precio":appointment.service.precio
     });
 
     List refList = [docRef];
@@ -146,20 +144,22 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Usuarios")
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-//Todo:Hay que hacer que la peluqueria sea una variable
     await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(appointment.hairDressing.uid)
         .collection("empleados")
-        .document("Carlos")
+        .document(appointment.employe.name)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     return null;
   }
 
   @override
-  Future<bool> insertSchedule(String employe, String hairDressingUid,
-      String day, List<Map<String, dynamic>> schedules,
+  Future<bool> insertSchedule(
+      String employe,
+      String hairDressingUid,
+      String day,
+      List<Map<String, dynamic>> schedules,
       List<String> hours) async {
     await firestore
         .collection("Peluquerias")
@@ -168,8 +168,10 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(employe)
         .collection("horarios")
         .document(day)
-        .setData({"turnos": FieldValue.arrayUnion(schedules),
-      "disponibilidad": FieldValue.arrayUnion(hours), "Uid": day}, merge: true);
+        .setData({
+      "turnos": FieldValue.arrayUnion(schedules),
+      "disponibilidad": FieldValue.arrayUnion(hours)
+    }, merge: true);
   }
 
   @override
@@ -215,11 +217,39 @@ class HttpRemoteRepository implements RemoteRepository {
       String hairDressingUid) async {
     DocumentSnapshot documentSnapshot = await firestore.collection(
         "Peluquerias")
+  Future<User> getUserByPhoneNumber(String phoneNumber) async {
+    User user;
+    CollectionReference collectionReference = firestore.collection("Usuarios");
+    var query = await collectionReference
+        .where('Telefono', isEqualTo: phoneNumber)
+        .getDocuments()
+        .then((snapshot) {
+      if (snapshot.documents.length < 1) {
+        throw Exception;
+      }
+      return [snapshot.documents[0].data, snapshot.documents[0].documentID];
+    }).then((data) async {
+      user = User.fromMap(data[0], data[1]);
+    });
+    return user;
+  }
+
+  @override
+  Future<User> insertAnonymousUser(User user) async {
+    DocumentReference docRef = await firestore.collection("Anonimos").add({
+      "Nombre": user.name,
+      "Telefono": user.phone,
+    });
+    user.uid = docRef.documentID;
+    return user;
+  }
+
         .document(hairDressingUid)
         .collection("empleados")
         .document(employe.name)
         .collection("horarios")
-        .document(day).get();
+        .document(day)
+        .get();
 
     if (documentSnapshot.data != null) {
       Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
@@ -230,16 +260,13 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<bool> removeRange(DateTime day, Employe employe,
-      String hairDressingUid, Map ranges) {
+  Future<bool> removeRange(
+      DateTime day, String name, String hairDressingUid, Map ranges) {
     var val = [];
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
 
-    var duration =
-        checkOut
-            .difference(checkIn)
-            .inMinutes;
+    var duration = checkOut.difference(checkIn).inMinutes;
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = checkIn.add(Duration(minutes: (10 * i)));
@@ -253,17 +280,16 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Peluquerias")
         .document(hairDressingUid)
         .collection("empleados")
-        .document(employe.name)
+        .document(name)
         .collection("horarios")
         .document(day.toString())
         .updateData({"turnos": FieldValue.arrayRemove(maplist)});
-
 
     firestore
         .collection("Peluquerias")
         .document(hairDressingUid)
         .collection("empleados")
-        .document(employe.name)
+        .document(name)
         .collection("horarios")
         .document(day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});

@@ -7,7 +7,6 @@ class HairDressing {
   var phoneNumber;
   var numeroFotos;
 
-
   HairDressing(this.name, this.shortDirection, this.direction, this.type,
       this.phoneNumber, this.numeroFotos, this.uid);
 
