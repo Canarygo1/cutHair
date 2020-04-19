@@ -32,7 +32,7 @@ abstract class RemoteRepository {
 
   Future<Schedule> getRange(String day, Employe employe, String hairDressingUid);
 
-  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, Map ranges);
+  Future<bool> removeRange(DateTime day, Employe employe, String hairDressingUid, Map ranges);
 
   Future<bool> removeAppointment(MyAppointment appointment, int index);
 }
