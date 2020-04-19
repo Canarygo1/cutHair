@@ -18,7 +18,7 @@ class Info extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<Info> {
+class _InfoScreenState extends State<Info>  {
   User user;
   Widget screen;
 
