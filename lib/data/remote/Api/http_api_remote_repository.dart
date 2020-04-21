@@ -11,6 +11,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
   Future<List<String>> getAvailability(String duration, String hairdresser, String date) async {
     var uri = Uri.parse("https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getData");
     List<String> availabity = [];
+    print(date+" "+ hairdresser+" "+duration+ " ");
     uri = uri.replace(queryParameters:<String,String>{
       "date":date,
       "peluquero":hairdresser,
@@ -23,4 +24,5 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
     return availabity;
   }
 }
+
 
