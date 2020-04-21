@@ -1,3 +1,4 @@
+import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,6 @@ import 'login_presenter.dart';
 class login extends StatelessWidget {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
   Widget emailTextField(BuildContext context) {
     return Container(
       child: Padding(
@@ -92,6 +92,7 @@ class login extends StatelessWidget {
         child: RaisedButton(
           child: LargeText('Entrar'),
           onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
             loginCode().iniciarSesion(emailController.text.toString(),
                 passwordController.text.toString(), context);
           },
@@ -185,6 +186,7 @@ class login extends StatelessWidget {
             ],
           ),
           onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
             facebookLogin(context).then((user) {
             });
           },
