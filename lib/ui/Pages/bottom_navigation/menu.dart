@@ -64,7 +64,7 @@ class _menuState extends State<Menu> implements MenuView{
                       title: Text("")),
                   BottomNavigationBarItem(
                       icon: Icon(
-                        Icons.add,
+                        Icons.home,
                       ),
                       title: Text("")),
                   BottomNavigationBarItem(

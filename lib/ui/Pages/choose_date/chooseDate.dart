@@ -49,7 +49,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
     "11:30",
     "15:00",
     "15:45",
-    "17:00"
+    "18:20"
   ];
 
   List<String> availablesHours = [];
