@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/getTimeSeparated.dart';
 import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';
@@ -112,8 +113,9 @@ class HttpRemoteRepository implements RemoteRepository {
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
-      val.add(date.hour.toString() + '-' + date.minute.toString());
+      val.add(date.hour.toString() + ':' + date.minute.toString());
     }
+
     firestore
         .collection("Peluquerias")
         .document(appointment.hairDressing.uid)
@@ -134,7 +136,8 @@ class HttpRemoteRepository implements RemoteRepository {
       "CheckOut": appointment.checkOut.toString(),
       "Peluqueria": appointment.hairDressing.name,
       "Servicio": appointment.service.type,
-      "Precio": appointment.service.price
+      "Precio": appointment.service.price,
+      "Direccion": appointment.hairDressing.direction
     });
 
     List refList = [docRef];
@@ -177,15 +180,20 @@ class HttpRemoteRepository implements RemoteRepository {
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
         await firestore.collection("Usuarios").document(uid).get();
+
     for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
-      await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
+       await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
+
         DocumentReference documentReference = documentSnapshot.data['citas'][i];
-        MyAppointment myAppointment = MyAppointment.fromMap(
-            datasnapshot.data, documentReference.documentID);
+
+        MyAppointment myAppointment = MyAppointment.fromMap(datasnapshot.data,
+            documentReference.documentID);
+
         return myAppointment;
       }).then((myAppointment) {
         myAppointments.add(myAppointment);
       });
+
     }
 
     if (myAppointments.length >= 1) {
@@ -213,17 +221,13 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<bool> removeRange(
-      DateTime day, String name, String hairDressingUid, Map ranges) {
+      DateTime day, String name, String hairDressingUid, Map ranges) async {
     var val = [];
+
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
 
-    var duration = checkOut.difference(checkIn).inMinutes;
-    duration ~/= 10;
-    for (int i = 0; duration > i; i++) {
-      DateTime date = checkIn.add(Duration(minutes: (10 * i)));
-      val.add(date.hour.toString() + "-" + date.minute.toString());
-    }
+    val = await getTimeSeparated.getTimeSeparatedBy10(checkIn, checkOut);
 
     var maplist = [];
     maplist.add(ranges);
@@ -277,8 +281,23 @@ class HttpRemoteRepository implements RemoteRepository {
     DocumentReference documentReference = documentsnap.data["citas"][index];
     String idPeluqueria = documentReference.parent().parent().documentID;
 
+
     List ref = [];
-    ref.add(documentReference.path);
+    ref.add(documentReference);
+
+    String checkIn = DateTime.parse(appointment.checkIn).hour.toString() + ":" + DateTime.parse(appointment.checkIn).minute.toString();
+    String checkOut = DateTime.parse(appointment.checkOut).hour.toString() + ":" + DateTime.parse(appointment.checkOut).minute.toString();
+
+    DateTime date = DateTime.parse(appointment.checkIn);
+    DateTime subtract = date.subtract(Duration(hours: date.hour, minutes: date.minute));
+
+    List<String> val = [];
+    val = getTimeSeparated.getHours(checkIn, checkOut, subtract);
+
+    Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria);
+    schedule.disponibility.forEach((value) => val.add(value));
+
+    val.sort();
 
     await firestore
         .collection("Peluquerias")
@@ -291,6 +310,24 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Usuarios")
         .document(user.uid)
         .updateData({"citas": FieldValue.arrayRemove(ref)});
+
+    await firestore
+        .collection("Peluquerias")
+        .document(idPeluqueria)
+        .collection("empleados")
+        .document(appointment.hairdresser)
+        .collection("horarios")
+        .document(subtract.toString())
+        .updateData({"disponibilidad": FieldValue.arrayRemove(schedule.disponibility)});
+
+    await firestore
+        .collection("Peluquerias")
+        .document(idPeluqueria)
+        .collection("empleados")
+        .document(appointment.hairdresser)
+        .collection("horarios")
+        .document(subtract.toString())
+        .updateData({"disponibilidad": FieldValue.arrayUnion(val)});
 
     documentReference.delete();
   }

@@ -7,22 +7,29 @@ class ClientAppointmentsPresenter {
 
   ClientAppointmentsPresenter(this._view, this._remoteRepository);
 
-  init() async {
+  init(String uid) async {
     try {
-      List<MyAppointment> myAppointments = await _remoteRepository
-          .getUserAppointments("BCEcwbhSYNVf68upkb8RQ9QHxdA2");
-      await _view.showAppointments(myAppointments);
+       _view.showAppointments(await _remoteRepository
+           .getUserAppointments(uid));
     }catch(e){
       print(e.toString());
     }
   }
 
+  removeAppointment(MyAppointment appointment, int index, String uid) async{
 
-  removeAppointment(MyAppointment appointment, int index){
-    _remoteRepository.removeAppointment(appointment, index);
+    try{
+      await _remoteRepository.removeAppointment(appointment, index);
+      _view.showAppointments(await _remoteRepository
+          .getUserAppointments(uid));
+    }catch(Exception){
+      _view.emptyAppointment();
+    }
+
   }
 }
 
 abstract class MyAppointmentsView {
   showAppointments(List<MyAppointment> myAppointment);
+  emptyAppointment();
 }

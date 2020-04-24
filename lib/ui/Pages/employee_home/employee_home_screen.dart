@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 
 class EmployeeHome extends StatefulWidget {
   User user;
-
   EmployeeHome(this.user);
 
   @override

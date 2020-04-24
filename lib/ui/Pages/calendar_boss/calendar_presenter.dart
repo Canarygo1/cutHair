@@ -1,6 +1,7 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/day.dart';
 import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/getTimeSeparated.dart';
 import 'package:cuthair/model/schedule.dart';
 
 class CalendarPresenter {
@@ -29,17 +30,8 @@ class CalendarPresenter {
     String finalHour = days[0].checkOut.length == 4
         ? days[0].checkOut.substring(0, 1)
         : days[0].checkOut.substring(0, 2);
-    DateTime initialTime = days[0].dayId;
-    DateTime finalTime = days[0].dayId;
-    initialTime =
-        initialTime.add(Duration(hours: int.parse(initialHour), minutes: 0));
-    finalTime =
-        finalTime.add(Duration(hours: int.parse(finalHour), minutes: 0));
-    while (initialTime.hour < finalTime.hour) {
-      hours.add(
-          initialTime.hour.toString() + ":" + initialTime.minute.toString());
-      initialTime = initialTime.add(Duration(minutes: 10));
-    }
+
+    hours = getTimeSeparated.getHours(days[0].checkIn, days[0].checkOut, days[0].dayId);
 
     List<Map<String, dynamic>> schedules = [];
     Map<String, dynamic> range = {"Entrada": initialHour, "Salida": finalHour, "Uid": ""};

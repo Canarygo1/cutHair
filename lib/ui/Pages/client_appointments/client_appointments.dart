@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
@@ -30,7 +31,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
 
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
-    _presenter.init();
+    _presenter.init(DBProvider.users[0].uid);
   }
 
   @override
@@ -40,9 +41,12 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     global.context = context;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[Appbar("Mis citas"), myAppointment()],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[Appbar("Mis citas"), myAppointment()],
+        ),
       ),
     );
   }
@@ -55,7 +59,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
         : ListView.builder(
             shrinkWrap: true,
             primary: false,
-            itemCount: 1,
+            itemCount: myAppointments.length,
             itemBuilder: (context, index) {
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.06),
@@ -68,7 +72,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.fromLTRB(WIDHT * 0.025, HEIGHT * 0.01, WIDHT * 0.025, 0),
+                        padding: EdgeInsets.fromLTRB(
+                            WIDHT * 0.025, HEIGHT * 0.01, WIDHT * 0.025, 0),
                         child: Column(
                           children: <Widget>[
                             AspectRatio(
@@ -81,7 +86,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.013),
+                        padding: EdgeInsets.only(
+                            left: WIDHT * 0.025, top: HEIGHT * 0.013),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -89,22 +95,28 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: HEIGHT * 0.006),
                                   child: MediumText(myAppointments
                                       .elementAt(index)
                                       .hairdressing),
                                 ),
                                 Padding(
-                                    padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: HEIGHT * 0.006),
                                     child: MediumText(
                                         myAppointments.elementAt(index).type)),
                                 Container(
                                     width: MediaQuery.of(context).size.width *
                                         0.62,
-                                    padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                                    child: MediumText(myAppointments.elementAt(index).direction)),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: HEIGHT * 0.006),
+                                    child: MediumText(myAppointments
+                                        .elementAt(index)
+                                        .direction)),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: HEIGHT * 0.006),
                                   child: MediumText(myAppointments
                                       .elementAt(index)
                                       .hairdresser),
@@ -112,7 +124,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                               ],
                             ),
                             Padding(
-                              padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
+                              padding:
+                                  EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                               child: Column(
                                 children: <Widget>[
                                   SmallText(DateTime.parse(myAppointments
@@ -135,7 +148,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                   Stack(
                                     children: <Widget>[
                                       Padding(
-                                        padding: EdgeInsets.only(top: HEIGHT * 0.006),
+                                        padding: EdgeInsets.only(
+                                            top: HEIGHT * 0.006),
                                         child: SmallText(
                                           DateTime.parse(myAppointments
                                                       .elementAt(index)
@@ -152,7 +166,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(top: HEIGHT * 0.045),
+                                        padding: EdgeInsets.only(
+                                            top: HEIGHT * 0.045),
                                         child: SmallText(DateTime.parse(
                                                     myAppointments
                                                         .elementAt(index)
@@ -168,7 +183,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                                     .toString())),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(top: HEIGHT * 0.01, left: WIDHT * 0.098),
+                                        padding: EdgeInsets.only(
+                                            top: HEIGHT * 0.01,
+                                            left: WIDHT * 0.098),
                                         child: Container(
                                             height: 30,
                                             child: VerticalDivider(
@@ -179,7 +196,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                             )),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(top: HEIGHT * 0.005, left: WIDHT * 0.086),
+                                        padding: EdgeInsets.only(
+                                            top: HEIGHT * 0.005,
+                                            left: WIDHT * 0.086),
                                         child: Container(
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
@@ -190,7 +209,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                         ),
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(top: HEIGHT * 0.048, left: WIDHT * 0.09),
+                                        padding: EdgeInsets.only(
+                                            top: HEIGHT * 0.048,
+                                            left: WIDHT * 0.09),
                                         child: Container(
                                           decoration: BoxDecoration(
                                               shape: BoxShape.circle,
@@ -217,7 +238,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                             ),
                             color: Color.fromRGBO(230, 73, 90, 1),
                             onPressed: () {
-                                _presenter.removeAppointment(myAppointments[index], index);
+                              _presenter.removeAppointment(
+                                  myAppointments[index], index, DBProvider.users[0].uid);
+
                             }),
                       ),
                     ],
@@ -241,6 +264,15 @@ class _ClientAppointmentsState extends State<ClientAppointments>
       return time + "0";
     } else {
       return time;
+    }
+  }
+
+  @override
+  emptyAppointment() {
+    if (mounted) {
+      setState(() {
+        myAppointments = [];
+      });
     }
   }
 }
