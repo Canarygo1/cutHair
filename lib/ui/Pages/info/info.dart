@@ -38,7 +38,7 @@ class _InfoScreenState extends State<Info>  {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        height: MediaQuery.of(context).size.height * 0.10,
+        height: MediaQuery.of(context).size.height * 0.08,
         buttonColor: Color.fromRGBO(230, 73, 90, 1),
       ),
     );
@@ -73,19 +73,16 @@ class _InfoScreenState extends State<Info>  {
           ],
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(
-              MediaQuery.of(context).size.width * 0.2,
-              MediaQuery.of(context).size.height * 0.04,
-              0.0,
-              MediaQuery.of(context).size.height * 0.04),
+          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: 10.0, bottom: 30.0),
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
+                    bottom: MediaQuery.of(context).size.width* 0.1),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 30.0),
+                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
                       child: Text("Nombre: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -100,11 +97,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, bottom: 30.0),
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
+                    bottom: MediaQuery.of(context).size.width* 0.1),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 30.0),
+                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
                       child: Text("Apellido: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -119,11 +117,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, bottom: 30.0),
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
+                    bottom: MediaQuery.of(context).size.width* 0.1),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 40.0),
+                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.09),
                       child: Text("Correo: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -138,11 +137,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: 10.0, bottom: 0.0),
+                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
+                    bottom: MediaQuery.of(context).size.width* 0.1),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: 25.0),
+                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
                       child: Text("Teléfono: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
