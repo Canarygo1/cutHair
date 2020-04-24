@@ -170,6 +170,11 @@ PODS:
     - Flutter
   - cloud_firestore_web (0.1.0):
     - Flutter
+  - connectivity (0.0.1):
+    - Flutter
+    - Reachability
+  - connectivity_macos (0.0.1):
+    - Flutter
   - FBSDKCoreKit (5.13.1):
     - FBSDKCoreKit/Basics (= 5.13.1)
     - FBSDKCoreKit/Core (= 5.13.1)
@@ -322,6 +327,7 @@ PODS:
     - Flutter
   - path_provider_macos (0.0.1):
     - Flutter
+  - Reachability (3.2)
   - sms (0.0.1):
     - Flutter
   - sqflite (0.0.1):
@@ -337,6 +343,8 @@ PODS:
 DEPENDENCIES:
   - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - cloud_firestore_web (from `.symlinks/plugins/cloud_firestore_web/ios`)
+  - connectivity (from `.symlinks/plugins/connectivity/ios`)
+  - connectivity_macos (from `.symlinks/plugins/connectivity_macos/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_auth_web (from `.symlinks/plugins/firebase_auth_web/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
@@ -380,12 +388,17 @@ SPEC REPOS:
   trunk:
     - FirebaseStorage
     - FMDB
+    - Reachability
 
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: ".symlinks/plugins/cloud_firestore/ios"
   cloud_firestore_web:
     :path: ".symlinks/plugins/cloud_firestore_web/ios"
+  connectivity:
+    :path: ".symlinks/plugins/connectivity/ios"
+  connectivity_macos:
+    :path: ".symlinks/plugins/connectivity_macos/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_auth_web:
@@ -422,6 +435,8 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   cloud_firestore: 85aabb8ad61987d6d139f8788ff86229c3506a2f
   cloud_firestore_web: 9ec3dc7f5f98de5129339802d491c1204462bfec
+  connectivity: 6e94255659cc86dcbef1d452ad3e0491bb1b3e75
+  connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
   FBSDKCoreKit: 8fb98209109fb684937f05d534305edb18c20207
   FBSDKLoginKit: c7c6ffd9ca9ea45aee32361840af040ad8f6706a
   Firebase: 0219bb4782eb1406f1b9b0628a2e625484ce910d
@@ -454,6 +469,7 @@ SPEC CHECKSUMS:
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   path_provider: fb74bd0465e96b594bb3b5088ee4a4e7bb1f2a9d
   path_provider_macos: f760a3c5b04357c380e2fddb6f9db6f3015897e0
+  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   sms: 1e6c3082da09f2a4961d61bc254cc86865993ffd
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   url_launcher: a1c0cc845906122c4784c542523d8cacbded5626

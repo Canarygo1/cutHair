@@ -20,7 +20,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
     var response = await _client.get(uri);
     availabity = json.decode(response.body).cast<String>();
-
+    print(response.body);
     return availabity;
   }
 }
