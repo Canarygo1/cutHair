@@ -13,6 +13,7 @@ import 'package:cuthair/ui/Pages/time_selection/time_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../../data/remote/check_connection.dart';
 import 'choose_hairdresser_presenter.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {

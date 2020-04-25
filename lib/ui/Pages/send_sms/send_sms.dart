@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:toast/toast.dart';
 
+import '../../../data/remote/check_connection.dart';
+
 class SendSMS extends StatefulWidget {
   Map data;
   String password;
@@ -184,7 +186,10 @@ class _SendSMSState extends State<SendSMS> {
               fontSize: 20.0,
             ),
           ),
-          onPressed: () => verifyPhone(),
+          onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
+            verifyPhone();
+          },
           shape: RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(10.0),
           ),
@@ -212,6 +217,7 @@ class _SendSMSState extends State<SendSMS> {
             borderRadius: new BorderRadius.circular(10.0),
           ),
           onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
             signIn(codeController.text);
           },
         ),
