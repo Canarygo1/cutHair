@@ -9,6 +9,7 @@ import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'client_appointments_presenter.dart';
 
 class ClientAppointments extends StatefulWidget {
@@ -22,15 +23,16 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   globalMethods global = globalMethods();
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
+  bool isConsulting = false;
   double HEIGHT;
   double WIDHT;
 
   @override
   initState() {
     super.initState();
-
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
+    isConsulting = true;
     _presenter.init(DBProvider.users[0].uid);
   }
 
@@ -52,10 +54,30 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   }
 
   Widget myAppointment() {
-    return myAppointments.length == 0
-        ? SpinKitPulse(
-            color: Colors.red,
-          )
+    return isConsulting == true ? SpinKitWave(
+      color: Color.fromRGBO(230, 73, 90, 1),
+      type: SpinKitWaveType.start,
+    ) :  myAppointments.length == 0
+        ? Center(
+          child: Column(
+              children: <Widget>[
+                SvgPicture.asset(
+                  "assets/images/sad.svg",
+                  width: 90,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.03),
+                  child: Column(
+                    children: <Widget>[
+                      MediumText("Vaya! Parece que todavia no tienes citas reservadas"),
+                      MediumText("Pruedes reservarlas en el home"),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+        )
         : ListView.builder(
             shrinkWrap: true,
             primary: false,
@@ -239,8 +261,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                             color: Color.fromRGBO(230, 73, 90, 1),
                             onPressed: () {
                               _presenter.removeAppointment(
-                                  myAppointments[index], index, DBProvider.users[0].uid);
-
+                                  myAppointments[index],
+                                  index,
+                                  DBProvider.users[0].uid);
                             }),
                       ),
                     ],
@@ -254,6 +277,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   showAppointments(List<MyAppointment> myAppointment) {
     if (mounted) {
       setState(() {
+        print("hola");
+        isConsulting = false;
         myAppointments = myAppointment;
       });
     }
@@ -271,6 +296,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   emptyAppointment() {
     if (mounted) {
       setState(() {
+        isConsulting = false;
         myAppointments = [];
       });
     }

@@ -12,7 +12,7 @@ class ClientAppointmentsPresenter {
        _view.showAppointments(await _remoteRepository
            .getUserAppointments(uid));
     }catch(e){
-      print(e.toString());
+      _view.emptyAppointment();
     }
   }
 
