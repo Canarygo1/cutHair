@@ -1,6 +1,6 @@
 import 'package:cuthair/data/local/db_sqlite.dart';
+import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +9,9 @@ import 'dart:ui';
 import 'dart:async';
 
 class ConfirmAnimation extends StatefulWidget {
-  ConfirmAnimation() : super();
+  ConfirmAnimation(this.appointment) : super();
+  Appointment appointment;
+
 
   final String title = "Custom Paint Demo";
 
@@ -185,7 +187,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                       ?
                   MediumText("Con los mejores profesionales")
                       :
-                  MediumText("En Privilege")
+                  MediumText("En "+widget.appointment.hairDressing.name)
                   ,
                 ],
               ),
