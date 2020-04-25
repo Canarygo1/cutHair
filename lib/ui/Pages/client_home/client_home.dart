@@ -54,6 +54,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
+                      ConnectionChecked.checkInternetConnectivity(context);
                       HairDressing hairDressing = peluquerias[index];
                       globalMethods()
                           .pushPage(context, DetailScreen(hairDressing));
