@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
 import 'choose_date_presenter.dart';
 
@@ -258,7 +259,21 @@ class _chooseDateScreenState extends State<chooseDateScreen>
       type: SpinKitWaveType.start,
     ) : availability.isEmpty ? Padding(
       padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03,left: MediaQuery.of(context).size.width * 0.03),
-      child: MediumText("Lo sentimos, no hay horas disponibles.Prueba con otro día"),
+      child: Column(
+
+        children: <Widget>[
+          SvgPicture.asset("assets/images/sad.svg",width: 90,),
+          Padding(
+            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03 ),
+            child: Column(
+              children: <Widget>[
+                MediumText("Lo sentimos, no hay horas disponibles."),
+                MediumText("Prueba con otro día."),
+              ],
+            ),
+          ),
+        ],
+      ),
     ) : Padding(
       padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.05),
       child: Column(
@@ -279,20 +294,21 @@ class _chooseDateScreenState extends State<chooseDateScreen>
                           child: LargeText(availability.elementAt(index)),
                           onPressed: () {
                             if (_finalDate != null) {
-                              int hour = int.parse(
-                                  availability[index].substring(0, 2));
-                              int minute = int.parse(
-                                  availability[index].substring(3, 5));
+                              List hours =
+                              availability[index].split(":");
+                              int hour = int.parse(hours[0]);
+                              int minute = int.parse(hours[1]);
                               appointment.day = _finalDate;
                               _finalDate = _finalDate.add(
-                                  new Duration(hours: hour, minutes: minute));
+                                  new Duration(
+                                      hours: hour, minutes: minute));
                               appointment.checkIn = _finalDate;
                               appointment.checkOut = _finalDate.add(
                                   new Duration(
-                                      minutes: int.parse(
-                                          appointment.service.duration)));
-                              globalMethods().pushPage(
-                                  context, ConfirmScreen(appointment));
+                                      minutes: int.parse(appointment
+                                          .service.duration)));
+                              globalMethods().pushPage(context,
+                                  ConfirmScreen(appointment));
                             }
                           },
                           shape: RoundedRectangleBorder(

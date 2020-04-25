@@ -3,11 +3,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
+import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 import 'confirm_screen_presenter.dart';
@@ -123,14 +125,6 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                         child: LargeText('Cancelar cita'),
                         onPressed: () {
                           play();
-                          Toast.show(
-                            "Cancelar",
-                            context,
-                            gravity: Toast.BOTTOM,
-                            textColor: Colors.black,
-                            duration: Toast.LENGTH_LONG,
-                            backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-                          );
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0),
@@ -151,14 +145,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                         onPressed: () {
                           play();
                           _confirmScreenPresenter.init(appointment);
-                          Toast.show(
-                            "Cita reservada",
-                            context,
-                            gravity: Toast.BOTTOM,
-                            textColor: Colors.black,
-                            duration: Toast.LENGTH_LONG,
-                            backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-                          );
+                          changeScreen();
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0),
@@ -184,10 +171,10 @@ class _ConfirmScreenState extends State<ConfirmScreen>
     if (lista != null) {
       screen = Menu(lista[0]);
     }
-    new Timer(Duration(seconds: 1), changeScreen);
+    changeScreen();
   }
 
   changeScreen() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
+      globalMethods().pushPage(context, ConfirmAnimation());
   }
 }
