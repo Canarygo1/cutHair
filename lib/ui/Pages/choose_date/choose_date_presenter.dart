@@ -12,11 +12,12 @@ class ChooseDatePresenter{
           duration, hairdresser, date);
       _view.showAvailability(availability);
     }catch(e){
-      print(e.toString());
+      _view.emptyAvailability();
     }
   }
 }
 
 abstract class ChooseDateView{
   showAvailability(List<String> availability);
+  emptyAvailability();
 }

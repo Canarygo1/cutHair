@@ -7,7 +7,6 @@ import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDate.dart';
-import 'package:cuthair/ui/Pages/confirm/confirm_screen.dart';
 import 'package:cuthair/ui/Pages/time_selection/time_selection_presenter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
