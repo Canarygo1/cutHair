@@ -5,9 +5,6 @@ import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Pages/client_appointments/client_appointments.dart';
 import 'package:cuthair/ui/Pages/client_home/client_home.dart';
-import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
-import 'package:cuthair/ui/Pages/employee_home/employee_home_screen.dart';
-import 'package:cuthair/ui/Pages/home_boss/home_boss.dart';
 import 'package:cuthair/ui/Pages/info/info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -85,23 +82,9 @@ class _menuState extends State<Menu> implements MenuView{
   }
 
   @override
-  goToBoss(HairDressing hairDressing) {
-    setState(() {
-      screens = [HomeBoss(user),DetailScreen(hairDressing), Info(user)];
-    });
-  }
-  @override
-  goToEmployee(HairDressing hairDressing) {
-    setState(() {
-      screens = [EmployeeHome(user), DetailScreen(hairDressing), Info(user)];
-    });
-  }
-  @override
   goToClient() {
     setState(() {
       screens = [ClientAppointments(), ClientHome(), Info(user)];
     });
   }
-
-
 }

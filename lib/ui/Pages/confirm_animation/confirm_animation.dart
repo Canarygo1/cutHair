@@ -177,6 +177,16 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                     margin: EdgeInsets.all(30.0),
                     child: progressView(),
                   ),
+                  _percentage < 27
+                      ?
+                  MediumText("Reservando tu cita")
+                      :
+                  _percentage < 60
+                      ?
+                  MediumText("Con los mejores profesionales")
+                      :
+                  MediumText("En Privilege")
+                  ,
                 ],
               ),
       ),

@@ -16,8 +16,7 @@ class ClientAppointmentsPresenter {
     }
   }
 
-  removeAppointment(MyAppointment appointment, int index, String uid) async{
-
+  removeAppointment(MyAppointment appointment, int index, String uid) async {
     try{
       await _remoteRepository.removeAppointment(appointment, index);
       _view.showAppointments(await _remoteRepository
