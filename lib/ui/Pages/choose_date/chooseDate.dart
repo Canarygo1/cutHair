@@ -260,7 +260,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
     ) : availability.isEmpty ? Padding(
       padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03,left: MediaQuery.of(context).size.width * 0.03),
       child: Column(
-
         children: <Widget>[
           SvgPicture.asset("assets/images/sad.svg",width: 90,),
           Padding(

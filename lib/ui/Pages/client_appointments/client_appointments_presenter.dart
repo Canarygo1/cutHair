@@ -12,12 +12,11 @@ class ClientAppointmentsPresenter {
        _view.showAppointments(await _remoteRepository
            .getUserAppointments(uid));
     }catch(e){
-      print(e.toString());
+      _view.emptyAppointment();
     }
   }
 
-  removeAppointment(MyAppointment appointment, int index, String uid) async{
-
+  removeAppointment(MyAppointment appointment, int index, String uid) async {
     try{
       await _remoteRepository.removeAppointment(appointment, index);
       _view.showAppointments(await _remoteRepository

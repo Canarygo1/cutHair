@@ -178,6 +178,6 @@ class _ConfirmScreenState extends State<ConfirmScreen>
   }
 
   changeScreen() {
-      globalMethods().pushPage(context, ConfirmAnimation());
+      globalMethods().pushPage(context, ConfirmAnimation(appointment));
   }
 }
