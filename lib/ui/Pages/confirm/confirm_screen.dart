@@ -1,7 +1,4 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
-import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
@@ -11,7 +8,6 @@ import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
 import '../../../data/remote/check_connection.dart';
 import 'confirm_screen_presenter.dart';
 
@@ -28,15 +24,12 @@ class _ConfirmScreenState extends State<ConfirmScreen>
     implements ConfirmScreenView {
   Appointment appointment;
   RemoteRepository _remoteRepository;
-  ConfirmScreenPresenter _confirmScreenPresenter;
   Widget screen;
   List<User> lista;
 
   _ConfirmScreenState(this.appointment);
 
   initState() {
-    _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _confirmScreenPresenter = ConfirmScreenPresenter(this, _remoteRepository);
     super.initState();
   }
 
@@ -147,8 +140,6 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                         onPressed: () {
                           ConnectionChecked.checkInternetConnectivity(context);
                           play();
-                          _confirmScreenPresenter.init(appointment);
-                          changeScreen();
                         },
                         shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(10.0),
