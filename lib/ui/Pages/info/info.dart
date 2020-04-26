@@ -9,6 +9,8 @@ import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../../data/remote/check_connection.dart';
+
 class Info extends StatefulWidget {
   User user;
 
@@ -32,6 +34,7 @@ class _InfoScreenState extends State<Info>  {
         child: RaisedButton(
           child: LargeText('Cambiar contraseña'),
           onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
             globalMethods().pushPage(context, resetPassword());
           },
           shape: RoundedRectangleBorder(

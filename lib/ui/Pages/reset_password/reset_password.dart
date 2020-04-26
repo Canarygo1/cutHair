@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
 
+import '../../../data/remote/check_connection.dart';
+
 class resetPassword extends StatelessWidget {
 
   TextEditingController emailControler = TextEditingController();
@@ -74,6 +76,7 @@ class resetPassword extends StatelessWidget {
             ),
           ),
           onPressed: () {
+            ConnectionChecked.checkInternetConnectivity(context);
             changePassword();
             globalMethods().pushPage(context, login());
             Toast.show(

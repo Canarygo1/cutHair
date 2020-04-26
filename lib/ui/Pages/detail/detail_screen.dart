@@ -66,7 +66,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                child: LargeText('No. $index image'),
               ),
             ),
           ]),

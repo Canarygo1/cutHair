@@ -10,6 +10,7 @@ import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
+import '../../../data/remote/check_connection.dart';
 import 'client_appointments_presenter.dart';
 
 class ClientAppointments extends StatefulWidget {
@@ -260,6 +261,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                             ),
                             color: Color.fromRGBO(230, 73, 90, 1),
                             onPressed: () {
+                              ConnectionChecked.checkInternetConnectivity(context);
                               _presenter.removeAppointment(
                                   myAppointments[index],
                                   index,

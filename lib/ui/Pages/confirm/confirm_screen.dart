@@ -12,6 +12,7 @@ import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import '../../../data/remote/check_connection.dart';
 import 'confirm_screen_presenter.dart';
 
 class ConfirmScreen extends StatefulWidget {
@@ -124,6 +125,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                       child: RaisedButton(
                         child: LargeText('Cancelar cita'),
                         onPressed: () {
+                          ConnectionChecked.checkInternetConnectivity(context);
                           play();
                         },
                         shape: RoundedRectangleBorder(
@@ -143,6 +145,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
                       child: RaisedButton(
                         child: LargeText('Confirmar'),
                         onPressed: () {
+                          ConnectionChecked.checkInternetConnectivity(context);
                           play();
                           _confirmScreenPresenter.init(appointment);
                           changeScreen();
