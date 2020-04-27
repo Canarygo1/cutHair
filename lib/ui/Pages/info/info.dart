@@ -63,7 +63,7 @@ class _InfoScreenState extends State<Info>  {
                 child: GestureDetector(
                   onTap: logOut,
                   child: Container(
-                    padding: EdgeInsets.only(right: 20, top: MediaQuery.of(context).size.height * 0.06),
+                    padding: EdgeInsets.only(right: 20, top: MediaQuery.of(context).size.height * 0.04),
                     child: Icon(
                       Icons.exit_to_app,
                       size: 30,
