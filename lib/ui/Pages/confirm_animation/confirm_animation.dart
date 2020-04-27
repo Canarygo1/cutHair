@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
+import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation_presenter.dart';
 import 'package:flutter/material.dart';
 import './progress_painter.dart';
 import 'dart:ui';
@@ -20,7 +24,7 @@ class ConfirmAnimation extends StatefulWidget {
 }
 
 class ConfirmAnimationState extends State<ConfirmAnimation>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin implements ConfirmAnimationView {
   double _percentage;
   double _nextPercentage;
   Timer _timer;
@@ -28,17 +32,24 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   bool _progressDone;
   Color color = Color.fromRGBO(300, 300, 300, 1);
   List<User> lista;
+  bool isAppointmentInsert;
   Widget screen;
-
+  ConfirmAnimationPresenter _presenter;
+  RemoteRepository _remoteRepository;
   @override
   initState() {
     super.initState();
+
+    isAppointmentInsert = false;
     _percentage = 0.0;
     _nextPercentage = 0.0;
     _timer = null;
     _progressDone = false;
+    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _presenter = ConfirmAnimationPresenter(this, _remoteRepository);
+      _presenter.init(widget.appointment);
+    isAppointmentInsert = false;
     startProgress();
-
     initAnimationController();
   }
 
@@ -67,7 +78,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     } else {
       timer.cancel();
       setState(() {
-        color = Colors.green;
+        isAppointmentInsert == true ? color = Colors.green:color = Colors.red;
         _progressDone = true;
       });
     }
@@ -86,7 +97,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   }
 
   publishProgress() {
-    setState(() {
       _percentage = _nextPercentage;
       _nextPercentage += 1;
       if (_nextPercentage > 100.0) {
@@ -94,7 +104,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
         _nextPercentage = 0.0;
       }
       _progressAnimationController.forward(from: 0.0);
-    });
   }
 
   getDoneImage() {
@@ -193,5 +202,14 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
               ),
       ),
     );
+  }
+
+  @override
+  correctInsert() {
+    isAppointmentInsert = true;
+    }
+  @override
+  incorrectInsert() {
+    isAppointmentInsert = false;
   }
 }
