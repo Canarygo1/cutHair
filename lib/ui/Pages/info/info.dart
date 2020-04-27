@@ -41,7 +41,7 @@ class _InfoScreenState extends State<Info>  {
             borderRadius: BorderRadius.circular(10.0),
           ),
         ),
-        height: MediaQuery.of(context).size.height * 0.08,
+        height: MediaQuery.of(context).size.height * 0.10,
         buttonColor: Color.fromRGBO(230, 73, 90, 1),
       ),
     );
@@ -76,7 +76,11 @@ class _InfoScreenState extends State<Info>  {
           ],
         ),
         Container(
-          padding: EdgeInsets.all(MediaQuery.of(context).size.width * 0.1),
+          padding: EdgeInsets.fromLTRB(
+              MediaQuery.of(context).size.width * 0.2,
+              MediaQuery.of(context).size.height * 0.04,
+              0.0,
+              MediaQuery.of(context).size.height * 0.04),
           child: Column(
             children: <Widget>[
               Padding(

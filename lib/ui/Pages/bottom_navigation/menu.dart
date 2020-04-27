@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/remote/http_remote_repository.dart';
-import 'package:cuthair/data/remote/remote_repository.dart';
+
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Pages/client_appointments/client_appointments.dart';
@@ -21,15 +19,13 @@ class Menu extends StatefulWidget {
 
 class _menuState extends State<Menu> implements MenuView{
   User user;
-  RemoteRepository _remoteRepository;
   MenuPresenter _presenter;
   int selectedItem = 0;
   int aux;
   _menuState(this.user);
   List<Widget> screens = [];
   void initState() {
-    _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _presenter = MenuPresenter(_remoteRepository, user, this);
+    _presenter = MenuPresenter(this);
     _presenter.init();
     super.initState();
   }

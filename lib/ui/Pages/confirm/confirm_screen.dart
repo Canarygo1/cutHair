@@ -1,5 +1,4 @@
 import 'package:cuthair/data/local/db_sqlite.dart';
-import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/model/appointment.dart';
@@ -9,7 +8,6 @@ import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/material.dart';
 import '../../../data/remote/check_connection.dart';
-import 'confirm_screen_presenter.dart';
 
 class ConfirmScreen extends StatefulWidget {
   Appointment appointment;
@@ -20,10 +18,8 @@ class ConfirmScreen extends StatefulWidget {
   _ConfirmScreenState createState() => _ConfirmScreenState(appointment);
 }
 
-class _ConfirmScreenState extends State<ConfirmScreen>
-    implements ConfirmScreenView {
+class _ConfirmScreenState extends State<ConfirmScreen> {
   Appointment appointment;
-  RemoteRepository _remoteRepository;
   Widget screen;
   List<User> lista;
 
@@ -71,7 +67,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
               children: <Widget>[
                 Expanded(child: MediumText("Hora: ")),
                 Expanded(
-                  child: MediumText(appointment.checkIn.hour.toString()),
+                  child: MediumText(appointment.checkIn.hour.toString() + ":" + appointment.checkIn.minute.toString()),
                 )
               ],
             ),
@@ -102,7 +98,7 @@ class _ConfirmScreenState extends State<ConfirmScreen>
               children: <Widget>[
                 Expanded(child: MediumText("Precio cita: ")),
                 Expanded(
-                    child: MediumText(appointment.service.price.toString())),
+                    child: MediumText(appointment.service.price.toString() + "€")),
               ],
             ),
           ),

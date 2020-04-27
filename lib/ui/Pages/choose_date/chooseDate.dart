@@ -28,6 +28,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
     implements ChooseDateView {
   Appointment appointment;
   bool isConsulting = false;
+
   _chooseDateScreenState(this.appointment);
 
   DateTime _currentDate = new DateTime.now();
@@ -35,9 +36,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   DateTime _finalDate;
   ApiRemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
-  String _partDay;
-  bool _amButton = true;
-  bool _pmButton = false;
   Color amColorButton = Color.fromRGBO(230, 73, 90, 1);
   Color pmColorButton = Color.fromRGBO(230, 73, 90, 0.5);
 
@@ -69,7 +67,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
             setState(() {
               availablesHours = auxList;
-              _partDay = "am";
               amColorButton = Color.fromRGBO(230, 73, 90, 1);
               pmColorButton = Color.fromRGBO(230, 73, 90, 0.5);
             });
@@ -96,7 +93,6 @@ class _chooseDateScreenState extends State<chooseDateScreen>
             setState(() {
               availablesHours = auxList;
 
-              _partDay = "pm";
               pmColorButton = Color.fromRGBO(230, 73, 90, 1);
               amColorButton = Color.fromRGBO(230, 73, 90, 0.5);
             });
@@ -119,7 +115,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
 
   dayChanged(DateTime date) {
     setState(() {
-        this.isConsulting = true;
+      this.isConsulting = true;
     });
     _currentDate2 = date;
     this._presenter.init(appointment.service.duration.toString(),
@@ -254,75 +250,89 @@ class _chooseDateScreenState extends State<chooseDateScreen>
   }
 
   Widget timeSelector() {
-    return isConsulting==true ? SpinKitWave(
-      color: Color.fromRGBO(230, 73, 90, 1),
-      type: SpinKitWaveType.start,
-    ) : availability.isEmpty ? Padding(
-      padding:  EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03,left: MediaQuery.of(context).size.width * 0.03),
-      child: Column(
-        children: <Widget>[
-          SvgPicture.asset("assets/images/sad.svg",width: 90,),
-          Padding(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.03 ),
-            child: Column(
-              children: <Widget>[
-                MediumText("Lo sentimos, no hay horas disponibles."),
-                MediumText("Prueba con otro día."),
-              ],
-            ),
-          ),
-        ],
-      ),
-    ) : Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.width * 0.05),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 17, vertical: 4),
-            height: MediaQuery.of(context).size.height * 0.07,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: availability.length,
-                itemBuilder: (context, index) {
-                  return Center(
-                    child: ButtonTheme(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: RaisedButton(
-                          child: LargeText(availability.elementAt(index)),
-                          onPressed: () {
-                            if (_finalDate != null) {
-                              List hours =
-                              availability[index].split(":");
-                              int hour = int.parse(hours[0]);
-                              int minute = int.parse(hours[1]);
-                              appointment.day = _finalDate;
-                              _finalDate = _finalDate.add(
-                                  new Duration(
-                                      hours: hour, minutes: minute));
-                              appointment.checkIn = _finalDate;
-                              appointment.checkOut = _finalDate.add(
-                                  new Duration(
-                                      minutes: int.parse(appointment
-                                          .service.duration)));
-                              globalMethods().pushPage(context,
-                                  ConfirmScreen(appointment));
-                            }
-                          },
-                          shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(10.0),
-                          ),
-                        ),
-                      ),
-                      buttonColor: Color.fromRGBO(230, 73, 90, 1),
+    return isConsulting == true
+        ? SpinKitWave(
+            color: Color.fromRGBO(230, 73, 90, 1),
+            type: SpinKitWaveType.start,
+          )
+        : availability.isEmpty
+            ? Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.height * 0.03,
+                    left: MediaQuery.of(context).size.width * 0.03),
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      "assets/images/sad.svg",
+                      width: 90,
                     ),
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height * 0.03),
+                      child: Column(
+                        children: <Widget>[
+                          MediumText("Lo sentimos, no hay horas disponibles."),
+                          MediumText("Prueba con otro día."),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.only(
+                    top: MediaQuery.of(context).size.width * 0.05),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 17, vertical: 4),
+                      height: MediaQuery.of(context).size.height * 0.07,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: availability.length,
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: ButtonTheme(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8),
+                                  child: RaisedButton(
+                                    child: LargeText(
+                                        availability.elementAt(index)),
+                                    onPressed: () {
+                                      if (_finalDate != null) {
+                                        List hours =
+                                            availability[index].split(":");
+                                        int hour = int.parse(hours[0]);
+                                        int minute = int.parse(hours[1]);
+                                        appointment.day = _finalDate;
+                                        _finalDate = _finalDate.add(
+                                            new Duration(
+                                                hours: hour, minutes: minute));
+                                        appointment.checkIn = _finalDate;
+                                        appointment.checkOut = _finalDate.add(
+                                            new Duration(
+                                                minutes: int.parse(appointment
+                                                    .service.duration)));
+                                        globalMethods().pushPage(context,
+                                            ConfirmScreen(appointment));
+                                      }
+                                    },
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(10.0),
+                                    ),
+                                  ),
+                                ),
+                                buttonColor: Color.fromRGBO(230, 73, 90, 1),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              );
   }
 
   @override

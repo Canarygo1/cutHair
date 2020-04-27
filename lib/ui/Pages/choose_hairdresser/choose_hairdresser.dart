@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -9,11 +8,9 @@ import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDate.dart';
-import 'package:cuthair/ui/Pages/time_selection/time_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-import '../../../data/remote/check_connection.dart';
 import 'choose_hairdresser_presenter.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
@@ -76,7 +73,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseHairDresserPresenter(this, _remoteRepository);
-    presenter.init();
+    presenter.init(appointment.hairDressing.uid);
   }
 
   @override
@@ -109,12 +106,6 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   goToCalendar() {
     globalMethods()
           .pushPage(context, chooseDateScreen(appointment));
-  }
-
-  @override
-  goToTimeSelection() {
-    globalMethods()
-        .pushPage(context, TimeSelection(appointment));
   }
 
 }

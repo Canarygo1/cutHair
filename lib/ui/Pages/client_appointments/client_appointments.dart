@@ -279,7 +279,6 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   showAppointments(List<MyAppointment> myAppointment) {
     if (mounted) {
       setState(() {
-        print("hola");
         isConsulting = false;
         myAppointments = myAppointment;
       });

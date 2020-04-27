@@ -37,10 +37,10 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<List<Service>> getAllServices() async {
+  Future<List<Service>> getAllServices(String uid) async {
     QuerySnapshot querySnapshot = await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(uid)
         .collection("servicios")
         .getDocuments();
     List<Service> services = [];
@@ -56,10 +56,10 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<List<Employe>> getAllEmployes() async {
+  Future<List<Employe>> getAllEmployes(String uid) async {
     QuerySnapshot querySnapshot = await firestore
         .collection("Peluquerias")
-        .document("PR01")
+        .document(uid)
         .collection("empleados")
         .getDocuments();
     List<Employe> employes = [];
@@ -152,7 +152,6 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(appointment.employe.name)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
-    return null;
   }
 
   @override
@@ -280,7 +279,6 @@ class HttpRemoteRepository implements RemoteRepository {
 
     DocumentReference documentReference = documentsnap.data["citas"][index];
     String idPeluqueria = documentReference.parent().parent().documentID;
-
 
     List ref = [];
     ref.add(documentReference);

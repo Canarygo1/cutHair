@@ -9,9 +9,9 @@ import 'package:cuthair/model/user.dart';
 abstract class RemoteRepository {
   Future<List<HairDressing>> getAllHairdressing();
 
-  Future<List<Service>> getAllServices();
+  Future<List<Service>> getAllServices(String uid);
 
-  Future<List<Employe>> getAllEmployes();
+  Future<List<Employe>> getAllEmployes(String uid);
 
   Future<User> getUser(String uid);
 

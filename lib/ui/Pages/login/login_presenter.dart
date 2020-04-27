@@ -47,17 +47,7 @@ class loginCode {
   }
 
   void play(BuildContext context) async {
-    switch (userLogin.permission) {
-      case 1:
-        screen = Menu(userLogin);
-        break;
-      case 2:
-        screen = Menu(userLogin);
-        break;
-      case 3:
-        screen = Menu(userLogin);
-        break;
-    }
+    screen = Menu(userLogin);
     DBProvider.db.insert(userLogin);
     globalMethods().PushAndReplacement(context, screen);
   }

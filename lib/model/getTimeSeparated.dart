@@ -1,4 +1,3 @@
-import 'day.dart';
 
 class getTimeSeparated {
 
@@ -9,7 +8,7 @@ class getTimeSeparated {
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = checkIn.add(Duration(minutes: (10 * i)));
-      list.add(date.hour.toString() + "-" + date.minute.toString());
+      list.add(date.hour.toString() + ":" + date.minute.toString());
     }
 
     return list;
@@ -36,8 +35,11 @@ class getTimeSeparated {
         finalTime.add(Duration(hours: int.parse(finalHour), minutes: int.parse(finalMinute)));
 
     while (int.parse(finalTime.difference(initialTime).inMinutes.toString()) > 0) {
+      String minute = initialTime.minute.toString().length == 1
+          ? initialTime.minute.toString() + '0'
+          : initialTime.minute.toString();
       hours.add(
-          initialTime.hour.toString() + ":" + initialTime.minute.toString());
+          initialTime.hour.toString() + ":" + minute);
       initialTime = initialTime.add(Duration(minutes: 10));
     }
 
