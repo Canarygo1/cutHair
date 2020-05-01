@@ -340,6 +340,7 @@ class HttpRemoteRepository implements RemoteRepository {
     return user;
   }
 
+  @override
   Future<User> getUserByPhoneNumber(String phoneNumber) async {
     User user;
     CollectionReference collectionReference = firestore.collection("Usuarios");
@@ -355,5 +356,12 @@ class HttpRemoteRepository implements RemoteRepository {
       user = User.fromMap(data[0], data[1]);
     });
     return user;
+  }
+
+  @override
+  Future<bool> getUserPenalize(String uid) async {
+    DocumentSnapshot documentSnapshot = await firestore.collection("Usuarios").document(uid).get();
+    bool penalize = documentSnapshot.data['Penalizacion'];
+    return penalize;
   }
 }

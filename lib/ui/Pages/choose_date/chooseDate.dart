@@ -118,7 +118,7 @@ class _chooseDateScreenState extends State<chooseDateScreen>
       this.isConsulting = true;
     });
     _currentDate2 = date;
-    this._presenter.init(appointment.service.duration.toString(),
+    this._presenter.init(appointment.service.duration,
         _currentDate2.toString(), appointment.employe.name);
   }
 
