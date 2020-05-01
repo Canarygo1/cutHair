@@ -1,4 +1,5 @@
 
+import 'package:cuthair/ui/Components/SlideRightRoute.dart';
 import 'package:flutter/material.dart';
 
 class globalMethods{
@@ -8,7 +9,7 @@ class globalMethods{
 
   void pushPage(BuildContext context, Widget page){
     Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => page),
+      SlideRightRoute(page: page),
     );
   }
 
