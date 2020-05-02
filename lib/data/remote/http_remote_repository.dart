@@ -16,30 +16,48 @@ class HttpRemoteRepository implements RemoteRepository {
 
   HttpRemoteRepository(this.firestore);
 
-  @override
-  Future<List<HairDressing>> getAllHairdressing() async {
+  Future<List<String>> getBusiness() async {
     QuerySnapshot querySnapshot =
-        await firestore.collection("Peluquerias").getDocuments();
+    await firestore.collection("Negocios").getDocuments();
+
+    List<String> business = [];
+    querySnapshot.documents.forEach( (v) => { business.add(v.documentID)});
+
+    return business;
+  }
+
+
+  @override
+  Future<Map<String, List<HairDressing>>> getAllBusiness(String business) async {
+    QuerySnapshot querySnapshot =
+        await firestore.collection("Negocios").document(business).collection("Negocios").getDocuments();
     List queryData = querySnapshot.documents;
     List<HairDressing> allHairDressing = [];
 
+
     for (int i = 0; i < queryData.length; i++) {
       HairDressing hairDressing =
-          HairDressing.fromMap(queryData[i].data, queryData[i].documentID);
+          HairDressing.fromMap(queryData[i].data, queryData[i].documentID, business);
       allHairDressing.add(hairDressing);
     }
 
-    if (allHairDressing.length >= 1) {
-      return allHairDressing;
+
+    Map<String, List<HairDressing>> allbusiness = new Map();
+    allbusiness[business] = allHairDressing;
+
+    if (allbusiness.length >= 1) {
+      return allbusiness;
     } else {
       throw ("No existen peluquerias");
     }
   }
 
   @override
-  Future<List<Service>> getAllServices(String uid) async {
+  Future<List<Service>> getAllServices(String uid, String typeBusiness) async {
     QuerySnapshot querySnapshot = await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(uid)
         .collection("servicios")
         .getDocuments();
@@ -56,9 +74,11 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<List<Employe>> getAllEmployes(String uid) async {
+  Future<List<Employe>> getAllEmployes(String uid, String typeBusiness) async {
     QuerySnapshot querySnapshot = await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(uid)
         .collection("empleados")
         .getDocuments();
@@ -117,7 +137,9 @@ class HttpRemoteRepository implements RemoteRepository {
     }
 
     firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.hairDressing.typeBusiness)
+        .collection("Negocios")
         .document(appointment.hairDressing.uid)
         .collection("empleados")
         .document(appointment.employe.name)
@@ -126,7 +148,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.hairDressing.typeBusiness)
+        .collection("Negocios")
         .document(appointment.hairDressing.uid)
         .collection("citas")
         .add({
@@ -146,7 +170,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
     await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.hairDressing.typeBusiness)
+        .collection("Negocios")
         .document(appointment.hairDressing.uid)
         .collection("empleados")
         .document(appointment.employe.name)
@@ -154,15 +180,19 @@ class HttpRemoteRepository implements RemoteRepository {
 
   }
 
+  /*
   @override
   Future<bool> insertSchedule(
       String employe,
       String hairDressingUid,
       String day,
+      String typeBusiness,
       List<Map<String, dynamic>> schedules,
       List<String> hours) async {
     await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(hairDressingUid)
         .collection("empleados")
         .document(employe)
@@ -172,7 +202,8 @@ class HttpRemoteRepository implements RemoteRepository {
       "turnos": FieldValue.arrayUnion(schedules),
       "disponibilidad": FieldValue.arrayUnion(hours)
     }, merge: true);
-  }
+  }*/
+
 
   @override
   Future<List<MyAppointment>> getUserAppointments(String uid) async {
@@ -186,7 +217,7 @@ class HttpRemoteRepository implements RemoteRepository {
         DocumentReference documentReference = documentSnapshot.data['citas'][i];
 
         MyAppointment myAppointment = MyAppointment.fromMap(datasnapshot.data,
-            documentReference.documentID);
+            documentReference.documentID, documentReference.parent().parent().parent().parent().documentID);
 
         return myAppointment;
       }).then((myAppointment) {
@@ -202,6 +233,7 @@ class HttpRemoteRepository implements RemoteRepository {
     }
   }
 
+  /*
   @override
   Future<HairDressing> getHairdressingByUid(String hairdressingUid) async {
     DocumentSnapshot documentSnapshot = await firestore
@@ -216,11 +248,11 @@ class HttpRemoteRepository implements RemoteRepository {
     } else {
       throw ("No existen peluquerias");
     }
-  }
+  }*/
 
   @override
   Future<bool> removeRange(
-      DateTime day, String name, String hairDressingUid, Map ranges) async {
+      DateTime day, String name, String hairDressingUid, String typeBusiness, Map ranges) async {
     var val = [];
 
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
@@ -232,7 +264,9 @@ class HttpRemoteRepository implements RemoteRepository {
     maplist.add(ranges);
 
     firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(hairDressingUid)
         .collection("empleados")
         .document(name)
@@ -241,7 +275,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"turnos": FieldValue.arrayRemove(maplist)});
 
     firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(hairDressingUid)
         .collection("empleados")
         .document(name)
@@ -252,9 +288,11 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<Schedule> getRange(
-      String day, String name, String hairDressingUid) async {
+      String day, String name, String hairDressingUid, String typeBusiness) async {
     DocumentSnapshot documentSnapshot = await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(typeBusiness)
+        .collection("Negocios")
         .document(hairDressingUid)
         .collection("empleados")
         .document(name)
@@ -262,6 +300,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(day)
         .get();
 
+    print(documentSnapshot.data);
     if (documentSnapshot.data != null) {
       Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
       return schedule;
@@ -280,6 +319,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DocumentReference documentReference = documentsnap.data["citas"][index];
     String idPeluqueria = documentReference.parent().parent().documentID;
 
+
     List ref = [];
     ref.add(documentReference);
 
@@ -292,13 +332,15 @@ class HttpRemoteRepository implements RemoteRepository {
     List<String> val = [];
     val = getTimeSeparated.getHours(checkIn, checkOut, subtract);
 
-    Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria);
+    Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));
-
+    print("adios");
     val.sort();
 
     await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.typeBusiness)
+        .collection("Negocios")
         .document(idPeluqueria)
         .collection("empleados")
         .document(appointment.hairdresser)
@@ -310,7 +352,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"citas": FieldValue.arrayRemove(ref)});
 
     await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.typeBusiness)
+        .collection("Negocios")
         .document(idPeluqueria)
         .collection("empleados")
         .document(appointment.hairdresser)
@@ -319,7 +363,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"disponibilidad": FieldValue.arrayRemove(schedule.disponibility)});
 
     await firestore
-        .collection("Peluquerias")
+        .collection("Negocios")
+        .document(appointment.typeBusiness)
+        .collection("Negocios")
         .document(idPeluqueria)
         .collection("empleados")
         .document(appointment.hairdresser)
