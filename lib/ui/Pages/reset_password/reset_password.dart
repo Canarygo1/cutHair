@@ -1,9 +1,11 @@
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/goback.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 
 import '../../../data/remote/check_connection.dart';
 
@@ -33,7 +35,7 @@ class resetPassword extends StatelessWidget {
           children: <Widget>[
             GoBack(context, "Volver"),
             emailTextField(),
-            botonEnviarCorreo(context),
+            Button(() => sendEmail(context), LargeText("Enviar")),
           ],
         ),
       ),
@@ -63,38 +65,17 @@ class resetPassword extends StatelessWidget {
     );
   }
 
-  Widget botonEnviarCorreo(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Enviar',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            changePassword();
-            globalMethods().pushPage(context, login());
-            Toast.show(
-              'Se ha enviado un correo a este email',
-              context,
-              gravity: Toast.BOTTOM,
-              textColor: Colors.black,
-              duration: Toast.LENGTH_LONG,
-              backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-            );
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
+  sendEmail(BuildContext context){
+    ConnectionChecked.checkInternetConnectivity(context);
+    changePassword();
+    globalMethods().pushPage(context, login());
+    Toast.show(
+      'Se ha enviado un correo a este email',
+      context,
+      gravity: Toast.BOTTOM,
+      textColor: Colors.black,
+      duration: Toast.LENGTH_LONG,
+      backgroundColor: Color.fromRGBO(230, 73, 90, 1),
     );
   }
 }

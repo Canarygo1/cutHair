@@ -72,6 +72,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     );
   }
 
+
+
   @override
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);

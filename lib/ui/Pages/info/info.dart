@@ -3,6 +3,7 @@ import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Components/appbar.dart';
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
@@ -28,23 +29,9 @@ class _InfoScreenState extends State<Info>  {
 
   globalMethods global = globalMethods();
 
-  Widget ButtonChangePassword(BuildContext context) {
-    return Center(
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: LargeText('Cambiar contraseña'),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            globalMethods().pushPage(context, resetPassword());
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        height: MediaQuery.of(context).size.height * 0.08,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
-    );
+  changePassword(){
+    ConnectionChecked.checkInternetConnectivity(context);
+    globalMethods().pushPage(context, resetPassword());
   }
 
   @override
@@ -162,7 +149,11 @@ class _InfoScreenState extends State<Info>  {
             ],
           ),
         ),
-        ButtonChangePassword(context)
+        Padding(
+            padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.15,
+            bottom: MediaQuery.of(context).size.width* 0.1),
+              child: Button(() => changePassword(), LargeText("Cambiar contraseña")),
+        ),
       ]),
     );
   }
