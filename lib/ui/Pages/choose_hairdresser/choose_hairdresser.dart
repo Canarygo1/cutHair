@@ -73,7 +73,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseHairDresserPresenter(this, _remoteRepository);
-    presenter.init(appointment.hairDressing.uid);
+    presenter.init(appointment.hairDressing.uid, appointment.hairDressing.typeBusiness);
   }
 
   @override
