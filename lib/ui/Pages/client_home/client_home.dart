@@ -40,7 +40,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
           Row(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                padding: const EdgeInsets.fromLTRB(20, 30, 0, 0),
                 child: MediumText("Disponibles"),
               )
             ],
