@@ -300,7 +300,6 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(day)
         .get();
 
-    print(documentSnapshot.data);
     if (documentSnapshot.data != null) {
       Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
       return schedule;
@@ -334,7 +333,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
     Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));
-    print("adios");
+
     val.sort();
 
     await firestore
