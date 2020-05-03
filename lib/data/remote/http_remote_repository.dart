@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employe.dart';
-import 'package:cuthair/model/getTimeSeparated.dart';
 import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';
@@ -258,7 +258,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
 
-    val = await getTimeSeparated.getTimeSeparatedBy10(checkIn, checkOut);
+    val = await globalMethods.getTimeSeparatedBy10(checkIn, checkOut);
 
     var maplist = [];
     maplist.add(ranges);
@@ -329,7 +329,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime subtract = date.subtract(Duration(hours: date.hour, minutes: date.minute));
 
     List<String> val = [];
-    val = getTimeSeparated.getHours(checkIn, checkOut, subtract);
+    val = globalMethods.getHours(checkIn, checkOut, subtract);
 
     Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));
