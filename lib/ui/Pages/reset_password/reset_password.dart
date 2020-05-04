@@ -1,18 +1,19 @@
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-import 'package:cuthair/ui/Components/large_text.dart';
-
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import '../../../data/remote/check_connection.dart';
 
 class resetPassword extends StatelessWidget {
 
   TextEditingController emailControler = TextEditingController();
   final FirebaseAuth auth = FirebaseAuth.instance;
+  double HEIGHT;
+  double WIDHT;
 
   Future<void> changePassword() async {
     try {
@@ -27,6 +28,8 @@ class resetPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -35,7 +38,7 @@ class resetPassword extends StatelessWidget {
           children: <Widget>[
             GoBack(context, "Volver"),
             emailTextField(),
-            Button(() => sendEmail(context), LargeText("Enviar")),
+            MyButton(() => sendEmail(context), LargeText("Enviar")),
           ],
         ),
       ),
@@ -44,13 +47,13 @@ class resetPassword extends StatelessWidget {
 
   Widget emailTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         controller: emailControler,
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -68,7 +71,7 @@ class resetPassword extends StatelessWidget {
   sendEmail(BuildContext context){
     ConnectionChecked.checkInternetConnectivity(context);
     changePassword();
-    globalMethods().pushPage(context, login());
+    GlobalMethods().pushPage(context, Login());
     Toast.show(
       'Se ha enviado un correo a este email',
       context,

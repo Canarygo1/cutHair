@@ -1,16 +1,13 @@
-import 'package:cuthair/data/remote/check_connection.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-// ignore: must_be_immutable
-class Button extends StatelessWidget {
+class MyButton extends StatelessWidget {
   Function function;
   Widget widget;
   var height;
   var horizontalPadding;
   var verticalMargin;
 
-  Button(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0});
+  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0});
 
   @override
   Widget build(BuildContext context) {

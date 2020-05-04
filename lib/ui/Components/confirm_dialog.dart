@@ -35,7 +35,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
               ),
               color: Color.fromRGBO(230, 73, 90, 1),
               onPressed: () => {
-                globalMethods().popPage(context),
+                GlobalMethods().popPage(context),
               }),
           FlatButton(
             shape: RoundedRectangleBorder(

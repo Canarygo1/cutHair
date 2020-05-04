@@ -74,7 +74,7 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<List<Employe>> getAllEmployes(String uid, String typeBusiness) async {
+  Future<List<Employee>> getAllEmployes(String uid, String typeBusiness) async {
     QuerySnapshot querySnapshot = await firestore
         .collection("Negocios")
         .document(typeBusiness)
@@ -82,9 +82,9 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(uid)
         .collection("empleados")
         .getDocuments();
-    List<Employe> employes = [];
+    List<Employee> employes = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      Employe employe = Employe(querySnapshot.documents[i].data['Nombre']);
+      Employee employe = Employee(querySnapshot.documents[i].data['Nombre']);
       employes.add(employe);
     }
 
@@ -258,7 +258,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
 
-    val = await globalMethods.getTimeSeparatedBy10(checkIn, checkOut);
+    val = await GlobalMethods.getTimeSeparatedBy10(checkIn, checkOut);
 
     var maplist = [];
     maplist.add(ranges);
@@ -329,7 +329,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime subtract = date.subtract(Duration(hours: date.hour, minutes: date.minute));
 
     List<String> val = [];
-    val = globalMethods.getHours(checkIn, checkOut, subtract);
+    val = GlobalMethods.getHours(checkIn, checkOut, subtract);
 
     Schedule schedule = await getRange(subtract.toString(), appointment.hairdresser, idPeluqueria, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));

@@ -1,5 +1,4 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/hairDressing.dart';
 
 class ConfirmPresenter{
 

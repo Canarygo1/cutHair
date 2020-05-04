@@ -26,7 +26,7 @@ class ConnectionChecked extends State<ConnectionCheck>{
  static checkInternetConnectivity(BuildContext context) async {
     var result = await Connectivity().checkConnectivity();
     if(result == ConnectivityResult.none){
-      globalMethods().pushPage(context, ConnectionCheck());
+      GlobalMethods().pushPage(context, ConnectionCheck());
     }
   }
 }

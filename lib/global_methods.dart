@@ -1,11 +1,13 @@
-
 import 'package:cuthair/ui/Components/SlideRightRoute.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class globalMethods{
+import 'data/local/db_sqlite.dart';
+import 'ui/Pages/bottom_navigation/menu.dart';
+import 'ui/Pages/login/login.dart';
 
+class GlobalMethods{
   BuildContext context;
-
 
   void pushPage(BuildContext context, Widget page){
     Navigator.of(context).push(
@@ -13,13 +15,30 @@ class globalMethods{
     );
   }
 
-  void PushAndReplacement(BuildContext context, Widget widget){
+  void pushAndReplacement(BuildContext context, Widget widget){
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
   void popPage(BuildContext page){
     Navigator.pop(page);
+  }
+
+  searchDBUser(BuildContext context) async {
+    Widget screen;
+    await DBProvider.db.getUser();
+    if (DBProvider.users.length > 0) {
+      FirebaseUser user = await FirebaseAuth.instance.currentUser();
+      if (user.uid == DBProvider.users[0].uid) {
+        screen = Menu(DBProvider.users[0]);
+      } else {
+        DBProvider.db.delete();
+        screen = Login();
+      }
+    } else {
+      screen = Login();
+    }
+    pushAndReplacement(context, screen);
   }
 
   static Future<List<dynamic>> getTimeSeparatedBy10 (
