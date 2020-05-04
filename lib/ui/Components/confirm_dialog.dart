@@ -38,6 +38,7 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
                 GlobalMethods().popPage(context),
               }),
           FlatButton(
+            key: Key('yesDialogText'),
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(13.0)),
             child: Text(

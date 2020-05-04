@@ -192,12 +192,14 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                                                   .checkIn)
                                                           .minute
                                                           .toString()),
-                                            ),
+                                                key: Key('initAppointment')),
                                           ),
                                           Padding(
                                             padding: EdgeInsets.only(
                                                 top: HEIGHT * 0.045),
-                                            child: SmallText(DateTime.parse(
+                                            child: SmallText(
+
+                                                DateTime.parse(
                                                         myAppointments
                                                             .elementAt(index)
                                                             .checkOut)
@@ -261,6 +263,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                           ),
                           Center(
                             child: FlatButton(
+                              key: Key('cancelButton'),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(13.0)),
                               child: Text(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class SmallText extends StatelessWidget {
   String texto;
 
-  SmallText(this.texto);
+  SmallText(this.texto, {Key key});
 
   @override
   Widget build(BuildContext context) {
