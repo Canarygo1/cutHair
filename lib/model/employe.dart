@@ -1,6 +1,6 @@
-class Employe {
+class Employee {
   String name;
   String hairdressing;
 
-  Employe(this.name, {this.hairdressing});
+  Employee(this.name, {this.hairdressing});
 }

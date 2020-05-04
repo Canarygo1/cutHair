@@ -5,8 +5,8 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/card_service.dart';
-import 'package:cuthair/ui/Components/large_text.dart';
-import 'package:cuthair/ui/Components/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -31,9 +31,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   List<Service> detallesServicio = [];
   List<String> listaImagenesFirebase = [];
   List<Widget> child = [];
+  double HEIGHT;
+  double WIDHT;
 
   _DetailScreenState(this.hairDressing);
-
   int _current = 0;
 
   initState() {
@@ -42,49 +43,10 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     presenter.init(hairDressing);
   }
 
-  List<Widget> getChilds() {
-    List prueba = map<Widget>(listaImagenesFirebase, (index, i) {
-      return Container(
-        margin: EdgeInsets.all(5.0),
-        child: ClipRRect(
-          borderRadius: BorderRadius.all(Radius.circular(5.0)),
-          child: Stack(children: <Widget>[
-            Image.network(i, fit: BoxFit.cover, width: 1000.0),
-            Positioned(
-              bottom: 0.0,
-              left: 0.0,
-              right: 0.0,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(200, 0, 0, 0),
-                      Color.fromARGB(0, 0, 0, 0)
-                    ],
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-              ),
-            ),
-          ]),
-        ),
-      );
-    }).toList();
-    return prueba;
-  }
-
-  List<T> map<T>(List list, Function handler) {
-    List<T> result = [];
-    for (var i = 0; i < list.length; i++) {
-      result.add(handler(i, list[i]));
-    }
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         body: SingleChildScrollView(
@@ -97,7 +59,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 10),
+                  padding: EdgeInsets.only(top: HEIGHT * 0.013, left: WIDHT * 0.025),
                   child: Text(
                     "Servicios",
                     style: TextStyle(
@@ -106,10 +68,97 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                 ),
               ),
               CardService(hairDressing, detallesServicio,
-                  () => makecall(hairDressing.phoneNumber.toString())),
+                      () => makecall(hairDressing.phoneNumber.toString())),
             ],
           ),
         ));
+  }
+
+  List<Widget> getChilds() {
+    List prueba = map<Widget>(listaImagenesFirebase, (index, i) {
+      return Container(
+        margin: EdgeInsets.all(5.0),
+        child: ClipRRect(
+          borderRadius: BorderRadius.all(Radius.circular(5.0)),
+          child: Stack(children: <Widget>[
+            Image.network(i, fit: BoxFit.cover, width: WIDHT * 2.546),
+            Positioned(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(200, 0, 0, 0),
+                      Color.fromARGB(0, 0, 0, 0)
+                    ],
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                  ),
+                ),
+                padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.05),
+              ),
+            ),
+          ]),
+        ),
+      );
+    }).toList();
+    return prueba;
+  }
+
+  Widget sliderImages(BuildContext context) {
+    if (child.length > 0) {
+      return Container(
+        margin: EdgeInsets.only(top: HEIGHT * 0.027),
+        child: Column(children: [
+          CarouselSlider(
+            height: HEIGHT * 0.25,
+            items: child,
+            autoPlay: true,
+            enlargeCenterPage: true,
+            aspectRatio: 2.0,
+            onPageChanged: (index) {
+              setState(() {
+                _current = index;
+              });
+            },
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: map<Widget>(
+              listaImagenesFirebase,
+                  (index, url) {
+                return Container(
+                  width: WIDHT * 0.02,
+                  height: HEIGHT * 0.01,
+                  margin: EdgeInsets.symmetric(vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: _current == index
+                          ? Color.fromRGBO(230, 73, 90, 1)
+                          : Colors.white),
+                );
+              },
+            ),
+          ),
+        ]),
+      );
+    } else {
+      return Container(
+        margin: EdgeInsets.only(top: HEIGHT * 0.027),
+        height: HEIGHT * 0.25,
+        child: SpinKitWave(
+          color: Color.fromRGBO(230, 73, 90, 1),
+          type: SpinKitWaveType.start,
+        ),
+      );
+    }
+  }
+
+  List<T> map<T>(List list, Function handler) {
+    List<T> result = [];
+    for (var i = 0; i < list.length; i++) {
+      result.add(handler(i, list[i]));
+    }
+    return result;
   }
 
   @override
@@ -128,55 +177,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         listaImagenesFirebase = imagenes;
         child = getChilds();
       });
-    }
-  }
-
-  Widget sliderImages(BuildContext context) {
-    if (child.length > 0) {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        child: Column(children: [
-          CarouselSlider(
-            height: MediaQuery.of(context).size.height * 0.25,
-            items: child,
-            autoPlay: true,
-            enlargeCenterPage: true,
-            aspectRatio: 2.0,
-            onPageChanged: (index) {
-              setState(() {
-                _current = index;
-              });
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: map<Widget>(
-              listaImagenesFirebase,
-              (index, url) {
-                return Container(
-                  width: 8.0,
-                  height: 8.0,
-                  margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _current == index
-                          ? Color.fromRGBO(230, 73, 90, 1)
-                          : Colors.white),
-                );
-              },
-            ),
-          ),
-        ]),
-      );
-    } else {
-      return Container(
-        margin: EdgeInsets.only(top: 20),
-        height: MediaQuery.of(context).size.height * 0.25,
-        child: SpinKitWave(
-          color: Color.fromRGBO(230, 73, 90, 1),
-          type: SpinKitWaveType.start,
-        ),
-      );
     }
   }
 

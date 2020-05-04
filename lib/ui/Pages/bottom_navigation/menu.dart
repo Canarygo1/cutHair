@@ -1,4 +1,3 @@
-
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Pages/client_appointments/client_appointments.dart';
@@ -11,63 +10,71 @@ import 'menu_presenter.dart';
 class Menu extends StatefulWidget {
   User user;
 
-  Menu(this.user,{HairDressing hairDressing});
+  Menu(this.user, {HairDressing hairDressing});
 
   @override
   _menuState createState() => _menuState(user);
 }
 
-class _menuState extends State<Menu> implements MenuView{
+class _menuState extends State<Menu> implements MenuView {
   User user;
   MenuPresenter _presenter;
   int selectedItem = 1;
   int aux;
+
   _menuState(this.user);
+
   List<Widget> screens = [];
+
   void initState() {
     _presenter = MenuPresenter(this);
     _presenter.init();
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return screens.length == 0 ? SpinKitPulse(
-      color: Color.fromRGBO(230, 73, 90, 1),
-    ):Scaffold(
-        body: screens[selectedItem],
-        bottomNavigationBar: Theme(
-            data: Theme.of(context).copyWith(
-                // sets the background color of the `BottomNavigationBar`
+    return screens.length == 0
+        ? SpinKitPulse(
+            color: Color.fromRGBO(230, 73, 90, 1),
+          )
+        : Scaffold(
+            body: screens[selectedItem],
+            bottomNavigationBar: Theme(
+              data: Theme.of(context).copyWith(
                 canvasColor: Color.fromRGBO(230, 73, 90, 1),
-                // sets the active color of the `BottomNavigationBar` if `Brightness` is light
                 primaryColor: Color.fromRGBO(230, 73, 90, 1),
-                textTheme: Theme.of(context)
-                    .textTheme
-                    .copyWith(caption: TextStyle(color: Colors.white))),
-            child: BottomNavigationBar(
-                backgroundColor: Colors.black,
-                type: BottomNavigationBarType.fixed,
-                items: [
-                  BottomNavigationBarItem(
+                textTheme: Theme.of(context).textTheme.copyWith(
+                      caption: TextStyle(color: Colors.white),
+                    ),
+              ),
+              child: BottomNavigationBar(
+                  backgroundColor: Colors.black,
+                  type: BottomNavigationBarType.fixed,
+                  items: [
+                    BottomNavigationBarItem(
                       icon: Icon(
                         Icons.menu,
                       ),
-                      title: Text("")),
-                  BottomNavigationBarItem(
+                      title: Text(""),
+                    ),
+                    BottomNavigationBarItem(
                       icon: Icon(
                         Icons.home,
                       ),
-                      title: Text("")),
-                  BottomNavigationBarItem(
+                      title: Text(""),
+                    ),
+                    BottomNavigationBarItem(
                       icon: Icon(
                         Icons.account_circle,
                       ),
-                      title: Text("")),
-                ],
-                currentIndex: selectedItem,
-                onTap: showScreen)));
+                      title: Text(""),
+                    ),
+                  ],
+                  currentIndex: selectedItem,
+                  onTap: showScreen),
+            ),
+          );
   }
 
   @override

@@ -4,10 +4,14 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:cuthair/ui/Components/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation_presenter.dart';
 import 'package:flutter/material.dart';
+import '../../../data/local/db_sqlite.dart';
+import '../../../data/local/db_sqlite.dart';
+import '../../../global_methods.dart';
+import '../bottom_navigation/menu.dart';
 import './progress_painter.dart';
 import 'dart:ui';
 import 'dart:async';
@@ -15,7 +19,6 @@ import 'dart:async';
 class ConfirmAnimation extends StatefulWidget {
   ConfirmAnimation(this.appointment) : super();
   Appointment appointment;
-
 
   final String title = "Custom Paint Demo";
 
@@ -31,15 +34,15 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   AnimationController _progressAnimationController;
   bool _progressDone;
   Color color = Color.fromRGBO(300, 300, 300, 1);
-  List<User> lista;
   bool isAppointmentInsert;
   Widget screen;
+  double HEIGHT;
+  double WIDHT;
   ConfirmAnimationPresenter _presenter;
   RemoteRepository _remoteRepository;
   @override
   initState() {
     super.initState();
-
     isAppointmentInsert = false;
     _percentage = 0.0;
     _nextPercentage = 0.0;
@@ -133,13 +136,15 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: color,
       body: Container(
         alignment: Alignment.center,
         child: _progressDone == true
             ? Padding(
-              padding: EdgeInsets.only(top:MediaQuery.of(context).size.height * 0.37),
+              padding: EdgeInsets.only(top: HEIGHT * 0.37),
               child: Center(
                   child: Column(
                     children: <Widget>[
@@ -150,40 +155,33 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                       ),
                       MediumText("Gracias por confiar en Reservalo"),
                       Padding(
-                        padding: EdgeInsets.only(left: 10,top: MediaQuery.of(context).size.height * 0.05),
+                        padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.05),
                         child: ButtonTheme(
                           child: RaisedButton(
                             child: Text('Volver al menu' ),
                             onPressed: () async {
-                              await DBProvider.db.getUser();
-                              if (DBProvider.users.length > 0) lista = DBProvider.users;
-                              if (lista != null) {
-                                screen = Menu(lista[0]);
-                              }
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Menu(lista[0])));
-
+                              GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0]));
                             },
                             shape: RoundedRectangleBorder(
-                              borderRadius: new BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
                           ),
-                          height: 60.0,
-                          minWidth: 150,
+                          height: HEIGHT * 0.081,
+                          minWidth: WIDHT * 0.381,
                           buttonColor: Colors.white,
                         ),
                       ),
                     ],
                   ),
                 ),
-
             )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 200.0,
-                    width: 200.0,
+                    height: HEIGHT * 0.271,
+                    width: WIDHT * 0.509,
                     padding: EdgeInsets.all(20.0),
                     margin: EdgeInsets.all(30.0),
                     child: progressView(),

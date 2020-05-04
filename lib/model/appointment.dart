@@ -6,7 +6,7 @@ import 'hairDressing.dart';
 
 class Appointment {
   User user;
-  Employe employe;
+  Employee employe;
   Service service;
   DateTime checkIn;
   DateTime checkOut;

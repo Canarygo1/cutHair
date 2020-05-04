@@ -1,5 +1,3 @@
-
-
 class MenuPresenter{
   MenuView _view;
 

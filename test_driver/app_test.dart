@@ -14,11 +14,9 @@ void main() {
     final selectedHour = find.text("7:40");
 
     FlutterDriver driver;
-
     setUpAll(() async {
       driver = await FlutterDriver.connect();
     });
-
     tearDownAll(() async {
       if (driver != null) {
         driver.close();

@@ -1,30 +1,30 @@
+import 'dart:async';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/text_error.dart';
+import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
-
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import '../../../data/remote/check_connection.dart';
 
-class resetPassword extends StatelessWidget {
+class ResetPassword extends StatefulWidget {
 
+  @override
+  _ResetPasswordState createState() => _ResetPasswordState();
+}
+
+class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController emailControler = TextEditingController();
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
-  Future<void> changePassword() async {
-    try {
-      auth.setLanguageCode("es");
-      await auth.sendPasswordResetEmail(
-        email: emailControler.text.toString(),
-      );
-    }catch(e){
-      print(e.toString());
-    }
-  }
+  double HEIGHT;
+  double WIDHT;
+  String error;
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -33,7 +33,8 @@ class resetPassword extends StatelessWidget {
           children: <Widget>[
             GoBack(context, "Volver"),
             emailTextField(),
-            botonEnviarCorreo(context),
+            MyButton(() => sendEmail(context), LargeText("Enviar")),
+            error.length == 0 ? Container() : TextError(error),
           ],
         ),
       ),
@@ -42,13 +43,13 @@ class resetPassword extends StatelessWidget {
 
   Widget emailTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         controller: emailControler,
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -63,39 +64,13 @@ class resetPassword extends StatelessWidget {
     );
   }
 
-  Widget botonEnviarCorreo(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Enviar',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            changePassword();
-            globalMethods().pushPage(context, login());
-            Toast.show(
-              'Se ha enviado un correo a este email',
-              context,
-              gravity: Toast.BOTTOM,
-              textColor: Colors.black,
-              duration: Toast.LENGTH_LONG,
-              backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-            );
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
-    );
+  sendEmail(BuildContext context){
+    ConnectionChecked.checkInternetConnectivity(context);
+    ResetPasswordCode(emailControler.text.toString()).changePassword();
+    setState(() {
+      error = 'Se ha enviado un correo a dicho email';
+    });
+    Timer(Duration(seconds: 2), () => GlobalMethods().pushAndReplacement(context, Login()));
   }
 }
 

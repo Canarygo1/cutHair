@@ -5,6 +5,7 @@ import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'data/local/db_sqlite.dart';
+import 'global_methods.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -14,16 +15,20 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State {
   Widget screen;
   PushNotificationService pushNotificationService;
+  double HEIGHT;
+  double WIDHT;
 
   @override
   void initState() {
     super.initState();
-    pushNotificationService = new PushNotificationService();
-    play();
+    pushNotificationService = PushNotificationService();
+    GlobalMethods().searchDBUser(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return MaterialApp(
         home: Scaffold(
       body: Stack(
@@ -36,7 +41,7 @@ class _SplashScreenState extends State {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 15),
+                padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
                 child: Text(
                   'Bienvenido a cutHair',
                   style: TextStyle(
@@ -55,28 +60,5 @@ class _SplashScreenState extends State {
         ],
       ),
     ));
-  }
-
-  void play() async {
-    await DBProvider.db.getUser();
-    await pushNotificationService.initialise();
-
-    if (DBProvider.users.length > 0) {
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      if (user.uid == DBProvider.users[0].uid) {
-        screen = Menu(DBProvider.users[0]);
-      } else {
-        DBProvider.db.delete();
-        screen = login();
-      }
-    } else {
-      screen = login();
-    }
-    new Timer(Duration(seconds: 3), changeScreen);
-  }
-
-  changeScreen() {
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (BuildContext context) => screen));
   }
 }

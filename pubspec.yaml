@@ -34,7 +34,7 @@ dependencies:
   firebase_messaging: ^5.1.4
 
 dev_dependencies:
-  flutter_test:
+  flutter_driver:
     sdk: flutter
   flutter_driver:
     sdk: flutter

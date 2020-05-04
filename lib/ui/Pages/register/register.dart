@@ -1,11 +1,13 @@
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/upElements/goback.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:toast/toast.dart';
+import 'register_presenter.dart';
 
 class register extends StatefulWidget {
   @override
@@ -18,19 +20,52 @@ class _registerState extends State<register> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
-  GlobalKey<FormState> keyForm = new GlobalKey();
+  GlobalKey<FormState> keyForm = GlobalKey();
+  double HEIGHT;
+  double WIDHT;
+  String error = "";
+  RegisterCode registerCode = RegisterCode();
+
+  @override
+  Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
+    return Scaffold(
+        body: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: Form(
+            key: keyForm,
+            child: Container(
+                color: Color.fromRGBO(300, 300, 300, 1),
+                child: ListView(
+                  children: <Widget>[
+                    GoBack(context, "Volver"),
+                    nombreTextField(),
+                    apellidosTextField(),
+                    correoTextField(),
+                    passWordTextField(),
+                    repeatPassWordTextField(),
+                    error.length == 0 ? Container() : textError(),
+                    MyButton(() => checkEmail(), LargeText("Entrar"))
+                  ],
+                )),
+          ),
+        ));
+  }
 
   Widget nombreTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 50.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.067, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: nombre,
-        validator: registerCode().validateNameAndSurname,
+        validator: registerCode.validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Nombre',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -47,15 +82,15 @@ class _registerState extends State<register> {
 
   Widget apellidosTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: apellidos,
-        validator: registerCode().validateNameAndSurname,
+        validator: registerCode.validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Apellidos',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -72,15 +107,15 @@ class _registerState extends State<register> {
 
   Widget correoTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: email,
-        validator: registerCode().checkEmail,
+        validator: registerCode.checkEmail,
         decoration: InputDecoration(
           hintText: 'Correo Electronico',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -97,15 +132,15 @@ class _registerState extends State<register> {
 
   Widget passWordTextField() {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
           controller: password,
           enableInteractiveSelection: false,
-          validator: registerCode().checkSecurityPassword,
+          validator: registerCode.checkSecurityPassword,
           decoration: InputDecoration(
             hintText: 'Contraseña',
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 1.5),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
             ),
             hintStyle: TextStyle(
               color: Colors.white,
@@ -121,15 +156,15 @@ class _registerState extends State<register> {
 
   Widget repeatPassWordTextField() {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
           controller: password2,
           enableInteractiveSelection: false,
-          validator: registerCode().checkSamePassword,
+          validator: registerCode.checkSamePassword,
           decoration: InputDecoration(
             hintText: 'Repetir contraseña',
-            enabledBorder: const UnderlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 1.5),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
             ),
             hintStyle: TextStyle(
               color: Colors.white,
@@ -145,7 +180,7 @@ class _registerState extends State<register> {
 
   Widget buttonRegister(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 30.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: ButtonTheme(
         child: RaisedButton(
           child: Text(
@@ -159,7 +194,7 @@ class _registerState extends State<register> {
             checkEmail();
           },
           shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(10.0),
           ),
         ),
         height: 60.0,
@@ -168,31 +203,24 @@ class _registerState extends State<register> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        //resizeToAvoidBottomInset: false,
-        body: new GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Form(
-        key: keyForm,
-        child: Container(
-            color: Color.fromRGBO(300, 300, 300, 1),
-            child: ListView(
-              children: <Widget>[
-                GoBack(context, "Volver"),
-                nombreTextField(),
-                apellidosTextField(),
-                correoTextField(),
-                passWordTextField(),
-                repeatPassWordTextField(),
-                buttonRegister(context),
-              ],
-            )),
-      ),
-    ));
+  Widget textError() {
+    return Container(
+        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: HEIGHT * 0.005),
+            child: Text(
+              error,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            ),
+          ),
+        ));
   }
 
   Map<String, Object> getData() {
@@ -206,29 +234,20 @@ class _registerState extends State<register> {
 
   checkEmail() async {
     var tokkens = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email.text);
-    if (registerCode().checkCampos(context, keyForm)) {
+    if (registerCode.checkCampos(context, keyForm)) {
       if(tokkens.length == 0){
-        globalMethods().pushPage(
+        setState(() {
+          error = "";
+        });
+        GlobalMethods().pushPage(
             context, SendSMS(getData(), password.text));
       }else{
-        Toast.show(
-          "El email introducido ya existe",
-          context,
-          gravity: Toast.BOTTOM,
-          textColor: Colors.black,
-          duration: Toast.LENGTH_LONG,
-          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-        );
+        setState(() {
+          error = "El email introducido ya existe";
+        });
       }
     } else {
-      Toast.show(
-        "Rellene los campos de forma correcta",
-        context,
-        gravity: Toast.BOTTOM,
-        textColor: Colors.black,
-        duration: Toast.LENGTH_LONG,
-        backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-      );
+      error = "Rellene los campos de forma correcta";
     }
   }
 }

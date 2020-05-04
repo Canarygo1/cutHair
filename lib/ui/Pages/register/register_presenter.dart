@@ -3,37 +3,25 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:toast/toast.dart';
 
-class registerCode {
+class RegisterCode {
   final FirebaseAuth auth = FirebaseAuth.instance;
   static String password1;
 
   void registerAuth(String email, String password, BuildContext context,
       Map<String, Object> data) async {
     FirebaseUser user;
-    try {
-      user = (await auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      ))
-          .user;
-      if (user != null) {
-        Firestore.instance
-            .collection("Usuarios")
-            .document(user.uid)
-            .setData(data);
-        globalMethods().pushPage(context, login());
-      }
-    } catch (e) {
-      Toast.show(
-        "Los datos no son correctos",
-        context,
-        gravity: Toast.BOTTOM,
-        textColor: Colors.white,
-        duration: Toast.LENGTH_LONG,
-        backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-      );
+    user = (await auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    ))
+        .user;
+    if (user != null) {
+      Firestore.instance
+          .collection("Usuarios")
+          .document(user.uid)
+          .setData(data);
+      GlobalMethods().pushPage(context, Login());
     }
   }
 
@@ -61,8 +49,7 @@ class registerCode {
 
   String checkSecurityPassword(String value) {
     password1 = value;
-    bool pattern =
-        RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
+    bool pattern = RegExp(r'^(?=.*?[a-z])(?=.*?[0-9]).{8,}$').hasMatch(value);
     if (!pattern) {
       return "La contraseña debe tener o dígitos y mínimo una letra y un número";
     }

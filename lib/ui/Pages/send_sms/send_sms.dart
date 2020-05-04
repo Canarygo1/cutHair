@@ -1,4 +1,7 @@
-import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/text_error.dart';
+import 'package:cuthair/ui/Components/upElements/goback.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -6,8 +9,6 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:toast/toast.dart';
-
 import '../../../data/remote/check_connection.dart';
 
 class SendSMS extends StatefulWidget {
@@ -23,7 +24,6 @@ class _SendSMSState extends State<SendSMS> {
   Map data;
   String password;
   _SendSMSState(this.data, this.password);
-
   String phoneNo;
   String smsOTP;
   String verificationId;
@@ -31,6 +31,9 @@ class _SendSMSState extends State<SendSMS> {
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  double HEIGHT;
+  double WIDHT;
+  String error = "";
 
   Future<void> verifyPhone() async {
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
@@ -40,15 +43,10 @@ class _SendSMSState extends State<SendSMS> {
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
       Timer(Duration(minutes: 1, seconds: 30), (){
-        Toast.show(
-          "Tiempo expirado",
-          context,
-          gravity: Toast.BOTTOM,
-          textColor: Colors.black,
-          duration: Toast.LENGTH_LONG,
-          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-        );
-        globalMethods().PushAndReplacement(context, login());
+        setState(() {
+          error = 'Tiempo expirado';
+        });
+        GlobalMethods().pushAndReplacement(context, Login());
       });
     };
 
@@ -57,29 +55,19 @@ class _SendSMSState extends State<SendSMS> {
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
       if(e.message == "ERROR_INVALID_VERIFICATION_CODE"){
-        Toast.show(
-          "El código introducido no es correcto",
-          context,
-          gravity: Toast.BOTTOM,
-          textColor: Colors.black,
-          duration: Toast.LENGTH_LONG,
-          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-        );
+        setState(() {
+          error = 'El código es incorrecto';
+        });
       }else{
-        Toast.show(
-          "Lo sentimos ha ocurrido un error. Intentelo más tarde.",
-          context,
-          gravity: Toast.BOTTOM,
-          textColor: Colors.black,
-          duration: Toast.LENGTH_LONG,
-          backgroundColor: Color.fromRGBO(230, 73, 90, 0.7),
-        );
+        setState(() {
+          error = 'Lo sentimos ha ocurrido un error. Intentalo más tarde.';
+        });
       }
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: phoneController.text,
-      timeout: const Duration(seconds: 5),
+      timeout: Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
       codeSent: smsCodeSent,
@@ -93,32 +81,37 @@ class _SendSMSState extends State<SendSMS> {
       smsCode: smsCode,
     );
     await _auth.signInWithCredential(credential);
+    ConnectionChecked.checkInternetConnectivity(context);
     data.putIfAbsent("Telefono", () => phoneController.text);
-    registerCode().registerAuth(data["Email"], password, context, data);
+    try {
+      RegisterCode().registerAuth(data["Email"], password, context, data);
+    }catch(e){
+      setState(() {
+        error = 'Ha ocurrido un error lo sentimos. Intententelo mas tarde';
+      });
+    }
   }
 
   handleError(PlatformException error) {
-    print(error);
     switch (error.code) {
       case 'ERROR_INVALID_VERIFICATION_CODE':
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
         setState(() {
-          errorMessage = 'Invalid Code';
+          this.error = 'El código introducido es incorrecto';
         });
         Navigator.of(context).pop();
         break;
       default:
         setState(() {
-          errorMessage = error.message;
+          this.error = error.message;
         });
-
         break;
     }
   }
 
   Widget codigoTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.027, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         toolbarOptions: ToolbarOptions(
           copy: false,
@@ -130,8 +123,8 @@ class _SendSMSState extends State<SendSMS> {
         controller: codeController,
         decoration: InputDecoration(
           hintText: 'Codigo',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -148,15 +141,15 @@ class _SendSMSState extends State<SendSMS> {
 
   Widget telefonoTextField() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         keyboardType: TextInputType.phone,
         controller: phoneController,
         decoration: InputDecoration(
           hintText: 'Introduce Telefono',
-          enabledBorder: const UnderlineInputBorder(
-            borderSide: const BorderSide(color: Colors.white, width: 1.5),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -171,64 +164,13 @@ class _SendSMSState extends State<SendSMS> {
     );
   }
 
-  Widget botonEnviarCode(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Enviar código',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            verifyPhone();
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-
-      ),
-    );
-  }
-
-  Widget confirmarCode(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Confirmar codigo',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            signIn(codeController.text);
-          },
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: new GestureDetector(
+        body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
@@ -238,9 +180,10 @@ class _SendSMSState extends State<SendSMS> {
               children: <Widget>[
                 GoBack(context, "Volver"),
                 telefonoTextField(),
-                botonEnviarCode(context),
+                MyButton(() => verifyPhone(), LargeText("Enviar código")),
                 codigoTextField(),
-                confirmarCode(context)
+                MyButton(() => signIn(codeController.text),LargeText("Confirmar código")),
+                error.length == 0 ? Container() : TextError(error),
               ],
             ),
           ),

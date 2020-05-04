@@ -4,13 +4,14 @@ import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employe.dart';
-import 'package:cuthair/ui/Components/goback.dart';
-import 'package:cuthair/ui/Components/large_text.dart';
-import 'package:cuthair/ui/Components/medium_text.dart';
+import 'package:cuthair/ui/Components/upElements/goback.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../Components/button.dart';
 import 'choose_hairdresser_presenter.dart';
 
 class chooseHairDresserScreen extends StatefulWidget {
@@ -26,48 +27,13 @@ class chooseHairDresserScreen extends StatefulWidget {
 class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     implements ChooseHairDresserView {
   Appointment appointment;
-  List<Employe> nombres = [];
+  List<Employee> nombres = [];
   RemoteRepository _remoteRepository;
   ChooseHairDresserPresenter presenter;
+  double HEIGHT;
+  double WIDHT;
 
   _chooseHairDresserScreenState(this.appointment);
-
-  Widget title() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
-      child: Align(
-        alignment: Alignment.center,
-        child: LargeText("Seleccione un peluquero"),
-      ),
-    );
-  }
-
-  Widget hairDressersButtons() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 17, vertical: 20.0),
-      height: MediaQuery.of(context).size.height * 0.80,
-      child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: nombres.length,
-          itemBuilder: (context, index) {
-            return Container(
-              padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-              child: FlatButton(
-                color: Color.fromRGBO(230, 73, 90, 1),
-                child: MediumText(nombres[index].name),
-                onPressed: () {
-                  appointment.employe = nombres[index];
-                  presenter.nextScreen(appointment);
-                },
-                shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(10.0),
-                ),
-              ),
-              height: MediaQuery.of(context).size.height * 0.11,
-            );
-          }),
-    );
-  }
 
   @override
   void initState() {
@@ -78,6 +44,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -93,6 +61,30 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     );
   }
 
+  Widget title() {
+    return Container(
+      padding: EdgeInsets.only(top: HEIGHT * 0.054),
+      child: Align(
+        alignment: Alignment.center,
+        child: LargeText("Seleccione un peluquero"),
+      ),
+    );
+  }
+
+  Widget hairDressersButtons() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.027),
+      height: HEIGHT * 0.80,
+      child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: nombres.length,
+          itemBuilder: (context, index) {
+            return MyButton(
+                  () => chooseFunction(index), LargeText(nombres[index].name),);
+          }),
+    );
+  }
+
   @override
   showEmployes(List employes) {
     if (mounted) {
@@ -104,8 +96,12 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   @override
   goToCalendar() {
-    globalMethods()
-          .pushPage(context, chooseDateScreen(appointment));
+    GlobalMethods()
+          .pushPage(context, ChooseDateScreen(appointment));
   }
 
+  chooseFunction(int index){
+    appointment.employe = nombres[index];
+    presenter.nextScreen(appointment);
+  }
 }

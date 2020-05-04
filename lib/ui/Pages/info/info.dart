@@ -2,14 +2,21 @@ import 'dart:async';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:cuthair/ui/Components/appbar.dart';
-import 'package:cuthair/ui/Components/large_text.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/upElements/appbar.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
+import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import '../../../data/local/db_sqlite.dart';
+import '../../../data/local/db_sqlite.dart';
 import '../../../data/remote/check_connection.dart';
+import '../../../global_methods.dart';
+import '../../Components/confirm_dialog.dart';
+import '../reset_password/reset_password.dart';
 
 class Info extends StatefulWidget {
   User user;
@@ -20,35 +27,25 @@ class Info extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<Info>  {
+class _InfoScreenState extends State<Info> {
   User user;
   Widget screen;
+  double HEIGHT;
+  double WIDHT;
 
   _InfoScreenState(this.user);
 
-  globalMethods global = globalMethods();
+  GlobalMethods global = GlobalMethods();
 
-  Widget ButtonChangePassword(BuildContext context) {
-    return Center(
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: LargeText('Cambiar contraseña'),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            globalMethods().pushPage(context, resetPassword());
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-        ),
-        height: MediaQuery.of(context).size.height * 0.10,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
-    );
+  changePassword() {
+    ConnectionChecked.checkInternetConnectivity(context);
+    ResetPasswordCode(DBProvider.users[0].email).changePassword();
   }
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     global.context = context;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -63,7 +60,8 @@ class _InfoScreenState extends State<Info>  {
                 child: GestureDetector(
                   onTap: logOut,
                   child: Container(
-                    padding: EdgeInsets.only(right: 20, top: MediaQuery.of(context).size.height * 0.04),
+                    padding: EdgeInsets.only(
+                        right: WIDHT * 0.05, top: HEIGHT * 0.04),
                     child: Icon(
                       Icons.exit_to_app,
                       size: 30,
@@ -77,19 +75,16 @@ class _InfoScreenState extends State<Info>  {
         ),
         Container(
           padding: EdgeInsets.fromLTRB(
-              MediaQuery.of(context).size.width * 0.2,
-              MediaQuery.of(context).size.height * 0.04,
-              0.0,
-              MediaQuery.of(context).size.height * 0.04),
+              WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.04),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
-                    bottom: MediaQuery.of(context).size.width* 0.1),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
+                      margin: EdgeInsets.only(right: WIDHT * 0.06),
                       child: Text("Nombre: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -104,12 +99,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
-                    bottom: MediaQuery.of(context).size.width* 0.1),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
+                      margin: EdgeInsets.only(right: WIDHT * 0.06),
                       child: Text("Apellido: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -124,12 +119,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
-                    bottom: MediaQuery.of(context).size.width* 0.1),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.09),
+                      margin: EdgeInsets.only(right: WIDHT * 0.09),
                       child: Text("Correo: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -144,12 +139,12 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: MediaQuery.of(context).size.width* 0.03,
-                    bottom: MediaQuery.of(context).size.width* 0.1),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
-                      margin: EdgeInsets.only(right: MediaQuery.of(context).size.width* 0.06),
+                      margin: EdgeInsets.only(right: WIDHT * 0.06),
                       child: Text("Teléfono: ",
                           style:
                               TextStyle(color: Colors.white, fontSize: 17.0)),
@@ -166,20 +161,38 @@ class _InfoScreenState extends State<Info>  {
             ],
           ),
         ),
-        ButtonChangePassword(context)
+        Padding(
+          padding: EdgeInsets.only(left: WIDHT * 0.15, bottom: HEIGHT * 0.054),
+          child:
+              MyButton(() => changePassword(), LargeText("Cambiar contraseña")),
+        ),
       ]),
+    );
+  }
+
+  functionResetPassword() {
+    ConfirmDialog confirmDialog;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        confirmDialog = ConfirmDialog(
+          MediumText("Seguro que quiere cambiar la contraseña de: " +
+              DBProvider.users[0].email),
+          () => changePassword(),
+        );
+        return confirmDialog;
+      },
     );
   }
 
   Future<void> logOut() async {
     await DBProvider.db.delete();
-    screen = login();
+    screen = Login();
     await FirebaseAuth.instance.signOut();
-    new Timer(Duration(seconds: 1), changeScreen);
+    Timer(Duration(seconds: 1), changeScreen);
   }
 
   changeScreen() {
-    globalMethods().popPage(context);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
+    GlobalMethods().pushAndReplacement(context, screen);
   }
 }

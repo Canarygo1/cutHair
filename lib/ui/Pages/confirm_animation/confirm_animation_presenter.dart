@@ -2,7 +2,6 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 class ConfirmAnimationPresenter{
   ConfirmAnimationView _view;
   RemoteRepository _remoteRepository;
