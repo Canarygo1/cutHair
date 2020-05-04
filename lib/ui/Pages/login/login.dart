@@ -1,5 +1,6 @@
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -11,11 +12,23 @@ import '../register/register.dart';
 import '../reset_password/reset_password.dart';
 import 'login_presenter.dart';
 
-class login extends StatelessWidget {
+class login extends StatefulWidget {
+  @override
+  _loginState createState() => _loginState();
+  }
+
+  class _loginState extends State <login> implements LoginView{
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  Widget emailTextField(BuildContext context) {
+  LoginCode loginCode;
+  String error = "";
+  @override
+  void initState(){
+    loginCode = LoginCode(this);
+  }
+  Widget emailTextField(BuildContext context){
     return Container(
+      key: ValueKey('emailText'),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(40.0, 130.0, 35.0, 20.0),
         child: TextFormField(
@@ -42,6 +55,7 @@ class login extends StatelessWidget {
 
   Widget passWordTextField() {
     return Padding(
+        key: ValueKey('passText'),
         padding: const EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
         child: TextFormField(
           enableInteractiveSelection: false,
@@ -85,27 +99,24 @@ class login extends StatelessWidget {
             )));
   }
 
-  Widget buttonLoginIn(BuildContext context) {
+  Widget textError() {
     return Container(
-      padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: LargeText('Entrar'),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            loginCode().iniciarSesion(emailController.text.toString(),
-                passwordController.text.toString(), context);
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+        padding: EdgeInsets.fromLTRB(40.0, 0.0, 35.0, 20.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height * 0.005),
+            child: Text(
+              error,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            ),
           ),
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-      ),
-    );
+        ));
   }
 
   Widget TextRegister(BuildContext context) {
@@ -222,7 +233,7 @@ class login extends StatelessWidget {
                 emailTextField(context),
                 passWordTextField(),
                 TextForgetPassword(context),
-                buttonLoginIn(context),
+                Button(() => logIn(), LargeText("Entrar")),
                 TextRegister(context),
                 lineDivisor(),
                 facebookButton(context),
@@ -230,6 +241,12 @@ class login extends StatelessWidget {
             ),
           ),
         ));
+  }
+
+  logIn() {
+    //ConnectionChecked.checkInternetConnectivity(context);
+    loginCode.iniciarSesion(emailController.text.toString(),
+        passwordController.text.toString(), context);
   }
 
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -269,5 +286,10 @@ class login extends StatelessWidget {
       );
     }
     return currentUser;
+  }
+
+  @override
+  changeTextError(String text) {
+    return null;
   }
 }

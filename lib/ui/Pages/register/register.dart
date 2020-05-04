@@ -1,5 +1,7 @@
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -188,7 +190,7 @@ class _registerState extends State<register> {
                 correoTextField(),
                 passWordTextField(),
                 repeatPassWordTextField(),
-                buttonRegister(context),
+                Button(() => checkEmail(), LargeText("Entrar"))
               ],
             )),
       ),

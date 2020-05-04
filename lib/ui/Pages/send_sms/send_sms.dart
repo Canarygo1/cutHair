@@ -1,4 +1,6 @@
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/goback.dart';
+import 'package:cuthair/ui/Components/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -93,6 +95,7 @@ class _SendSMSState extends State<SendSMS> {
       smsCode: smsCode,
     );
     await _auth.signInWithCredential(credential);
+    ConnectionChecked.checkInternetConnectivity(context);
     data.putIfAbsent("Telefono", () => phoneController.text);
     registerCode().registerAuth(data["Email"], password, context, data);
   }
@@ -171,59 +174,6 @@ class _SendSMSState extends State<SendSMS> {
     );
   }
 
-  Widget botonEnviarCode(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Enviar código',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            verifyPhone();
-          },
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-
-      ),
-    );
-  }
-
-  Widget confirmarCode(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(40.0, 20.0, 35.0, 20.0),
-      child: ButtonTheme(
-        child: RaisedButton(
-          child: Text(
-            'Confirmar codigo',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 20.0,
-            ),
-          ),
-          shape: RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(10.0),
-          ),
-          onPressed: () {
-            ConnectionChecked.checkInternetConnectivity(context);
-            signIn(codeController.text);
-          },
-        ),
-        height: 60.0,
-        buttonColor: Color.fromRGBO(230, 73, 90, 1),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -238,9 +188,9 @@ class _SendSMSState extends State<SendSMS> {
               children: <Widget>[
                 GoBack(context, "Volver"),
                 telefonoTextField(),
-                botonEnviarCode(context),
+                Button(() => verifyPhone(), LargeText("Enviar código")),
                 codigoTextField(),
-                confirmarCode(context)
+                Button(() => signIn(codeController.text),LargeText("Confirmar código"))
               ],
             ),
           ),
