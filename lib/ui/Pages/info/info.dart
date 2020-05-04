@@ -3,20 +3,18 @@ import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/appbar.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
-import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../data/local/db_sqlite.dart';
-import '../../../data/local/db_sqlite.dart';
 import '../../../data/remote/check_connection.dart';
 import '../../../global_methods.dart';
 import '../../Components/confirm_dialog.dart';
-import '../reset_password/reset_password.dart';
 
 class Info extends StatefulWidget {
   User user;
@@ -32,6 +30,8 @@ class _InfoScreenState extends State<Info> {
   Widget screen;
   double HEIGHT;
   double WIDHT;
+  String error = "";
+  ConfirmDialog confirmDialog;
 
   _InfoScreenState(this.user);
 
@@ -40,6 +40,11 @@ class _InfoScreenState extends State<Info> {
   changePassword() {
     ConnectionChecked.checkInternetConnectivity(context);
     ResetPasswordCode(DBProvider.users[0].email).changePassword();
+    setState(() {
+      error = 'Se ha enviado un correo a dicha direccion email';
+    });
+    DBProvider.db.delete();
+    Timer(Duration(seconds: 2), () => GlobalMethods().pushAndReplacement(context, Login()));
   }
 
   @override
@@ -164,21 +169,21 @@ class _InfoScreenState extends State<Info> {
         Padding(
           padding: EdgeInsets.only(left: WIDHT * 0.15, bottom: HEIGHT * 0.054),
           child:
-              MyButton(() => changePassword(), LargeText("Cambiar contraseña")),
+              MyButton(() => functionResetPassword(), LargeText("Cambiar contraseña"), color: Color.fromRGBO(230, 73, 90, 1)),
         ),
+        error.length == 0 ? Container() : TextError(error),
       ]),
     );
   }
 
   functionResetPassword() {
-    ConfirmDialog confirmDialog;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         confirmDialog = ConfirmDialog(
           MediumText("Seguro que quiere cambiar la contraseña de: " +
               DBProvider.users[0].email),
-          () => changePassword(),
+          () => {changePassword(), GlobalMethods().popPage(confirmDialog.context)},
         );
         return confirmDialog;
       },

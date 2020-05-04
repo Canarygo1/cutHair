@@ -1,10 +1,13 @@
 import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmDialog extends StatefulWidget {
   Widget widget;
   Function function;
   BuildContext context;
+
   ConfirmDialog(this.widget, this.function);
 
   @override
@@ -12,6 +15,8 @@ class ConfirmDialog extends StatefulWidget {
 }
 
 class _ConfirmDialogState extends State<ConfirmDialog> {
+  double HEIGHT;
+  double WIDHT;
 
   @override
   void initState() {
@@ -20,33 +25,22 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return AlertDialog(
       backgroundColor: Color.fromRGBO(30, 31, 32, 1),
       title: widget.widget,
       content: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          FlatButton(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(13.0)),
-              child: Text(
-                "No",
-                style: TextStyle(color: Colors.white),
-              ),
-              color: Color.fromRGBO(230, 73, 90, 1),
-              onPressed: () => {
-                GlobalMethods().popPage(context),
-              }),
-          FlatButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13.0)),
-            child: Text(
-              "Sí",
-              style: TextStyle(color: Colors.white),
-            ),
+          MyButton(
+            () => GlobalMethods().popPage(context),
+            SmallText('No'),
             color: Color.fromRGBO(230, 73, 90, 1),
-            onPressed: widget.function,
+            height: HEIGHT * 0.054,
           ),
+          MyButton(widget.function, SmallText('Sí'),
+              color: Color.fromRGBO(230, 73, 90, 1), height: HEIGHT * 0.054),
         ],
       ),
     );

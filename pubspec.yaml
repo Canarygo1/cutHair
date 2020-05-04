@@ -1,7 +1,6 @@
 name: cuthair
 description: Aplicacion para la peluqueria
 
-
 version: 1.0.0+1
 
 environment:
@@ -41,7 +40,6 @@ dev_dependencies:
   test: any
 
 flutter:
-
 
   uses-material-design: true
 

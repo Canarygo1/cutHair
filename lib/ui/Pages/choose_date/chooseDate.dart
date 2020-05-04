@@ -64,11 +64,7 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
         color: Color.fromRGBO(300, 300, 300, 1),
         child: ListView(
           children: <Widget>[
-            Padding(
-              padding:
-                  EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.027),
-              child: GoBack(context, "Volver"),
-            ),
+            GoBack(context, "Volver"),
             CalendarWidget(
                 (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
@@ -130,6 +126,7 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
                                 LargeText(availability[index]),
                                 height: HEIGHT * 0.05,
                                 horizontalPadding: WIDHT * 0.025,
+                                color: Color.fromRGBO(230, 73, 90, 1),
                               ),
                             );
                           }),

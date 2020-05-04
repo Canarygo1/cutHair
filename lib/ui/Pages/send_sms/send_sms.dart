@@ -180,9 +180,9 @@ class _SendSMSState extends State<SendSMS> {
               children: <Widget>[
                 GoBack(context, "Volver"),
                 telefonoTextField(),
-                MyButton(() => verifyPhone(), LargeText("Enviar código")),
+                MyButton(() => verifyPhone(), LargeText("Enviar código"), color: Color.fromRGBO(230, 73, 90, 1)),
                 codigoTextField(),
-                MyButton(() => signIn(codeController.text),LargeText("Confirmar código")),
+                MyButton(() => signIn(codeController.text),LargeText("Confirmar código"), color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : TextError(error),
               ],
             ),

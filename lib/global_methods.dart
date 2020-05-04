@@ -6,21 +6,21 @@ import 'data/local/db_sqlite.dart';
 import 'ui/Pages/bottom_navigation/menu.dart';
 import 'ui/Pages/login/login.dart';
 
-class GlobalMethods{
+class GlobalMethods {
   BuildContext context;
 
-  void pushPage(BuildContext context, Widget page){
+  void pushPage(BuildContext context, Widget page) {
     Navigator.of(context).push(
-      SlideRightRoute(page: page),
+      MaterialPageRoute<void>(builder: (_) => page),
     );
   }
 
-  void pushAndReplacement(BuildContext context, Widget widget){
+  void pushAndReplacement(BuildContext context, Widget widget) {
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (BuildContext context) => widget));
   }
 
-  void popPage(BuildContext page){
+  void popPage(BuildContext page) {
     Navigator.pop(page);
   }
 
@@ -41,7 +41,7 @@ class GlobalMethods{
     pushAndReplacement(context, screen);
   }
 
-  static Future<List<dynamic>> getTimeSeparatedBy10 (
+  static Future<List<dynamic>> getTimeSeparatedBy10(
       DateTime checkIn, DateTime checkOut) async {
     List<String> list = [];
     var duration = checkOut.difference(checkIn).inMinutes;
@@ -54,7 +54,8 @@ class GlobalMethods{
     return list;
   }
 
-  static List<String> getHours(String checkIn, String checkOut, DateTime dayId){
+  static List<String> getHours(
+      String checkIn, String checkOut, DateTime dayId) {
     List<String> hours = [];
 
     List<String> arrayCheckIn = checkIn.split(":");
@@ -69,17 +70,17 @@ class GlobalMethods{
     DateTime initialTime = dayId;
     DateTime finalTime = dayId;
 
-    initialTime =
-        initialTime.add(Duration(hours: int.parse(initialHour), minutes: int.parse(initialMinute)));
-    finalTime =
-        finalTime.add(Duration(hours: int.parse(finalHour), minutes: int.parse(finalMinute)));
+    initialTime = initialTime.add(Duration(
+        hours: int.parse(initialHour), minutes: int.parse(initialMinute)));
+    finalTime = finalTime.add(
+        Duration(hours: int.parse(finalHour), minutes: int.parse(finalMinute)));
 
-    while (int.parse(finalTime.difference(initialTime).inMinutes.toString()) > 0) {
+    while (
+        int.parse(finalTime.difference(initialTime).inMinutes.toString()) > 0) {
       String minute = initialTime.minute.toString().length == 1
           ? initialTime.minute.toString() + '0'
           : initialTime.minute.toString();
-      hours.add(
-          initialTime.hour.toString() + ":" + minute);
+      hours.add(initialTime.hour.toString() + ":" + minute);
       initialTime = initialTime.add(Duration(minutes: 10));
     }
 

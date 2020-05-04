@@ -48,7 +48,7 @@ class _LoginState extends State<Login> implements LoginView {
                 passWordTextField(),
                 error.length == 0 ? Container() : TextError(error),
                 TextForgetPassword(context),
-                MyButton(() => logIn(), LargeText("Entrar")),
+                MyButton(() => logIn(), LargeText("Entrar"), color: Color.fromRGBO(230, 73, 90, 1)),
               ],
             ),
           ),

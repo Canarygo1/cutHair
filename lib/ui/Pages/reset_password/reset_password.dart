@@ -33,7 +33,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           children: <Widget>[
             GoBack(context, "Volver"),
             emailTextField(),
-            MyButton(() => sendEmail(context), LargeText("Enviar")),
+            MyButton(() => sendEmail(context), LargeText("Enviar"), color: Color.fromRGBO(230, 73, 90, 1)),
             error.length == 0 ? Container() : TextError(error),
           ],
         ),

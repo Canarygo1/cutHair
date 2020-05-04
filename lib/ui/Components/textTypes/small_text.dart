@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 class SmallText extends StatelessWidget {
   String texto;
+  FontWeight boolText;
 
-  SmallText(this.texto);
+  SmallText(this.texto, {this.boolText = FontWeight.bold});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class SmallText extends StatelessWidget {
       style: TextStyle(
         fontSize: 12,
         color: Colors.white,
-        fontWeight: FontWeight.bold,
+        fontWeight: boolText,
       ),
     );
   }

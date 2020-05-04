@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 class MyButton extends StatelessWidget {
   Function function;
   Widget widget;
+  Color color;
   var height;
   var horizontalPadding;
   var verticalMargin;
 
-  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0});
+  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0, this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class MyButton extends StatelessWidget {
       child: FlatButton(
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        color: Color.fromRGBO(230, 73, 90, 1),
+        color: color,
         child: widget,
         onPressed:function,
         shape: RoundedRectangleBorder(

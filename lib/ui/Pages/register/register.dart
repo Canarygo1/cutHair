@@ -48,7 +48,7 @@ class _registerState extends State<register> {
                     passWordTextField(),
                     repeatPassWordTextField(),
                     error.length == 0 ? Container() : textError(),
-                    MyButton(() => checkEmail(), LargeText("Entrar"))
+                    MyButton(() => checkEmail(), LargeText("Entrar"), color: Color.fromRGBO(230, 73, 90, 1))
                   ],
                 )),
           ),
