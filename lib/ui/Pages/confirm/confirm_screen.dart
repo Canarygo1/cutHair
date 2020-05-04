@@ -157,6 +157,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       },
                       LargeText("Cancelar cita"),
                       horizontalPadding: WIDHT * 0.025,
+                        key: Key('cancelButton')
                     ),
                   ),
                   Expanded(
@@ -168,6 +169,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       },
                       LargeText("Confirmar"),
                       horizontalPadding: WIDHT * 0.025,
+                      key: Key('confirmButton')
                     ),
                   ),
                 ],

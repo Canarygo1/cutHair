@@ -8,10 +8,14 @@ void main() {
     final usernameTextField = find.byValueKey('loginTextField');
     final passwrodTextField = find.byValueKey('passwordTextField');
     final homeCard = find.byValueKey('homeCard');
+    final confirmButton = find.byValueKey('confirmButton');
+    final backMenuButton = find.byValueKey('backMenuButton');
+    final NavBar = find.byValueKey('navBar');
+    final HomeIcon = find.byValueKey('homeIcon');
     final detailList = find.text("Arreglo de barba");
     final selectedHairdresser = find.text("Maxi");
-    final selectedDay = find.text("1");
-    final selectedHour = find.text("7:40");
+    final selectedDay = find.text("4");
+    final selectedHour = find.text("12:50");
 
     FlutterDriver driver;
     setUpAll(() async {
@@ -49,5 +53,17 @@ void main() {
     test('click time', () async {
       await driver.tap(selectedHour);
     });
+    test('click confirm date', () async {
+      await driver.tap(confirmButton);
+    });
+    
+    test('confirmation screen', () async{
+      await driver.tap(backMenuButton);
+    });
+
+    test('change to home screen', () async{
+      await driver.tap(HomeIcon);
+    });
   });
 }
+

@@ -49,24 +49,28 @@ class _menuState extends State<Menu> implements MenuView {
                     ),
               ),
               child: BottomNavigationBar(
+                  key: Key('navBar'),
                   backgroundColor: Colors.black,
                   type: BottomNavigationBarType.fixed,
                   items: [
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.menu,
+                        key : Key('menuIcon')
                       ),
                       title: Text(""),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.home,
+                          key : Key('homeIcon')
                       ),
                       title: Text(""),
                     ),
                     BottomNavigationBarItem(
                       icon: Icon(
                         Icons.account_circle,
+                          key : Key('userInfoIcon')
                       ),
                       title: Text(""),
                     ),

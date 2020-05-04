@@ -63,6 +63,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                             child: MediumText(business.elementAt(indexTipo)),
                           ),
                           Container(
+
                             height: HEIGHT * 0.31,
                             child: Row(
                               children: <Widget>[

@@ -158,6 +158,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                         padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.05),
                         child: ButtonTheme(
                           child: RaisedButton(
+                            key: Key('backMenuButton'),
                             child: Text('Volver al menu' ),
                             onPressed: () async {
                               GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0]));
