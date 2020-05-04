@@ -112,7 +112,7 @@ class _LoginState extends State<Login> implements LoginView {
                 bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
             child: GestureDetector(
               onTap: () {
-                GlobalMethods().pushPage(context, resetPassword());
+                GlobalMethods().pushPage(context, ResetPassword());
               },
               child: Text(
                 '¿Has olvidado tu contraseña?',

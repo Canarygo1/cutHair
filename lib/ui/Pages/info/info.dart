@@ -2,14 +2,21 @@ import 'dart:async';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Components/upElements/appbar.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
+import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import '../../../data/local/db_sqlite.dart';
+import '../../../data/local/db_sqlite.dart';
 import '../../../data/remote/check_connection.dart';
+import '../../../global_methods.dart';
+import '../../Components/confirm_dialog.dart';
+import '../reset_password/reset_password.dart';
 
 class Info extends StatefulWidget {
   User user;
@@ -20,7 +27,7 @@ class Info extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState(user);
 }
 
-class _InfoScreenState extends State<Info>  {
+class _InfoScreenState extends State<Info> {
   User user;
   Widget screen;
   double HEIGHT;
@@ -30,9 +37,9 @@ class _InfoScreenState extends State<Info>  {
 
   GlobalMethods global = GlobalMethods();
 
-  changePassword(){
+  changePassword() {
     ConnectionChecked.checkInternetConnectivity(context);
-    GlobalMethods().pushPage(context, resetPassword());
+    ResetPasswordCode(DBProvider.users[0].email).changePassword();
   }
 
   @override
@@ -53,7 +60,8 @@ class _InfoScreenState extends State<Info>  {
                 child: GestureDetector(
                   onTap: logOut,
                   child: Container(
-                    padding: EdgeInsets.only(right: WIDHT * 0.05, top: HEIGHT * 0.04),
+                    padding: EdgeInsets.only(
+                        right: WIDHT * 0.05, top: HEIGHT * 0.04),
                     child: Icon(
                       Icons.exit_to_app,
                       size: 30,
@@ -67,15 +75,12 @@ class _InfoScreenState extends State<Info>  {
         ),
         Container(
           padding: EdgeInsets.fromLTRB(
-              WIDHT * 0.2,
-              HEIGHT * 0.04,
-              0.0,
-              HEIGHT * 0.04),
+              WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.04),
           child: Column(
             children: <Widget>[
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.03,
-                    bottom: HEIGHT * 0.054),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -94,8 +99,8 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.03,
-                    bottom: HEIGHT * 0.054),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -114,8 +119,8 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.03,
-                    bottom: HEIGHT * 0.054),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -134,8 +139,8 @@ class _InfoScreenState extends State<Info>  {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.03,
-                    bottom: HEIGHT * 0.054),
+                padding:
+                    EdgeInsets.only(left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
                 child: Row(
                   children: <Widget>[
                     Container(
@@ -157,11 +162,26 @@ class _InfoScreenState extends State<Info>  {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: WIDHT * 0.15,
-              bottom: HEIGHT * 0.054),
-              child: MyButton(() => changePassword(), LargeText("Cambiar contraseña")),
+          padding: EdgeInsets.only(left: WIDHT * 0.15, bottom: HEIGHT * 0.054),
+          child:
+              MyButton(() => changePassword(), LargeText("Cambiar contraseña")),
         ),
       ]),
+    );
+  }
+
+  functionResetPassword() {
+    ConfirmDialog confirmDialog;
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        confirmDialog = ConfirmDialog(
+          MediumText("Seguro que quiere cambiar la contraseña de: " +
+              DBProvider.users[0].email),
+          () => changePassword(),
+        );
+        return confirmDialog;
+      },
     );
   }
 
@@ -169,11 +189,10 @@ class _InfoScreenState extends State<Info>  {
     await DBProvider.db.delete();
     screen = Login();
     await FirebaseAuth.instance.signOut();
-    new Timer(Duration(seconds: 1), changeScreen);
+    Timer(Duration(seconds: 1), changeScreen);
   }
 
   changeScreen() {
-    GlobalMethods().popPage(context);
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => screen));
+    GlobalMethods().pushAndReplacement(context, screen);
   }
 }
