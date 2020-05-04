@@ -6,8 +6,9 @@ class MyButton extends StatelessWidget {
   var height;
   var horizontalPadding;
   var verticalMargin;
-
-  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0});
+  Key key;
+  var name;
+  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0,this.key,this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,7 @@ class MyButton extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: horizontalPadding),
       margin: EdgeInsets.symmetric(vertical: verticalMargin),
       child: FlatButton(
+        key: Key(name),
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
         color: Color.fromRGBO(230, 73, 90, 1),

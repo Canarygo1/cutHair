@@ -48,7 +48,7 @@ class _LoginState extends State<Login> implements LoginView {
                 passWordTextField(),
                 error.length == 0 ? Container() : TextError(error),
                 TextForgetPassword(context),
-                MyButton(() => logIn(), LargeText("Entrar")),
+                MyButton(() => logIn(), LargeText("Entrar"),key: Key('loginButton')),
               ],
             ),
           ),
@@ -60,6 +60,7 @@ class _LoginState extends State<Login> implements LoginView {
       child: Padding(
         padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
+          key: Key('loginTextField'),
           enableInteractiveSelection: false,
           controller: emailController,
           decoration: InputDecoration(
@@ -85,6 +86,7 @@ class _LoginState extends State<Login> implements LoginView {
     return Padding(
         padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
+          key: Key('passwordTextField'),
           enableInteractiveSelection: false,
           controller: passwordController,
           decoration: InputDecoration(

@@ -47,14 +47,15 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
           Appbar("Negocios"),
           loading
               ? Container(
-                  padding: EdgeInsets.symmetric(
+              key: Key('homeCard'),
+              padding: EdgeInsets.symmetric(
                       horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.013),
-                  height: HEIGHT * 0.81,
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: business.length,
-                    itemBuilder: (context, indexTipo) {
-                      return Column(
+                      height: HEIGHT * 0.81,
+                      child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: business.length,
+                      itemBuilder: (context, indexTipo) {
+                        return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
