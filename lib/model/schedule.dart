@@ -1,4 +1,3 @@
-import 'day.dart';
 
 class Schedule{
   DateTime uid;

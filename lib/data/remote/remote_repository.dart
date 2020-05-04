@@ -7,11 +7,14 @@ import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/user.dart';
 
 abstract class RemoteRepository {
-  Future<List<HairDressing>> getAllHairdressing();
 
-  Future<List<Service>> getAllServices();
+  Future <List<String>> getBusiness();
 
-  Future<List<Employe>> getAllEmployes();
+  Future<Map<String, List<HairDressing>>> getAllBusiness(String business);
+
+  Future<List<Service>> getAllServices(String uid, String typeBusiness);
+
+  Future<List<Employe>> getAllEmployes(String uid, String typeBusiness);
 
   Future<User> getUser(String uid);
 
@@ -21,17 +24,19 @@ abstract class RemoteRepository {
 
   Future<List<MyAppointment>> getUserAppointments(String uid);
 
-  Future<HairDressing> getHairdressingByUid(String hairdressingUid);
+  //Future<HairDressing> getHairdressingByUid(String hairdressingUid);
 
   Future<User> getUserByPhoneNumber(String phoneNumber);
 
   Future<User> insertAnonymousUser(User user);
 
-  Future<bool> insertSchedule(String employe, String hairDressingUid, String day, List<Map<String, dynamic>> schedules, List<String> hours);
+  //Future<bool> insertSchedule(String employe, String hairDressingUid, String day, String typeBusiness, List<Map<String, dynamic>> schedules, List<String> hours);
 
-  Future<Schedule> getRange(String day, String name, String hairDressingUid);
+  Future<Schedule> getRange(String day, String name, String hairDressingUid, String typeBusiness);
 
-  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, Map ranges);
+  Future<bool> removeRange(DateTime day, String name, String hairDressingUid, String typeBusiness, Map ranges);
 
   Future<bool> removeAppointment(MyAppointment appointment, int index);
+
+  Future<bool> getUserPenalize(String uid);
 }

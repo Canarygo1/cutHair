@@ -9,7 +9,7 @@ class DetailPresenter {
 
   init(HairDressing hairDressing) async {
     try {
-      _view.showServices(await _remoteRepository.getAllServices());
+      _view.showServices(await _remoteRepository.getAllServices(hairDressing.uid, hairDressing.typeBusiness));
       _view.showImages(await _remoteRepository.getAllImages(hairDressing));
     }catch(e){
       print(e.toString());

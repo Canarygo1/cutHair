@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class MediumText extends StatelessWidget {
   String texto;
-
-  MediumText(this.texto);
+  Color color;
+  MediumText(this.texto, {this.color = Colors.white});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class MediumText extends StatelessWidget {
       texto,
       style: TextStyle(
         fontSize: 16,
-        color: Colors.white,
+        color: color,
         fontWeight: FontWeight.bold,
       ),
     );

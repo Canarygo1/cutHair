@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -12,9 +13,12 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State {
   Widget screen;
+  PushNotificationService pushNotificationService;
+
   @override
   void initState() {
     super.initState();
+    pushNotificationService = new PushNotificationService();
     play();
   }
 
@@ -55,6 +59,8 @@ class _SplashScreenState extends State {
 
   void play() async {
     await DBProvider.db.getUser();
+    await pushNotificationService.initialise();
+
     if (DBProvider.users.length > 0) {
       FirebaseUser user = await FirebaseAuth.instance.currentUser();
       if (user.uid == DBProvider.users[0].uid) {

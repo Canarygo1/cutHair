@@ -5,6 +5,7 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/ui/Components/appbar.dart';
+import 'package:cuthair/ui/Components/confirm_dialog.dart';
 import 'package:cuthair/ui/Components/medium_text.dart';
 import 'package:cuthair/ui/Components/small_text.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +28,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   bool isConsulting = false;
   double HEIGHT;
   double WIDHT;
-
+  ConfirmDialog confirmDialog;
   @override
   initState() {
     super.initState();
@@ -252,21 +253,35 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                         ),
                       ),
                       Center(
-                        child: RaisedButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13.0)),
-                            child: Text(
-                              "Cancelar",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            color: Color.fromRGBO(230, 73, 90, 1),
-                            onPressed: () {
-                              ConnectionChecked.checkInternetConnectivity(context);
-                              _presenter.removeAppointment(
-                                  myAppointments[index],
-                                  index,
-                                  DBProvider.users[0].uid);
-                            }),
+                        child: FlatButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(13.0)),
+                          child: Text(
+                            "Cancelar",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          color: Color.fromRGBO(230, 73, 90, 1),
+                          onPressed: () => showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              confirmDialog = ConfirmDialog(
+                                MediumText("¿Desea cancelar la cita?"),
+                                    () => {
+                                  ConnectionChecked.checkInternetConnectivity(
+                                      context),
+                                  _presenter.removeAppointment(
+                                      myAppointments[index],
+                                      index,
+                                      DBProvider.users[0].uid),
+                                  globalMethods()
+                                      .popPage(confirmDialog.context),
+                                },
+                              );
+                              return confirmDialog;
+                            },
+                          ),
+                        ),
+
                       ),
                     ],
                   ),
@@ -279,7 +294,6 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   showAppointments(List<MyAppointment> myAppointment) {
     if (mounted) {
       setState(() {
-        print("hola");
         isConsulting = false;
         myAppointments = myAppointment;
       });

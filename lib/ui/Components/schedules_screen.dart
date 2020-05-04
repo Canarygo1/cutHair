@@ -5,23 +5,25 @@ import 'package:cuthair/model/schedule.dart';
 import 'package:flutter/material.dart';
 
 
-class ScheduleScreen extends StatefulWidget {
+/*class ScheduleScreen extends StatefulWidget {
   List<Schedule> days = [];
   String name;
   String hairDressingUid;
-  ScheduleScreen(this.days, this.name, this.hairDressingUid);
+  String typeBusiness;
+  ScheduleScreen(this.days, this.name, this.hairDressingUid, this.typeBusiness);
 
   @override
-  _ScheduleScreenState createState() => _ScheduleScreenState(this.days, this.name, this.hairDressingUid);
-}
+  _ScheduleScreenState createState() => _ScheduleScreenState(this.days, this.name, this.hairDressingUid, this.typeBusiness);
+}*/
 
-class _ScheduleScreenState extends State<ScheduleScreen> {
+/*class _ScheduleScreenState extends State<ScheduleScreen> {
 
   List<Schedule> days;
   String name;
   RemoteRepository _remoteRepository;
   String hairDressingUid;
-  _ScheduleScreenState(this.days, this.name, this.hairDressingUid);
+  String typeBusiness;
+  _ScheduleScreenState(this.days, this.name, this.hairDressingUid, this.typeBusiness);
 
   @override
   void initState() {
@@ -70,7 +72,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         trailing: GestureDetector(
                           onTap: () {
                             setState(() {
-                              removeSchedule(days[index].uid, this.name, this.widget.hairDressingUid, days[index].ranges[indexranges]);
+                              removeSchedule(days[index].uid, this.name, this.widget.hairDressingUid, this.typeBusiness, days[index].ranges[indexranges]);
                               days[index].ranges.removeAt(indexranges);
                             });
                           },
@@ -89,7 +91,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
     );
   }
 
-  removeSchedule(DateTime day, String name, String hairDressingUid, Map ranges){
-    _remoteRepository.removeRange(day, name, hairDressingUid, ranges);
+  removeSchedule(DateTime day, String name, String hairDressingUid, String typeBusiness, Map ranges){
+    _remoteRepository.removeRange(day, name, hairDressingUid, typeBusiness, ranges);
   }
-}
+}*/
