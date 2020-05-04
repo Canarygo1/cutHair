@@ -4,6 +4,8 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/user.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation_presenter.dart';
@@ -156,19 +158,9 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                       MediumText("Gracias por confiar en Reservalo"),
                       Padding(
                         padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.05),
-                        child: ButtonTheme(
-                          child: RaisedButton(
-                            child: Text('Volver al menu' ),
-                            onPressed: () async {
-                              GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0]));
-                            },
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                          ),
-                          height: HEIGHT * 0.081,
-                          minWidth: WIDHT * 0.381,
-                          buttonColor: Colors.white,
+                        child: MyButton(
+                            () => GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0])),
+                          LargeText('Volver al menu', color: Colors.black,),
                         ),
                       ),
                     ],

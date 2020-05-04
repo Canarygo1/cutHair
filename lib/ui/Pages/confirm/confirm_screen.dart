@@ -6,6 +6,7 @@ import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
+import 'package:cuthair/ui/Pages/client_home/client_home.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_presenter.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/cupertino.dart';
@@ -153,10 +154,11 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       () => {
                         ConnectionChecked.checkInternetConnectivity(context),
                         GlobalMethods().pushAndReplacement(
-                            context, ConfirmAnimation(appointment))
+                            context, Menu(DBProvider.users[0]))
                       },
                       LargeText("Cancelar cita"),
                       horizontalPadding: WIDHT * 0.025,
+                      color: Color.fromRGBO(230, 73, 90, 1)
                     ),
                   ),
                   Expanded(
@@ -168,6 +170,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       },
                       LargeText("Confirmar"),
                       horizontalPadding: WIDHT * 0.025,
+                      color: Color.fromRGBO(230, 73, 90, 1)
                     ),
                   ),
                 ],

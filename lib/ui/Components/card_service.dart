@@ -3,6 +3,7 @@ import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/hairDressing.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/choose_hairdresser/choose_hairdresser.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +12,15 @@ class CardService extends StatelessWidget {
   HairDressing hairDressing;
   Appointment appointment = Appointment();
   Function function;
+  double HEIGHT;
+  double WIDHT;
 
   CardService(this.hairDressing, this.detallesServicio, this.function);
 
   @override
   Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return ListView.builder(
       itemCount: detallesServicio.length,
       shrinkWrap: true,
@@ -41,7 +46,7 @@ class CardService extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.013),
+                            padding: EdgeInsets.only(top: HEIGHT * 0.013),
                             child: Divider(
                               thickness: 0.6,
                               endIndent: 10.0,
@@ -67,23 +72,21 @@ class CardService extends StatelessWidget {
       return GestureDetector(
         onTap: function,
         child: ListTile(
-          contentPadding:
-              EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+          contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
           dense: true,
           title: LargeText(detallesServicio[index].type),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text("Llame al número para más información",
-                    style: TextStyle(color: Colors.white, fontSize: 16.0)),
+                padding: EdgeInsets.only(top: HEIGHT * 0.013),
+                child: MediumText("Llame al número para más información", boolText: FontWeight.normal,),
               ),
               Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: Text(
-                      "Teléfono: " + hairDressing.phoneNumber.toString(),
-                      style: TextStyle(color: Colors.white, fontSize: 16.0)))
+                padding: EdgeInsets.only(top: HEIGHT * 0.013),
+                child: MediumText(
+                    "Teléfono: " + hairDressing.phoneNumber.toString(), boolText: FontWeight.normal),
+              ),
             ],
           ),
           trailing: IconButton(
@@ -93,23 +96,20 @@ class CardService extends StatelessWidget {
       );
     } else {
       return ListTile(
-        contentPadding:
-            EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
+        contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
         dense: true,
         title: LargeText(detallesServicio[index].type),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(
-                  detallesServicio[index].duration.toString() + " minutos",
-                  style: TextStyle(color: Colors.white, fontSize: 16.0)),
+              padding: EdgeInsets.only(top: HEIGHT * 0.013),
+              child: MediumText(
+                  detallesServicio[index].duration.toString() + " minutos", boolText: FontWeight.normal),
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(detallesServicio[index].price.toString() + " €",
-                  style: TextStyle(color: Colors.white, fontSize: 16.0)),
+              padding: EdgeInsets.only(top: HEIGHT * 0.013),
+              child: MediumText(detallesServicio[index].price.toString() + " €", boolText: FontWeight.normal),
             )
           ],
         ),

@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class MediumText extends StatelessWidget {
   String texto;
   Color color;
-  MediumText(this.texto, {this.color = Colors.white});
+  FontWeight boolText;
+  MediumText(this.texto, {this.color = Colors.white, this.boolText = FontWeight.bold});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class MediumText extends StatelessWidget {
       style: TextStyle(
         fontSize: 16,
         color: color,
-        fontWeight: FontWeight.bold,
+        fontWeight: boolText,
       ),
     );
   }

@@ -39,7 +39,8 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseHairDresserPresenter(this, _remoteRepository);
-    presenter.init(appointment.hairDressing.uid, appointment.hairDressing.typeBusiness);
+    presenter.init(
+        appointment.hairDressing.uid, appointment.hairDressing.typeBusiness);
   }
 
   @override
@@ -48,9 +49,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        color: Color.fromRGBO(300, 300, 300, 1),
-        child: ListView(
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
           children: <Widget>[
             GoBack(context, "Volver"),
             title(),
@@ -73,14 +75,18 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   Widget hairDressersButtons() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.027),
+      padding: EdgeInsets.symmetric(
+          horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.027),
       height: HEIGHT * 0.80,
       child: ListView.builder(
+        shrinkWrap: true,
+          primary: false,
           scrollDirection: Axis.vertical,
           itemCount: nombres.length,
           itemBuilder: (context, index) {
             return MyButton(
-                  () => chooseFunction(index), LargeText(nombres[index].name),);
+                () => chooseFunction(index), LargeText(nombres[index].name),
+                color: Color.fromRGBO(230, 73, 90, 1));
           }),
     );
   }
@@ -96,11 +102,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
 
   @override
   goToCalendar() {
-    GlobalMethods()
-          .pushPage(context, ChooseDateScreen(appointment));
+    GlobalMethods().pushPage(context, ChooseDateScreen(appointment));
   }
 
-  chooseFunction(int index){
+  chooseFunction(int index) {
     appointment.employe = nombres[index];
     presenter.nextScreen(appointment);
   }
