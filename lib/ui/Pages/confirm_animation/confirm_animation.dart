@@ -159,6 +159,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                         child: MyButton(
                             () => GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0])),
                           LargeText('Volver al menu', color: Colors.black,),
+                          height: HEIGHT * 0.067,
                         ),
                       ),
                     ],

@@ -29,18 +29,17 @@ class _ConfirmDialogState extends State<ConfirmDialog> {
     WIDHT = MediaQuery.of(context).size.width;
     return AlertDialog(
       backgroundColor: Color.fromRGBO(30, 31, 32, 1),
-      title: widget.widget,
+      title: Center(child: widget.widget),
       content: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           MyButton(
             () => GlobalMethods().popPage(context),
             SmallText('No'),
             color: Color.fromRGBO(230, 73, 90, 1),
-            height: HEIGHT * 0.054,
+            height: HEIGHT * 0.04,
           ),
           MyButton(widget.function, SmallText('Sí'),
-              color: Color.fromRGBO(230, 73, 90, 1), height: HEIGHT * 0.054),
+              color: Color.fromRGBO(230, 73, 90, 1), height: HEIGHT * 0.04),
         ],
       ),
     );

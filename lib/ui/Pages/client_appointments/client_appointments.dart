@@ -68,7 +68,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                   children: <Widget>[
                     SvgPicture.asset(
                       "assets/images/sad.svg",
-                      width: WIDHT * 0.0229,
+                      width: WIDHT * 0.229,
                     ),
                     Padding(
                       padding: EdgeInsets.only(top: HEIGHT * 0.03),
