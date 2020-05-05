@@ -50,8 +50,10 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment.service.duration.toString(),
-        initial.toString(), appointment.employe.name);
+    this._presenter.init(
+        appointment.service.duration.toString(),
+        initial.toString(),
+        appointment.employe.name);
   }
 
   @override

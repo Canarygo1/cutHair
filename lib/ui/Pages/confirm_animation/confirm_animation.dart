@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
+import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
+import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
@@ -9,6 +11,7 @@ import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation_presenter.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import '../../../data/local/db_sqlite.dart';
 import '../../../global_methods.dart';
 import '../bottom_navigation/menu.dart';
@@ -27,7 +30,8 @@ class ConfirmAnimation extends StatefulWidget {
 }
 
 class ConfirmAnimationState extends State<ConfirmAnimation>
-    with SingleTickerProviderStateMixin implements ConfirmAnimationView {
+    with SingleTickerProviderStateMixin
+    implements ConfirmAnimationView {
   double _percentage;
   double _nextPercentage;
   Timer _timer;
@@ -40,17 +44,26 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   double WIDHT;
   ConfirmAnimationPresenter _presenter;
   RemoteRepository _remoteRepository;
+  ApiRemoteRepository _apiRemoteRepository;
+  Icon statusIcon;
+  MediumText confirmTitle;
+  MediumText confirmSubtitle;
+
   @override
   initState() {
     super.initState();
     isAppointmentInsert = false;
+    statusIcon =
+        Icon(Icons.check_circle_outline, color: Colors.white, size: 150);
     _percentage = 0.0;
     _nextPercentage = 0.0;
     _timer = null;
     _progressDone = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _presenter = ConfirmAnimationPresenter(this, _remoteRepository);
-      _presenter.init(widget.appointment);
+    _apiRemoteRepository = HttpApiRemoteRepository(Client());
+    _presenter = ConfirmAnimationPresenter(
+        this, _remoteRepository, _apiRemoteRepository);
+    _presenter.init(widget.appointment);
     isAppointmentInsert = false;
     startProgress();
     initAnimationController();
@@ -81,7 +94,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     } else {
       timer.cancel();
       setState(() {
-        isAppointmentInsert == true ? color = Colors.green:color = Colors.red;
+        isAppointmentInsert == true ? color = Colors.green : color = Colors.red;
         _progressDone = true;
       });
     }
@@ -100,13 +113,13 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   }
 
   publishProgress() {
-      _percentage = _nextPercentage;
-      _nextPercentage += 1;
-      if (_nextPercentage > 100.0) {
-        _percentage = 0.0;
-        _nextPercentage = 0.0;
-      }
-      _progressAnimationController.forward(from: 0.0);
+    _percentage = _nextPercentage;
+    _nextPercentage += 1;
+    if (_nextPercentage > 100.0) {
+      _percentage = 0.0;
+      _nextPercentage = 0.0;
+    }
+    _progressAnimationController.forward(from: 0.0);
   }
 
   getDoneImage() {
@@ -144,27 +157,29 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
         alignment: Alignment.center,
         child: _progressDone == true
             ? Padding(
-              padding: EdgeInsets.only(top: HEIGHT * 0.37),
-              child: Center(
+                padding: EdgeInsets.only(top: HEIGHT * 0.37),
+                child: Center(
                   child: Column(
                     children: <Widget>[
-                      Icon(Icons.check_circle_outline,
-                          color: Colors.white, size: 150),
-                      MediumText(
-                        "Cita confirmada.",
-                      ),
-                      MediumText("Gracias por confiar en Reservalo"),
+                      statusIcon,
+                      confirmTitle,
+                      confirmSubtitle,
                       Padding(
-                        padding: EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.05),
+                        padding: EdgeInsets.only(
+                            left: WIDHT * 0.025, top: HEIGHT * 0.05),
                         child: MyButton(
-                            () => GlobalMethods().pushAndReplacement(context, Menu(DBProvider.users[0])),
-                          LargeText('Volver al menu', color: Colors.black,),
+                          () => GlobalMethods().pushAndReplacement(
+                              context, Menu(DBProvider.users[0])),
+                          LargeText(
+                            'Volver al menu',
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-            )
+              )
             : Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -177,15 +192,11 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                     child: progressView(),
                   ),
                   _percentage < 27
-                      ?
-                  MediumText("Reservando tu cita")
-                      :
-                  _percentage < 60
-                      ?
-                  MediumText("Con los mejores profesionales")
-                      :
-                  MediumText("En "+widget.appointment.hairDressing.name)
-                  ,
+                      ? MediumText("Reservando tu cita")
+                      : _percentage < 60
+                          ? MediumText("Con los mejores profesionales")
+                          : MediumText(
+                              "En " + widget.appointment.hairDressing.name),
                 ],
               ),
       ),
@@ -195,9 +206,17 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   @override
   correctInsert() {
     isAppointmentInsert = true;
-    }
+    statusIcon =
+        Icon(Icons.check_circle_outline, color: Colors.white, size: 150);
+    confirmTitle = MediumText("Cita confirmada.",);
+    confirmSubtitle = MediumText("Gracias por confiar en Reservalo",);
+  }
+
   @override
   incorrectInsert() {
+    statusIcon = Icon(Icons.close, color: Colors.white, size: 150);
+    confirmTitle = MediumText("No se ha podido confirmar la cita",);
+    confirmSubtitle = MediumText("Disculpe las molestias, por favor intentelo de nuevo",);
     isAppointmentInsert = false;
   }
 }
