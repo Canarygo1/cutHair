@@ -174,6 +174,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                             'Volver al menu',
                             color: Colors.black,
                           ),
+                           height: HEIGHT * 0.067,
                         ),
                       ),
                     ],

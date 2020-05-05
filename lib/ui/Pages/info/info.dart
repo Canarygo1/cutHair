@@ -80,7 +80,7 @@ class _InfoScreenState extends State<Info> {
         ),
         Container(
           padding: EdgeInsets.fromLTRB(
-              WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.04),
+              WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.03),
           child: Column(
             children: <Widget>[
               Padding(

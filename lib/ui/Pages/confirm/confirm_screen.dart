@@ -145,7 +145,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                   ),
             Container(
               padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.025, HEIGHT * 0.061, WIDHT * 0.025, 0),
+                  WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
               margin: EdgeInsets.symmetric(horizontal: WIDHT * 0.025),
               child: Row(
                 children: <Widget>[
@@ -158,7 +158,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       },
                       LargeText("Cancelar cita"),
                       horizontalPadding: WIDHT * 0.025,
-                      color: Color.fromRGBO(230, 73, 90, 1)
+                      color: Color.fromRGBO(230, 73, 90, 1),
+                      height: HEIGHT * 0.067,
                     ),
                   ),
                   Expanded(
@@ -170,7 +171,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                       },
                       LargeText("Confirmar"),
                       horizontalPadding: WIDHT * 0.025,
-                      color: Color.fromRGBO(230, 73, 90, 1)
+                      color: Color.fromRGBO(230, 73, 90, 1),
+                      height: HEIGHT * 0.067,
                     ),
                   ),
                 ],
