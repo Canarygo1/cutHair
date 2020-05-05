@@ -109,7 +109,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         margin: EdgeInsets.only(top: HEIGHT * 0.027),
         child: Column(children: [
           CarouselSlider(
-            height: HEIGHT * 0.25,
+            height: HEIGHT * 0.23,
             items: child,
             autoPlay: true,
             enlargeCenterPage: true,

@@ -4,29 +4,30 @@ import 'package:cuthair/model/hairDressing.dart';
 class HomeClientPresenter {
   HomeView _view;
   RemoteRepository _remoteRepository;
-
+  Map<String, List<HairDressing>> businessMap = Map();
   HomeClientPresenter(this._view, this._remoteRepository);
 
   init() async {
     try {
-      _view.showBusiness(await _remoteRepository.getBusiness());
-      await _view.chargeBusiness();
+      List<String> businessType = await _remoteRepository.getBusiness();
+      await _view.showBusiness(businessType);
+      await chargeBusiness(businessType);
+      _view.changeLoading();
     } catch (e) {
       print(e.toString());
     }
   }
 
-  getBusiness(String business) async {
-    try {
-      await _view.showList(await _remoteRepository.getAllBusiness(business));
-    } catch (e) {
-      print(e.toString());
+  chargeBusiness(List<String> businesses) async {
+    for (int i = 0; i < businesses.length; i++) {
+      businessMap.addAll(await _remoteRepository.getAllBusiness(businesses[i]));
     }
+    _view.showList(businessMap);
   }
 }
-
 abstract class HomeView {
   showList(Map<String, List<HairDressing>> hairDressing);
   showBusiness(List<String> business);
-  chargeBusiness();
+  changeLoading();
 }
+

@@ -19,15 +19,14 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   HomeClientPresenter presenter;
   RemoteRepository _remoteRepository;
   List<String> business;
-  Map<String, List<HairDressing>> peluquerias;
+  Map<String, List<HairDressing>> peluquerias = Map();
   GlobalMethods global = GlobalMethods();
-  bool loading = false;
+  bool loading;
   double HEIGHT;
   double WIDHT;
 
   initState() {
     business = [];
-    peluquerias = Map();
     loading = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = HomeClientPresenter(this, _remoteRepository);
@@ -62,122 +61,114 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
-                              child: MediumText(business.elementAt(indexTipo)),
+                              child: MediumText(business[indexTipo]),
                             ),
                             Container(
                               height: HEIGHT * 0.31,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: peluquerias[
-                                              business.elementAt(indexTipo)]
-                                          .length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ConnectionChecked
-                                                .checkInternetConnectivity(
-                                                    context);
-                                            HairDressing hairDressing =
-                                                peluquerias[business
-                                                    .elementAt(indexTipo)][index];
-                                            GlobalMethods().pushPage(context,
-                                                DetailScreen(hairDressing));
-                                          },
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount:
+                                      peluquerias[business[indexTipo]].length,
+                                  itemBuilder: (context, index) {
+                                    return GestureDetector(
+                                      onTap: () {
+                                        ConnectionChecked
+                                            .checkInternetConnectivity(context);
+                                        HairDressing hairDressing = peluquerias[
+                                                business.elementAt(indexTipo)]
+                                            [index];
+                                        GlobalMethods().pushPage(context,
+                                            DetailScreen(hairDressing));
+                                      },
+                                      child: Container(
+                                        width: WIDHT * 0.34,
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              right: WIDHT * 0.045),
                                           child: Container(
-                                            width: WIDHT * 0.34,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: WIDHT * 0.045),
-                                              child: Container(
-                                                child: Column(
-                                                  children: <Widget>[
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      child: Center(
-                                                        child: Container(
-                                                          child: AspectRatio(
-                                                            aspectRatio: 4 / 4,
-                                                            child: Image(
-                                                              fit: BoxFit.fill,
-                                                              height:
-                                                                  HEIGHT * 0.013,
-                                                              width:
-                                                                  WIDHT * 0.025,
-                                                              image: ExactAssetImage(
-                                                                  "assets/images/privilegeLogo.jpg"),
-                                                            ),
-                                                          ),
+                                            child: Column(
+                                              children: <Widget>[
+                                                ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          10.0),
+                                                  child: Center(
+                                                    child: Container(
+                                                      child: AspectRatio(
+                                                        aspectRatio: 4 / 4,
+                                                        child: Image(
+                                                          fit: BoxFit.fill,
+                                                          height:
+                                                              HEIGHT * 0.013,
+                                                          width: WIDHT * 0.025,
+                                                          image: ExactAssetImage(
+                                                              "assets/images/privilegeLogo.jpg"),
                                                         ),
                                                       ),
                                                     ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: WIDHT * 0.017,
-                                                          top: HEIGHT * 0.025),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding: EdgeInsets.only(
+                                                      left: WIDHT * 0.017,
+                                                      top: HEIGHT * 0.025),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: <Widget>[
+                                                      Text(
+                                                        peluquerias[business
+                                                                    .elementAt(
+                                                                        indexTipo)]
+                                                                [index]
+                                                            .name,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: Colors.white,
+                                                            fontSize: 18.0),
+                                                      ),
+                                                      Text(
+                                                        peluquerias[business
+                                                                    .elementAt(
+                                                                        indexTipo)]
+                                                                [index]
+                                                            .type,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 15.0),
+                                                      ),
+                                                      Row(
                                                         children: <Widget>[
-                                                          Text(
-                                                            peluquerias[business
-                                                                        .elementAt(
-                                                                            indexTipo)]
-                                                                    [index]
-                                                                .name,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color:
-                                                                    Colors.white,
-                                                                fontSize: 18.0),
+                                                          Icon(
+                                                            Icons.location_on,
+                                                            size: 12,
+                                                            color: Colors.white,
                                                           ),
                                                           Text(
                                                             peluquerias[business
-                                                                        .elementAt(
-                                                                            indexTipo)]
-                                                                    [index]
-                                                                .type,
+                                                                    .elementAt(
+                                                                        indexTipo)][index]
+                                                                .shortDirection,
                                                             style: TextStyle(
-                                                                color:
-                                                                    Colors.white,
-                                                                fontSize: 15.0),
-                                                          ),
-                                                          Row(
-                                                            children: <Widget>[
-                                                              Icon(
-                                                                Icons.location_on,
-                                                                size: 12,
-                                                                color:
-                                                                    Colors.white,
-                                                              ),
-                                                              Text(
-                                                                peluquerias[business
-                                                                        .elementAt(
-                                                                            indexTipo)][index]
-                                                                    .shortDirection,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        12.0),
-                                                              ),
-                                                            ],
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 12.0),
                                                           ),
                                                         ],
                                                       ),
-                                                    ),
-                                                  ],
+                                                    ],
+                                                  ),
                                                 ),
-                                              ),
+                                              ],
                                             ),
                                           ),
-                                        );
-                                      }),
+                                        ),
+                                      ),
+                                    );
+                                  }),
                             )
                           ],
                         );
@@ -196,7 +187,6 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     if (mounted) {
       setState(() {
         peluquerias.addAll(hairDressing);
-        loading = true;
       });
     }
   }
@@ -211,9 +201,11 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   }
 
   @override
-  chargeBusiness() {
-    for (int i = 0; i < this.business.length; i++) {
-      this.presenter.getBusiness(business.elementAt(i));
+  changeLoading() {
+    if(mounted){
+      setState(() {
+        loading = true;
+      });
     }
   }
 }

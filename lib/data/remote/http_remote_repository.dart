@@ -41,7 +41,6 @@ class HttpRemoteRepository implements RemoteRepository {
       allHairDressing.add(hairDressing);
     }
 
-
     Map<String, List<HairDressing>> allbusiness = new Map();
     allbusiness[business] = allHairDressing;
 
