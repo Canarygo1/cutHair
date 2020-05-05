@@ -33,6 +33,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     presenter = HomeClientPresenter(this, _remoteRepository);
     presenter.init();
   }
+
   @override
   Widget build(BuildContext context) {
     global.context = context;
