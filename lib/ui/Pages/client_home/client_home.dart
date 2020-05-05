@@ -33,6 +33,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     presenter = HomeClientPresenter(this, _remoteRepository);
     presenter.init();
   }
+
   @override
   Widget build(BuildContext context) {
     global.context = context;
@@ -65,9 +66,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                             ),
                             Container(
                               height: HEIGHT * 0.31,
-                              child: Row(
-                                children: <Widget>[
-                                  ListView.builder(
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: peluquerias[
@@ -179,8 +178,6 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                           ),
                                         );
                                       }),
-                                ],
-                              ),
                             )
                           ],
                         );
