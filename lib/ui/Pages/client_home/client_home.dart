@@ -65,9 +65,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                             ),
                             Container(
                               height: HEIGHT * 0.31,
-                              child: Row(
-                                children: <Widget>[
-                                  ListView.builder(
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       scrollDirection: Axis.horizontal,
                                       itemCount: peluquerias[
@@ -179,8 +177,6 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                           ),
                                         );
                                       }),
-                                ],
-                              ),
                             )
                           ],
                         );
