@@ -34,12 +34,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   double WIDHT;
 
   _DetailScreenState(this.hairDressing);
+
   int _current = 0;
 
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
     presenter.init(hairDressing);
+    print(hairDressing.typeBusiness);
   }
 
   @override
@@ -47,30 +49,129 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-        body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Column(
-            children: <Widget>[
-              sliderImages(context),
-              LargeText(hairDressing.name),
-              MediumText(hairDressing.direction),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(top: HEIGHT * 0.013, left: WIDHT * 0.025),
-                  child: Text(
-                    "Servicios",
-                    style: TextStyle(
-                        color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
-                  ),
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: hairDressing.typeBusiness != "Peluquerias" ? Padding(
+        padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
+        child: FloatingActionButton.extended(
+            onPressed: () {},
+            label: Text("Reserva una mesa"),
+            backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
+      ): Container() ,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          children: <Widget>[
+            sliderImages(context),
+            LargeText(hairDressing.name),
+            MediumText(hairDressing.direction),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(top: HEIGHT * 0.013, left: WIDHT * 0.025),
+                child: Text(
+                  "Servicios",
+                  style: TextStyle(
+                      color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
                 ),
               ),
-              CardService(hairDressing, detallesServicio,
-                      () => makecall(hairDressing.phoneNumber.toString())),
-            ],
-          ),
-        ));
+            ),
+            hairDressing.typeBusiness == "Peluquerias"
+                ? CardService(hairDressing, detallesServicio,
+                    () => makecall(hairDressing.phoneNumber.toString()))
+                : Container(
+                    child: ListView.builder(
+                      itemCount: 6,
+                      shrinkWrap: true,
+                      primary: false,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          shape: BeveledRectangleBorder(
+                              side: BorderSide(
+                                  color: Color.fromRGBO(300, 300, 300, 1))),
+                          child: Container(
+                            color: Color.fromRGBO(300, 300, 300, 1),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: <Widget>[
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(left: WIDHT * 0.02),
+                                      child: SizedBox(
+                                        height: HEIGHT * 0.135,
+                                        width: WIDHT * 0.30,
+                                        child: Container(
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(8.0),
+                                            child: Container(
+                                              child: AspectRatio(
+                                                aspectRatio: 4 / 4,
+                                                child: Image(
+                                                  fit: BoxFit.fill,
+                                                  image: ExactAssetImage(
+                                                      "assets/images/carneFiesta.jpg"),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: ListTile(
+                                        contentPadding:
+                                            EdgeInsets.only(left: WIDHT * 0.05),
+                                        dense: true,
+                                        title: LargeText("Carne Fiesta"),
+                                        subtitle: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  top: HEIGHT * 0.013),
+                                              child: MediumText(
+                                                  "La mejor carne fiesta con papas de la isla",
+                                                  boolText: FontWeight.normal),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: HEIGHT * 0.013),
+                                          child: Divider(
+                                            thickness: 0.6,
+                                            endIndent: 10.0,
+                                            indent: 5.0,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+          ],
+        ),
+      ),
+    );
   }
 
   List<Widget> getChilds() {
@@ -93,7 +194,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                     end: Alignment.topCenter,
                   ),
                 ),
-                padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.05),
+                padding: EdgeInsets.symmetric(
+                    vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.05),
               ),
             ),
           ]),
@@ -124,11 +226,12 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             mainAxisAlignment: MainAxisAlignment.center,
             children: map<Widget>(
               listaImagenesFirebase,
-                  (index, url) {
+              (index, url) {
                 return Container(
                   width: WIDHT * 0.02,
                   height: HEIGHT * 0.01,
-                  margin: EdgeInsets.symmetric(vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
+                  margin: EdgeInsets.symmetric(
+                      vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
                   decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: _current == index
