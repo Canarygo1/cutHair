@@ -1,4 +1,5 @@
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
+import 'package:cuthair/ui/Pages/register/register.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import '../../../global_methods.dart';
@@ -49,12 +50,33 @@ class _LoginState extends State<Login> implements LoginView {
                 error.length == 0 ? Container() : TextError(error),
                 TextForgetPassword(context),
                 MyButton(() => logIn(), LargeText("Entrar"), color: Color.fromRGBO(230, 73, 90, 1)),
+                TextRegister(context),
               ],
             ),
           ),
         ));
   }
-
+  Widget TextRegister(BuildContext context) {
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+            padding: EdgeInsets.only(
+                bottom: 20.0, right: MediaQuery.of(context).size.width * 0.10),
+            child: GestureDetector(
+              onTap: () {
+                GlobalMethods().pushPage(context, register());
+              },
+              child: Text(
+                'Registrarse',
+                style: TextStyle(
+                  color: Color.fromRGBO(0, 144, 255, 1),
+                  decoration: TextDecoration.underline,
+                  decorationColor: Color.fromRGBO(0, 144, 255, 1),
+                  fontSize: 16.0,
+                ),
+              ),
+            )));
+  }
   Widget emailTextField(BuildContext context) {
     return Container(
       child: Padding(

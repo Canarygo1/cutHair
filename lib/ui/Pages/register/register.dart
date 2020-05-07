@@ -1,12 +1,16 @@
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'register_presenter.dart';
 
 class register extends StatefulWidget {
@@ -32,32 +36,52 @@ class _registerState extends State<register> {
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
         body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Form(
-            key: keyForm,
-            child: Container(
-                color: Color.fromRGBO(300, 300, 300, 1),
-                child: ListView(
-                  children: <Widget>[
-                    GoBack(context, "Volver"),
-                    nombreTextField(),
-                    apellidosTextField(),
-                    correoTextField(),
-                    passWordTextField(),
-                    repeatPassWordTextField(),
-                    error.length == 0 ? Container() : textError(),
-                    MyButton(() => checkEmail(), LargeText("Entrar"), color: Color.fromRGBO(230, 73, 90, 1))
-                  ],
-                )),
-          ),
-        ));
+      onTap: () {
+        FocusScope.of(context).requestFocus(FocusNode());
+      },
+      child: Form(
+        key: keyForm,
+        child: Container(
+            color: Color.fromRGBO(300, 300, 300, 1),
+            child: ListView(
+              children: <Widget>[
+                GoBack(context, "Volver"),
+                nombreTextField(),
+                apellidosTextField(),
+                correoTextField(),
+                passWordTextField(),
+                repeatPassWordTextField(),
+                error.length == 0 ? Container() : textError(),
+                Padding(
+                    padding: EdgeInsets.only(left: WIDHT * 0.11),
+                  child: Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                            text: "Al continuar, aceptas nuestras Condiones de uso y confirmas que has leído nuestra",
+                            style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                        TextSpan(
+                            recognizer: new TapGestureRecognizer()
+                              ..onTap = () { launch('https://pruebafirebase-44f30.web.app/');
+                              },
+                            text: " Política de Privacidad",
+                            style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                ),
+                MyButton(() => checkEmail(), LargeText("Continuar"),
+                    color: Color.fromRGBO(230, 73, 90, 1)),
+              ],
+            )),
+      ),
+    ));
   }
 
   Widget nombreTextField() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.067, WIDHT * 0.089, HEIGHT * 0.027),
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, HEIGHT * 0.067, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: nombre,
@@ -82,7 +106,8 @@ class _registerState extends State<register> {
 
   Widget apellidosTextField() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: apellidos,
@@ -107,7 +132,8 @@ class _registerState extends State<register> {
 
   Widget correoTextField() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
         controller: email,
@@ -132,7 +158,8 @@ class _registerState extends State<register> {
 
   Widget passWordTextField() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+        padding: EdgeInsets.fromLTRB(
+            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
           controller: password,
           enableInteractiveSelection: false,
@@ -156,7 +183,8 @@ class _registerState extends State<register> {
 
   Widget repeatPassWordTextField() {
     return Padding(
-        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+        padding: EdgeInsets.fromLTRB(
+            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: TextFormField(
           controller: password2,
           enableInteractiveSelection: false,
@@ -180,7 +208,8 @@ class _registerState extends State<register> {
 
   Widget buttonRegister(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: ButtonTheme(
         child: RaisedButton(
           child: Text(
@@ -205,12 +234,12 @@ class _registerState extends State<register> {
 
   Widget textError() {
     return Container(
-        padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
+        padding: EdgeInsets.fromLTRB(
+            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: HEIGHT * 0.005),
+            padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.005),
             child: Text(
               error,
               style: TextStyle(
@@ -233,15 +262,15 @@ class _registerState extends State<register> {
   }
 
   checkEmail() async {
-    var tokkens = await FirebaseAuth.instance.fetchSignInMethodsForEmail(email: email.text);
+    var tokkens = await FirebaseAuth.instance
+        .fetchSignInMethodsForEmail(email: email.text);
     if (registerCode.checkCampos(context, keyForm)) {
-      if(tokkens.length == 0){
+      if (tokkens.length == 0) {
         setState(() {
           error = "";
         });
-        GlobalMethods().pushPage(
-            context, SendSMS(getData(), password.text));
-      }else{
+        GlobalMethods().pushPage(context, SendSMS(getData(), password.text));
+      } else {
         setState(() {
           error = "El email introducido ya existe";
         });
