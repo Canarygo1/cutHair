@@ -7,20 +7,20 @@ class ClientAppointmentsPresenter {
 
   ClientAppointmentsPresenter(this._view, this._remoteRepository);
 
-  init(String uid) async {
+  init(String userUid) async {
     try {
        _view.showAppointments(await _remoteRepository
-           .getUserAppointments(uid));
+           .getUserAppointments(userUid));
     }catch(e){
       _view.emptyAppointment();
     }
   }
 
-  removeAppointment(MyAppointment appointment, int index, String uid) async {
+  removeAppointment(MyAppointment appointment, int index, String userUid) async {
     try{
       await _remoteRepository.removeAppointment(appointment, index);
       _view.showAppointments(await _remoteRepository
-          .getUserAppointments(uid));
+          .getUserAppointments(userUid));
     }catch(Exception){
       _view.emptyAppointment();
     }

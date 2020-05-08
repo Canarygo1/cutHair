@@ -1,5 +1,5 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 
 class DetailPresenter {
   DetailView _view;
@@ -7,10 +7,10 @@ class DetailPresenter {
 
   DetailPresenter(this._view, this._remoteRepository);
 
-  init(HairDressing hairDressing) async {
+  init(Business business) async {
     try {
-      _view.showServices(await _remoteRepository.getAllServices(hairDressing.uid, hairDressing.typeBusiness));
-      _view.showImages(await _remoteRepository.getAllImages(hairDressing));
+      _view.showServices(await _remoteRepository.getAllServices(business.uid, business.typeBusiness));
+      _view.showImages(await _remoteRepository.getAllImages(business));
     }catch(e){
       print(e.toString());
     }
@@ -18,9 +18,9 @@ class DetailPresenter {
 }
 
 abstract class DetailView {
-  showServices(List servicios);
+  showServices(List services);
 
-  showImages(List imagenes);
+  showImages(List images);
 
   makecall(String number);
 }

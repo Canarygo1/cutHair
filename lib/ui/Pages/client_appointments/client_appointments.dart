@@ -126,7 +126,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                           vertical: HEIGHT * 0.006),
                                       child: MediumText(myAppointments
                                           .elementAt(index)
-                                          .hairdressing),
+                                          .businessName),
                                     ),
                                     Padding(
                                         padding: EdgeInsets.symmetric(
@@ -146,7 +146,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                                           vertical: HEIGHT * 0.006),
                                       child: MediumText(myAppointments
                                           .elementAt(index)
-                                          .hairdresser),
+                                          .employeeName),
                                     ),
                                   ],
                                 ),

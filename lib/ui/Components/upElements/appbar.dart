@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Appbar extends StatelessWidget {
-  String texto;
+  String text;
 
-  Appbar(this.texto);
+  Appbar(this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class Appbar extends StatelessWidget {
         child: Align(
           alignment: Alignment.centerLeft,
           child: Text(
-            texto,
+            text,
             style: TextStyle(
               color: Colors.white,
               fontSize: 20,

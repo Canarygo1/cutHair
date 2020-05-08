@@ -1,15 +1,15 @@
-import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/employee.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/user.dart';
 
-import 'hairDressing.dart';
+import 'business.dart';
 
 class Appointment {
   User user;
-  Employee employe;
+  Employee employee;
   Service service;
   DateTime checkIn;
   DateTime checkOut;
-  HairDressing hairDressing;
+  Business business;
   DateTime day;
 }

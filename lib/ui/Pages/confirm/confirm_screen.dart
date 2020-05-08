@@ -30,7 +30,7 @@ class ConfirmScreen extends StatefulWidget {
 class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
   Appointment appointment;
   Widget screen;
-  List<User> lista;
+  List<User> listUser;
   bool penalize = false;
   ConfirmPresenter presenter;
   RemoteRepository _remoteRepository;
@@ -67,7 +67,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 children: <Widget>[
                   Expanded(child: MediumText("Peluquero: ")),
                   Expanded(
-                    child: MediumText(appointment.employe.name),
+                    child: MediumText(appointment.employee.name),
                   )
                 ],
               ),

@@ -3,7 +3,7 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/employe.dart';
+import 'package:cuthair/model/employee.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
@@ -27,7 +27,7 @@ class chooseHairDresserScreen extends StatefulWidget {
 class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     implements ChooseHairDresserView {
   Appointment appointment;
-  List<Employee> nombres = [];
+  List<Employee> employeeNames = [];
   RemoteRepository _remoteRepository;
   ChooseHairDresserPresenter presenter;
   double HEIGHT;
@@ -40,7 +40,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseHairDresserPresenter(this, _remoteRepository);
     presenter.init(
-        appointment.hairDressing.uid, appointment.hairDressing.typeBusiness);
+        appointment.business.uid, appointment.business.typeBusiness);
   }
 
   @override
@@ -82,10 +82,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
         shrinkWrap: true,
           primary: false,
           scrollDirection: Axis.vertical,
-          itemCount: nombres.length,
+          itemCount: employeeNames.length,
           itemBuilder: (context, index) {
             return MyButton(
-                () => chooseFunction(index), LargeText(nombres[index].name),
+                () => chooseFunction(index), LargeText(employeeNames[index].name),
                 color: Color.fromRGBO(230, 73, 90, 1));
           }),
     );
@@ -95,7 +95,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   showEmployes(List employes) {
     if (mounted) {
       setState(() {
-        nombres = employes;
+        employeeNames = employes;
       });
     }
   }
@@ -106,7 +106,7 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
   }
 
   chooseFunction(int index) {
-    appointment.employe = nombres[index];
+    appointment.employee = employeeNames[index];
     presenter.nextScreen(appointment);
   }
 }

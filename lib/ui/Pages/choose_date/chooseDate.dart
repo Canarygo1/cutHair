@@ -53,7 +53,7 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
     this._presenter.init(
         appointment.service.duration.toString(),
         initial.toString(),
-        appointment.employe.name);
+        appointment.employee.name);
   }
 
   @override
@@ -167,7 +167,7 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
         this.currentDate2 = date;
         this._finalDate = date;
         this._presenter.init(appointment.service.duration.toString(),
-            currentDate2.toString(), appointment.employe.name);
+            currentDate2.toString(), appointment.employee.name);
       });
     }
   }

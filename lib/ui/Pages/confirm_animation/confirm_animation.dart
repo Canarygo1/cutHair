@@ -197,7 +197,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                       : _percentage < 60
                           ? MediumText("Con los mejores profesionales")
                           : MediumText(
-                              "En " + widget.appointment.hairDressing.name),
+                              "En " + widget.appointment.business.name),
                 ],
               ),
       ),

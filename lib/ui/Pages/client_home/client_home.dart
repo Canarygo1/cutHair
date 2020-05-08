@@ -3,7 +3,7 @@ import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 import 'package:cuthair/ui/Components/upElements/appbar.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
@@ -18,15 +18,15 @@ class ClientHome extends StatefulWidget {
 class _ClientHomeState extends State<ClientHome> implements HomeView {
   HomeClientPresenter presenter;
   RemoteRepository _remoteRepository;
-  List<String> business;
-  Map<String, List<HairDressing>> peluquerias = Map();
+  List<String> businessesTypes;
+  Map<String, List<Business>> mapBusinesses = Map();
   GlobalMethods global = GlobalMethods();
   bool loading;
   double HEIGHT;
   double WIDHT;
 
   initState() {
-    business = [];
+    businessesTypes = [];
     loading = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = HomeClientPresenter(this, _remoteRepository);
@@ -54,14 +54,14 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                       shrinkWrap: true,
                       primary: false,
                       scrollDirection: Axis.vertical,
-                      itemCount: business.length,
+                      itemCount: businessesTypes.length,
                       itemBuilder: (context, indexTipo) {
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
-                              child: MediumText(business[indexTipo]),
+                              child: MediumText(businessesTypes[indexTipo]),
                             ),
                             Container(
                               height: HEIGHT * 0.31,
@@ -69,14 +69,14 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                   shrinkWrap: true,
                                   scrollDirection: Axis.horizontal,
                                   itemCount:
-                                      peluquerias[business[indexTipo]].length,
+                                      mapBusinesses[businessesTypes[indexTipo]].length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
                                       onTap: () {
                                         ConnectionChecked
                                             .checkInternetConnectivity(context);
-                                        HairDressing hairDressing = peluquerias[
-                                                business.elementAt(indexTipo)]
+                                        Business hairDressing = mapBusinesses[
+                                                businessesTypes.elementAt(indexTipo)]
                                             [index];
                                         GlobalMethods().pushPage(context,
                                             DetailScreen(hairDressing));
@@ -119,7 +119,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                             .start,
                                                     children: <Widget>[
                                                       Text(
-                                                        peluquerias[business
+                                                        mapBusinesses[businessesTypes
                                                                     .elementAt(
                                                                         indexTipo)]
                                                                 [index]
@@ -131,7 +131,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                             fontSize: 18.0),
                                                       ),
                                                       Text(
-                                                        peluquerias[business
+                                                        mapBusinesses[businessesTypes
                                                                     .elementAt(
                                                                         indexTipo)]
                                                                 [index]
@@ -148,7 +148,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                             color: Colors.white,
                                                           ),
                                                           Text(
-                                                            peluquerias[business
+                                                            mapBusinesses[businessesTypes
                                                                     .elementAt(
                                                                         indexTipo)][index]
                                                                 .shortDirection,
@@ -183,10 +183,10 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   }
 
   @override
-  showList(Map<String, List<HairDressing>> hairDressing) {
+  showList(Map<String, List<Business>> mapBusinesses) {
     if (mounted) {
       setState(() {
-        peluquerias.addAll(hairDressing);
+        this.mapBusinesses.addAll(mapBusinesses);
       });
     }
   }
@@ -195,7 +195,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   showBusiness(List<String> business) {
     if (mounted) {
       setState(() {
-        this.business = business;
+        this.businessesTypes = business;
       });
     }
   }
