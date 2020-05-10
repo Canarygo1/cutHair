@@ -9,9 +9,11 @@ import 'package:cuthair/ui/Components/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cuthair/ui/Pages/choose_date/chooseDate.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../../global_methods.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -54,7 +56,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
       floatingActionButton: business.typeBusiness != "Peluquerias" ? Padding(
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
-            onPressed: () {},
+            onPressed: () {
+              GlobalMethods().pushPage(context, ChooseDateScreen(appointment));
+            },
             label: Text("Reserva una mesa"),
             backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
       ): Container() ,

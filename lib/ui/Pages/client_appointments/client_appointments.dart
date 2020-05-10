@@ -91,14 +91,14 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 itemCount: myAppointments.length,
                 itemBuilder: (context, index) {
                   if(myAppointments.elementAt(index).typeBusiness == "Peluquerias"){
-                    return card(index, context);
-                  }else{
                     return cardWithCheckOut(index, context);
+                  }else{
+                    return card(index, context);
                   }
                 });
   }
 
-  Padding card(int index, BuildContext context){
+  Padding cardWithCheckOut(int index, BuildContext context){
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.06),
       child: Card(
@@ -116,7 +116,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 children: <Widget>[
                   AspectRatio(
                       aspectRatio: 50.0 / 11.0,
-                      child: Image.asset(
+                      child: Image.network(
                         allImages.elementAt(index),
                         fit: BoxFit.cover,
                       ))
@@ -306,7 +306,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     );
   }
 
-  Padding cardWithCheckOut(int index, BuildContext context) {
+  Padding card(int index, BuildContext context) {
     return Padding(
                   padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.06),
                   child: Card(

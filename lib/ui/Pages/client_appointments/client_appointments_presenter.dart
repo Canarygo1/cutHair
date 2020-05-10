@@ -24,7 +24,8 @@ class ClientAppointmentsPresenter {
 
   getAllImages(List<MyAppointment> myAppointment) async{
     for(int i = 0; i < myAppointment.length; i++){
-      allImages.add( await _remoteRepository.getOneImage(myAppointment.elementAt(i).uid, "0", "Gallery"));
+      String image = await _remoteRepository.getOneImage(myAppointment.elementAt(i).businessUid, "0", "Gallery");
+      allImages.add(image);
     }
 
     _view.showImages(allImages);

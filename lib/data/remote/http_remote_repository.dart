@@ -203,7 +203,7 @@ class HttpRemoteRepository implements RemoteRepository {
         DocumentReference documentReference = documentSnapshot.data['citas'][i];
 
         MyAppointment myAppointment = MyAppointment.fromMap(datasnapshot.data,
-            documentReference.documentID, documentReference.parent().parent().parent().parent().documentID);
+            documentReference.documentID, documentReference.parent().parent().documentID, documentReference.parent().parent().parent().parent().documentID);
 
         return myAppointment;
       }).then((myAppointment) {
