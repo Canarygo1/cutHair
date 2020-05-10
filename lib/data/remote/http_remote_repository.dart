@@ -22,7 +22,6 @@ class HttpRemoteRepository implements RemoteRepository {
 
     List<String> business = [];
     querySnapshot.documents.forEach( (v) => { business.add(v.documentID)});
-
     return business;
   }
 
@@ -62,7 +61,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .getDocuments();
     List<Service> services = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      services.add(Service.fromMap(querySnapshot.documents[i].data));
+      services.add(Service.fromMap(querySnapshot.documents[i].data, typeBusiness));
     }
 
     if (services.length >= 1) {
@@ -123,7 +122,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<List<String>> getAllImages(Business business) async {
     List<String> list = [];
     for (int i = 0; i < business.numeroFotos; i++) {
-      String nombre = business.uid + "/" + i.toString() + ".jpeg";
+      String nombre = business.uid + "/Gallery/" + i.toString() + ".jpeg";
       String url =
           await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
       list.add(url);
