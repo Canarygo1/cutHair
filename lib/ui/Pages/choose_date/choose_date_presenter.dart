@@ -10,7 +10,7 @@ class ChooseDatePresenter{
     try {
       List availability = await _remoteRepository.getAvailability(
           duration, hairdresser, date);
-      print(availability.toString());
+
       _view.showAvailability(availability);
     }catch(e){
       _view.emptyAvailability();

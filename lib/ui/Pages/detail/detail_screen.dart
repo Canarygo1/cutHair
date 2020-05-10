@@ -181,7 +181,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     if (mounted) {
       setState(() {
         serviceDetails = services;
-        print(services.length);
       });
     }
   }

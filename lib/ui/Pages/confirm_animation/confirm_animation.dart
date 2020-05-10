@@ -74,13 +74,13 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
       vsync: this,
       duration: Duration(milliseconds: 1000),
     )..addListener(
-        () {
-          setState(() {
-            _percentage = lerpDouble(_percentage, _nextPercentage,
-                _progressAnimationController.value);
-          });
-        },
-      );
+          () {
+        setState(() {
+          _percentage = lerpDouble(_percentage, _nextPercentage,
+              _progressAnimationController.value);
+        });
+      },
+    );
   }
 
   start() {
@@ -157,49 +157,49 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
         alignment: Alignment.center,
         child: _progressDone == true
             ? Padding(
-                padding: EdgeInsets.only(top: HEIGHT * 0.37),
-                child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      statusIcon,
-                      confirmTitle,
-                      confirmSubtitle,
-                      Padding(
-                        padding: EdgeInsets.only(
-                            left: WIDHT * 0.025, top: HEIGHT * 0.05),
-                        child: MyButton(
-                          () => GlobalMethods().pushAndReplacement(
-                              context, Menu(DBProvider.users[0])),
-                          LargeText(
-                            'Volver al menu',
-                            color: Colors.black,
-                          ),
-                           height: HEIGHT * 0.067,
-                        ),
-                      ),
-                    ],
+          padding: EdgeInsets.only(top: HEIGHT * 0.37),
+          child: Center(
+            child: Column(
+              children: <Widget>[
+                statusIcon,
+                confirmTitle,
+                confirmSubtitle,
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: WIDHT * 0.025, top: HEIGHT * 0.05),
+                  child: MyButton(
+                        () => GlobalMethods().pushAndReplacement(
+                        context, Menu(DBProvider.users[0])),
+                    LargeText(
+                      'Volver al menu',
+                      color: Colors.black,
+                    ),
+                    height: HEIGHT * 0.067,
                   ),
                 ),
-              )
+              ],
+            ),
+          ),
+        )
             : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    height: HEIGHT * 0.271,
-                    width: WIDHT * 0.509,
-                    padding: EdgeInsets.all(20.0),
-                    margin: EdgeInsets.all(30.0),
-                    child: progressView(),
-                  ),
-                  _percentage < 27
-                      ? MediumText("Reservando tu cita")
-                      : _percentage < 60
-                          ? MediumText("Con los mejores profesionales")
-                          : MediumText(
-                              "En " + widget.appointment.business.name),
-                ],
-              ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              height: HEIGHT * 0.271,
+              width: WIDHT * 0.509,
+              padding: EdgeInsets.all(20.0),
+              margin: EdgeInsets.all(30.0),
+              child: progressView(),
+            ),
+            _percentage < 27
+                ? MediumText("Reservando tu cita")
+                : _percentage < 60
+                ? MediumText("Con los mejores profesionales")
+                : MediumText(
+                "En " + widget.appointment.business.name),
+          ],
+        ),
       ),
     );
   }

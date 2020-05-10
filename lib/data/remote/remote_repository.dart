@@ -20,20 +20,15 @@ abstract class RemoteRepository {
 
   Future<String> getOneImage(String businessUid, String employeeName, String directory);
 
-
-    Future<List<String>> getAllImages(Business business);
+  Future<List<String>> getAllImages(Business business);
 
   Future<bool> insertAppointment(Appointment appointment,String uid);
 
   Future<List<MyAppointment>> getUserAppointments(String uid);
 
-  //Future<HairDressing> getHairdressingByUid(String hairdressingUid);
-
   Future<User> getUserByPhoneNumber(String phoneNumber);
 
   Future<User> insertAnonymousUser(User user);
-
-  //Future<bool> insertSchedule(String employe, String hairDressingUid, String day, String typeBusiness, List<Map<String, dynamic>> schedules, List<String> hours);
 
   Future<Schedule> getRange(String day, String name, String businessUid, String typeBusiness);
 

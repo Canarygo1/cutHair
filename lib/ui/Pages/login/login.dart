@@ -31,10 +31,8 @@ class _LoginState extends State<Login> implements LoginView {
 
     rnd = new Random();
     randomBackground = 0 + rnd.nextInt(3 - 0);
-    print(randomBackground);
+
     loginCode = LoginCode(this);
-
-
   }
 
   @override

@@ -1,4 +1,4 @@
- import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
+import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,12 +25,10 @@ class ConfirmAnimationPresenter{
           initial.toString()
       );
 
-      bool isInAppointments = appointments
-          .contains(appointment.checkIn.hour.toString()+":"+appointment.checkIn.minute.toString());
+      bool isInAppointments = appointments.contains(appointment.checkIn.hour.toString()+":"+ getFullTimeIfHasOneValue(appointment.checkIn.minute.toString()));
 
 
       if(!isInAppointments){
-        print("hola");
         throw Exception;
       }
 
@@ -40,6 +38,14 @@ class ConfirmAnimationPresenter{
       _view.correctInsert();
     }catch(e){
       _view.incorrectInsert();
+    }
+  }
+
+  getFullTimeIfHasOneValue(String time) {
+    if (time.length == 1) {
+      return time + "0";
+    } else {
+      return time;
     }
   }
 }
