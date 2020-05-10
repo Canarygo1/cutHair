@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: contribuyer_screen(),
+      home: SplashScreen(),
     );
   }
 }

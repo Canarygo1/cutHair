@@ -108,6 +108,18 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
+  Future<String> getOneImage(String businessUid, String employeeName, String directory) async {
+    String url = "";
+    String nombre = businessUid + "/" + directory + "/" + employeeName + ".jpeg";
+    try {
+      url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+      return url;
+    } catch (e) {
+      return "";
+    }
+  }
+
+  @override
   Future<List<String>> getAllImages(Business business) async {
     List<String> list = [];
     for (int i = 0; i < business.numeroFotos; i++) {
@@ -153,7 +165,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(appointment.business.uid)
         .collection("citas")
         .add({
-      "Empleado": appointment.employee.name,
+      "extraInformation": appointment.employee.name,
       "idUsuario": uid,
       "CheckIn": appointment.checkIn.toString(),
       "CheckOut": appointment.checkOut.toString(),
@@ -289,7 +301,7 @@ class HttpRemoteRepository implements RemoteRepository {
     List<String> val = [];
     val = GlobalMethods.getHours(checkIn, checkOut, subtract);
 
-    Schedule schedule = await getRange(subtract.toString(), appointment.employeeName, businessUid, appointment.typeBusiness);
+    Schedule schedule = await getRange(subtract.toString(), appointment.extraInformation, businessUid, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));
 
     val.sort();
@@ -300,7 +312,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .document(businessUid)
         .collection("empleados")
-        .document(appointment.employeeName)
+        .document(appointment.extraInformation)
         .updateData({"citas": FieldValue.arrayRemove(ref)});
 
     await firestore
@@ -314,7 +326,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .document(businessUid)
         .collection("empleados")
-        .document(appointment.employeeName)
+        .document(appointment.extraInformation)
         .collection("horarios")
         .document(subtract.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(schedule.disponibility)});
@@ -325,7 +337,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .document(businessUid)
         .collection("empleados")
-        .document(appointment.employeeName)
+        .document(appointment.extraInformation)
         .collection("horarios")
         .document(subtract.toString())
         .updateData({"disponibilidad": FieldValue.arrayUnion(val)});

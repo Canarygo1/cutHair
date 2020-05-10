@@ -93,7 +93,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                   Expanded(
                     child: MediumText(appointment.checkIn.hour.toString() +
                         ":" +
-                        appointment.checkIn.minute.toString()),
+                        getFullTimeIfHasOneValue(appointment.checkIn.minute.toString())),
                   )
                 ],
               ),
@@ -190,6 +190,14 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
       setState(() {
         this.penalize = penalize;
       });
+    }
+  }
+
+  getFullTimeIfHasOneValue(String time) {
+    if (time.length == 1) {
+      return time + "0";
+    } else {
+      return time;
     }
   }
 }

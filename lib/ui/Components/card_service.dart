@@ -15,6 +15,7 @@ class CardService extends StatelessWidget {
   double HEIGHT;
   double WIDHT;
 
+
   CardService(this.business, this.servicesDetails, this.function);
 
   @override
