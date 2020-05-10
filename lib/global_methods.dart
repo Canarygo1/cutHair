@@ -87,3 +87,33 @@ class GlobalMethods {
     return hours;
   }
 }
+
+
+class Images{
+
+  Future<List<Widget>> getChilds(List<String> listImagesFirebase) async{
+    List<Widget> images = [];
+    Image image;
+    listImagesFirebase.forEach((f) => {
+      f.length != 0 ?
+      image = Image.network(
+        f, fit: BoxFit.cover, loadingBuilder: (BuildContext context, Widget child,
+          ImageChunkEvent loadingProgress) {
+        if (loadingProgress == null) return child;
+        return Center(
+          child: CircularProgressIndicator(
+            valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(230, 73, 90, 1)),
+            value: loadingProgress.expectedTotalBytes != null
+                ? loadingProgress.cumulativeBytesLoaded /
+                loadingProgress.expectedTotalBytes
+                : null,
+          ),
+        );
+      },
+      ) : image = Image.asset('assets/images/Login_6.jpg', fit: BoxFit.cover,),
+      images.add(image)
+    });
+    return images;
+  }
+
+}
