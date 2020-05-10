@@ -24,10 +24,13 @@ class ConfirmAnimationPresenter{
           appointment.employee.name,
           initial.toString()
       );
+
       bool isInAppointments = appointments
           .contains(appointment.checkIn.hour.toString()+":"+appointment.checkIn.minute.toString());
 
+
       if(!isInAppointments){
+        print("hola");
         throw Exception;
       }
 
