@@ -23,7 +23,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   GlobalMethods global = GlobalMethods();
   bool loading;
   double HEIGHT;
-  double WIDHT;
+  double WIDTH;
 
   initState() {
     businessesTypes = [];
@@ -37,7 +37,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   Widget build(BuildContext context) {
     global.context = context;
     HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    WIDTH = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color.fromRGBO(44, 45, 47, 1),
       body: SingleChildScrollView(
@@ -50,7 +50,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                     height: HEIGHT * 0.81,
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(
-                          horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.013),
+                          horizontal: WIDTH * 0.043, vertical: HEIGHT * 0.013),
                       shrinkWrap: true,
                       primary: false,
                       scrollDirection: Axis.vertical,
@@ -82,10 +82,10 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                             DetailScreen(hairDressing));
                                       },
                                       child: Container(
-                                        width: WIDHT * 0.34,
+                                        width: WIDTH * 0.34,
                                         child: Padding(
                                           padding: EdgeInsets.only(
-                                              right: WIDHT * 0.045),
+                                              right: WIDTH * 0.045),
                                           child: Container(
                                             child: Column(
                                               children: <Widget>[
@@ -101,7 +101,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                           fit: BoxFit.fill,
                                                           height:
                                                               HEIGHT * 0.013,
-                                                          width: WIDHT * 0.025,
+                                                          width: WIDTH * 0.025,
                                                           image: ExactAssetImage(
                                                               "assets/images/privilegeLogo.jpg"),
                                                         ),
@@ -111,7 +111,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                 ),
                                                 Padding(
                                                   padding: EdgeInsets.only(
-                                                      left: WIDHT * 0.017,
+                                                      left: WIDTH * 0.017,
                                                       top: HEIGHT * 0.025),
                                                   child: Column(
                                                     crossAxisAlignment:

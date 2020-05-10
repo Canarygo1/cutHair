@@ -1,4 +1,5 @@
 import 'package:cuthair/charge_screen.dart';
+import 'package:cuthair/ui/Pages/contribuyers/contribuyer_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
       ),
-      home: SplashScreen(),
+      home: contribuyer_screen(),
     );
   }
 }
