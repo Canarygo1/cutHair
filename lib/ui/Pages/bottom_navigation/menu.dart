@@ -1,4 +1,4 @@
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Pages/client_appointments/client_appointments.dart';
 import 'package:cuthair/ui/Pages/client_home/client_home.dart';
@@ -10,7 +10,7 @@ import 'menu_presenter.dart';
 class Menu extends StatefulWidget {
   User user;
 
-  Menu(this.user, {HairDressing hairDressing});
+  Menu(this.user, {Business hairDressing});
 
   @override
   _menuState createState() => _menuState(user);

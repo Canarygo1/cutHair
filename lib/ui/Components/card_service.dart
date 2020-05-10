@@ -1,6 +1,6 @@
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
@@ -8,28 +8,28 @@ import 'package:cuthair/ui/Pages/choose_hairdresser/choose_hairdresser.dart';
 import 'package:flutter/material.dart';
 
 class CardService extends StatelessWidget {
-  List<Service> detallesServicio = [];
-  HairDressing hairDressing;
+  List<Service> servicesDetails = [];
+  Business business;
   Appointment appointment = Appointment();
   Function function;
   double HEIGHT;
   double WIDHT;
 
-  CardService(this.hairDressing, this.detallesServicio, this.function);
+  CardService(this.business, this.servicesDetails, this.function);
 
   @override
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
     return ListView.builder(
-      itemCount: detallesServicio.length,
+      itemCount: servicesDetails.length,
       shrinkWrap: true,
       primary: false,
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            appointment.service = detallesServicio[index];
-            appointment.hairDressing = hairDressing;
+            appointment.service = servicesDetails[index];
+            appointment.business = business;
             GlobalMethods()
                 .pushPage(context, chooseHairDresserScreen(appointment));
           },
@@ -68,13 +68,13 @@ class CardService extends StatelessWidget {
   }
 
   Widget cardServices(BuildContext context, int index) {
-    if (detallesServicio[index].duration == "llamada") {
+    if (servicesDetails[index].duration == "llamada") {
       return GestureDetector(
         onTap: function,
         child: ListTile(
           contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
           dense: true,
-          title: LargeText(detallesServicio[index].type),
+          title: LargeText(servicesDetails[index].type),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -85,7 +85,7 @@ class CardService extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
                 child: MediumText(
-                    "Teléfono: " + hairDressing.phoneNumber.toString(), boolText: FontWeight.normal),
+                    "Teléfono: " + business.phoneNumber.toString(), boolText: FontWeight.normal),
               ),
             ],
           ),
@@ -98,18 +98,18 @@ class CardService extends StatelessWidget {
       return ListTile(
         contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
         dense: true,
-        title: LargeText(detallesServicio[index].type),
+        title: LargeText(servicesDetails[index].type),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
               child: MediumText(
-                  detallesServicio[index].duration.toString() + " minutos", boolText: FontWeight.normal),
+                  servicesDetails[index].duration.toString() + " minutos", boolText: FontWeight.normal),
             ),
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
-              child: MediumText(detallesServicio[index].price.toString() + " €", boolText: FontWeight.normal),
+              child: MediumText(servicesDetails[index].price.toString() + " €", boolText: FontWeight.normal),
             )
           ],
         ),

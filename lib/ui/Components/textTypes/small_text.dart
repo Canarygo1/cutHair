@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
 class SmallText extends StatelessWidget {
-  String texto;
+  String text;
   FontWeight boolText;
 
-  SmallText(this.texto, {this.boolText = FontWeight.bold});
+  SmallText(this.text, {this.boolText = FontWeight.bold});
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      texto,
+      text,
       style: TextStyle(
         fontSize: 12,
         color: Colors.white,

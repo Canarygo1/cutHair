@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
@@ -14,34 +14,34 @@ import 'package:url_launcher/url_launcher.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
-  HairDressing hairDressing;
+  Business business;
 
-  DetailScreen(this.hairDressing);
+  DetailScreen(this.business);
 
   @override
-  _DetailScreenState createState() => _DetailScreenState(hairDressing);
+  _DetailScreenState createState() => _DetailScreenState(business);
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
-  HairDressing hairDressing;
+  Business business;
   Appointment appointment = Appointment();
   DetailPresenter presenter;
   RemoteRepository remoteRepository;
-  List<Service> detallesServicio = [];
-  List<String> listaImagenesFirebase = [];
+  List<Service> serviceDetails = [];
+  List<String> listImagesFirebase = [];
   List<Widget> child = [];
   double HEIGHT;
   double WIDHT;
 
-  _DetailScreenState(this.hairDressing);
+  _DetailScreenState(this.business);
 
   int _current = 0;
 
   initState() {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
-    presenter.init(hairDressing);
-    print(hairDressing.typeBusiness);
+    presenter.init(business);
+    print(business.typeBusiness);
   }
 
   @override
@@ -51,7 +51,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: hairDressing.typeBusiness != "Peluquerias" ? Padding(
+      floatingActionButton: business.typeBusiness != "Peluquerias" ? Padding(
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
             onPressed: () {},
@@ -63,8 +63,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         child: Column(
           children: <Widget>[
             sliderImages(context),
-            LargeText(hairDressing.name),
-            MediumText(hairDressing.direction),
+            LargeText(business.name),
+            MediumText(business.direction),
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -77,9 +77,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                 ),
               ),
             ),
-            hairDressing.typeBusiness == "Peluquerias"
-                ? CardService(hairDressing, detallesServicio,
-                    () => makecall(hairDressing.phoneNumber.toString()))
+            business.typeBusiness == "Peluquerias"
+                ? CardService(business, serviceDetails,
+                    () => makecall(business.phoneNumber.toString()))
                 : Container(
                     child: ListView.builder(
                       itemCount: 6,
@@ -175,7 +175,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   }
 
   List<Widget> getChilds() {
-    List prueba = map<Widget>(listaImagenesFirebase, (index, i) {
+    List prueba = map<Widget>(listImagesFirebase, (index, i) {
       return Container(
         margin: EdgeInsets.all(5.0),
         child: ClipRRect(
@@ -225,7 +225,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: map<Widget>(
-              listaImagenesFirebase,
+              listImagesFirebase,
               (index, url) {
                 return Container(
                   width: WIDHT * 0.02,
@@ -264,19 +264,19 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   }
 
   @override
-  showServices(List servicios) {
+  showServices(List services) {
     if (mounted) {
       setState(() {
-        detallesServicio = servicios;
+        serviceDetails = services;
       });
     }
   }
 
   @override
-  showImages(List imagenes) {
+  showImages(List images) {
     if (mounted) {
       setState(() {
-        listaImagenesFirebase = imagenes;
+        listImagesFirebase = images;
         child = getChilds();
       });
     }

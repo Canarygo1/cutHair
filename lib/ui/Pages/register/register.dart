@@ -15,8 +15,8 @@ class register extends StatefulWidget {
 }
 
 class _registerState extends State<register> {
-  TextEditingController nombre = TextEditingController();
-  TextEditingController apellidos = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController surname = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
@@ -60,7 +60,7 @@ class _registerState extends State<register> {
       padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.067, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
-        controller: nombre,
+        controller: name,
         validator: registerCode.validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Nombre',
@@ -85,7 +85,7 @@ class _registerState extends State<register> {
       padding: EdgeInsets.fromLTRB(WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
       child: TextFormField(
         enableInteractiveSelection: false,
-        controller: apellidos,
+        controller: surname,
         validator: registerCode.validateNameAndSurname,
         decoration: InputDecoration(
           hintText: 'Apellidos',
@@ -225,9 +225,9 @@ class _registerState extends State<register> {
 
   Map<String, Object> getData() {
     Map data = Map<String, Object>();
-    data.putIfAbsent("Apellidos", () => apellidos.text.toString());
+    data.putIfAbsent("Apellidos", () => surname.text.toString());
     data.putIfAbsent("Email", () => email.text.toString());
-    data.putIfAbsent("Nombre", () => nombre.text.toString());
+    data.putIfAbsent("Nombre", () => name.text.toString());
     data.putIfAbsent("Permisos", () => 3);
     return data;
   }

@@ -21,7 +21,7 @@ class ConfirmAnimationPresenter{
           milliseconds: appointment.checkIn.millisecond));
       List<String> appointments = await _apiRemoteRepository.getAvailability(
           appointment.service.duration.toString(),
-          appointment.employe.name,
+          appointment.employee.name,
           initial.toString()
       );
       bool isInAppointments = appointments

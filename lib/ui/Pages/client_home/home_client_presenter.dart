@@ -1,10 +1,10 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/hairDressing.dart';
+import 'package:cuthair/model/business.dart';
 
 class HomeClientPresenter {
   HomeView _view;
   RemoteRepository _remoteRepository;
-  Map<String, List<HairDressing>> businessMap = Map();
+  Map<String, List<Business>> businessMap = Map();
   HomeClientPresenter(this._view, this._remoteRepository);
 
   init() async {
@@ -26,7 +26,7 @@ class HomeClientPresenter {
   }
 }
 abstract class HomeView {
-  showList(Map<String, List<HairDressing>> hairDressing);
+  showList(Map<String, List<Business>> mapBusinesses);
   showBusiness(List<String> business);
   changeLoading();
 }

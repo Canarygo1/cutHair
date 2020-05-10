@@ -7,8 +7,8 @@ class ChooseHairDresserPresenter {
 
   ChooseHairDresserPresenter(this._view, this._remoteRepository);
 
-  init(String uid, String typeBusiness) async {
-    _view.showEmployes(await _remoteRepository.getAllEmployes(uid, typeBusiness));
+  init(String businessUid, String typeBusiness) async {
+    _view.showEmployes(await _remoteRepository.getAllEmployes(businessUid, typeBusiness));
   }
 
   nextScreen(Appointment appointment) async {

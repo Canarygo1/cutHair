@@ -7,9 +7,9 @@ class ConfirmPresenter{
 
   ConfirmPresenter(this._view, this._remoteRepository);
 
-  init(String uid) async {
+  init(String userUid) async {
     try {
-      _view.showPenalize(await _remoteRepository.getUserPenalize(uid));
+      _view.showPenalize(await _remoteRepository.getUserPenalize(userUid));
     }catch(e){
       print(e.toString());
     }

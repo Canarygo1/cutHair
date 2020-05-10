@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 class GoBack extends StatelessWidget {
   BuildContext screen;
-  String texto;
+  String text;
 
-  GoBack(this.screen, this.texto);
+  GoBack(this.screen, this.text);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class GoBack extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  texto,
+                  text,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Colors.white,
