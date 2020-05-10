@@ -4,16 +4,31 @@ import 'package:cuthair/model/my_appointment.dart';
 class ClientAppointmentsPresenter {
   MyAppointmentsView _view;
   RemoteRepository _remoteRepository;
+  List<String> allImages = [];
 
   ClientAppointmentsPresenter(this._view, this._remoteRepository);
 
   init(String userUid) async {
+    allImages = [];
     try {
-       _view.showAppointments(await _remoteRepository
-           .getUserAppointments(userUid));
+      List<MyAppointment> myAppointment = [];
+       myAppointment = await _remoteRepository
+           .getUserAppointments(userUid);
+
+       getAllImages(myAppointment);
+
     }catch(e){
       _view.emptyAppointment();
     }
+  }
+
+  getAllImages(List<MyAppointment> myAppointment) async{
+    for(int i = 0; i < myAppointment.length; i++){
+      allImages.add( await _remoteRepository.getOneImage(myAppointment.elementAt(i).uid, "0", "Gallery"));
+    }
+
+    _view.showImages(allImages);
+    _view.showAppointments(myAppointment);
   }
 
   removeAppointment(MyAppointment appointment, int index, String userUid) async {
@@ -30,5 +45,6 @@ class ClientAppointmentsPresenter {
 
 abstract class MyAppointmentsView {
   showAppointments(List<MyAppointment> myAppointment);
+  showImages(List<String> images);
   emptyAppointment();
 }

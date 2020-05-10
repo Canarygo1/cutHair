@@ -5,6 +5,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/card_service.dart';
+import 'package:cuthair/ui/Components/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -41,7 +42,6 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
     presenter.init(business);
-    print(business.typeBusiness);
   }
 
   @override
@@ -80,94 +80,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             business.typeBusiness == "Peluquerias"
                 ? CardService(business, serviceDetails,
                     () => makecall(business.phoneNumber.toString()))
-                : Container(
-                    child: ListView.builder(
-                      itemCount: 6,
-                      shrinkWrap: true,
-                      primary: false,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          shape: BeveledRectangleBorder(
-                              side: BorderSide(
-                                  color: Color.fromRGBO(300, 300, 300, 1))),
-                          child: Container(
-                            color: Color.fromRGBO(300, 300, 300, 1),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: <Widget>[
-                                    Padding(
-                                      padding:
-                                          EdgeInsets.only(left: WIDHT * 0.02),
-                                      child: SizedBox(
-                                        height: HEIGHT * 0.135,
-                                        width: WIDHT * 0.30,
-                                        child: Container(
-                                          child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(8.0),
-                                            child: Container(
-                                              child: AspectRatio(
-                                                aspectRatio: 4 / 4,
-                                                child: Image(
-                                                  fit: BoxFit.fill,
-                                                  image: ExactAssetImage(
-                                                      "assets/images/carneFiesta.jpg"),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: ListTile(
-                                        contentPadding:
-                                            EdgeInsets.only(left: WIDHT * 0.05),
-                                        dense: true,
-                                        title: LargeText("Carne Fiesta"),
-                                        subtitle: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(
-                                                  top: HEIGHT * 0.013),
-                                              child: MediumText(
-                                                  "La mejor carne fiesta con papas de la isla",
-                                                  boolText: FontWeight.normal),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              top: HEIGHT * 0.013),
-                                          child: Divider(
-                                            thickness: 0.6,
-                                            endIndent: 10.0,
-                                            indent: 5.0,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                : RestaurantCard(business, serviceDetails),
           ],
         ),
       ),
@@ -268,6 +181,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     if (mounted) {
       setState(() {
         serviceDetails = services;
+        print(services.length);
       });
     }
   }

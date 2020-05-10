@@ -2,13 +2,20 @@ class Service {
   String type;
   String duration;
   String price;
+  String description;
 
-  Service(this.type, this.duration, this.price);
+  Service(this.type,this.price, {this.description, this.duration});
 
-  factory Service.fromMap(Map values) {
-    String duration = values['duracion'];
+  factory Service.fromMap(Map values, String typeBusiness) {
     String price = values['precio'];
     String type = values['nombre'];
-    return Service(type, duration, price);
+
+    if(typeBusiness == "Peluquerias"){
+      String duration = values['duracion'];
+      return Service(type, price, duration: duration);
+    }else{
+      String description = values['descripcion'];
+      return Service(type, price, description: description);
+    }
   }
 }
