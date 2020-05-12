@@ -3,14 +3,18 @@ import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/appbar.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
+import 'package:cuthair/ui/Pages/contribuyers/contribuyer_screen.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../data/local/db_sqlite.dart';
 import '../../../data/remote/check_connection.dart';
 import '../../../global_methods.dart';
@@ -172,9 +176,36 @@ class _InfoScreenState extends State<Info> {
               MyButton(() => functionResetPassword(), LargeText("Cambiar contraseña"), color: Color.fromRGBO(230, 73, 90, 1)),
         ),
         error.length == 0 ? Container() : TextError(error),
+
+        Padding(
+          padding: EdgeInsets.only(top: HEIGHT * 0.18 ),
+          child: Center(
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                      recognizer: new TapGestureRecognizer()
+                        ..onTap = () { launch('https://pruebafirebase-44f30.web.app/');
+                        },
+                      text: " Política de Privacidad.",
+                      style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                  TextSpan(
+                      recognizer: new TapGestureRecognizer()
+                        ..onTap = () {GlobalMethods().pushPage(context, contribuyer_screen());
+                        },
+                      text: " Lista de contribuidores",
+                      style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Center(child: SmallText("@Reservaloapp"))
       ]),
     );
   }
+
+
 
   functionResetPassword() {
     showDialog(
