@@ -4,11 +4,12 @@ class MyButton extends StatelessWidget {
   Function function;
   Widget widget;
   Color color;
+  var width;
   var height;
   var horizontalPadding;
   var verticalMargin;
 
-  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0, this.color = Colors.white});
+  MyButton(this.function, this.widget, {this.height, this.horizontalPadding = 35.0, this.verticalMargin = 10.0, this.color = Colors.white, this.width});
 
   @override
   Widget build(BuildContext context) {

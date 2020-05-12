@@ -15,23 +15,23 @@ import 'package:http/http.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'choose_date_presenter.dart';
 
-class ChooseDateScreen extends StatefulWidget {
+class ChooseDateHairDressingScreen extends StatefulWidget {
   Appointment appointment = Appointment();
 
-  ChooseDateScreen(this.appointment);
+  ChooseDateHairDressingScreen(this.appointment);
 
   @override
-  _ChooseDateScreenState createState() =>
-      _ChooseDateScreenState(this.appointment);
+  _ChooseDateHairDressingScreenState createState() =>
+      _ChooseDateHairDressingScreenState(this.appointment);
 }
 
-class _ChooseDateScreenState extends State<ChooseDateScreen>
+class _ChooseDateHairDressingScreenState extends State<ChooseDateHairDressingScreen>
     implements ChooseDateView {
   Appointment appointment;
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
 
-  _ChooseDateScreenState(this.appointment);
+  _ChooseDateHairDressingScreenState(this.appointment);
 
   double HEIGHT;
   double WIDHT;
@@ -53,13 +53,14 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
     this._presenter.init(
         appointment.service.duration.toString(),
         initial.toString(),
-        appointment.employee.name);
+        appointment.employee.uid);
   }
 
   @override
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -166,8 +167,9 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
         this.isConsulting = true;
         this.currentDate2 = date;
         this._finalDate = date;
+
         this._presenter.init(appointment.service.duration.toString(),
-            currentDate2.toString(), appointment.employee.name);
+            currentDate2.toString(), appointment.employee.uid);
       });
     }
   }
