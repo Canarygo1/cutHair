@@ -66,7 +66,7 @@ class _SendSMSState extends State<SendSMS> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: phoneController.text,
+      phoneNumber: "+34"+phoneController.text,
       timeout: Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
