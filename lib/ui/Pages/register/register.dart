@@ -55,7 +55,7 @@ class _registerState extends State<register> {
                 textFieldWidget(password2, TextInputType.text, "Repetir contraseña", obscureText: true),
                 error.length == 0 ? Container() : textError(),
                 Padding(
-                  padding: EdgeInsets.only(left: WIDHT * 0.11),
+                  padding: EdgeInsets.only(left: WIDHT * 0.11, right: WIDHT * 0.089),
                   child: Text.rich(
                     TextSpan(
                       children: [

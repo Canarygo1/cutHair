@@ -10,9 +10,7 @@ import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:flutter/material.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 
-
 class ResetPassword extends StatefulWidget {
-
   @override
   _ResetPasswordState createState() => _ResetPasswordState();
 }
@@ -25,14 +23,8 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery
-        .of(context)
-        .size
-        .height;
-    WIDHT = MediaQuery
-        .of(context)
-        .size
-        .width;
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -40,21 +32,29 @@ class _ResetPasswordState extends State<ResetPassword> {
         child: ListView(
           children: <Widget>[
             GoBack(context, "Volver"),
-            MyTextField(
-              emailControler, TextInputType.emailAddress, InputDecoration(
-              hintText: 'Correo Electronico',
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(
-                    color: Colors.white, width: WIDHT * 0.003),
+            Padding(
+              padding: EdgeInsets.fromLTRB(
+                  WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
+              child: MyTextField(
+                emailControler,
+                TextInputType.emailAddress,
+                InputDecoration(
+                  hintText: 'Correo Electronico',
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide:
+                        BorderSide(color: Colors.white, width: WIDHT * 0.003),
+                  ),
+                  hintStyle: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                ),
+                TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.0,
+                ),
               ),
-              hintStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-              ),
-            ), TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),),
+            ),
             MyButton(() => sendEmail(context), LargeText("Enviar"),
                 color: Color.fromRGBO(230, 73, 90, 1)),
             error.length == 0 ? Container() : TextError(error),
@@ -70,8 +70,7 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       error = 'Se ha enviado un correo a dicho email';
     });
-    Timer(Duration(seconds: 2), () =>
-        GlobalMethods().pushAndReplacement(context, Login()));
+    Timer(Duration(seconds: 2),
+        () => GlobalMethods().pushAndReplacement(context, Login()));
   }
 }
-

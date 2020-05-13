@@ -1,3 +1,4 @@
+import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
@@ -10,7 +11,6 @@ import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../data/remote/check_connection.dart';
 
 class SendSMS extends StatefulWidget {
   Map data;
@@ -67,7 +67,7 @@ class _SendSMSState extends State<SendSMS> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: "+34"+phoneController.text,
+      phoneNumber: "+34" + phoneController.text,
       timeout: Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
