@@ -2,11 +2,11 @@ import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employee.dart';
 
-class ChooseHairDresserPresenter {
+class ChooseExtraInfoPresenter {
   ChooseHairDresserView _view;
   RemoteRepository _remoteRepository;
 
-  ChooseHairDresserPresenter(this._view, this._remoteRepository);
+  ChooseExtraInfoPresenter(this._view, this._remoteRepository);
 
   init(String businessUid, String typeBusiness) async {
     List<Employee> employees = await _remoteRepository.getAllEmployes(businessUid, typeBusiness);

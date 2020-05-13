@@ -1,4 +1,5 @@
 import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
@@ -109,21 +110,19 @@ class _SendSMSState extends State<SendSMS> {
     }
   }
 
-  Widget codigoTextField() {
+  Widget textFieldWidget(controller, textType, hintText,
+      {obscureText = false, topPadding = 0.0}) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.027, WIDHT * 0.089, HEIGHT * 0.027),
-      child: TextFormField(
-        toolbarOptions: ToolbarOptions(
-          copy: false,
-          cut: false,
-          selectAll: false,
-          paste: true,
-        ),
-        keyboardType: TextInputType.phone,
-        controller: codeController,
-        decoration: InputDecoration(
-          hintText: 'Codigo',
+      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+      child: MyTextField(
+        controller,
+        textType,
+        InputDecoration(
+          hintText: hintText,
           enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+          ),
+          focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
@@ -131,35 +130,11 @@ class _SendSMSState extends State<SendSMS> {
             fontSize: 18.0,
           ),
         ),
-        style: TextStyle(
+        TextStyle(
           color: Colors.white,
           fontSize: 18.0,
         ),
-      ),
-    );
-  }
-
-  Widget telefonoTextField() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
-      child: TextFormField(
-        enableInteractiveSelection: false,
-        keyboardType: TextInputType.phone,
-        controller: phoneController,
-        decoration: InputDecoration(
-          hintText: 'Introduce Telefono',
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-          ),
-          hintStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-          ),
-        ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-        ),
+        obscureText: obscureText,
       ),
     );
   }
@@ -179,9 +154,9 @@ class _SendSMSState extends State<SendSMS> {
             child: ListView(
               children: <Widget>[
                 GoBack(context, "Volver"),
-                telefonoTextField(),
+                textFieldWidget(phoneController, TextInputType.phone, 'Introduce el teléfono', topPadding: HEIGHT * 0.176),
                 MyButton(() => verifyPhone(), LargeText("Enviar código"), color: Color.fromRGBO(230, 73, 90, 1)),
-                codigoTextField(),
+                textFieldWidget(codeController, TextInputType.phone, "Introduce el código", topPadding: HEIGHT * 0.027),
                 MyButton(() => signIn(codeController.text),LargeText("Confirmar código"), color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : TextError(error),
               ],

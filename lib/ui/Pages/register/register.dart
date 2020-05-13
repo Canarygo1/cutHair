@@ -1,6 +1,7 @@
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
@@ -9,6 +10,7 @@ import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'register_presenter.dart';
@@ -46,26 +48,34 @@ class _registerState extends State<register> {
             child: ListView(
               children: <Widget>[
                 GoBack(context, "Volver"),
-                nombreTextField(),
-                apellidosTextField(),
-                correoTextField(),
-                passWordTextField(),
-                repeatPassWordTextField(),
+                textFieldWidget(name, TextInputType.text, "Nombre", topPadding: HEIGHT * 0.067),
+                textFieldWidget(surname, TextInputType.text, "Apellidos"),
+                textFieldWidget(email, TextInputType.emailAddress, "Correo electrónico"),
+                textFieldWidget(password, TextInputType.text, "Contraseña", obscureText: true),
+                textFieldWidget(password2, TextInputType.text, "Repetir contraseña", obscureText: true),
                 error.length == 0 ? Container() : textError(),
                 Padding(
-                    padding: EdgeInsets.only(left: WIDHT * 0.11),
+                  padding: EdgeInsets.only(left: WIDHT * 0.11),
                   child: Text.rich(
                     TextSpan(
                       children: [
                         TextSpan(
-                            text: "Al continuar, aceptas nuestras Condiones de uso y confirmas que has leído nuestra",
-                            style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                            text:
+                                "Al continuar, aceptas nuestras Condiones de uso y confirmas que has leído nuestra",
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                                fontSize: 12)),
                         TextSpan(
                             recognizer: new TapGestureRecognizer()
-                              ..onTap = () { launch('https://pruebafirebase-44f30.web.app/');
+                              ..onTap = () {
+                                launch('https://pruebafirebase-44f30.web.app/');
                               },
                             text: " Política de Privacidad",
-                            style: TextStyle(fontWeight: FontWeight.normal,color: Colors.white,fontSize: 12)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.normal,
+                                color: Colors.white,
+                                fontSize: 12)),
                       ],
                     ),
                   ),
@@ -78,17 +88,20 @@ class _registerState extends State<register> {
     ));
   }
 
-  Widget nombreTextField() {
+  Widget textFieldWidget(controller, textType, hintText,
+      {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, HEIGHT * 0.067, WIDHT * 0.089, HEIGHT * 0.027),
-      child: TextFormField(
-        enableInteractiveSelection: false,
-        controller: name,
-        validator: registerCode.validateNameAndSurname,
-        decoration: InputDecoration(
-          hintText: 'Nombre',
+          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+      child: MyTextField(
+        controller,
+        textType,
+        InputDecoration(
+          hintText: hintText,
           enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+          ),
+          focusedBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
           ),
           hintStyle: TextStyle(
@@ -96,114 +109,13 @@ class _registerState extends State<register> {
             fontSize: 18.0,
           ),
         ),
-        style: TextStyle(
+        TextStyle(
           color: Colors.white,
           fontSize: 18.0,
         ),
+        obscureText: obscureText,
       ),
     );
-  }
-
-  Widget apellidosTextField() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
-      child: TextFormField(
-        enableInteractiveSelection: false,
-        controller: surname,
-        validator: registerCode.validateNameAndSurname,
-        decoration: InputDecoration(
-          hintText: 'Apellidos',
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-          ),
-          hintStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-          ),
-        ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-        ),
-      ),
-    );
-  }
-
-  Widget correoTextField() {
-    return Padding(
-      padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
-      child: TextFormField(
-        enableInteractiveSelection: false,
-        controller: email,
-        validator: registerCode.checkEmail,
-        decoration: InputDecoration(
-          hintText: 'Correo Electronico',
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-          ),
-          hintStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-          ),
-        ),
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18.0,
-        ),
-      ),
-    );
-  }
-
-  Widget passWordTextField() {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(
-            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
-        child: TextFormField(
-          controller: password,
-          enableInteractiveSelection: false,
-          validator: registerCode.checkSecurityPassword,
-          decoration: InputDecoration(
-            hintText: 'Contraseña',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-            ),
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
-          obscureText: true,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ));
-  }
-
-  Widget repeatPassWordTextField() {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(
-            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
-        child: TextFormField(
-          controller: password2,
-          enableInteractiveSelection: false,
-          validator: registerCode.checkSamePassword,
-          decoration: InputDecoration(
-            hintText: 'Repetir contraseña',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-            ),
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
-          obscureText: true,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ));
   }
 
   Widget buttonRegister(BuildContext context) {

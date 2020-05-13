@@ -1,20 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/business.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
-import 'package:cuthair/ui/Components/card_service.dart';
+import 'file:///C:/Users/domit/Desktop/cutHair/lib/ui/Components/card_elements/card_service.dart';
 import 'package:cuthair/ui/Components/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
-import 'package:cuthair/ui/Pages/choose_hairdresser/choose_hairdresser.dart';
+import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../global_methods.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -59,7 +58,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
             onPressed: () {
-              GlobalMethods().pushPage(context, chooseHairDresserScreen(appointment));
+              GlobalMethods().pushPage(context, ChooseExtraInfoScreen(appointment));
             },
             label: Text("Reserva una mesa"),
             backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
