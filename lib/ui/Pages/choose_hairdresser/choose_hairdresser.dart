@@ -9,7 +9,6 @@ import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import '../../Components/button.dart';
 import 'choose_hairdresser_presenter.dart';
 
@@ -54,7 +53,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
+            Padding(
+              padding: EdgeInsets.only(top: HEIGHT * 0.035),
+              child: GoBack(context, "Volver"),
+            ),
             appointment.business.typeBusiness == "Peluquerias" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
             appointment.business.typeBusiness == "Peluquerias" ? hairDressersButtons() : chooseNumberClients(),
           ],
