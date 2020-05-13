@@ -78,6 +78,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                   Business business = mapBusiness[
                                   businessType.elementAt(indexTipo)]
                                   [index];
+
                                   GlobalMethods().pushPage(context,
                                       DetailScreen(business));
                                 },

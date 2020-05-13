@@ -6,10 +6,10 @@ class ChooseDatePresenter{
 
   ChooseDatePresenter(this._view, this._remoteRepository);
 
-  init(String duration,String date,String hairdresser) async {
+  init(String duration,String date,String employeeUid) async {
     try {
       List availability = await _remoteRepository.getAvailability(
-          duration, hairdresser, date);
+          duration, employeeUid, date);
 
       _view.showAvailability(availability);
     }catch(e){

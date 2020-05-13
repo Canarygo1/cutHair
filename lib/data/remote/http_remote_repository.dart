@@ -80,9 +80,10 @@ class HttpRemoteRepository implements RemoteRepository {
         .document(uid)
         .collection("empleados")
         .getDocuments();
+
     List<Employee> employes = [];
     for (int i = 0; i < querySnapshot.documents.length; i++) {
-      Employee employe = Employee(querySnapshot.documents[i].data['Nombre']);
+      Employee employe = Employee(querySnapshot.documents[i].data['Nombre'], querySnapshot.documents[i].documentID, querySnapshot.documents[i].data["orden"]);
       employes.add(employe);
     }
 
@@ -138,13 +139,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<bool> insertAppointment(Appointment appointment, String uid) async {
     var val = [];
-    var duration =
-        appointment.checkOut.difference(appointment.checkIn).inMinutes;
-    duration ~/= 10;
-    for (int i = 0; duration > i; i++) {
-      DateTime date = appointment.checkIn.add(Duration(minutes: (10 * i)));
-      val.add(date.hour.toString() + ':' + date.minute.toString());
-    }
+    val = await GlobalMethods.getTimeSeparatedBy10(appointment.checkIn, appointment.checkOut);
 
     firestore
         .collection("Negocios")
@@ -152,7 +147,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .document(appointment.business.uid)
         .collection("empleados")
-        .document(appointment.employee.name)
+        .document(appointment.employee.uid)
         .collection("horarios")
         .document(appointment.day.toString())
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
@@ -185,7 +180,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .document(appointment.business.uid)
         .collection("empleados")
-        .document(appointment.employee.name)
+        .document(appointment.employee.uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
   }

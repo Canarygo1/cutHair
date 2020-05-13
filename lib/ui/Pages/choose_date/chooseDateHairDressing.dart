@@ -16,24 +16,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart';
 import 'choose_date_presenter.dart';
 
-class ChooseDateScreen extends StatefulWidget {
+class ChooseDateHairDressingScreen extends StatefulWidget {
   Appointment appointment = Appointment();
   String typeBusiness;
 
-  ChooseDateScreen(this.appointment);
+  ChooseDateHairDressingScreen(this.appointment);
 
   @override
-  _ChooseDateScreenState createState() =>
-      _ChooseDateScreenState(this.appointment);
+  _ChooseDateHairDressingScreenState createState() =>
+      _ChooseDateHairDressingScreenState(this.appointment);
 }
 
-class _ChooseDateScreenState extends State<ChooseDateScreen>
+class _ChooseDateHairDressingScreenState extends State<ChooseDateHairDressingScreen>
     implements ChooseDateView {
   Appointment appointment;
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
 
-  _ChooseDateScreenState(this.appointment);
+  _ChooseDateHairDressingScreenState(this.appointment);
 
   double HEIGHT;
   double WIDHT;
@@ -52,14 +52,17 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment.service.duration.toString(),
-        initial.toString(), appointment.employee.name);
+    this._presenter.init(
+        appointment.service.duration.toString(),
+        initial.toString(),
+        appointment.employee.uid);
   }
 
   @override
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -159,19 +162,18 @@ class _ChooseDateScreenState extends State<ChooseDateScreen>
   }
 
   pressCalendar(DateTime date) {
-    if (isConsulting == false) {
-      if (date.isAfter(DateTime.now()) ||
-          (date.year == DateTime.now().year &&
-              date.month == DateTime.now().month &&
-              date.day == DateTime.now().day)) {
-        setState(() {
-          this.isConsulting = true;
-          this.currentDate2 = date;
-          this._finalDate = date;
-          this._presenter.init(appointment.service.duration.toString(),
-              currentDate2.toString(), appointment.employee.name);
-        });
-      }
+    if (date.isAfter(DateTime.now()) ||
+        (date.year == DateTime.now().year &&
+            date.month == DateTime.now().month &&
+            date.day == DateTime.now().day)) {
+      setState(() {
+        this.isConsulting = true;
+        this.currentDate2 = date;
+        this._finalDate = date;
+
+        this._presenter.init(appointment.service.duration.toString(),
+            currentDate2.toString(), appointment.employee.uid);
+      });
     }
   }
 

@@ -9,7 +9,8 @@ import 'package:cuthair/ui/Components/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:cuthair/ui/Pages/choose_date/chooseDate.dart';
+import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
+import 'package:cuthair/ui/Pages/choose_hairdresser/choose_hairdresser.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,6 +42,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   int _current = 0;
 
   initState() {
+    appointment.business = this.business;
     remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = DetailPresenter(this, remoteRepository);
     presenter.init(business);
@@ -57,11 +59,11 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
             onPressed: () {
-              GlobalMethods().pushPage(context, ChooseDateScreen(appointment));
+              GlobalMethods().pushPage(context, chooseHairDresserScreen(appointment));
             },
             label: Text("Reserva una mesa"),
             backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
-      ): Container() ,
+      ) : Container() ,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
