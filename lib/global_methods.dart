@@ -24,6 +24,10 @@ class GlobalMethods {
     Navigator.pop(page);
   }
 
+  removePages(BuildContext context){
+    Navigator.of(context).popUntil((route) => route.isFirst);
+    pushPage(context, Menu(DBProvider.users[0]));
+  }
   searchDBUser(BuildContext context) async {
     Widget screen;
     await DBProvider.db.getUser();
