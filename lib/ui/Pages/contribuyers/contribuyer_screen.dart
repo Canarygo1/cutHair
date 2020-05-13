@@ -74,8 +74,4 @@ class _contribuyerState extends State<contribuyer_screen>{
       ),
     );
   }
-
-
-
-
 }
