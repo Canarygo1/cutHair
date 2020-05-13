@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
 import 'package:flutter/material.dart';
@@ -26,12 +27,11 @@ class _LoginState extends State<Login> implements LoginView {
   Random rnd;
   List<String> backgroundImages = ["assets/images/hairdressingBg.jpg","assets/images/clubBg.jpg","assets/images/restaurantBg.jpg"];
   int randomBackground ;
+
   @override
   void initState() {
-
     rnd = new Random();
     randomBackground = 0 + rnd.nextInt(3 - 0);
-
     loginCode = LoginCode(this);
   }
 
@@ -61,8 +61,12 @@ class _LoginState extends State<Login> implements LoginView {
                       child: Image.asset("assets/images/logo.png",
                           fit: BoxFit.cover)),
                 ),
-                emailTextField(context),
-                passWordTextField(),
+                textFieldWidget(emailController, TextInputType.emailAddress,
+                    "Correo electrónico",
+                    topPadding: HEIGHT * 0.176),
+                textFieldWidget(
+                    passwordController, TextInputType.text, "Contraseña",
+                    obscureText: true, topPadding: 0.0),
                 error.length == 0 ? Container() : TextError(error),
                 TextForgetPassword(context),
                 MyButton(() => logIn(), LargeText("Entrar"),
@@ -72,6 +76,36 @@ class _LoginState extends State<Login> implements LoginView {
             ),
           ),
         ));
+  }
+
+  Widget textFieldWidget(controller, textType, hintText,
+      {obscureText = false, topPadding = 0.0}) {
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+      child: MyTextField(
+        controller,
+        textType,
+        InputDecoration(
+          hintText: hintText,
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+          ),
+          hintStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 18.0,
+          ),
+        ),
+        TextStyle(
+          color: Colors.white,
+          fontSize: 18.0,
+        ),
+        obscureText: obscureText,
+      ),
+    );
   }
 
   Widget logo(BuildContext context) {}
@@ -96,57 +130,6 @@ class _LoginState extends State<Login> implements LoginView {
                 ),
               ),
             )));
-  }
-
-  Widget emailTextField(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-            WIDHT * 0.101, HEIGHT * 0.05, WIDHT * 0.089, HEIGHT * 0.027),
-        child: TextFormField(
-          enableInteractiveSelection: false,
-          controller: emailController,
-          decoration: InputDecoration(
-            hintText: 'Correo Electronico',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-            ),
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18.0,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget passWordTextField() {
-    return Padding(
-        padding: EdgeInsets.fromLTRB(
-            WIDHT * 0.101, 0.0, WIDHT * 0.089, HEIGHT * 0.027),
-        child: TextFormField(
-          enableInteractiveSelection: false,
-          controller: passwordController,
-          decoration: InputDecoration(
-            hintText: 'Contraseña',
-            enabledBorder: UnderlineInputBorder(
-              borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
-            ),
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18.0,
-            ),
-          ),
-          obscureText: true,
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ));
   }
 
   Widget TextForgetPassword(BuildContext context) {

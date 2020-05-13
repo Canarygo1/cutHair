@@ -162,18 +162,19 @@ class _ChooseDateHairDressingScreenState extends State<ChooseDateHairDressingScr
   }
 
   pressCalendar(DateTime date) {
-    if (date.isAfter(DateTime.now()) ||
-        (date.year == DateTime.now().year &&
-            date.month == DateTime.now().month &&
-            date.day == DateTime.now().day)) {
-      setState(() {
-        this.isConsulting = true;
-        this.currentDate2 = date;
-        this._finalDate = date;
-
-        this._presenter.init(appointment.service.duration.toString(),
-            currentDate2.toString(), appointment.employee.uid);
-      });
+    if (isConsulting == false) {
+      if (date.isAfter(DateTime.now()) ||
+          (date.year == DateTime.now().year &&
+              date.month == DateTime.now().month &&
+              date.day == DateTime.now().day)) {
+        setState(() {
+          this.isConsulting = true;
+          this.currentDate2 = date;
+          this._finalDate = date;
+          this._presenter.init(appointment.service.duration.toString(),
+              currentDate2.toString(), appointment.employee.uid);
+        });
+      }
     }
   }
 

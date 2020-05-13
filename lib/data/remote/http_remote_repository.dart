@@ -139,7 +139,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<bool> insertAppointment(Appointment appointment, String uid) async {
     var val = [];
-    val = await GlobalMethods.getTimeSeparatedBy10(appointment.checkIn, appointment.checkOut);
+    val = await GetTimeSeparated.getTimeSeparatedBy10(appointment.checkIn, appointment.checkOut);
 
     firestore
         .collection("Negocios")
@@ -222,7 +222,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
     DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
 
-    val = await GlobalMethods.getTimeSeparatedBy10(checkIn, checkOut);
+    val = await GetTimeSeparated.getTimeSeparatedBy10(checkIn, checkOut);
 
     var maplist = [];
     maplist.add(ranges);
@@ -293,7 +293,7 @@ class HttpRemoteRepository implements RemoteRepository {
     DateTime subtract = date.subtract(Duration(hours: date.hour, minutes: date.minute));
 
     List<String> val = [];
-    val = GlobalMethods.getHours(checkIn, checkOut, subtract);
+    val = GetTimeSeparated.getHours(checkIn, checkOut, subtract);
 
     Schedule schedule = await getRange(subtract.toString(), appointment.extraInformation, businessUid, appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));

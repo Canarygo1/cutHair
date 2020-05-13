@@ -4,40 +4,39 @@ import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employee.dart';
+import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'choose_extra_info_presenter.dart';
 
-import '../../Components/button.dart';
-import 'choose_hairdresser_presenter.dart';
-
-class chooseHairDresserScreen extends StatefulWidget {
+class ChooseExtraInfoScreen extends StatefulWidget {
   Appointment appointment;
 
-  chooseHairDresserScreen(this.appointment);
+  ChooseExtraInfoScreen(this.appointment);
 
   @override
-  _chooseHairDresserScreenState createState() =>
-      _chooseHairDresserScreenState(appointment);
+  _ChooseExtraInfoScreenState createState() =>
+      _ChooseExtraInfoScreenState(appointment);
 }
 
-class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
+class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
     implements ChooseHairDresserView {
   Appointment appointment;
   List<Employee> employeeNames = [];
   RemoteRepository _remoteRepository;
-  ChooseHairDresserPresenter presenter;
+  ChooseExtraInfoPresenter presenter;
   double HEIGHT;
   double WIDHT;
 
-  _chooseHairDresserScreenState(this.appointment);
+  _ChooseExtraInfoScreenState(this.appointment);
 
   @override
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    presenter = ChooseHairDresserPresenter(this, _remoteRepository);
+    presenter = ChooseExtraInfoPresenter(this, _remoteRepository);
     if(appointment.business.typeBusiness == "Peluquerias"){
       presenter.init(appointment.business.uid, appointment.business.typeBusiness);
     }

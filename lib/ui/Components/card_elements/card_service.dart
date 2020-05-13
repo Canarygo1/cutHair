@@ -4,7 +4,7 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Pages/choose_hairdresser/choose_hairdresser.dart';
+import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:flutter/material.dart';
 
 class CardService extends StatelessWidget {
@@ -32,7 +32,7 @@ class CardService extends StatelessWidget {
             appointment.service = servicesDetails[index];
             appointment.business = business;
             GlobalMethods()
-                .pushPage(context, chooseHairDresserScreen(appointment));
+                .pushPage(context, ChooseExtraInfoScreen(appointment));
           },
           child: Card(
             shape: BeveledRectangleBorder(

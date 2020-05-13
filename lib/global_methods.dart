@@ -24,10 +24,11 @@ class GlobalMethods {
     Navigator.pop(page);
   }
 
-  removePages(BuildContext context){
+  removePages(BuildContext context) {
     Navigator.of(context).popUntil((route) => route.isFirst);
     pushPage(context, Menu(DBProvider.users[0]));
   }
+
   searchDBUser(BuildContext context) async {
     Widget screen;
     await DBProvider.db.getUser();
@@ -44,7 +45,9 @@ class GlobalMethods {
     }
     pushAndReplacement(context, screen);
   }
+}
 
+class GetTimeSeparated {
   static Future<List<dynamic>> getTimeSeparatedBy10(
       DateTime checkIn, DateTime checkOut) async {
     List<String> list = [];
@@ -52,9 +55,10 @@ class GlobalMethods {
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = checkIn.add(Duration(minutes: (10 * i)));
-      list.add(date.hour.toString() + ":" + date.minute.toString());
+      date.minute.toString().length == 1
+          ? list.add(date.hour.toString() + ":" + date.minute.toString() + '0')
+          : list.add(date.hour.toString() + ":" + date.minute.toString());
     }
-
     return list;
   }
 
@@ -90,34 +94,46 @@ class GlobalMethods {
 
     return hours;
   }
+
+  static getFullTimeIfHasOneValue(String time) {
+    if (time.length == 1) {
+      return time + "0";
+    } else {
+      return time;
+    }
+  }
 }
 
-
-class Images{
-
-  Future<List<Widget>> getChilds(List<String> listImagesFirebase) async{
+class Images {
+  Future<List<Widget>> getChilds(List<String> listImagesFirebase) async {
     List<Widget> images = [];
     Image image;
     listImagesFirebase.forEach((f) => {
-      f.length != 0 ?
-      image = Image.network(
-        f, fit: BoxFit.cover, loadingBuilder: (BuildContext context, Widget child,
-          ImageChunkEvent loadingProgress) {
-        if (loadingProgress == null) return child;
-        return Center(
-          child: CircularProgressIndicator(
-            valueColor: AlwaysStoppedAnimation<Color>(Color.fromRGBO(230, 73, 90, 1)),
-            value: loadingProgress.expectedTotalBytes != null
-                ? loadingProgress.cumulativeBytesLoaded /
-                loadingProgress.expectedTotalBytes
-                : null,
-          ),
-        );
-      },
-      ) : image = Image.asset('assets/images/Login_6.jpg', fit: BoxFit.cover,),
-      images.add(image)
-    });
+          f.length != 0
+              ? image = Image.network(
+                  f,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                            Color.fromRGBO(230, 73, 90, 1)),
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes
+                            : null,
+                      ),
+                    );
+                  },
+                )
+              : image = Image.asset(
+                  'assets/images/Login_6.jpg',
+                  fit: BoxFit.cover,
+                ),
+          images.add(image)
+        });
     return images;
   }
-
 }
