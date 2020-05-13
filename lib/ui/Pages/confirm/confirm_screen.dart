@@ -153,8 +153,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                     child: MyButton(
                       () => {
                         ConnectionChecked.checkInternetConnectivity(context),
-                        GlobalMethods().pushAndReplacement(
-                            context, Menu(DBProvider.users[0]))
+                        GlobalMethods().removePages(context)
                       },
                       LargeText("Cancelar cita"),
                       horizontalPadding: WIDHT * 0.025,

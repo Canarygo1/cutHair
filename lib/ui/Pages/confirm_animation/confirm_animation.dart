@@ -168,8 +168,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                   padding: EdgeInsets.only(
                       left: WIDHT * 0.025, top: HEIGHT * 0.05),
                   child: MyButton(
-                        () => GlobalMethods().pushAndReplacement(
-                        context, Menu(DBProvider.users[0])),
+                        () => GlobalMethods().removePages(context),
                     LargeText(
                       'Volver al menu',
                       color: Colors.black,
