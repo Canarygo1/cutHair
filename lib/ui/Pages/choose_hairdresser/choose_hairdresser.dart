@@ -54,7 +54,10 @@ class _chooseHairDresserScreenState extends State<chooseHairDresserScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
+            Padding(
+              padding: EdgeInsets.only(top: HEIGHT * 0.035),
+              child: GoBack(context, "Volver"),
+            ),
             title(),
             hairDressersButtons()
           ],

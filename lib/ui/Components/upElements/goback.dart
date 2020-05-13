@@ -1,18 +1,20 @@
-import 'package:cuthair/global_methods.dart';
 import 'package:flutter/material.dart';
+import '../../../global_methods.dart';
 
 class GoBack extends StatelessWidget {
   BuildContext screen;
   String text;
+  double HEIGHT;
+  double WIDTH;
 
-  GoBack(this.screen, this.text);
+  GoBack(this.screen, this.text, {this.HEIGHT, this.WIDTH});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.only(
-          left: MediaQuery.of(context).size.width * 0.025,
-          top: MediaQuery.of(context).size.height * 0.027),
+    if(HEIGHT == null) HEIGHT = MediaQuery.of(context).size.height;
+    if(WIDTH == null) WIDTH = MediaQuery.of(context).size.width;
+    return Padding(
+      padding: EdgeInsets.only(left: WIDTH * 0.025, top: HEIGHT * 0.027),
       child: GestureDetector(
         onTap: () {
           GlobalMethods().popPage(screen);

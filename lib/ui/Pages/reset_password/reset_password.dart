@@ -19,7 +19,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   TextEditingController emailControler = TextEditingController();
   double HEIGHT;
   double WIDHT;
-  String error;
+  String error = "";
 
   @override
   Widget build(BuildContext context) {
