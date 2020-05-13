@@ -53,7 +53,10 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
+            Padding(
+              padding: EdgeInsets.only(top: HEIGHT * 0.035),
+              child: GoBack(context, "Volver"),
+            ),
             appointment.business.typeBusiness == "Peluquerias" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
             appointment.business.typeBusiness == "Peluquerias" ? hairDressersButtons() : chooseNumberClients(),
           ],

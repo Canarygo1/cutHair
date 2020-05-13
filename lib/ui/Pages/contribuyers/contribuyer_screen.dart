@@ -39,7 +39,10 @@ class _contribuyerState extends State<contribuyer_screen>{
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          GoBack(context, "Volver"),
+          Padding(
+            padding: EdgeInsets.only(top: HEIGHT * 0.035),
+            child: GoBack(context, "Volver"),
+          ),
           Padding(
             padding: EdgeInsets.only(top: HEIGHT * 0.04, left: WIDTH * 0.05),
             child: LargeText("Lista de contribuidores"),
