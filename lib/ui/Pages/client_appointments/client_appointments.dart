@@ -1,15 +1,21 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/calendars.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut.dart';
 import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
-import 'package:cuthair/ui/Components/upElements/appbar.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/confirm_dialog.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
+import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
@@ -27,10 +33,15 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
   bool isConsulting = false;
+  bool filter = false;
   double HEIGHT;
   double WIDHT;
+  CalendarWidget calendarWidget;
   ConfirmDialog confirmDialog;
   List<String> allImages;
+  bool firstTime = true;
+  CardWithCheckOut cardWithCheckOut;
+  CardWithoutCheckOut cardWithoutCheckOut;
 
   @override
   initState() {
@@ -38,8 +49,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     super.initState();
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
-    isConsulting = true;
-    _presenter.init(DBProvider.users[0].uid);
+    calendarWidget = CalendarWidget(
+            (DateTime date, List<Event> events) => pressCalendar(date));
   }
 
   @override
@@ -49,11 +60,58 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     global.context = context;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+
+        title: LargeText("Mis citas"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[Appbar("Mis citas"), myAppointment()],
+          children: <Widget>[
+            this.filter == true ? Padding(
+              padding: EdgeInsets.only(right: WIDHT * 0.65),
+              child: MyButton(
+                    () => {
+                  this.setState(
+                          () => {this.filter = false, this.isConsulting = false})
+                },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      "assets/images/Filter.svg",
+                      width: WIDHT * 0.063,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: WIDHT * 0.024),
+                      child: LargeText("Día"),
+                    ),
+                  ],
+                ),
+                height: HEIGHT * 0.054,
+                verticalMargin: HEIGHT * 0.035,
+                horizontalPadding: WIDHT * 0.05,
+                color: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            ): Container(),
+            this.filter == false ? Column(
+            children: <Widget>[
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                  child: LargeText(
+                    "Seleccione el día.",
+                    size: 25,
+                  ),
+                ),
+              ),
+              calendarWidget,
+            ],
+          ) : myAppointment()],
         ),
       ),
     );
@@ -92,11 +150,44 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 itemCount: myAppointments.length,
                 itemBuilder: (context, index) {
                   if(myAppointments.elementAt(index).typeBusiness == "Peluquerias"){
-                    return CardWithCheckOut(index, () => functionRemove(index), allImages, myAppointments);
+                    cardWithCheckOut = CardWithCheckOut(index, () => controlTimer(index), allImages, myAppointments);
+                    return cardWithCheckOut;
                   }else{
-                    return CardWithoutCheckOut(index, () => functionRemove(index), allImages, myAppointments);
+                    cardWithoutCheckOut = CardWithoutCheckOut(index, () => controlTimer(index), allImages, myAppointments);
+                    return cardWithoutCheckOut;
                   }
                 });
+  }
+
+  controlTimer(int index){
+    if(firstTime){
+      setState(() {
+        firstTime = !firstTime;
+      });
+      Timer(Duration(minutes: 1), () => this.setState(() {firstTime = !firstTime;}));
+      return functionRemove(index);
+    }else{
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          confirmDialog = ConfirmDialog(
+            MediumText("Lo sentimos tiene que esperar 1 minuto para cancelar otra cita."),
+                () => {
+              this.setState(() {isConsulting = true;}),
+              ConnectionChecked
+                  .checkInternetConnectivity(context),
+              _presenter.removeAppointment(
+                  myAppointments[index],
+                  index,
+                  DBProvider.users[0].uid, calendarWidget.currentDate2),
+              GlobalMethods()
+                  .popPage(confirmDialog.context),
+            },
+          buttons: MyButton(() => {GlobalMethods().popPage(confirmDialog.context), }, SmallText('Cerrar')),);
+          return confirmDialog;
+        },
+      );
+    }
   }
 
   functionRemove(int index){
@@ -106,12 +197,13 @@ class _ClientAppointmentsState extends State<ClientAppointments>
         confirmDialog = ConfirmDialog(
           MediumText("¿Desea cancelar la cita?"),
               () => {
+            this.setState(() {isConsulting = true;}),
             ConnectionChecked
                 .checkInternetConnectivity(context),
             _presenter.removeAppointment(
                 myAppointments[index],
                 index,
-                DBProvider.users[0].uid),
+                DBProvider.users[0].uid, calendarWidget.currentDate2),
             GlobalMethods()
                 .popPage(confirmDialog.context),
           },
@@ -119,6 +211,25 @@ class _ClientAppointmentsState extends State<ClientAppointments>
         return confirmDialog;
       },
     );
+  }
+
+  pressCalendar(DateTime date) {
+    if (isConsulting == false) {
+      if (date.isAfter(calendarWidget.currentDate) ||
+          (date.year == calendarWidget.currentDate.year &&
+              date.month == calendarWidget.currentDate.month &&
+              date.day == calendarWidget.currentDate.day)) {
+        this.setState(() {
+          calendarWidget.currentDate2 = date;
+          myAppointments.clear();
+          allImages.clear();
+          _presenter.init(DBProvider.users[0].uid, date);
+          this.filter = true;
+          this.isConsulting = true;
+          firstTime = false;
+        });
+      }
+    }
   }
 
   @override

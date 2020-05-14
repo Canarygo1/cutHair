@@ -37,55 +37,74 @@ class _registerState extends State<register> {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+          leading: GoBack(
+            context,
+            "",
+            HEIGHT: HEIGHT * 0.013,
+          ),
+          title: LargeText("Volver"),
+          titleSpacing: 0,
+        ),
         body: GestureDetector(
-      onTap: () {
-        FocusScope.of(context).requestFocus(FocusNode());
-      },
-      child: Form(
-        key: keyForm,
-        child: Container(
-            color: Color.fromRGBO(300, 300, 300, 1),
-            child: ListView(
-              children: <Widget>[
-                GoBack(context, "Volver"),
-                textFieldWidget(name, TextInputType.text, "Nombre", topPadding: HEIGHT * 0.067),
-                textFieldWidget(surname, TextInputType.text, "Apellidos"),
-                textFieldWidget(email, TextInputType.emailAddress, "Correo electrónico"),
-                textFieldWidget(password, TextInputType.text, "Contraseña", obscureText: true),
-                textFieldWidget(password2, TextInputType.text, "Repetir contraseña", obscureText: true),
-                error.length == 0 ? Container() : textError(),
-                Padding(
-                  padding: EdgeInsets.only(left: WIDHT * 0.11, right: WIDHT * 0.089),
-                  child: Text.rich(
-                    TextSpan(
-                      children: [
-                        TextSpan(
-                            text:
-                                "Al continuar, aceptas nuestras Condiones de uso y confirmas que has leído nuestra",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                                fontSize: 12)),
-                        TextSpan(
-                            recognizer: new TapGestureRecognizer()
-                              ..onTap = () {
-                                launch('https://pruebafirebase-44f30.web.app/');
-                              },
-                            text: " Política de Privacidad",
-                            style: TextStyle(
-                                fontWeight: FontWeight.normal,
-                                color: Colors.white,
-                                fontSize: 12)),
-                      ],
+          onTap: () {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Form(
+              key: keyForm,
+              child: Column(
+                children: <Widget>[
+                  textFieldWidget(name, TextInputType.text, "Nombre",
+                      topPadding: HEIGHT * 0.067),
+                  textFieldWidget(surname, TextInputType.text, "Apellidos"),
+                  textFieldWidget(
+                      email, TextInputType.emailAddress, "Correo electrónico"),
+                  textFieldWidget(password, TextInputType.text, "Contraseña",
+                      obscureText: true),
+                  textFieldWidget(
+                      password2, TextInputType.text, "Repetir contraseña",
+                      obscureText: true),
+                  error.length == 0 ? Container() : textError(),
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: WIDHT * 0.11, right: WIDHT * 0.089),
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                              text:
+                                  "Al continuar, aceptas nuestras Condiones de uso y confirmas que has leído nuestra",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                  fontSize: 12)),
+                          TextSpan(
+                              recognizer: new TapGestureRecognizer()
+                                ..onTap = () {
+                                  launch(
+                                      'https://pruebafirebase-44f30.web.app/');
+                                },
+                              text: " Política de Privacidad",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.normal,
+                                  color: Colors.white,
+                                  fontSize: 12)),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                MyButton(() => checkEmail(), LargeText("Continuar"),
-                    color: Color.fromRGBO(230, 73, 90, 1)),
-              ],
-            )),
-      ),
-    ));
+                  MyButton(() => checkEmail(), LargeText("Continuar"),
+                      color: Color.fromRGBO(230, 73, 90, 1)),
+                ],
+              ),
+            ),
+          ),
+        ));
   }
 
   Widget textFieldWidget(controller, textType, hintText,

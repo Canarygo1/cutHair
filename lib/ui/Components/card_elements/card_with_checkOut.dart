@@ -176,7 +176,7 @@ class CardWithCheckOut extends StatelessWidget {
                   'Cancelar',
                   size: 11,
                 ),
-                height: HEIGHT * 0.101,
+                height: HEIGHT * 0.05,
                 color: Color.fromRGBO(230, 73, 90, 1),
               ),
             ),

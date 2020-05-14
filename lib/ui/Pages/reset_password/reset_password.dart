@@ -27,11 +27,21 @@ class _ResetPasswordState extends State<ResetPassword> {
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        color: Color.fromRGBO(300, 300, 300, 1),
-        child: ListView(
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+        leading: GoBack(
+          context,
+          "",
+          HEIGHT: HEIGHT * 0.013,
+        ),
+        title: LargeText("Volver"),
+        titleSpacing: 0,
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
             Padding(
               padding: EdgeInsets.fromLTRB(
                   WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
@@ -56,7 +66,7 @@ class _ResetPasswordState extends State<ResetPassword> {
               ),
             ),
             MyButton(() => sendEmail(context), LargeText("Enviar"),
-                color: Color.fromRGBO(230, 73, 90, 1)),
+                color: Color.fromRGBO(230, 73, 90, 1), width: WIDHT,),
             error.length == 0 ? Container() : TextError(error),
           ],
         ),

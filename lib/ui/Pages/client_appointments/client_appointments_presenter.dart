@@ -8,12 +8,12 @@ class ClientAppointmentsPresenter {
 
   ClientAppointmentsPresenter(this._view, this._remoteRepository);
 
-  init(String userUid) async {
+  init(String userUid, DateTime date) async {
     allImages = [];
     try {
       List<MyAppointment> myAppointment = [];
        myAppointment = await _remoteRepository
-           .getUserAppointments(userUid);
+           .getUserAppointments(userUid, date);
 
        getAllImages(myAppointment);
 
@@ -32,11 +32,10 @@ class ClientAppointmentsPresenter {
     _view.showAppointments(myAppointment);
   }
 
-  removeAppointment(MyAppointment appointment, int index, String userUid) async {
+  removeAppointment(MyAppointment appointment, int index, String userUid, DateTime date) async {
     try{
       await _remoteRepository.removeAppointment(appointment, index);
-      _view.showAppointments(await _remoteRepository
-          .getUserAppointments(userUid));
+      await init(userUid, date);
     }catch(Exception){
       _view.emptyAppointment();
     }

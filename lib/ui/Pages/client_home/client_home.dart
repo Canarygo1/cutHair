@@ -4,7 +4,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/business.dart';
-import 'package:cuthair/ui/Components/upElements/appbar.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
 import 'package:flutter/material.dart';
@@ -39,12 +39,16 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(44, 45, 47, 1),
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+        title: LargeText("Negocios"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Appbar("Negocios"),
             loading
                 ? Container(
               height: HEIGHT * 0.81,

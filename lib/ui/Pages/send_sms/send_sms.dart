@@ -15,6 +15,7 @@ import 'package:flutter/services.dart';
 class SendSMS extends StatefulWidget {
   Map data;
   String password;
+
   SendSMS(this.data, this.password);
 
   @override
@@ -24,7 +25,9 @@ class SendSMS extends StatefulWidget {
 class _SendSMSState extends State<SendSMS> {
   Map data;
   String password;
+
   _SendSMSState(this.data, this.password);
+
   String phoneNo;
   String smsOTP;
   String verificationId;
@@ -43,7 +46,7 @@ class _SendSMSState extends State<SendSMS> {
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      Timer(Duration(minutes: 1, seconds: 30), (){
+      Timer(Duration(minutes: 1, seconds: 30), () {
         setState(() {
           error = 'Tiempo expirado';
         });
@@ -51,15 +54,14 @@ class _SendSMSState extends State<SendSMS> {
       });
     };
 
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
-    };
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {};
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
-      if(e.message == "ERROR_INVALID_VERIFICATION_CODE"){
+      if (e.message == "ERROR_INVALID_VERIFICATION_CODE") {
         setState(() {
           error = 'El código es incorrecto';
         });
-      }else{
+      } else {
         setState(() {
           error = 'Lo sentimos ha ocurrido un error. Intentalo más tarde.';
         });
@@ -86,7 +88,7 @@ class _SendSMSState extends State<SendSMS> {
     data.putIfAbsent("Telefono", () => phoneController.text);
     try {
       RegisterCode().registerAuth(data["Email"], password, context, data);
-    }catch(e){
+    } catch (e) {
       setState(() {
         error = 'Ha ocurrido un error lo sentimos. Intententelo mas tarde';
       });
@@ -113,7 +115,8 @@ class _SendSMSState extends State<SendSMS> {
   Widget textFieldWidget(controller, textType, hintText,
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+      padding: EdgeInsets.fromLTRB(
+          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
       child: MyTextField(
         controller,
         textType,
@@ -145,19 +148,36 @@ class _SendSMSState extends State<SendSMS> {
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+          leading: GoBack(
+            context,
+            "",
+            HEIGHT: HEIGHT * 0.013,
+          ),
+          title: LargeText("Volver"),
+          titleSpacing: 0,
+        ),
         body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
-          child: Container(
-            color: Color.fromRGBO(300, 300, 300, 1),
-            child: ListView(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
               children: <Widget>[
-                GoBack(context, "Volver"),
-                textFieldWidget(phoneController, TextInputType.phone, 'Introduce el teléfono', topPadding: HEIGHT * 0.176),
-                MyButton(() => verifyPhone(), LargeText("Enviar código"), color: Color.fromRGBO(230, 73, 90, 1)),
-                textFieldWidget(codeController, TextInputType.phone, "Introduce el código", topPadding: HEIGHT * 0.027),
-                MyButton(() => signIn(codeController.text),LargeText("Confirmar código"), color: Color.fromRGBO(230, 73, 90, 1)),
+                textFieldWidget(phoneController, TextInputType.phone,
+                    'Introduce el teléfono',
+                    topPadding: HEIGHT * 0.176),
+                MyButton(() => verifyPhone(), LargeText("Enviar código"),
+                    color: Color.fromRGBO(230, 73, 90, 1)),
+                textFieldWidget(
+                    codeController, TextInputType.phone, "Introduce el código",
+                    topPadding: HEIGHT * 0.027),
+                MyButton(() => signIn(codeController.text),
+                    LargeText("Confirmar código"),
+                    color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : TextError(error),
               ],
             ),

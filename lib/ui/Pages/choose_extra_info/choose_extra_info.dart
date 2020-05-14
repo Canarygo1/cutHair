@@ -49,14 +49,20 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+        leading: GoBack(
+          context,
+          "",
+          HEIGHT: HEIGHT * 0.013,
+        ),
+        title: LargeText("Volver"),
+        titleSpacing: 0,
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: HEIGHT * 0.035),
-              child: GoBack(context, "Volver"),
-            ),
             appointment.business.typeBusiness == "Peluquerias" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
             appointment.business.typeBusiness == "Peluquerias" ? hairDressersButtons() : chooseNumberClients(),
           ],

@@ -50,10 +50,8 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(
-        appointment.service.duration.toString(),
-        initial.toString(),
-        appointment.employee.name);
+    this._presenter.init(appointment.service.duration.toString(),
+        initial.toString(), appointment.employee.name);
   }
 
   @override
@@ -62,13 +60,22 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Container(
-        color: Color.fromRGBO(300, 300, 300, 1),
-        child: ListView(
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+        leading: GoBack(
+          context,
+          "",
+          HEIGHT: HEIGHT * 0.013,
+        ),
+        title: LargeText("Volver"),
+        titleSpacing: 0,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
             CalendarWidget(
-                    (DateTime date, List<Event> events) => pressCalendar(date),
+                (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
             Padding(
               padding: EdgeInsets.only(left: WIDHT * 0.025),
@@ -84,58 +91,58 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
   Widget timeSelector() {
     return isConsulting == true
         ? SpinKitWave(
-      color: Color.fromRGBO(230, 73, 90, 1),
-      type: SpinKitWaveType.start,
-    )
+            color: Color.fromRGBO(230, 73, 90, 1),
+            type: SpinKitWaveType.start,
+          )
         : availability.isEmpty
-        ? Padding(
-      padding:
-      EdgeInsets.only(top: HEIGHT * 0.03, left: WIDHT * 0.03),
-      child: Column(
-        children: <Widget>[
-          SvgPicture.asset(
-            "assets/images/sad.svg",
-            width: WIDHT * 0.229,
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: HEIGHT * 0.03),
-            child: Column(
-              children: <Widget>[
-                MediumText("Lo sentimos, no hay horas disponibles."),
-                MediumText("Prueba con otro día."),
-              ],
-            ),
-          ),
-        ],
-      ),
-    )
-        : Padding(
-      padding: EdgeInsets.only(top: HEIGHT * 0.027),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(
-                horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
-            height: HEIGHT * 0.08,
-            child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: availability.length,
-                itemBuilder: (context, index) {
-                  return Center(
-                    child: MyButton(
-                          () => pressTimeSelection(index),
-                      LargeText(availability[index]),
-                      height: HEIGHT * 0.05,
-                      horizontalPadding: WIDHT * 0.025,
-                      color: Color.fromRGBO(230, 73, 90, 1),
+            ? Padding(
+                padding:
+                    EdgeInsets.only(top: HEIGHT * 0.03, left: WIDHT * 0.03),
+                child: Column(
+                  children: <Widget>[
+                    SvgPicture.asset(
+                      "assets/images/sad.svg",
+                      width: WIDHT * 0.229,
                     ),
-                  );
-                }),
-          ),
-        ],
-      ),
-    );
+                    Padding(
+                      padding: EdgeInsets.only(top: HEIGHT * 0.03),
+                      child: Column(
+                        children: <Widget>[
+                          MediumText("Lo sentimos, no hay horas disponibles."),
+                          MediumText("Prueba con otro día."),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Padding(
+                padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
+                      height: HEIGHT * 0.08,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: availability.length,
+                          itemBuilder: (context, index) {
+                            return Center(
+                              child: MyButton(
+                                () => pressTimeSelection(index),
+                                LargeText(availability[index]),
+                                height: HEIGHT * 0.05,
+                                horizontalPadding: WIDHT * 0.025,
+                                color: Color.fromRGBO(230, 73, 90, 1),
+                              ),
+                            );
+                          }),
+                    ),
+                  ],
+                ),
+              );
   }
 
   pressTimeSelection(int index) {

@@ -1,4 +1,3 @@
-
 class User{
   String phone;
   String surname;
