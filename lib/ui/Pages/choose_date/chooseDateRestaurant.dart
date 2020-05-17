@@ -35,8 +35,10 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
 
   double HEIGHT;
   double WIDHT;
-  List<String> availability = [];
-  DateTime _finalDate = DateTime.now();
+  List<String> availability = [
+    "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"
+  ];
+  DateTime _finalDateCheckIn = DateTime.now();
   ApiRemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
   CalendarWidget calendarWidget;
@@ -50,8 +52,10 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment.service.duration.toString(),
-        initial.toString(), appointment.employee.name);
+    this._presenter.init(appointment, initial.toString());
+
+    showAvailability(availability);
+
   }
 
   @override
@@ -146,25 +150,25 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
   }
 
   pressTimeSelection(int index) {
-    if (_finalDate != null) {
-      _finalDate = _finalDate.subtract(Duration(
-          hours: _finalDate.hour,
-          minutes: _finalDate.minute,
-          seconds: _finalDate.second,
-          milliseconds: _finalDate.millisecond,
-          microseconds: _finalDate.microsecond));
+    if (_finalDateCheckIn != null) {
+      _finalDateCheckIn = _finalDateCheckIn.subtract(Duration(
+          hours: _finalDateCheckIn.hour,
+          minutes: _finalDateCheckIn.minute,
+          seconds: _finalDateCheckIn.second,
+          milliseconds: _finalDateCheckIn.millisecond,
+          microseconds: _finalDateCheckIn.microsecond));
       List hours = availability[index].split(':');
-      appointment.day = _finalDate;
-      _finalDate = _finalDate.add(
+      appointment.day = _finalDateCheckIn;
+
+      _finalDateCheckIn = _finalDateCheckIn.add(
           Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
-      appointment.checkIn = _finalDate;
-      appointment.checkOut = _finalDate
-          .add(Duration(minutes: int.parse(appointment.service.duration)));
+      appointment.checkIn = _finalDateCheckIn;
       GlobalMethods().pushPage(context, ConfirmScreen(appointment));
     }
   }
 
   pressCalendar(DateTime date) {
+
     if (isConsulting == false) {
       if (date.isAfter(DateTime.now()) ||
           (date.year == DateTime.now().year &&
@@ -173,10 +177,13 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
         setState(() {
           this.isConsulting = true;
           this.currentDate2 = date;
-          this._finalDate = date;
-          this._presenter.init(appointment.service.duration.toString(),
-              currentDate2.toString(), appointment.employee.name);
+          this._finalDateCheckIn = date;
+
+          _presenter.init(appointment, currentDate2.toString());
+
+          showAvailability(availability);
         });
+
       }
     }
   }

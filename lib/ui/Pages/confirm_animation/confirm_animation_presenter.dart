@@ -13,29 +13,40 @@ class ConfirmAnimationPresenter{
 
   init(Appointment appointment) async {
     try {
-      DateTime initial = appointment.checkIn.subtract(Duration(
-          hours: appointment.checkIn.hour,
-          minutes: appointment.checkIn.minute,
-          seconds: appointment.checkIn.second,
-          microseconds: appointment.checkIn.microsecond,
-          milliseconds: appointment.checkIn.millisecond));
-      List<String> appointments = await _apiRemoteRepository.getAvailability(
-          appointment.service.duration.toString(),
-          appointment.employee.name,
-          initial.toString()
-      );
+      if(appointment.business.typeBusiness == "Peluquerias") {
+        DateTime initial = appointment.checkIn.subtract(Duration(
+            hours: appointment.checkIn.hour,
+            minutes: appointment.checkIn.minute,
+            seconds: appointment.checkIn.second,
+            microseconds: appointment.checkIn.microsecond,
+            milliseconds: appointment.checkIn.millisecond));
+        List<String> appointments = await _apiRemoteRepository.getHairDressingAvailability(
+            appointment.service.duration.toString(),
+            appointment.employee.name,
+            initial.toString(), appointment.business.uid
+        );
 
-      bool isInAppointments = appointments.contains(appointment.checkIn.hour.toString()+":"+ getFullTimeIfHasOneValue(appointment.checkIn.minute.toString()));
+        bool isInAppointments = appointments.contains(
+            appointment.checkIn.hour.toString() + ":" +
+                getFullTimeIfHasOneValue(
+                    appointment.checkIn.minute.toString()));
 
 
-      if(!isInAppointments){
-        throw Exception;
+        if (!isInAppointments) {
+          throw Exception;
+        }
+
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final FirebaseUser user = await auth.currentUser();
+        _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
+        _view.correctInsert();
+      }else{
+
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final FirebaseUser user = await auth.currentUser();
+        _remoteRepository.insertAppointmentRestaurant(appointment, user.uid);
+        _view.correctInsert();
       }
-
-      final FirebaseAuth auth = FirebaseAuth.instance;
-      final FirebaseUser user = await auth.currentUser();
-      _remoteRepository.insertAppointment(appointment, user.uid);
-      _view.correctInsert();
     }catch(e){
       _view.incorrectInsert();
     }

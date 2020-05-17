@@ -12,5 +12,5 @@ class Appointment {
   DateTime checkOut;
   Business business;
   DateTime day;
-  String table;
+  String numberPersons;
 }

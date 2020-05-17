@@ -37,7 +37,7 @@ class CardWithoutCheckOut extends StatelessWidget {
                 children: <Widget>[
                   AspectRatio(
                       aspectRatio: 50.0 / 11.0,
-                      child: Image.asset(
+                      child: Image.network(
                         allImages.elementAt(index),
                         fit: BoxFit.cover,
                       ))
@@ -92,8 +92,8 @@ class CardWithoutCheckOut extends StatelessWidget {
                         Stack(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: HEIGHT * 0.006),
-                              child: SmallText(
+                              padding: EdgeInsets.only(top: HEIGHT * 0.020),
+                              child: MediumText(
                                 DateTime.parse(myAppointments
                                             .elementAt(index)
                                             .checkIn)

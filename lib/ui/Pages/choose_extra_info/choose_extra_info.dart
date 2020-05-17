@@ -8,6 +8,7 @@ import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
+import 'package:cuthair/ui/Pages/choose_date/chooseDateRestaurant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'choose_extra_info_presenter.dart';
@@ -121,15 +122,15 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
                       return Row(
                         children: <Widget>[
                           number1 <= appointment.business.maxPeople ? Expanded(
-                            child: MyButton(() => chooseTable(number1), LargeText(number1.toString()),
+                            child: MyButton(() => chooseNumberPersons(number1), LargeText(number1.toString()),
                                   color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0,),
                           ) : Container(),
                           number2 <= appointment.business.maxPeople ? Expanded(
-                            child: MyButton(() => chooseTable(number2), LargeText(number2.toString()),
+                            child: MyButton(() => chooseNumberPersons(number2), LargeText(number2.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container(),
                           number3 <= appointment.business.maxPeople ? Expanded(
-                            child: MyButton(() => chooseTable(number3), LargeText(number3.toString()),
+                            child: MyButton(() => chooseNumberPersons(number3), LargeText(number3.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container()
                          ]);
@@ -151,7 +152,9 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
 
   @override
   goToCalendar() {
-    GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment));
+    appointment.business.typeBusiness == "Peluquerias"
+        ? GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment))
+        : GlobalMethods().pushPage(context, ChooseDateRestaurantScreen(appointment));
   }
 
   chooseFunction(int index) {
@@ -159,8 +162,8 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
     presenter.nextScreen(appointment);
   }
 
-  chooseTable(int index){
-    appointment.table = index.toString();
+  chooseNumberPersons(int index){
+    appointment.numberPersons = index.toString();
     presenter.nextScreen(appointment);
   }
 }

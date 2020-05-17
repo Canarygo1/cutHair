@@ -10,6 +10,7 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
@@ -144,7 +145,8 @@ class HttpRemoteRepository implements RemoteRepository {
   }
 
   @override
-  Future<bool> insertAppointment(Appointment appointment, String uid) async {
+  Future<bool> insertAppointmentHairDressing(
+      Appointment appointment, String uid) async {
     var val = [];
     val = await GetTimeSeparated.getTimeSeparatedBy10(
         appointment.checkIn, appointment.checkOut);
@@ -288,6 +290,88 @@ class HttpRemoteRepository implements RemoteRepository {
     } else {
       throw Exception("No hay horarios");
     }
+  }
+
+  @override
+  Future<bool> insertAppointmentRestaurant(
+      Appointment appointment, String uid) async {
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .collection("horarios")
+        .document(appointment.day.toString())
+        .get();
+
+    List lista = documentSnapshot.data['disponibilidad'];
+
+
+    Duration duration = GetTimeSeparated.getDurationFromMinutes(appointment.business.durationMeal);
+    DateTime firebaseDate;
+
+    for (int i = 0; i < lista.length; i++) {
+
+      List<String> hours = lista[i]["hora"].split(':');
+
+      firebaseDate = appointment.checkIn.subtract(Duration(
+          hours: appointment.checkIn.hour,
+          minutes: appointment.checkIn.minute,
+          seconds: appointment.checkIn.second,
+          milliseconds: appointment.checkIn.millisecond,
+          microseconds: appointment.checkIn.microsecond));
+
+      firebaseDate = firebaseDate.add(
+          Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
+
+      if(firebaseDate.difference(appointment.checkIn).inMinutes >= 0
+          && firebaseDate.difference(appointment.checkIn).inMinutes <= appointment.business.durationMeal){
+        lista[i]["totalMesas"]--;
+      }
+    }
+
+    await firestore.collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .collection("horarios")
+        .document(appointment.day.toString())
+        .setData({"disponibilidad": lista});
+
+
+    DocumentReference docRef = await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("citas")
+        .add({
+      "extraInformation": appointment.numberPersons,
+      "idUsuario": uid,
+      "CheckIn": appointment.checkIn.toString(),
+      "Negocio": appointment.business.name,
+      "Direccion": appointment.business.direction
+    });
+
+    List refList = [docRef];
+
+    await firestore
+        .collection("Usuarios")
+        .document(uid)
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
+
+    await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
   }
 
   @override

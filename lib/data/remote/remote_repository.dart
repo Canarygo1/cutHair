@@ -22,7 +22,9 @@ abstract class RemoteRepository {
 
   Future<List<String>> getAllImages(Business business);
 
-  Future<bool> insertAppointment(Appointment appointment,String uid);
+  Future<bool> insertAppointmentHairDressing(Appointment appointment,String uid);
+
+  Future<bool> insertAppointmentRestaurant(Appointment appointment, String uid);
 
   Future<List<MyAppointment>> getUserAppointments(String uid, DateTime date);
 

@@ -51,8 +51,7 @@ class _ChooseDateHairDressingScreenState
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment.service.duration.toString(),
-        initial.toString(), appointment.employee.uid);
+    this._presenter.init(appointment, initial.toString());
   }
 
   @override
@@ -178,8 +177,7 @@ class _ChooseDateHairDressingScreenState
           this.isConsulting = true;
           this.currentDate2 = date;
           this._finalDate = date;
-          this._presenter.init(appointment.service.duration.toString(),
-              currentDate2.toString(), appointment.employee.uid);
+          this._presenter.init(appointment, currentDate2.toString());
         });
       }
     }
