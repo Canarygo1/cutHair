@@ -14,10 +14,11 @@ class ClientAppointmentsPresenter {
       List<MyAppointment> myAppointment = [];
        myAppointment = await _remoteRepository
            .getUserAppointments(userUid, date);
-
-       getAllImages(myAppointment);
-
+       await getAllImages(myAppointment);
+      _view.showImages(allImages);
+      _view.showAppointments(myAppointment);
     }catch(e){
+      print(e);
       _view.emptyAppointment();
     }
   }
@@ -27,16 +28,14 @@ class ClientAppointmentsPresenter {
       String image = await _remoteRepository.getOneImage(myAppointment.elementAt(i).businessUid, "0", "Gallery");
       allImages.add(image);
     }
-
-    _view.showImages(allImages);
-    _view.showAppointments(myAppointment);
   }
 
   removeAppointment(MyAppointment appointment, int index, String userUid, DateTime date) async {
     try{
-      await _remoteRepository.removeAppointment(appointment, index);
+      await _remoteRepository.removeAppointment(appointment);
       await init(userUid, date);
     }catch(Exception){
+      print(Exception);
       _view.emptyAppointment();
     }
 

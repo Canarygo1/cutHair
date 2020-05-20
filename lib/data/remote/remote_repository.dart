@@ -36,7 +36,7 @@ abstract class RemoteRepository {
 
   Future<bool> removeRange(DateTime day, String name, String businessUid, String typeBusiness, Map ranges);
 
-  Future<bool> removeAppointment(MyAppointment appointment, int index);
+  Future<bool> removeAppointment(MyAppointment appointment);
 
   Future<bool> getUserPenalize(String uid);
 }

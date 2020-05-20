@@ -13,7 +13,6 @@ import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/confirm_dialog.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -50,7 +49,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
     calendarWidget = CalendarWidget(
-            (DateTime date, List<Event> events) => pressCalendar(date));
+        (DateTime date, List<Event> events) => pressCalendar(date));
   }
 
   @override
@@ -62,7 +61,6 @@ class _ClientAppointmentsState extends State<ClientAppointments>
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-
         title: LargeText("Mis citas"),
         centerTitle: true,
       ),
@@ -71,47 +69,51 @@ class _ClientAppointmentsState extends State<ClientAppointments>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            this.filter == true ? Padding(
-              padding: EdgeInsets.only(right: WIDHT * 0.65),
-              child: MyButton(
-                    () => {
-                  this.setState(
-                          () => {this.filter = false, this.isConsulting = false})
-                },
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SvgPicture.asset(
-                      "assets/images/Filter.svg",
-                      width: WIDHT * 0.063,
+            this.filter == true
+                ? Padding(
+                    padding: EdgeInsets.only(right: WIDHT * 0.65),
+                    child: MyButton(
+                      () => {
+                        this.setState(() =>
+                            {this.filter = false, this.isConsulting = false})
+                      },
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SvgPicture.asset(
+                            "assets/images/Filter.svg",
+                            width: WIDHT * 0.063,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(left: WIDHT * 0.024),
+                            child: LargeText("Día"),
+                          ),
+                        ],
+                      ),
+                      height: HEIGHT * 0.054,
+                      verticalMargin: HEIGHT * 0.035,
+                      horizontalPadding: WIDHT * 0.05,
+                      color: Color.fromRGBO(230, 73, 90, 1),
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                          left: WIDHT * 0.024),
-                      child: LargeText("Día"),
-                    ),
-                  ],
-                ),
-                height: HEIGHT * 0.054,
-                verticalMargin: HEIGHT * 0.035,
-                horizontalPadding: WIDHT * 0.05,
-                color: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            ): Container(),
-            this.filter == false ? Column(
-            children: <Widget>[
-              Center(
-                child: Padding(
-                  padding: EdgeInsets.only(top: HEIGHT * 0.027),
-                  child: LargeText(
-                    "Seleccione el día.",
-                    size: 25,
-                  ),
-                ),
-              ),
-              calendarWidget,
-            ],
-          ) : myAppointment()],
+                  )
+                : Container(),
+            this.filter == false
+                ? Column(
+                    children: <Widget>[
+                      Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                          child: LargeText(
+                            "Seleccione el día.",
+                            size: 25,
+                          ),
+                        ),
+                      ),
+                      calendarWidget,
+                    ],
+                  )
+                : myAppointment()
+          ],
         ),
       ),
     );
@@ -149,63 +151,58 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 primary: false,
                 itemCount: myAppointments.length,
                 itemBuilder: (context, index) {
-                  if(myAppointments.elementAt(index).typeBusiness == "Peluquerias"){
-                    cardWithCheckOut = CardWithCheckOut(index, () => controlTimer(index), allImages, myAppointments);
+                  if (myAppointments.elementAt(index).typeBusiness ==
+                      "Peluquerias") {
+                    cardWithCheckOut = CardWithCheckOut(index,
+                        () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOut;
-                  }else{
-                    cardWithoutCheckOut = CardWithoutCheckOut(index, () => controlTimer(index), allImages, myAppointments);
+                  } else {
+                    cardWithoutCheckOut = CardWithoutCheckOut(index,
+                        () => controlTimer(index), allImages, myAppointments);
                     return cardWithoutCheckOut;
                   }
                 });
   }
 
-  controlTimer(int index){
-    if(firstTime){
-      setState(() {
-        firstTime = !firstTime;
-      });
-      Timer(Duration(minutes: 1), () => this.setState(() {firstTime = !firstTime;}));
+  controlTimer(int index) {
+    if (firstTime == true) {
       return functionRemove(index);
-    }else{
+    } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           confirmDialog = ConfirmDialog(
-            MediumText("Lo sentimos tiene que esperar 1 minuto para cancelar otra cita."),
-                () => {
-              this.setState(() {isConsulting = true;}),
-              ConnectionChecked
-                  .checkInternetConnectivity(context),
-              _presenter.removeAppointment(
-                  myAppointments[index],
-                  index,
-                  DBProvider.users[0].uid, calendarWidget.currentDate2),
-              GlobalMethods()
-                  .popPage(confirmDialog.context),
-            },
-          buttons: MyButton(() => {GlobalMethods().popPage(confirmDialog.context), }, SmallText('Cerrar')),);
+            MediumText(
+                "Lo sentimos tiene que esperar 1 min para cancelar otra cita."),
+            () => {},
+            multiOptions: false,
+          );
           return confirmDialog;
         },
       );
     }
   }
 
-  functionRemove(int index){
+  functionRemove(int index) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         confirmDialog = ConfirmDialog(
           MediumText("¿Desea cancelar la cita?"),
-              () => {
-            this.setState(() {isConsulting = true;}),
-            ConnectionChecked
-                .checkInternetConnectivity(context),
-            _presenter.removeAppointment(
-                myAppointments[index],
-                index,
+          () => {
+            this.setState(() {
+              isConsulting = true;
+              firstTime = !firstTime;
+            }),
+            GlobalMethods().popPage(confirmDialog.context),
+            ConnectionChecked.checkInternetConnectivity(context),
+            _presenter.removeAppointment(myAppointments[index], index,
                 DBProvider.users[0].uid, calendarWidget.currentDate2),
-            GlobalMethods()
-                .popPage(confirmDialog.context),
+            Timer(
+                Duration(minutes: 1),
+                () => this.setState(() {
+                      firstTime = !firstTime;
+                    })),
           },
         );
         return confirmDialog;
@@ -226,7 +223,6 @@ class _ClientAppointmentsState extends State<ClientAppointments>
           _presenter.init(DBProvider.users[0].uid, date);
           this.filter = true;
           this.isConsulting = true;
-          firstTime = false;
         });
       }
     }
@@ -243,8 +239,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   }
 
   @override
-  showImages(List<String> allImages){
-    if(mounted) {
+  showImages(List<String> allImages) {
+    if (mounted) {
       setState(() {
         this.allImages = allImages;
       });

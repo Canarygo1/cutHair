@@ -76,7 +76,6 @@ class _ChooseDateHairDressingScreenState
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            GoBack(context, "Volver"),
             CalendarWidget(
                 (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
@@ -93,10 +92,13 @@ class _ChooseDateHairDressingScreenState
 
   Widget timeSelector() {
     return isConsulting == true
-        ? SpinKitWave(
-            color: Color.fromRGBO(230, 73, 90, 1),
-            type: SpinKitWaveType.start,
-          )
+        ? Padding(
+          padding: EdgeInsets.only(top: HEIGHT * 0.03),
+          child: SpinKitWave(
+              color: Color.fromRGBO(230, 73, 90, 1),
+              type: SpinKitWaveType.start,
+            ),
+        )
         : availability.isEmpty
             ? Padding(
                 padding:

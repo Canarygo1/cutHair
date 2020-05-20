@@ -137,7 +137,7 @@ class _LoginState extends State<Login> implements LoginView {
         alignment: Alignment.centerRight,
         child: Padding(
             padding:
-                EdgeInsets.only(bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
+            EdgeInsets.only(bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
             child: GestureDetector(
               onTap: () {
                 GlobalMethods().pushPage(context, ResetPassword());
