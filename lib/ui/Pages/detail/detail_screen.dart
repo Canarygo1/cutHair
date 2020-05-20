@@ -5,7 +5,7 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
-import 'file:///C:/Users/domit/Desktop/cutHair/lib/ui/Components/card_elements/card_service.dart';
+import 'package:cuthair/ui/Components/card_elements/card_service.dart';
 import 'package:cuthair/ui/Components/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';

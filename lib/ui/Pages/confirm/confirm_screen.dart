@@ -53,133 +53,231 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.fromLTRB(WIDHT * 0.05, HEIGHT * 0.135,
-                    WIDHT * 0.089, HEIGHT * 0.027),
-                child: LargeText("¿Desea confirmar la cita?")),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Peluquero: ")),
-                  Expanded(
-                    child: MediumText(appointment.employee.name),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Dia: ")),
-                  Expanded(
-                    child: MediumText(appointment.checkIn.day.toString()),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Hora: ")),
-                  Expanded(
-                    child: MediumText(appointment.checkIn.hour.toString() +
-                        ":" +
-                        getFullTimeIfHasOneValue(appointment.checkIn.minute.toString())),
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Tipo servicio: ")),
-                  Expanded(child: MediumText(appointment.service.type)),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Duracion cita: ")),
-                  Expanded(
-                      child: MediumText(
-                          appointment.service.duration.toString() +
-                              " minutos")),
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
-              child: Row(
-                children: <Widget>[
-                  Expanded(child: MediumText("Precio cita: ")),
-                  Expanded(
-                      child: MediumText(
-                          appointment.service.price.toString() + "€")),
-                ],
-              ),
-            ),
-            this.penalize == false
-                ? Container()
-                : Container(
-                    padding: EdgeInsets.fromLTRB(
-                        WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-                    child: MediumText(
-                      'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
-                      color: Colors.orange,
-                    ),
-                  ),
-            Container(
-              padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
-              margin: EdgeInsets.symmetric(horizontal: WIDHT * 0.025),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: MyButton(
-                      () => {
-                        ConnectionChecked.checkInternetConnectivity(context),
-                        GlobalMethods().removePages(context)
-                      },
-                      LargeText("Cancelar cita"),
-                      horizontalPadding: WIDHT * 0.025,
-                      color: Color.fromRGBO(230, 73, 90, 1),
-                      height: HEIGHT * 0.067,
-                    ),
-                  ),
-                  Expanded(
-                    child: MyButton(
-                      () => {
-                        ConnectionChecked.checkInternetConnectivity(context),
-                        GlobalMethods().pushAndReplacement(
-                            context, ConfirmAnimation(appointment))
-                      },
-                      LargeText("Confirmar"),
-                      horizontalPadding: WIDHT * 0.025,
-                      color: Color.fromRGBO(230, 73, 90, 1),
-                      height: HEIGHT * 0.067,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
+        child: appointment.business.typeBusiness == "Peluquerias"
+            ? confirmHairDressing()
+            : confirmRestaurant(),
+      ),
+    );
+  }
+
+  Widget confirmHairDressing() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
+            child: LargeText("¿Desea confirmar la cita?")),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Peluquero: ")),
+              Expanded(
+                child: MediumText(appointment.employee.name),
+              )
+            ],
+          ),
         ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Dia: ")),
+              Expanded(
+                child: MediumText(appointment.checkIn.day.toString()),
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Hora: ")),
+              Expanded(
+                child: MediumText(appointment.checkIn.hour.toString() +
+                    ":" +
+                    GetTimeSeparated.getFullTimeIfHasOneValue(
+                        appointment.checkIn.minute.toString())),
+              )
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Tipo servicio: ")),
+              Expanded(child: MediumText(appointment.service.type)),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Duracion cita: ")),
+              Expanded(
+                  child: MediumText(
+                      appointment.service.duration.toString() + " minutos")),
+            ],
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+          child: Row(
+            children: <Widget>[
+              Expanded(child: MediumText("Precio cita: ")),
+              Expanded(
+                  child:
+                      MediumText(appointment.service.price.toString() + "€")),
+            ],
+          ),
+        ),
+        this.penalize == false
+            ? Container()
+            : Container(
+                padding: EdgeInsets.fromLTRB(
+                    WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
+                child: MediumText(
+                  'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
+                  color: Colors.orange,
+                ),
+              ),
+        Container(
+          padding: EdgeInsets.fromLTRB(
+              WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
+          margin: EdgeInsets.symmetric(horizontal: WIDHT * 0.025),
+          child: Row(
+            children: <Widget>[
+              buttonCancel(),
+              buttonConfirm(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget confirmRestaurant() {
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.fromLTRB(
+                  WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
+              child: LargeText("¿Desea confirmar la reserva?")),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Restaurante: ")),
+                Expanded(
+                  child: MediumText(appointment.business.name),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Personas: ")),
+                Expanded(
+                  child: MediumText(appointment.numberPersons),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Dia: ")),
+                Expanded(
+                  child: MediumText(appointment.checkIn.day.toString()),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Hora: ")),
+                Expanded(
+                  child: MediumText(appointment.checkIn.hour.toString() +
+                      ":" +
+                      GetTimeSeparated.getFullTimeIfHasOneValue(
+                          appointment.checkIn.minute.toString())),
+                )
+              ],
+            ),
+          ),
+          this.penalize == false || this.penalize == null
+              ? Container()
+              : Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
+            child: MediumText(
+              'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
+              color: Colors.orange,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
+            margin: EdgeInsets.symmetric(horizontal: WIDHT * 0.025),
+            child: Row(
+              children: <Widget>[
+                buttonCancel(),
+                buttonConfirm(),
+              ],
+            ),
+          )
+        ]);
+  }
+
+  Widget buttonConfirm(){
+    return Expanded(
+      child: MyButton(
+            () => {
+          ConnectionChecked.checkInternetConnectivity(context),
+          GlobalMethods().pushAndReplacement(
+              context, ConfirmAnimation(appointment))
+        },
+        LargeText("Confirmar"),
+        horizontalPadding: WIDHT * 0.025,
+        color: Color.fromRGBO(230, 73, 90, 1),
+        height: HEIGHT * 0.067,
+      ),
+    );
+
+
+  }
+
+  Widget buttonCancel(){
+    return Expanded(
+      child: MyButton(
+            () => {
+          ConnectionChecked.checkInternetConnectivity(context),
+          GlobalMethods().removePages(context)
+        },
+        LargeText("Cancelar"),
+        horizontalPadding: WIDHT * 0.025,
+        color: Color.fromRGBO(230, 73, 90, 1),
+        height: HEIGHT * 0.067,
       ),
     );
   }
@@ -190,14 +288,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
       setState(() {
         this.penalize = penalize;
       });
-    }
-  }
-
-  getFullTimeIfHasOneValue(String time) {
-    if (time.length == 1) {
-      return time + "0";
-    } else {
-      return time;
     }
   }
 }

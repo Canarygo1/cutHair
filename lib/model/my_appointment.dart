@@ -13,13 +13,22 @@ class MyAppointment {
   String typeBusiness;
   DocumentReference documentReference;
 
-
-  MyAppointment(this.uid, this.businessName, this.extraInformation, this.type, this.price,
-      this.checkIn, this.checkOut, this.direction, this.typeBusiness, this.businessUid, this.documentReference);
+  MyAppointment(this.uid, this.businessName, this.extraInformation,
+      this.checkIn, this.direction, this.typeBusiness, this.businessUid, this.documentReference, { this.checkOut, this.type, this.price});
 
   factory MyAppointment.fromMap(Map values, String uid, String businessUid, String typeBusiness, DocumentReference documentReference){
-    return MyAppointment(uid,
-        values["Negocio"], values['extraInformation'], values["Servicio"],
-        values['Precio'], values["CheckIn"], values["CheckOut"], values["Direccion"], typeBusiness, businessUid, documentReference);
+
+    String negocio =  values["Negocio"];
+    String extraInformation = values['extraInformation'];
+    String checkIn = values['CheckIn'];
+    String direction = values["Direccion"];
+
+    if(typeBusiness == "Peluquerias"){
+      return MyAppointment(uid, negocio, extraInformation, checkIn, direction,
+          typeBusiness, businessUid, checkOut: values["CheckOut"], type: values["Servicio"], price:  values['Precio'], this.documentReference);
+    }else{
+      return MyAppointment(uid,
+          negocio, extraInformation, checkIn, direction, typeBusiness, businessUid, this.documentReference);
+    }
   }
 }

@@ -8,9 +8,10 @@ class Business {
   var numeroFotos;
   var typeBusiness;
   var maxPeople;
+  int durationMeal;
 
   Business(this.name, this.shortDirection, this.direction, this.type,
-      this.phoneNumber, this.numeroFotos, this.uid, this.typeBusiness, {this.maxPeople});
+      this.phoneNumber, this.numeroFotos, this.uid, this.typeBusiness, {this.maxPeople, this.durationMeal});
 
   factory Business.fromMap(Map values, String uid, String typeBusiness) {
     String name = values['NOMBRE'];
@@ -23,7 +24,8 @@ class Business {
       return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness);
     }else{
       int numberPeople = values['MaximoReserva'];
-      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, maxPeople: numberPeople);
+      int meal = int.parse(values["duracionComida"]);
+      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, maxPeople: numberPeople, durationMeal: meal);
     }
   }
 }

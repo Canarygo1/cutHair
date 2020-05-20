@@ -1,24 +1,34 @@
 import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
+import 'package:cuthair/model/appointment.dart';
 
-class ChooseDatePresenter{
+class ChooseDatePresenter {
   ChooseDateView _view;
   ApiRemoteRepository _remoteRepository;
 
   ChooseDatePresenter(this._view, this._remoteRepository);
 
-  init(String duration,String date,String employeeUid) async {
+  init(Appointment appointment, String date) async {
     try {
-      List availability = await _remoteRepository.getAvailability(
-          duration, employeeUid, date);
+      if (appointment.business.typeBusiness == "Peluquerias") {
+        List availability = await _remoteRepository.getHairDressingAvailability(
+            appointment.service.duration.toString(), appointment.employee.name, date, appointment.business.uid);
 
-      _view.showAvailability(availability);
-    }catch(e){
+        _view.showAvailability(availability);
+      }else{
+
+        /*List availability = await _remoteRepository.getRestaurantAvailability(
+            appointment.business.durationMeal, appointment.numberPersons, date, appointment.business.uid);
+      */
+        //_view.showAvailability(availability);
+      }
+    } catch (e) {
       _view.emptyAvailability();
     }
   }
 }
 
-abstract class ChooseDateView{
+abstract class ChooseDateView {
   showAvailability(List<String> availability);
+
   emptyAvailability();
 }
