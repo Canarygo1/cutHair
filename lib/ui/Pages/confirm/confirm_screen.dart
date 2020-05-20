@@ -5,8 +5,6 @@ import 'package:cuthair/model/user.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
-import 'package:cuthair/ui/Pages/client_home/client_home.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_presenter.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/cupertino.dart';

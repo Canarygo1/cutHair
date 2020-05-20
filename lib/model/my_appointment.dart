@@ -25,10 +25,10 @@ class MyAppointment {
 
     if(typeBusiness == "Peluquerias"){
       return MyAppointment(uid, negocio, extraInformation, checkIn, direction,
-          typeBusiness, businessUid, checkOut: values["CheckOut"], type: values["Servicio"], price:  values['Precio'], this.documentReference);
+          typeBusiness, businessUid, documentReference, checkOut: values["CheckOut"], type: values["Servicio"], price:  values['Precio']);
     }else{
       return MyAppointment(uid,
-          negocio, extraInformation, checkIn, direction, typeBusiness, businessUid, this.documentReference);
+          negocio, extraInformation, checkIn, direction, typeBusiness, businessUid, documentReference);
     }
   }
 }
