@@ -65,7 +65,7 @@ class _InfoScreenState extends State<Info> {
             onTap: logOut,
             child: Container(
               padding:
-                  EdgeInsets.only(right: WIDHT * 0.05),
+              EdgeInsets.only(right: WIDHT * 0.05),
               child: Icon(
                 Icons.exit_to_app,
                 size: 30,

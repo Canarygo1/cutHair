@@ -53,6 +53,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[

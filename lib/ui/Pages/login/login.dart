@@ -41,38 +41,41 @@ class _LoginState extends State<Login> implements LoginView {
     WIDHT = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: ExactAssetImage(backgroundImages[randomBackground]),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.fromLTRB(WIDHT * 0.200,HEIGHT * 0.126,
-                      WIDHT * 0.200, 0),
-                  child: Container(
-                      child: Image.asset("assets/images/logo.png",
-                          fit: BoxFit.cover)),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: ExactAssetImage(backgroundImages[randomBackground]),
+                  fit: BoxFit.cover,
                 ),
-                textFieldWidget(emailController, TextInputType.emailAddress,
-                    "Correo electrónico",
-                    topPadding: HEIGHT * 0.176),
-                textFieldWidget(
-                    passwordController, TextInputType.text, "Contraseña",
-                    obscureText: true, topPadding: 0.0),
-                error.length == 0 ? Container() : TextError(error),
-                TextForgetPassword(context),
-                MyButton(() => logIn(), LargeText("Entrar"),
-                    color: Color.fromRGBO(230, 73, 90, 1)),
-                TextRegister(context),
-              ],
+              ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(WIDHT * 0.200,HEIGHT * 0.126,
+                        WIDHT * 0.200, 0),
+                    child: Container(
+                        child: Image.asset("assets/images/logo.png",
+                            fit: BoxFit.cover)),
+                  ),
+                  textFieldWidget(emailController, TextInputType.emailAddress,
+                      "Correo electrónico",
+                      topPadding: HEIGHT * 0.176),
+                  textFieldWidget(
+                      passwordController, TextInputType.text, "Contraseña",
+                      obscureText: true, topPadding: 0.0),
+                  error.length == 0 ? Container() : TextError(error),
+                  TextForgetPassword(context),
+                  MyButton(() => logIn(), LargeText("Entrar"),
+                      color: Color.fromRGBO(230, 73, 90, 1)),
+                  TextRegister(context),
+                ],
+              ),
             ),
           ),
         ));
