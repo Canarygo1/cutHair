@@ -81,7 +81,7 @@ class _InfoScreenState extends State<Info> {
             Widget>[
           Container(
             padding: EdgeInsets.fromLTRB(
-                WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.03),
+                WIDHT * 0.2, HEIGHT * 0.10, 0.0, HEIGHT * 0.03),
             child: Column(
               children: <Widget>[
                 Padding(
@@ -176,7 +176,7 @@ class _InfoScreenState extends State<Info> {
           ),
           error.length == 0 ? Container() : TextError(error),
           Padding(
-            padding: EdgeInsets.only(top: HEIGHT * 0.18),
+            padding: EdgeInsets.only(top: HEIGHT * 0.13),
             child: Center(
               child: Text.rich(
                 TextSpan(
