@@ -86,6 +86,7 @@ class _SendSMSState extends State<SendSMS> {
     await _auth.signInWithCredential(credential);
     ConnectionChecked.checkInternetConnectivity(context);
     data.putIfAbsent("Telefono", () => phoneController.text);
+    data.putIfAbsent("Penalizacion", () => false);
     try {
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {
