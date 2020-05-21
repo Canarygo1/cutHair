@@ -19,8 +19,8 @@ class _contribuyerState extends State<contribuyer_screen>{
   double HEIGHT;
   double WIDTH;
   Map<String, String> mapContribuyers = {
-    "1": "link 1",
-    "2": "https://www.youtube.com/watch?v=-y7aXFRJESg"
+    "Ufo: Vitaly Gorbachev": "www.flaticon.com",
+    "404 image: Freepik": "http://www.freepik.com/"
   };
 
   void initState() {
