@@ -51,7 +51,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: SingleChildScrollView(
-        child: appointment.business.typeBusiness == "Peluquerias"
+        child: appointment.business.typeBusiness == "Peluquerías"
             ? confirmHairDressing()
             : confirmRestaurant(),
       ),
@@ -83,7 +83,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Dia: ")),
+              Expanded(child: MediumText("Día: ")),
               Expanded(
                 child: MediumText(appointment.checkIn.day.toString()),
               )
@@ -120,7 +120,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Duracion cita: ")),
+              Expanded(child: MediumText("Duración cita: ")),
               Expanded(
                   child: MediumText(
                       appointment.service.duration.toString() + " minutos")),
@@ -201,7 +201,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Dia: ")),
+                Expanded(child: MediumText("Día: ")),
                 Expanded(
                   child: MediumText(appointment.checkIn.day.toString()),
                 )

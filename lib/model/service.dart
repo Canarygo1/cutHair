@@ -10,7 +10,7 @@ class Service {
     String price = values['precio'];
     String type = values['nombre'];
 
-    if(typeBusiness == "Peluquerias"){
+    if(typeBusiness == "Peluquerías"){
       String duration = values['duracion'];
       return Service(type, price, duration: duration);
     }else{

@@ -38,11 +38,220 @@ class _InfoScreenState extends State<Info> {
 
   GlobalMethods global = GlobalMethods();
 
-  changePassword() {
+  @override
+  Widget build(BuildContext context) {
+    HEIGHT = MediaQuery.of(context).size.height;
+    WIDHT = MediaQuery.of(context).size.width;
+    global.context = context;
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      floatingActionButton: bottomElements(),
+      backgroundColor: Color.fromRGBO(300, 300, 300, 1),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+        title: LargeText("Mis datos"),
+        centerTitle: true,
+        actions: <Widget>[
+          GestureDetector(
+            onTap: logOut,
+            child: Padding(
+              padding: EdgeInsets.only(right: WIDHT * 0.05),
+              child: Icon(
+                Icons.exit_to_app,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
+            Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.2, HEIGHT * 0.04, 0.0, HEIGHT * 0.03),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: WIDHT * 0.06),
+                        child: Text("Nombre: ",
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      ),
+                      Expanded(
+                        child: Text(DBProvider.users[0].name,
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: WIDHT * 0.06),
+                        child: Text("Apellido: ",
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      ),
+                      Expanded(
+                        child: Text(DBProvider.users[0].surname,
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: WIDHT * 0.09),
+                        child: Text("Correo: ",
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      ),
+                      Expanded(
+                        child: Text(DBProvider.users[0].email,
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: WIDHT * 0.03, bottom: HEIGHT * 0.054),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        margin: EdgeInsets.only(right: WIDHT * 0.04),
+                        child: Text("Teléfono: ",
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      ),
+                      Expanded(
+                        child: Text(DBProvider.users[0].phone,
+                            style:
+                            TextStyle(color: Colors.white, fontSize: 17.0)),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          MyButton(
+                  () => functionResetPassword(), LargeText("Cambiar contraseña"),
+              color: Color.fromRGBO(230, 73, 90, 1)),
+          error.length == 0
+              ? Container()
+              : Container(
+            child: TextError(error),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  Widget bottomElements() {
+    return Padding(
+      padding: EdgeInsets.only(left: WIDHT * 0.08),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                    recognizer: new TapGestureRecognizer()
+                      ..onTap = () {
+                        launch('https://pruebafirebase-44f30.web.app/');
+                      },
+                    text: " Política de Privacidad.",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        fontSize: 12)),
+                TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () {
+                        GlobalMethods()
+                            .pushPage(context, contribuyer_screen());
+                      },
+                    text: " Lista de contribuidores",
+                    style: TextStyle(
+                        fontWeight: FontWeight.normal,
+                        color: Colors.white,
+                        fontSize: 12)),
+              ],
+            ),
+          ),
+          Center(child: SmallText("@Reservaloapp"))
+        ],
+      ),
+    );
+  }
+
+  functionResetPassword() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        confirmDialog = ConfirmDialog(
+          MediumText("Seguro que quiere cambiar la contraseña de: " +
+              DBProvider.users[0].email),
+              () => {
+            changePassword(),
+            GlobalMethods().popPage(confirmDialog.context)
+          },
+        );
+        return confirmDialog;
+      },
+    );
+  }
+
+  Future<void> logOut() async {
+    await DBProvider.db.delete();
+    screen = Login();
+    await FirebaseAuth.instance.signOut();
+    Timer(Duration(seconds: 1), changeScreen);
+  }
+
+  changePassword() async {
     ConnectionChecked.checkInternetConnectivity(context);
     ResetPasswordCode(DBProvider.users[0].email).changePassword();
     setState(() {
       error = 'Se ha enviado un correo a dicha direccion email';
+    });
+    await FirebaseAuth.instance.signOut();
+    DBProvider.db.delete();
+    Timer(Duration(seconds: 2),
+            () => GlobalMethods().pushAndReplacement(context, Login()));
+  }
+
+  changeScreen() {
+    GlobalMethods().pushAndReplacement(context, screen);
+  }
+  /*
+  changePassword() {
+    ConnectionChecked.checkInternetConnectivity(context);
+    ResetPasswordCode(DBProvider.users[0].email).changePassword();
+    setState(() {
+      error = 'Se ha enviado un correo a dicha dirección email';
     });
     DBProvider.db.delete();
     Timer(Duration(seconds: 2),
@@ -111,7 +320,7 @@ class _InfoScreenState extends State<Info> {
                     children: <Widget>[
                       Container(
                         margin: EdgeInsets.only(right: WIDHT * 0.06),
-                        child: Text("Apellido: ",
+                        child: Text("Apellidos: ",
                             style:
                                 TextStyle(color: Colors.white, fontSize: 17.0)),
                       ),
@@ -239,5 +448,5 @@ class _InfoScreenState extends State<Info> {
 
   changeScreen() {
     GlobalMethods().pushAndReplacement(context, screen);
-  }
+  }*/
 }

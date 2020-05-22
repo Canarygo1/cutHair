@@ -20,7 +20,7 @@ class Business {
     String type = values['tipo'];
     String shortDirection = values['shortUbicacion'];
     int numeroFotos = values['Fotos'];
-    if(typeBusiness == "Peluquerias"){
+    if(typeBusiness == "Peluquerías"){
       return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness);
     }else{
       int numberPeople = values['MaximoReserva'];

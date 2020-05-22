@@ -23,7 +23,7 @@ class MyAppointment {
     String checkIn = values['CheckIn'];
     String direction = values["Direccion"];
 
-    if(typeBusiness == "Peluquerias"){
+    if(typeBusiness == "Peluquerías"){
       return MyAppointment(uid, negocio, extraInformation, checkIn, direction,
           typeBusiness, businessUid, documentReference, checkOut: values["CheckOut"], type: values["Servicio"], price:  values['Precio']);
     }else{

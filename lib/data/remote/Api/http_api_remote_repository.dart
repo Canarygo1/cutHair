@@ -28,8 +28,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
   @override
   Future<List<String>> getRestaurantAvailability(String duration, String numberPersons, String date, String businessUid) async {
-    //Pasas typeBusiness
-    var uri = Uri.parse("");
+    var uri = Uri.parse("https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getRestaurantData");
     List<String> availabity = [];
 
     uri = uri.replace(queryParameters:<String,String>{

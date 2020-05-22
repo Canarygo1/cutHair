@@ -54,7 +54,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: business.typeBusiness != "Peluquerias" ? Padding(
+      floatingActionButton: business.typeBusiness != "Peluquerías" ? Padding(
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
             onPressed: () {
@@ -82,7 +82,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                 ),
               ),
             ),
-            business.typeBusiness == "Peluquerias"
+            business.typeBusiness == "Peluquerías"
                 ? CardService(business, serviceDetails,
                     () => makecall(business.phoneNumber.toString()))
                 : RestaurantCard(business, serviceDetails),

@@ -9,7 +9,7 @@ class ChooseDatePresenter {
 
   init(Appointment appointment, String date) async {
     try {
-      if (appointment.business.typeBusiness == "Peluquerias") {
+      if (appointment.business.typeBusiness == "Peluquerías") {
         List availability = await _remoteRepository.getHairDressingAvailability(
             appointment.service.duration.toString(), appointment.employee.name, date, appointment.business.uid);
 

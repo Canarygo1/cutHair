@@ -71,7 +71,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
           children: <Widget>[
             this.filter == true
                 ? Padding(
-                    padding: EdgeInsets.only(right: WIDHT * 0.65),
+                    padding: EdgeInsets.only(right: WIDHT * 0.61),
                     child: MyButton(
                       () => {
                         this.setState(() =>
@@ -138,8 +138,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                       child: Column(
                         children: <Widget>[
                           MediumText(
-                              "Vaya! Parece que todavia no tienes citas reservadas"),
-                          MediumText("Pruedes reservarlas en el home"),
+                              "Vaya! Parece que todavía no tienes citas"),
+                          MediumText("Puedes reservarlas en el home"),
                         ],
                       ),
                     ),
@@ -152,7 +152,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 itemCount: myAppointments.length,
                 itemBuilder: (context, index) {
                   if (myAppointments.elementAt(index).typeBusiness ==
-                      "Peluquerias") {
+                      "Peluquerías") {
                     cardWithCheckOut = CardWithCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOut;
@@ -173,7 +173,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
         builder: (BuildContext context) {
           confirmDialog = ConfirmDialog(
             MediumText(
-                "Lo sentimos tiene que esperar 1 min para cancelar otra cita."),
+                "Lo sentimos tiene que esperar 1 minuto para cancelar otra cita."),
             () => {},
             multiOptions: false,
           );

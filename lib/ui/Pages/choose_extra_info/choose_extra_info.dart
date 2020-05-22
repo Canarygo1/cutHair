@@ -38,7 +38,7 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseExtraInfoPresenter(this, _remoteRepository);
-    if(appointment.business.typeBusiness == "Peluquerias"){
+    if(appointment.business.typeBusiness == "Peluquerías"){
       presenter.init(appointment.business.uid, appointment.business.typeBusiness);
     }
   }
@@ -64,8 +64,8 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            appointment.business.typeBusiness == "Peluquerias" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
-            appointment.business.typeBusiness == "Peluquerias" ? hairDressersButtons() : chooseNumberClients(),
+            appointment.business.typeBusiness == "Peluquerías" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
+            appointment.business.typeBusiness == "Peluquerías" ? hairDressersButtons() : chooseNumberClients(),
           ],
         ),
       ),
@@ -152,7 +152,7 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
 
   @override
   goToCalendar() {
-    appointment.business.typeBusiness == "Peluquerias"
+    appointment.business.typeBusiness == "Peluquerías"
         ? GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment))
         : GlobalMethods().pushPage(context, ChooseDateRestaurantScreen(appointment));
   }
