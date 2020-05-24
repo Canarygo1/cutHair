@@ -16,10 +16,10 @@ class ChooseDatePresenter {
         _view.showAvailability(availability);
       }else{
 
-        /*List availability = await _remoteRepository.getRestaurantAvailability(
-            appointment.business.durationMeal, appointment.numberPersons, date, appointment.business.uid);
-      */
-        //_view.showAvailability(availability);
+        List availability = await _remoteRepository.getRestaurantAvailability(
+            appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
+
+        _view.showAvailability(availability);
       }
     } catch (e) {
       _view.emptyAvailability();
