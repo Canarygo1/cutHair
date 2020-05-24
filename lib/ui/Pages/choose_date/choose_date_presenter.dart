@@ -14,9 +14,13 @@ class ChooseDatePresenter {
             appointment.service.duration.toString(), appointment.employee.name, date, appointment.business.uid);
 
         _view.showAvailability(availability);
-      }else{
-
+      }else if(appointment.business.typeBusiness == "Restaurantes"){
         List availability = await _remoteRepository.getRestaurantAvailability(
+            appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
+
+        _view.showAvailability(availability);
+      }else{
+        List availability = await _remoteRepository.getBeachAvailability(
             appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
 
         _view.showAvailability(availability);

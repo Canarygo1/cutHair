@@ -51,11 +51,19 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       body: SingleChildScrollView(
-        child: appointment.business.typeBusiness == "Peluquerías"
-            ? confirmHairDressing()
-            : confirmRestaurant(),
+        child: getConfirmScreen()
       ),
     );
+  }
+
+  Widget getConfirmScreen(){
+    if(appointment.business.typeBusiness == "Peluquerías"){
+      return confirmHairDressing();
+    }else if(appointment.business.typeBusiness == "Peluquerías"){
+      return confirmRestaurant();
+    }else{
+      return confirmBeach();
+    }
   }
 
   Widget confirmHairDressing() {
@@ -247,6 +255,90 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
         ]);
   }
 
+  Widget confirmBeach(){
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.fromLTRB(
+                  WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
+              child: LargeText("¿Desea confirmar la reserva?")),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Playa: ")),
+                Expanded(
+                  child: MediumText(appointment.business.name),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Personas: ")),
+                Expanded(
+                  child: MediumText(appointment.numberPersons),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Día: ")),
+                Expanded(
+                  child: MediumText(appointment.checkIn.day.toString()),
+                )
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
+            child: Row(
+              children: <Widget>[
+                Expanded(child: MediumText("Hora: ")),
+                Expanded(
+                  child: MediumText(appointment.checkIn.hour.toString() +
+                      ":" +
+                      GetTimeSeparated.getFullTimeIfHasOneValue(
+                          appointment.checkIn.minute.toString())),
+                )
+              ],
+            ),
+          ),
+          this.penalize == false || this.penalize == null
+              ? Container()
+              : Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
+            child: MediumText(
+              'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
+              color: Colors.orange,
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(
+                WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
+            margin: EdgeInsets.symmetric(horizontal: WIDHT * 0.025),
+            child: Row(
+              children: <Widget>[
+                buttonCancel(),
+                buttonConfirm(),
+              ],
+            ),
+          )
+        ]);
+
+  }
+
   Widget buttonConfirm(){
     return Expanded(
       child: MyButton(
@@ -261,7 +353,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
         height: HEIGHT * 0.067,
       ),
     );
-
 
   }
 

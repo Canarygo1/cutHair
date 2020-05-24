@@ -70,7 +70,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                         child: MediumText(businessType[indexTipo]),
                       ),
                       Container(
-                        height: HEIGHT * 0.40,
+                        height: HEIGHT * 0.35,
                         child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,

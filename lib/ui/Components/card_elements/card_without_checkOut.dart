@@ -66,7 +66,7 @@ class CardWithoutCheckOut extends StatelessWidget {
                               myAppointments.elementAt(index).direction)),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText("Nº de personas: " +
+                        child: MediumText("Personas: " +
                             myAppointments.elementAt(index).extraInformation),
                       ),
                     ],

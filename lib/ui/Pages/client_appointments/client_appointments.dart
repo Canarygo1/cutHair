@@ -9,6 +9,7 @@ import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/calendars.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut.dart';
+import 'package:cuthair/ui/Components/card_elements/card_with_checkOut_Uid.dart';
 import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/confirm_dialog.dart';
@@ -41,6 +42,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   bool firstTime = true;
   CardWithCheckOut cardWithCheckOut;
   CardWithoutCheckOut cardWithoutCheckOut;
+  CardWithCheckOutUid cardWithCheckOutUid;
 
   @override
   initState() {
@@ -156,10 +158,15 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     cardWithCheckOut = CardWithCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOut;
-                  } else {
+                  } else if (myAppointments.elementAt(index).typeBusiness ==
+                      "Restaurantes") {
                     cardWithoutCheckOut = CardWithoutCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithoutCheckOut;
+                  } else {
+                    cardWithCheckOutUid = CardWithCheckOutUid(index,
+                        () => controlTimer(index), allImages, myAppointments);
+                    return cardWithCheckOutUid;
                   }
                 });
   }

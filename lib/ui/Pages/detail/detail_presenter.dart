@@ -9,7 +9,10 @@ class DetailPresenter {
 
   init(Business business) async {
     try {
-      _view.showServices(await _remoteRepository.getAllServices(business.uid, business.typeBusiness));
+
+      if(business.typeBusiness != "Playas")
+        _view.showServices(await _remoteRepository.getAllServices(business.uid, business.typeBusiness));
+
       _view.showImages(await _remoteRepository.getAllImages(business));
     }catch(e){
       print(e.toString());

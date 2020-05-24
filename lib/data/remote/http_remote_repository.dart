@@ -197,6 +197,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<MyAppointment>> getUserAppointments(
       String uid, DateTime date) async {
+
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
         await firestore.collection("Usuarios").document(uid).get();
@@ -310,7 +311,6 @@ class HttpRemoteRepository implements RemoteRepository {
     List lista = documentSnapshot.data['disponibilidad'];
 
 
-    Duration duration = GetTimeSeparated.getDurationFromMinutes(appointment.business.durationMeal);
     DateTime firebaseDate;
 
     for (int i = 0; i < lista.length; i++) {
@@ -329,7 +329,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
       if(firebaseDate.difference(appointment.checkIn).inMinutes >= 0
           && firebaseDate.difference(appointment.checkIn).inMinutes <= appointment.business.durationMeal){
-        lista[i]["totalMesas"]--;
+        lista[i]["totalDisponibles"]--;
       }
     }
 
@@ -354,6 +354,98 @@ class HttpRemoteRepository implements RemoteRepository {
       "extraInformation": appointment.numberPersons,
       "idUsuario": uid,
       "CheckIn": appointment.checkIn.toString(),
+      "Negocio": appointment.business.name,
+      "Direccion": appointment.business.direction
+    });
+
+    List refList = [docRef];
+
+    await firestore
+        .collection("Usuarios")
+        .document(uid)
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
+
+    await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
+  }
+
+  @override
+  Future<bool> insertAppointmentBeach(
+      Appointment appointment, String uid) async {
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .collection("horarios")
+        .document(appointment.day.toString())
+        .get();
+
+    Duration duration = GetTimeSeparated.getDurationFromMinutes(appointment.business.durationMeal);
+    List lista = documentSnapshot.data['disponibilidad'];
+
+    DateTime firebaseDataInitial;
+    DateTime firebaseDataFinal;
+
+    for (int i = 0; i < lista.length; i++) {
+
+      List<String> hours = lista[i]["hora"].split(':');
+
+      firebaseDataInitial = appointment.checkIn.subtract(Duration(
+          hours: appointment.checkIn.hour,
+          minutes: appointment.checkIn.minute,
+          seconds: appointment.checkIn.second,
+          milliseconds: appointment.checkIn.millisecond,
+          microseconds: appointment.checkIn.microsecond));
+
+      firebaseDataInitial = firebaseDataInitial.add(
+          Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
+
+
+
+      if(firebaseDataInitial.difference(appointment.checkIn).inMinutes >= 0
+          && firebaseDataInitial.difference(appointment.checkIn).inMinutes <= appointment.business.durationMeal){
+        lista[i]["totalDisponibles"]--;
+      }
+
+      if(firebaseDataInitial.difference(appointment.checkIn).inMinutes == 0){
+        firebaseDataFinal = firebaseDataInitial.add(Duration(minutes: duration.inMinutes));
+      }
+
+    }
+
+
+
+    await firestore.collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("empleados")
+        .document(appointment.numberPersons)
+        .collection("horarios")
+        .document(appointment.day.toString())
+        .setData({"disponibilidad": lista});
+
+
+    DocumentReference docRef = await firestore
+        .collection("Negocios")
+        .document(appointment.business.typeBusiness)
+        .collection("Negocios")
+        .document(appointment.business.uid)
+        .collection("citas")
+        .add({
+      "extraInformation": appointment.numberPersons,
+      "idUsuario": uid,
+      "CheckIn": appointment.checkIn.toString(),
+      "CheckOut": firebaseDataFinal.toString(),
       "Negocio": appointment.business.name,
       "Direccion": appointment.business.direction
     });
