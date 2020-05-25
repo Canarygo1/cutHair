@@ -149,6 +149,7 @@ class _ChooseDateHairDressingScreenState
               );
   }
 
+
   pressTimeSelection(int index) {
     if (_finalDate != null) {
       _finalDate = _finalDate.subtract(Duration(
