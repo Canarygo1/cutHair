@@ -55,10 +55,6 @@ class CardWithCheckOutUid extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText(myAppointments.elementAt(index).uid),
-                      ),
-                      Padding(
                           padding:
                           EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
                           child:
