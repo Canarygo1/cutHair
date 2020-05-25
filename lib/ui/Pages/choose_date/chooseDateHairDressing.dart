@@ -129,7 +129,7 @@ class _ChooseDateHairDressingScreenState
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
-                      height: 50.0,
+                      height: 60.0,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: availability.length,
