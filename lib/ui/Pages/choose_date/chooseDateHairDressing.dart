@@ -129,7 +129,7 @@ class _ChooseDateHairDressingScreenState
                     Container(
                       padding: EdgeInsets.symmetric(
                           horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
-                      height: HEIGHT * 0.08,
+                      height: 50.0,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: availability.length,
@@ -138,7 +138,6 @@ class _ChooseDateHairDressingScreenState
                               child: MyButton(
                                 () => pressTimeSelection(index),
                                 LargeText(availability[index]),
-                                height: HEIGHT * 0.05,
                                 horizontalPadding: WIDHT * 0.025,
                                 color: Color.fromRGBO(230, 73, 90, 1),
                               ),
