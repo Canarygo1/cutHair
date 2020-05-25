@@ -9,17 +9,21 @@ class ChooseDatePresenter {
 
   init(Appointment appointment, String date) async {
     try {
-      if (appointment.business.typeBusiness == "Peluquerias") {
+      if (appointment.business.typeBusiness == "Peluquerías") {
         List availability = await _remoteRepository.getHairDressingAvailability(
             appointment.service.duration.toString(), appointment.employee.name, date, appointment.business.uid);
 
         _view.showAvailability(availability);
-      }else{
+      }else if(appointment.business.typeBusiness == "Restaurantes"){
+        List availability = await _remoteRepository.getRestaurantAvailability(
+            appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
 
-        /*List availability = await _remoteRepository.getRestaurantAvailability(
-            appointment.business.durationMeal, appointment.numberPersons, date, appointment.business.uid);
-      */
-        //_view.showAvailability(availability);
+        _view.showAvailability(availability);
+      }else{
+        List availability = await _remoteRepository.getBeachAvailability(
+            appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
+
+        _view.showAvailability(availability);
       }
     } catch (e) {
       _view.emptyAvailability();

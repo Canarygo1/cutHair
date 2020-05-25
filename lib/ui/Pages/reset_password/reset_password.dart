@@ -49,7 +49,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                 emailControler,
                 TextInputType.emailAddress,
                 InputDecoration(
-                  hintText: 'Correo Electronico',
+                  hintText: 'Correo Electrónico',
                   enabledBorder: UnderlineInputBorder(
                     borderSide:
                         BorderSide(color: Colors.white, width: WIDHT * 0.003),

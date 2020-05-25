@@ -28,8 +28,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
   @override
   Future<List<String>> getRestaurantAvailability(String duration, String numberPersons, String date, String businessUid) async {
-    //Pasas typeBusiness
-    var uri = Uri.parse("");
+    var uri = Uri.parse("https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getRestaurantData");
     List<String> availabity = [];
 
     uri = uri.replace(queryParameters:<String,String>{
@@ -40,6 +39,23 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
     });
 
     //Con typeBusiness cambiará el get para la recogida del objeto
+    var response = await _client.get(uri);
+    availabity = json.decode(response.body).cast<String>();
+    return availabity;
+  }
+
+  @override
+  Future<List<String>> getBeachAvailability(String duration, String numberPersons, String date, String businessUid) async {
+    var uri = Uri.parse("https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getBeachData");
+    List<String> availabity = [];
+
+    uri = uri.replace(queryParameters:<String,String>{
+      "date":date,
+      "numberPersons": numberPersons,
+      "duration":duration,
+      "businessUid": businessUid
+    });
+
     var response = await _client.get(uri);
     availabity = json.decode(response.body).cast<String>();
     return availabity;

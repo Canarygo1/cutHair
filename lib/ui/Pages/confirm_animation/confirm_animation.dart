@@ -170,7 +170,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
                   child: MyButton(
                         () => GlobalMethods().removePages(context),
                     LargeText(
-                      'Volver al menu',
+                      'Volver al menú',
                       color: Colors.black,
                     ),
                     height: HEIGHT * 0.067,

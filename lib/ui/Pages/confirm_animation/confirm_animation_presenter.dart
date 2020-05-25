@@ -13,7 +13,7 @@ class ConfirmAnimationPresenter{
 
   init(Appointment appointment) async {
     try {
-      if(appointment.business.typeBusiness == "Peluquerias") {
+      if(appointment.business.typeBusiness == "Peluquerías") {
         DateTime initial = appointment.checkIn.subtract(Duration(
             hours: appointment.checkIn.hour,
             minutes: appointment.checkIn.minute,
@@ -40,11 +40,17 @@ class ConfirmAnimationPresenter{
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
         _view.correctInsert();
-      }else{
+      }else if(appointment.business.typeBusiness == "Restaurantes"){
 
         final FirebaseAuth auth = FirebaseAuth.instance;
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentRestaurant(appointment, user.uid);
+        _view.correctInsert();
+      }else{
+
+        final FirebaseAuth auth = FirebaseAuth.instance;
+        final FirebaseUser user = await auth.currentUser();
+        _remoteRepository.insertAppointmentBeach(appointment, user.uid);
         _view.correctInsert();
       }
     }catch(e){

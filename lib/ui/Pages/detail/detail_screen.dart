@@ -6,7 +6,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/card_elements/card_service.dart';
-import 'package:cuthair/ui/Components/restaurant_card.dart';
+import 'package:cuthair/ui/Components/card_elements/restaurant_card.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -54,13 +54,13 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: business.typeBusiness != "Peluquerias" ? Padding(
+      floatingActionButton: business.typeBusiness != "Peluquerías" ? Padding(
         padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
         child: FloatingActionButton.extended(
             onPressed: () {
               GlobalMethods().pushPage(context, ChooseExtraInfoScreen(appointment));
             },
-            label: Text("Reserva una mesa"),
+            label: Text("Reserva una cita"),
             backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
       ) : Container() ,
       body: SingleChildScrollView(
@@ -70,6 +70,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             sliderImages(context),
             LargeText(business.name),
             MediumText(business.direction),
+            business.typeBusiness != "Playas" ?
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -81,15 +82,23 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                       color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
                 ),
               ),
-            ),
-            business.typeBusiness == "Peluquerias"
-                ? CardService(business, serviceDetails,
-                    () => makecall(business.phoneNumber.toString()))
-                : RestaurantCard(business, serviceDetails),
+            ) : MediumText("Aforo: " + business.aforo.toString()),
+            getCard()
           ],
         ),
       ),
     );
+  }
+
+  Widget getCard(){
+    if(business.typeBusiness == "Peluquerías"){
+      return CardService(business, serviceDetails,
+              () => makecall(business.phoneNumber.toString()));
+    }else if(business.typeBusiness == "Restaurantes"){
+      return RestaurantCard(business, serviceDetails);
+    }else{
+      return Container();
+    }
   }
 
   List<Widget> getChilds() {
