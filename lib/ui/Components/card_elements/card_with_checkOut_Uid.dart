@@ -3,6 +3,7 @@ import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Components/textTypes/small_text.dart';
+import 'package:cuthair/ui/Pages/qr_generator/qr_generator.dart';
 import 'package:flutter/material.dart';
 
 class CardWithCheckOutUid extends StatelessWidget {
@@ -173,6 +174,19 @@ class CardWithCheckOutUid extends StatelessWidget {
                 functionRemove,
                 SmallText(
                   'Cancelar',
+                  size: 11,
+                ),
+                height: HEIGHT * 0.05,
+                color: Color.fromRGBO(230, 73, 90, 1),
+              ),
+            ),
+            Center(
+              child: MyButton(
+                ()=> {
+                      GlobalMethods().pushPage(context, QrGenerator(myAppointments[index]))
+                },
+                SmallText(
+                  'Mostrar código',
                   size: 11,
                 ),
                 height: HEIGHT * 0.05,
