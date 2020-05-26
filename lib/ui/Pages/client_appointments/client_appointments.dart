@@ -32,7 +32,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   GlobalMethods global = GlobalMethods();
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
-  bool isConsulting = false;
+  bool isConsulting = true;
   bool filter = true;
   double HEIGHT;
   double WIDHT;
@@ -77,8 +77,10 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     padding: EdgeInsets.only(right: WIDHT * 0.61),
                     child: MyButton(
                       () => {
+                        this.isConsulting == false ?
                         this.setState(() =>
                             {this.filter = false, this.isConsulting = false})
+                            : () =>{},
                       },
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,

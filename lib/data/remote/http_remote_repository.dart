@@ -219,7 +219,7 @@ class HttpRemoteRepository implements RemoteRepository {
                 seconds: checkIn.second,
                 minutes: checkIn.minute,
                 hours: checkIn.hour));
-        if (firstTime) {
+        if (!firstTime) {
           if (date == dateTime) {
             return myAppointment;
           }

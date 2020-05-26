@@ -66,11 +66,11 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(bottom: HEIGHT * 0.02, top: HEIGHT * 0.01),
-                        child: MediumText(businessType[indexTipo]),
+                        padding: EdgeInsets.only(bottom: 20, top: HEIGHT * 0.01),
+                        child: LargeText(businessType[indexTipo], fontWeight: FontWeight.bold,),
                       ),
                       Container(
-                        height: HEIGHT * 0.35,
+                        height: 230,
                         child: ListView.builder(
                             shrinkWrap: true,
                             scrollDirection: Axis.horizontal,

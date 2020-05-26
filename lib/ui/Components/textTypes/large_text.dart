@@ -4,8 +4,9 @@ class LargeText extends StatelessWidget {
   String text;
   Color color;
   double size;
+  FontWeight fontWeight;
 
-  LargeText(this.text, {this.color = Colors.white, this.size = 20.0});
+  LargeText(this.text, {this.color = Colors.white, this.size = 20.0, this.fontWeight = FontWeight.normal});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class LargeText extends StatelessWidget {
       style: TextStyle(
         fontSize: size,
         color: color,
+        fontWeight: fontWeight,
       ),
     );
   }
