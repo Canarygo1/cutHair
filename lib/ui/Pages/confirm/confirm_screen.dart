@@ -59,7 +59,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
   Widget getConfirmScreen(){
     if(appointment.business.typeBusiness == "Peluquerías"){
       return confirmHairDressing();
-    }else if(appointment.business.typeBusiness == "Peluquerías"){
+    }else if(appointment.business.typeBusiness == "Restaurantes"){
       return confirmRestaurant();
     }else{
       return confirmBeach();
