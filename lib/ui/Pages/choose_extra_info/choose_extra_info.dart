@@ -38,7 +38,7 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
   void initState() {
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = ChooseExtraInfoPresenter(this, _remoteRepository);
-    if(appointment.business.typeBusiness == "Peluquerias"){
+    if(appointment.business.typeBusiness == "Peluquerías"){
       presenter.init(appointment.business.uid, appointment.business.typeBusiness);
     }
   }
@@ -64,12 +64,21 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            appointment.business.typeBusiness == "Peluquerias" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
-            appointment.business.typeBusiness == "Peluquerias" ? hairDressersButtons() : chooseNumberClients(),
+            appointment.business.typeBusiness == "Peluquerías" ? title("Seleccione un peluquero") : title("Seleccione el número de personas"),
+            getExtraInformation()
           ],
         ),
       ),
     );
+  }
+
+  Widget getExtraInformation(){
+    if(appointment.business.typeBusiness == "Peluquerías"){
+      return hairDressersButtons();
+    }else{
+      return chooseNumberClients(appointment.business.maxPeople);
+    }
+
   }
 
   Widget title(String text) {
@@ -100,8 +109,8 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
     );
   }
 
-  Widget chooseNumberClients(){
-    int max = (appointment.business.maxPeople / 3).round();
+  Widget chooseNumberClients(int numero){
+    int max = (numero / 3).round() + 1;
     return Container(
           padding: EdgeInsets.symmetric(
               horizontal: WIDHT * 0.087, vertical: HEIGHT * 0.027),
@@ -121,15 +130,15 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
 
                       return Row(
                         children: <Widget>[
-                          number1 <= appointment.business.maxPeople ? Expanded(
+                          number1 <= numero ? Expanded(
                             child: MyButton(() => chooseNumberPersons(number1), LargeText(number1.toString()),
                                   color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0,),
                           ) : Container(),
-                          number2 <= appointment.business.maxPeople ? Expanded(
+                          number2 <= numero ? Expanded(
                             child: MyButton(() => chooseNumberPersons(number2), LargeText(number2.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container(),
-                          number3 <= appointment.business.maxPeople ? Expanded(
+                          number3 <= numero ? Expanded(
                             child: MyButton(() => chooseNumberPersons(number3), LargeText(number3.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container()
@@ -152,9 +161,12 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
 
   @override
   goToCalendar() {
-    appointment.business.typeBusiness == "Peluquerias"
-        ? GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment))
-        : GlobalMethods().pushPage(context, ChooseDateRestaurantScreen(appointment));
+    if(appointment.business.typeBusiness == "Peluquerías"){
+      GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment));
+    }else{
+      GlobalMethods().pushPage(
+          context, ChooseDateRestaurantScreen(appointment));
+    }
   }
 
   chooseFunction(int index) {

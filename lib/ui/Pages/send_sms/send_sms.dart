@@ -63,7 +63,7 @@ class _SendSMSState extends State<SendSMS> {
         });
       } else {
         setState(() {
-          error = 'Lo sentimos ha ocurrido un error. Intentalo más tarde.';
+          error = 'Lo sentimos ha ocurrido un error. Inténtalo más tarde.';
         });
       }
     };
@@ -85,12 +85,13 @@ class _SendSMSState extends State<SendSMS> {
     );
     await _auth.signInWithCredential(credential);
     ConnectionChecked.checkInternetConnectivity(context);
-    data.putIfAbsent("Telefono", () => phoneController.text);
+    data.putIfAbsent("Teléfono", () => phoneController.text);
+    data.putIfAbsent("Penalización", () => false);
     try {
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {
       setState(() {
-        error = 'Ha ocurrido un error lo sentimos. Intententelo mas tarde';
+        error = 'Ha ocurrido un error lo sentimos. Inténtelo más tarde';
       });
     }
   }
