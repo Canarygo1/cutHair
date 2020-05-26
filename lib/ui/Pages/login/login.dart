@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
@@ -27,6 +28,7 @@ class _LoginState extends State<Login> implements LoginView {
   Random rnd;
   List<String> backgroundImages = ["assets/images/hairdressingBg.jpg","assets/images/clubBg.jpg","assets/images/restaurantBg.jpg"];
   int randomBackground ;
+  PushNotificationService pushNotificationService;
 
   @override
   void initState() {
@@ -39,6 +41,9 @@ class _LoginState extends State<Login> implements LoginView {
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
+
+
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
