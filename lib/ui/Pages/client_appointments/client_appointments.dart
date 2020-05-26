@@ -32,7 +32,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
   bool isConsulting = false;
-  bool filter = false;
+  bool filter = true;
   double HEIGHT;
   double WIDHT;
   CalendarWidget calendarWidget;
@@ -48,6 +48,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     super.initState();
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
+    _presenter.init(DBProvider.users[0].uid, DateTime.now(), true);
     calendarWidget = CalendarWidget(
         (DateTime date, List<Event> events) => pressCalendar(date));
   }
@@ -220,7 +221,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
           calendarWidget.currentDate2 = date;
           myAppointments.clear();
           allImages.clear();
-          _presenter.init(DBProvider.users[0].uid, date);
+          _presenter.init(DBProvider.users[0].uid, date, false);
           this.filter = true;
           this.isConsulting = true;
         });

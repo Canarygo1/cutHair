@@ -26,7 +26,7 @@ abstract class RemoteRepository {
 
   Future<bool> insertAppointmentRestaurant(Appointment appointment, String uid);
 
-  Future<List<MyAppointment>> getUserAppointments(String uid, DateTime date);
+  Future<List<MyAppointment>> getUserAppointments(String uid, DateTime date, bool firstTime);
 
   Future<User> getUserByPhoneNumber(String phoneNumber);
 

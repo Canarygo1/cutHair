@@ -196,7 +196,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<List<MyAppointment>> getUserAppointments(
-      String uid, DateTime date) async {
+      String uid, DateTime date, bool firstTime) async {
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
         await firestore.collection("Usuarios").document(uid).get();
@@ -209,7 +209,7 @@ class HttpRemoteRepository implements RemoteRepository {
             documentReference.documentID,
             documentReference.parent().parent().documentID,
             documentReference.parent().parent().parent().parent().documentID,
-        documentReference);
+            documentReference);
         DateTime checkIn = DateTime.parse(myAppointment.checkIn);
         DateTime dateTime = DateTime.parse(myAppointment.checkIn).subtract(
             Duration(
@@ -218,8 +218,14 @@ class HttpRemoteRepository implements RemoteRepository {
                 seconds: checkIn.second,
                 minutes: checkIn.minute,
                 hours: checkIn.hour));
-        if (date == dateTime) {
-          return myAppointment;
+        if (firstTime) {
+          if (date == dateTime) {
+            return myAppointment;
+          }
+        } else {
+          if (dateTime.isAfter(date)) {
+            return myAppointment;
+          }
         }
       }).then((myAppointment) {
         if (myAppointment != null) {
@@ -309,12 +315,11 @@ class HttpRemoteRepository implements RemoteRepository {
 
     List lista = documentSnapshot.data['disponibilidad'];
 
-
-    Duration duration = GetTimeSeparated.getDurationFromMinutes(appointment.business.durationMeal);
+    Duration duration = GetTimeSeparated.getDurationFromMinutes(
+        appointment.business.durationMeal);
     DateTime firebaseDate;
 
     for (int i = 0; i < lista.length; i++) {
-
       List<String> hours = lista[i]["hora"].split(':');
 
       firebaseDate = appointment.checkIn.subtract(Duration(
@@ -327,13 +332,15 @@ class HttpRemoteRepository implements RemoteRepository {
       firebaseDate = firebaseDate.add(
           Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
 
-      if(firebaseDate.difference(appointment.checkIn).inMinutes >= 0
-          && firebaseDate.difference(appointment.checkIn).inMinutes <= appointment.business.durationMeal){
+      if (firebaseDate.difference(appointment.checkIn).inMinutes >= 0 &&
+          firebaseDate.difference(appointment.checkIn).inMinutes <=
+              appointment.business.durationMeal) {
         lista[i]["totalMesas"]--;
       }
     }
 
-    await firestore.collection("Negocios")
+    await firestore
+        .collection("Negocios")
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -342,7 +349,6 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("horarios")
         .document(appointment.day.toString())
         .setData({"disponibilidad": lista});
-
 
     DocumentReference docRef = await firestore
         .collection("Negocios")
@@ -396,8 +402,11 @@ class HttpRemoteRepository implements RemoteRepository {
 
     List<String> val = [];
     val = GetTimeSeparated.getHours(checkIn, checkOut, subtract);
-    Schedule schedule = await getRange(subtract.toString(),
-        appointment.extraInformation, appointment.businessUid, appointment.typeBusiness);
+    Schedule schedule = await getRange(
+        subtract.toString(),
+        appointment.extraInformation,
+        appointment.businessUid,
+        appointment.typeBusiness);
     schedule.disponibility.forEach((value) => val.add(value));
 
     val.sort();
