@@ -54,17 +54,18 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     super.initState();
     isAppointmentInsert = false;
     statusIcon =
-        Icon(Icons.check_circle_outline, color: Colors.white, size: 150);
+        Icon(Icons.close, color: Colors.white, size: 150);
     _percentage = 0.0;
     _nextPercentage = 0.0;
     _timer = null;
+    confirmTitle = MediumText("No se ha podido confirmar la cita",);
+    confirmSubtitle = MediumText("Disculpe las molestias, por favor intentelo de nuevo",);
     _progressDone = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _apiRemoteRepository = HttpApiRemoteRepository(Client());
     _presenter = ConfirmAnimationPresenter(
         this, _remoteRepository, _apiRemoteRepository);
     _presenter.init(widget.appointment);
-    isAppointmentInsert = false;
     startProgress();
     initAnimationController();
   }
@@ -72,7 +73,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   initAnimationController() {
     _progressAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1000),
+      duration: Duration(milliseconds: 2000),
     )..addListener(
           () {
         setState(() {
