@@ -9,7 +9,6 @@ class PushNotificationService {
     if (Platform.isIOS) {
       _fcm.requestNotificationPermissions(IosNotificationSettings());
     }
-
     _fcm.configure(
       //Called when app is in the foreground
         onMessage: (Map<String, dynamic> message) async {

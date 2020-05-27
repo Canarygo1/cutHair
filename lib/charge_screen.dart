@@ -22,6 +22,7 @@ class _SplashScreenState extends State {
   void initState() {
     super.initState();
     pushNotificationService = PushNotificationService();
+    pushNotificationService.initialise();
     GlobalMethods().searchDBUser(context);
   }
 
