@@ -49,8 +49,6 @@ class HomeClientPresenter {
 
 abstract class HomeView {
   showList(Map<String, List> hairDressing);
-
   showBusiness(List<String> business);
-
   changeLoading();
 }

@@ -22,7 +22,10 @@ class HttpRemoteRepository implements RemoteRepository {
         await firestore.collection("Negocios").getDocuments();
 
     List<String> business = [];
-    querySnapshot.documents.forEach((v) => {business.add(v.documentID)});
+    querySnapshot.documents.forEach((v) => {
+      if(v.documentID == "Peluquerías"){
+      business.add(v.documentID)
+    }});
     return business;
   }
 
@@ -34,16 +37,16 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("Negocios")
         .getDocuments();
     List queryData = querySnapshot.documents;
-    List<Business> allHairDressing = [];
+    List<Business> allBusiness = [];
 
     for (int i = 0; i < queryData.length; i++) {
       Business hairDressing = Business.fromMap(
           queryData[i].data, queryData[i].documentID, business);
-      allHairDressing.add(hairDressing);
+      allBusiness.add(hairDressing);
     }
 
     Map<String, List<Business>> allbusiness = new Map();
-    allbusiness[business] = allHairDressing;
+    allbusiness[business] = allBusiness;
 
     if (allbusiness.length >= 1) {
       return allbusiness;

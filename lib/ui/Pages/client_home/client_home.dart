@@ -9,6 +9,7 @@ import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'home_client_presenter.dart';
 
 class ClientHome extends StatefulWidget {
@@ -22,13 +23,14 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   List<String> businessType;
   Map<String, List> mapBusiness = Map();
   GlobalMethods global = GlobalMethods();
-  bool loading;
+  bool loading = true;
   double HEIGHT;
   double WIDHT;
 
+
   initState() {
     businessType = [];
-    loading = false;
+    loading = true;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = HomeClientPresenter(this, _remoteRepository);
     presenter.init();
@@ -52,7 +54,14 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             loading
-                ? Container(
+                ? Padding(
+                  padding: EdgeInsets.only(top: 50),
+                  child: SpinKitWave(
+              color: Color.fromRGBO(230, 73, 90, 1),
+              type: SpinKitWaveType.start,
+            ),
+                )
+            : Container(
               height: HEIGHT * 0.81,
               child: ListView.builder(
                 padding: EdgeInsets.symmetric(
@@ -175,7 +184,6 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                 },
               ),
             )
-                : Container()
           ],
         ),
       ),
@@ -204,7 +212,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   changeLoading() {
     if(mounted){
       setState(() {
-        loading = true;
+        loading = false;
       });
     }
   }

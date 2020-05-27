@@ -201,6 +201,7 @@ class _InfoScreenState extends State<Info> {
               ],
             ),
           ),
+          Center(child: SmallText("Resérvalo © 2020", boolText: FontWeight.normal,)),
           Center(child: SmallText("@Reservaloapp"))
         ],
       ),

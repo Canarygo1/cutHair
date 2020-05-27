@@ -40,6 +40,7 @@ class ConfirmAnimationPresenter{
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
         _view.correctInsert();
+
       }else if(appointment.business.typeBusiness == "Restaurantes"){
 
         final FirebaseAuth auth = FirebaseAuth.instance;
