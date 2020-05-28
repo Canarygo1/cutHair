@@ -1,7 +1,5 @@
-import 'package:cuthair/ui/Components/SlideRightRoute.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'data/local/db_sqlite.dart';
 import 'ui/Pages/bottom_navigation/menu.dart';
 import 'ui/Pages/login/login.dart';

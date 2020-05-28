@@ -1,7 +1,7 @@
 import 'dart:io';
+import 'package:cuthair/model/user.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-import '../../model/user.dart';
 import 'package:path/path.dart';
 
 class DBProvider {

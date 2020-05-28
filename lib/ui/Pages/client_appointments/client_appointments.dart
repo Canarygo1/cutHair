@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';

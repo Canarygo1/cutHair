@@ -10,7 +10,6 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
@@ -22,10 +21,9 @@ class HttpRemoteRepository implements RemoteRepository {
         await firestore.collection("Negocios").getDocuments();
 
     List<String> business = [];
-    querySnapshot.documents.forEach((v) => {
-      if(v.documentID == "Peluquerías"){
-      business.add(v.documentID)
-    }});
+    querySnapshot.documents.forEach((v) {
+      if(v.documentID == "Peluquerías") business.add(v.documentID);
+    });
     return business;
   }
 

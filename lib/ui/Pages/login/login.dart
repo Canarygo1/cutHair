@@ -1,15 +1,14 @@
 import 'dart:math';
-
 import 'package:cuthair/data/remote/push_notification_service.dart';
+import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/ui/Components/button.dart';
+import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
+import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../../../global_methods.dart';
-import '../../Components/button.dart';
-import '../../Components/textTypes/large_text.dart';
-import '../reset_password/reset_password.dart';
 import 'login_presenter.dart';
 
 class Login extends StatefulWidget {

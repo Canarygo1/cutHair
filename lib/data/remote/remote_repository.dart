@@ -1,5 +1,5 @@
 import 'package:cuthair/model/appointment.dart';
- import 'package:cuthair/model/employee.dart';
+import 'package:cuthair/model/employee.dart';
 import 'package:cuthair/model/my_appointment.dart';
 import 'package:cuthair/model/schedule.dart';
 import 'package:cuthair/model/service.dart';

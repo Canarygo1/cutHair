@@ -1,5 +1,5 @@
+import 'package:cuthair/global_methods.dart';
 import 'package:flutter/material.dart';
-import '../../../global_methods.dart';
 
 class GoBack extends StatelessWidget {
   BuildContext screen;

@@ -1,10 +1,5 @@
-import 'dart:async';
 import 'package:cuthair/data/remote/push_notification_service.dart';
-import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
-import 'package:cuthair/ui/Pages/login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'data/local/db_sqlite.dart';
 import 'global_methods.dart';
 
 class SplashScreen extends StatefulWidget {
