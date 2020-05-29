@@ -67,10 +67,10 @@ class _LoginState extends State<Login> implements LoginView {
                 ),
                 textFieldWidget(emailController, TextInputType.emailAddress,
                     "Correo electrónico",
-                    topPadding: HEIGHT * 0.176),
+                    topPadding: HEIGHT * 0.07),
                 textFieldWidget(
                     passwordController, TextInputType.text, "Contraseña",
-                    obscureText: true, topPadding: 0.0),
+                    obscureText: true),
                 error.length == 0 ? Container() : TextError(error),
                 TextForgetPassword(context),
                 MyButton(() => logIn(), LargeText("Entrar"),
