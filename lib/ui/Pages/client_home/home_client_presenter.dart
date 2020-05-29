@@ -25,15 +25,13 @@ class HomeClientPresenter {
   chargeBusiness(List<String> businesses) async {
     for (int i = 0; i < businesses.length; i++) {
       Map<String, List<Business>> mapAux = await _remoteRepository.getAllBusiness(businesses[i]);
-
       for(Business business in mapAux[businesses.elementAt(i)]){
         await getOneImageFromFirebase(business);
       }
-
       businessMap.addAll(mapAux);
     }
 
-    await Images().getChilds(images).then((value) {
+    await Images().getChilds(images, "assets/images/Store.png").then((value) {
       businessMap.putIfAbsent("Images", () => value);
       return true;
     }).then((value) => _view.showList(businessMap));

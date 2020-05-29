@@ -36,11 +36,17 @@ class CardWithoutCheckOut extends StatelessWidget {
               child: Column(
                 children: <Widget>[
                   AspectRatio(
-                      aspectRatio: 50.0 / 11.0,
-                      child: Image.network(
-                        allImages.elementAt(index),
-                        fit: BoxFit.cover,
-                      ))
+                    aspectRatio: 50.0 / 11.0,
+                    child: allImages[index].contains("assets/")
+                        ? Image.asset(
+                      allImages[index],
+                      fit: BoxFit.cover,
+                    )
+                        : Image.network(
+                      allImages[index],
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ],
               ),
             ),

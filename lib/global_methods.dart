@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'data/local/db_sqlite.dart';
 import 'ui/Pages/bottom_navigation/menu.dart';
 import 'ui/Pages/login/login.dart';
@@ -117,7 +118,7 @@ class GetTimeSeparated {
   }
 }
 class Images {
-  Future<List<Widget>> getChilds(List<String> listImagesFirebase) async {
+  Future<List<Widget>> getChilds(List<String> listImagesFirebase, String predefine) async {
     List<Widget> images = [];
     Image image;
     listImagesFirebase.forEach((f) => {
@@ -140,12 +141,23 @@ class Images {
                     );
                   },
                 )
-              : image = Image.asset(
-                  'assets/images/Login_6.jpg',
-                  fit: BoxFit.cover,
-                ),
+              : image = getDefaultImage(predefine),
           images.add(image)
         });
     return images;
+  }
+
+  Widget getDefaultImage(String predefine){
+    List pieceImage = predefine.split(".");
+    if(pieceImage.last == "svg"){
+      return SvgPicture.asset(
+        predefine,
+      );
+    }else{
+      return Image.asset(
+        predefine,
+      );
+    }
+
   }
 }
