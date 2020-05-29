@@ -36,8 +36,7 @@ class _menuState extends State<Menu> implements MenuView {
   Widget build(BuildContext context) {
     return screens.length == 0
         ? SpinKitPulse(
-            color: Color.fromRGBO(230, 73, 90, 1),
-          )
+            color: Color.fromRGBO(230, 73, 90, 1),)
         : Scaffold(
             body: screens[selectedItem],
             bottomNavigationBar: Theme(

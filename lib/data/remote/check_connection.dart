@@ -1,8 +1,8 @@
 
-import 'package:connectivity/connectivity.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Components/network_error.dart';
 import 'package:flutter/material.dart';
+import 'package:simple_connectivity/simple_connectivity.dart';
 
 class ConnectionCheck extends StatefulWidget {
   @override
