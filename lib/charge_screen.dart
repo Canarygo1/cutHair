@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'global_methods.dart';
@@ -18,7 +20,7 @@ class _SplashScreenState extends State {
     super.initState();
     pushNotificationService = PushNotificationService();
     pushNotificationService.initialise();
-    GlobalMethods().searchDBUser(context);
+    Timer(Duration(seconds: 3), () => GlobalMethods().searchDBUser(context));
   }
 
   @override
