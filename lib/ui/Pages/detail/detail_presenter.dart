@@ -8,19 +8,17 @@ class DetailPresenter {
   DetailPresenter(this._view, this._remoteRepository);
 
   init(Business business) async {
-    try {
-      if(business.typeBusiness != "Playas")
-        _view.showServices(await _remoteRepository.getAllServices(business.uid, business.typeBusiness));
-      _view.showImages(await _remoteRepository.getAllImages(business));
-    }catch(e){
-      print(e.toString());
-    }
+    if (business.typeBusiness != "Playas")
+      _view.showServices(await _remoteRepository.getAllServices(
+          business.uid, business.typeBusiness));
+    _view.showImages(await _remoteRepository.getAllImages(business));
   }
 }
 
 abstract class DetailView {
   showServices(List services);
+
   showImages(List images);
+
   makecall(String number);
 }
-
