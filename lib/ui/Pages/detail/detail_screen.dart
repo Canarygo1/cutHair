@@ -33,6 +33,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   List<Service> serviceDetails = [];
   List<String> listImagesFirebase = [];
   List<Widget> child = [];
+  bool isConsulting = true;
+  bool notImages = true;
   double HEIGHT;
   double WIDHT;
 
@@ -54,15 +56,18 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: business.typeBusiness != "Peluquerías" ? Padding(
-        padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
-        child: FloatingActionButton.extended(
-            onPressed: () {
-              GlobalMethods().pushPage(context, ChooseExtraInfoScreen(appointment));
-            },
-            label: Text("Reserva una cita"),
-            backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
-      ) : Container() ,
+      floatingActionButton: business.typeBusiness != "Peluquerías"
+          ? Padding(
+              padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
+              child: FloatingActionButton.extended(
+                  onPressed: () {
+                    GlobalMethods()
+                        .pushPage(context, ChooseExtraInfoScreen(appointment));
+                  },
+                  label: Text("Reserva una cita"),
+                  backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
+            )
+          : Container(),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
@@ -70,19 +75,21 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             sliderImages(context),
             LargeText(business.name),
             MediumText(business.direction),
-            business.typeBusiness != "Playas" ?
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding:
-                    EdgeInsets.only(top: HEIGHT * 0.013, left: WIDHT * 0.025),
-                child: Text(
-                  "Servicios",
-                  style: TextStyle(
-                      color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
-                ),
-              ),
-            ) : MediumText("Aforo: " + business.aforo.toString()),
+            business.typeBusiness != "Playas"
+                ? Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          top: HEIGHT * 0.013, left: WIDHT * 0.025),
+                      child: Text(
+                        "Servicios",
+                        style: TextStyle(
+                            color: Color.fromRGBO(230, 73, 90, 1),
+                            fontSize: 24),
+                      ),
+                    ),
+                  )
+                : MediumText("Aforo: " + business.aforo.toString()),
             getCard()
           ],
         ),
@@ -90,13 +97,13 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     );
   }
 
-  Widget getCard(){
-    if(business.typeBusiness == "Peluquerías"){
+  Widget getCard() {
+    if (business.typeBusiness == "Peluquerías") {
       return CardService(business, serviceDetails,
-              () => makecall(business.phoneNumber.toString()));
-    }else if(business.typeBusiness == "Restaurantes"){
+          () => makecall(business.phoneNumber.toString()));
+    } else if (business.typeBusiness == "Restaurantes") {
       return RestaurantCard(business, serviceDetails);
-    }else{
+    } else {
       return Container();
     }
   }
@@ -108,7 +115,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: Stack(children: <Widget>[
-            Image.network(i, fit: BoxFit.cover, width: WIDHT * 2.546),
+            notImages ? Image.network(i, fit: BoxFit.cover, width: WIDHT * 2.546) : Image.asset(i, fit: BoxFit.cover, width: WIDHT * 2.546),
             Positioned(
               child: Container(
                 decoration: BoxDecoration(
@@ -133,53 +140,51 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   }
 
   Widget sliderImages(BuildContext context) {
-    if (child.length > 0) {
-      return Container(
-        margin: EdgeInsets.only(top: HEIGHT * 0.027),
-        child: Column(children: [
-          CarouselSlider(
-            height: HEIGHT * 0.23,
-            items: child,
-            autoPlay: true,
-            enlargeCenterPage: true,
-            aspectRatio: 2.0,
-            onPageChanged: (index) {
-              setState(() {
-                _current = index;
-              });
-            },
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: map<Widget>(
-              listImagesFirebase,
-              (index, url) {
-                return Container(
-                  width: WIDHT * 0.02,
-                  height: HEIGHT * 0.01,
-                  margin: EdgeInsets.symmetric(
-                      vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: _current == index
-                          ? Color.fromRGBO(230, 73, 90, 1)
-                          : Colors.white),
-                );
-              },
+    return isConsulting
+        ? Container(
+            margin: EdgeInsets.only(top: HEIGHT * 0.027),
+            height: HEIGHT * 0.25,
+            child: SpinKitWave(
+              color: Color.fromRGBO(230, 73, 90, 1),
+              type: SpinKitWaveType.start,
             ),
-          ),
-        ]),
-      );
-    } else {
-      return Container(
-        margin: EdgeInsets.only(top: HEIGHT * 0.027),
-        height: HEIGHT * 0.25,
-        child: SpinKitWave(
-          color: Color.fromRGBO(230, 73, 90, 1),
-          type: SpinKitWaveType.start,
-        ),
-      );
-    }
+          )
+        : Container(
+            margin: EdgeInsets.only(top: HEIGHT * 0.027),
+            child: Column(children: [
+              CarouselSlider(
+                height: HEIGHT * 0.23,
+                items: child,
+                autoPlay: true,
+                enlargeCenterPage: true,
+                aspectRatio: 2.0,
+                onPageChanged: (index) {
+                  setState(() {
+                    _current = index;
+                  });
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: map<Widget>(
+                  listImagesFirebase,
+                  (index, url) {
+                    return Container(
+                      width: WIDHT * 0.02,
+                      height: HEIGHT * 0.01,
+                      margin: EdgeInsets.symmetric(
+                          vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: _current == index
+                              ? Color.fromRGBO(230, 73, 90, 1)
+                              : Colors.white),
+                    );
+                  },
+                ),
+              ),
+            ]),
+          );
   }
 
   List<T> map<T>(List list, Function handler) {
@@ -204,7 +209,14 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
     if (mounted) {
       setState(() {
         listImagesFirebase = images;
+        listImagesFirebase.isEmpty
+            ? {
+                notImages = false,
+                listImagesFirebase.add("assets/images/splash.png")
+              }
+            : notImages = true;
         child = getChilds();
+        this.isConsulting = false;
       });
     }
   }

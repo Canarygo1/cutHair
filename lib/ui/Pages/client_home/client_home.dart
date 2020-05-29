@@ -90,7 +90,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                   ConnectionChecked
                                       .checkInternetConnectivity(context);
                                   Business business = mapBusiness[
-                                  businessType.elementAt(indexTipo)]
+                                  businessType[indexTipo]]
                                   [index];
 
                                   GlobalMethods().pushPage(context,

@@ -131,17 +131,16 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<String>> getAllImages(Business business) async {
     List<String> list = [];
-    for (int i = 0; i < business.numeroFotos; i++) {
-      String nombre = business.uid + "/Gallery/" + i.toString() + ".jpeg";
-      String url =
-          await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
-      list.add(url);
-    }
-
-    if (list.length >= 1) {
+    try {
+      for (int i = 0; i < business.numeroFotos; i++) {
+        String nombre = business.uid + "/Gallery/" + i.toString() + ".jpeg";
+        String url =
+            await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
+        list.add(url);
+      }
       return list;
-    } else {
-      throw ("No existe imagenes en la base de datos de esta peluqueria");
+    } on Exception catch (e) {
+      return list;
     }
   }
 
