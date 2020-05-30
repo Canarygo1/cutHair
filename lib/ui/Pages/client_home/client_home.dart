@@ -12,6 +12,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'home_client_presenter.dart';
 
 class ClientHome extends StatefulWidget {
+  bool logIn;
+
+  ClientHome(this.logIn);
+
   @override
   _ClientHomeState createState() => _ClientHomeState();
 }
@@ -94,7 +98,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                   [index];
 
                                   GlobalMethods().pushPage(context,
-                                      DetailScreen(business));
+                                      DetailScreen(business, this.widget.logIn));
                                 },
                                 child: Container(
                                   width: WIDHT * 0.34,
