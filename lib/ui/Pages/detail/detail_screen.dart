@@ -14,7 +14,6 @@ import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -105,8 +104,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   Widget getCard() {
     if (business.typeBusiness == "Peluquerías") {
-      return CardService(business, serviceDetails,
-          () => makecall(business.phoneNumber.toString()), this.widget.logIn);
+      return CardService(business, serviceDetails, this.widget.logIn);
     } else if (business.typeBusiness == "Restaurantes") {
       return RestaurantCard(business, serviceDetails);
     } else {
@@ -225,10 +223,5 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         this.isConsulting = false;
       });
     }
-  }
-
-  @override
-  makecall(String number) async {
-    await launch("tel:" + "+34" + number);
   }
 }
