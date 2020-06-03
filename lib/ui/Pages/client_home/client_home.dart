@@ -44,7 +44,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        title: LargeText("Negocios"),
+        title: LargeText("Métodos de pago"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

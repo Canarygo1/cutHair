@@ -1,39 +1,22 @@
-import 'package:cuthair/charge_screen.dart';
+import 'package:cuthair/TestStripe/pages/existing-cards.dart';
+import 'package:cuthair/TestStripe/pages/home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 
 void main() => runApp(MyApp());
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
-
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        buttonTheme:ButtonThemeData(minWidth:5),
-        dividerColor: Colors.black,
-        primarySwatch: Colors.blue,
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
+        primarySwatch: Colors.deepOrange,
       ),
-      home: SplashScreen(),
+      initialRoute: '/TestStripe/pages/home',
+      routes: {
+        '/TestStripe/pages/home': (context) => HomePage(),
+        '/TestStripe/pages/existing-cards': (context) => ExistingCardsPage()
+      },
     );
   }
 }
