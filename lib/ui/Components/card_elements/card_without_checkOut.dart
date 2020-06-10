@@ -81,15 +81,15 @@ class CardWithoutCheckOut extends StatelessWidget {
                     padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                     child: Column(
                       children: <Widget>[
-                        SmallText(DateTime.parse(
-                                    myAppointments.elementAt(index).checkIn)
-                                .day
-                                .toString() +
+                        SmallText(GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
+                            myAppointments.elementAt(index).checkIn)
+                            .day
+                            .toString()) +
                             "-" +
-                            DateTime.parse(
-                                    myAppointments.elementAt(index).checkIn)
+                            GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
+                                myAppointments.elementAt(index).checkIn)
                                 .month
-                                .toString() +
+                                .toString()) +
                             "-" +
                             DateTime.parse(
                                     myAppointments.elementAt(index).checkIn)
@@ -106,7 +106,7 @@ class CardWithoutCheckOut extends StatelessWidget {
                                         .hour
                                         .toString() +
                                     ":" +
-                                    GetTimeSeparated.getFullTimeIfHasOneValue(
+                                    GetTimeSeparated.getFullTimeIfHasOneValue_Hour(
                                         DateTime.parse(myAppointments
                                                 .elementAt(index)
                                                 .checkIn)

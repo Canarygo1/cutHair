@@ -102,9 +102,17 @@ class GetTimeSeparated {
     return hours;
   }
 
-  static getFullTimeIfHasOneValue(String time) {
+  static getFullTimeIfHasOneValue_Hour(String time) {
     if (time.length == 1) {
       return time + "0";
+    } else {
+      return time;
+    }
+  }
+
+  static getFullTimeIfHasOneValue_Month(String time) {
+    if (time.length == 1) {
+      return "0" + time;
     } else {
       return time;
     }
