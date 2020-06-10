@@ -61,6 +61,7 @@ class GetTimeSeparated {
           ? list.add(date.hour.toString() + ":" + date.minute.toString() + '0')
           : list.add(date.hour.toString() + ":" + date.minute.toString());
     }
+
     return list;
   }
 
