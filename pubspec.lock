@@ -120,6 +120,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.1.0"
+  filter_list:
+    dependency: "direct main"
+    description:
+      name: filter_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.4"
   firebase:
     dependency: transitive
     description:
@@ -202,6 +209,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.12"
+  flutter_config:
+    dependency: "direct main"
+    description:
+      name: flutter_config
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.7"
   flutter_driver:
     dependency: "direct dev"
     description: flutter

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/employee.dart';
 import 'package:cuthair/model/my_appointment.dart';
@@ -10,7 +11,9 @@ abstract class RemoteRepository {
 
   Future <List<String>> getBusiness();
 
-  Future<Map<String, List<Business>>> getAllBusiness(String business);
+  Future<List<QuerySnapshot>> getAllQuery(Map<String, List> selectedFilters);
+
+  Future<Map<String, List<Business>>> getAllBusiness(Map<String, List> selectedFilters, List<QuerySnapshot> querySnapshots);
 
   Future<List<Service>> getAllServices(String uid, String typeBusiness);
 
