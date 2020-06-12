@@ -5,6 +5,7 @@ import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
+import 'package:cuthair/ui/Pages/send_sms/check_smd_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:cuthair/global_methods.dart';
@@ -54,9 +55,12 @@ class _SendSMSState extends State<SendSMS> {
       });
     };
 
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {};
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
+      GlobalMethods().pushAndReplacement(context, checkSMSCode(this.widget.data, this.widget.password, verificationId));
+    };
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
+      print(e.message);
       if (e.message == "ERROR_INVALID_VERIFICATION_CODE") {
         setState(() {
           error = 'El código es incorrecto';
@@ -76,24 +80,6 @@ class _SendSMSState extends State<SendSMS> {
       codeSent: smsCodeSent,
       codeAutoRetrievalTimeout: autoRetrieve,
     );
-  }
-
-  Future<void> signIn(String smsCode) async {
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: smsCode,
-    );
-    await _auth.signInWithCredential(credential);
-    ConnectionChecked.checkInternetConnectivity(context);
-    data.putIfAbsent("Teléfono", () => phoneController.text);
-    data.putIfAbsent("Penalización", () => false);
-    try {
-      RegisterCode().registerAuth(data["Email"], password, context, data);
-    } catch (e) {
-      setState(() {
-        error = 'Ha ocurrido un error lo sentimos. Inténtelo más tarde';
-      });
-    }
   }
 
   handleError(PlatformException error) {
@@ -172,12 +158,6 @@ class _SendSMSState extends State<SendSMS> {
                     'Introduce el teléfono',
                     topPadding: HEIGHT * 0.176),
                 MyButton(() => verifyPhone(), LargeText("Enviar código"),
-                    color: Color.fromRGBO(230, 73, 90, 1)),
-                textFieldWidget(
-                    codeController, TextInputType.phone, "Introduce el código",
-                    topPadding: HEIGHT * 0.027),
-                MyButton(() => signIn(codeController.text),
-                    LargeText("Confirmar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : TextError(error),
               ],
