@@ -83,7 +83,6 @@ class _checkSMSCodeState extends State<checkSMSCode> {
       child: MyTextField(
         controller,
         textType,
-
         InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
