@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
@@ -6,10 +9,8 @@ import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:async';
-import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter/services.dart';
 
 class checkSMSCode extends StatefulWidget {
@@ -49,6 +50,9 @@ class _checkSMSCodeState extends State<checkSMSCode> {
     ConnectionChecked.checkInternetConnectivity(context);
     data.putIfAbsent("Teléfono", () => phoneController.text);
     data.putIfAbsent("Penalización", () => false);
+    var bytes = utf8.encode(password);
+    Digest passwordEncript = sha1.convert(bytes);
+    data.putIfAbsent("Contraseña", () => passwordEncript.toString());
     try {
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {

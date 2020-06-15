@@ -1,17 +1,15 @@
-import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/check_smd_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SendSMS extends StatefulWidget {
   Map data;
@@ -28,39 +26,44 @@ class _SendSMSState extends State<SendSMS> {
   String password;
 
   _SendSMSState(this.data, this.password);
-
   String phoneNo;
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   double HEIGHT;
   double WIDHT;
+  bool sending = true;
   String error = "";
 
   Future<void> verifyPhone() async {
+    setState(() {
+      if (mounted) {
+        sending = true;
+      }
+    });
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationId = verId;
     };
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      Timer(Duration(minutes: 1, seconds: 30), () {
-        setState(() {
-          error = 'Tiempo expirado';
-        });
-        GlobalMethods().pushAndReplacement(context, Login());
+      this.widget.data.putIfAbsent("Teléfono", () => phoneController.text);
+      setState(() {
+        if (mounted) {
+          sending = false;
+        }
       });
+      GlobalMethods().pushAndReplacement(context,
+          checkSMSCode(this.widget.data, this.widget.password, verificationId));
     };
 
     final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
-      GlobalMethods().pushAndReplacement(context, checkSMSCode(this.widget.data, this.widget.password, verificationId));
+      GlobalMethods().pushAndReplacement(context,
+          checkSMSCode(this.widget.data, this.widget.password, verificationId));
     };
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
-      print(e.message);
       if (e.message == "ERROR_INVALID_VERIFICATION_CODE") {
         setState(() {
           error = 'El código es incorrecto';
@@ -73,7 +76,7 @@ class _SendSMSState extends State<SendSMS> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: "+34" + phoneController.text,
+      phoneNumber: phoneController.text,
       timeout: Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
@@ -146,7 +149,7 @@ class _SendSMSState extends State<SendSMS> {
           title: LargeText("Volver"),
           titleSpacing: 0,
         ),
-        body: GestureDetector(
+        body: sending ? GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
@@ -162,6 +165,12 @@ class _SendSMSState extends State<SendSMS> {
                 error.length == 0 ? Container() : TextError(error),
               ],
             ),
+          ),
+        ) : Padding(
+          padding: EdgeInsets.only(top: 50),
+          child: SpinKitWave(
+            color: Color.fromRGBO(230, 73, 90, 1),
+            type: SpinKitWaveType.start,
           ),
         ));
   }

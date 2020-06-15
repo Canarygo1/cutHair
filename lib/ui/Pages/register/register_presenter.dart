@@ -21,7 +21,7 @@ class RegisterCode {
           .collection("Usuarios")
           .document(user.uid)
           .setData(data);
-      GlobalMethods().pushPage(context, Login());
+      GlobalMethods().pushPage(context, Login(error: "EL usuario ha sido creado de forma correcta", color: Colors.green,));
     }
   }
 

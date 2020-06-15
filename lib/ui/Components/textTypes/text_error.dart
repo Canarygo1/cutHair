@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class TextError extends StatelessWidget {
   String error;
+  Color color;
   double HEIGHT;
   double WIDHT;
-  TextError(this.error);
+  TextError(this.error, {this.color});
 
   @override
   Widget build(BuildContext context) {
+    this.color == null ? this.color = Color.fromRGBO(230, 73, 90, 1) : this.color = color;
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
     return Container(
@@ -22,7 +24,7 @@ class TextError extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(230, 73, 90, 1),
+                color: color,
               ),
             ),
           ),
