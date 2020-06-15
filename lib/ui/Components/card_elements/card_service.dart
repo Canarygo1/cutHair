@@ -17,7 +17,6 @@ class CardService extends StatelessWidget {
   double HEIGHT;
   double WIDHT;
 
-
   CardService(this.business, this.servicesDetails, this.logIn);
 
   @override
@@ -88,12 +87,16 @@ class CardService extends StatelessWidget {
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
-                child: MediumText("Llame al número para más información", boolText: FontWeight.normal,),
+                child: MediumText(
+                  "Llame al número para más información",
+                  boolText: FontWeight.normal,
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
                 child: MediumText(
-                    "Teléfono: " + business.phoneNumber.toString(), boolText: FontWeight.normal),
+                    "Teléfono: " + business.phoneNumber.toString(),
+                    boolText: FontWeight.normal),
               ),
             ],
           ),
@@ -113,11 +116,13 @@ class CardService extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
               child: MediumText(
-                  servicesDetails[index].duration.toString() + " minutos", boolText: FontWeight.normal),
+                  servicesDetails[index].duration.toString() + " minutos",
+                  boolText: FontWeight.normal),
             ),
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
-              child: MediumText(servicesDetails[index].price.toString() + " €", boolText: FontWeight.normal),
+              child: MediumText(servicesDetails[index].price.toString() + " €",
+                  boolText: FontWeight.normal),
             )
           ],
         ),
@@ -128,5 +133,4 @@ class CardService extends StatelessWidget {
   makecall(String number) async {
     await launch("tel:" + "+34" + number);
   }
-
 }
