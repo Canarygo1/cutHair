@@ -64,65 +64,141 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
           children: <Widget>[
             loading
                 ? Padding(
-                  padding: EdgeInsets.only(top: 50),
-                  child: SpinKitWave(
-              color: Color.fromRGBO(230, 73, 90, 1),
-              type: SpinKitWaveType.start,
-            ),
-                )
-            : Container(
+              padding: EdgeInsets.only(top: 50),
+              child: SpinKitWave(
+                color: Color.fromRGBO(230, 73, 90, 1),
+                type: SpinKitWaveType.start,
+              ),
+            )
+                : Container(
               height: HEIGHT * 0.81,
-              child: ListView.builder(
-                padding: EdgeInsets.symmetric(
-                    horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.013),
+              child: ListView(
                 shrinkWrap: true,
                 primary: false,
-                scrollDirection: Axis.vertical,
-                itemCount: businessType.length,
-                itemBuilder: (context, indexTipo) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 20, top: HEIGHT * 0.01),
-                        child: LargeText(businessType[indexTipo], fontWeight: FontWeight.bold,),
+                      MyButton(
+                            () => _openFilterList(businessType, "tipo"),
+                        Row(
+                          children: <Widget>[
+                            Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.white,
+                            ),
+                            MediumText("Negocios"),
+                          ],
+                        ),
+                        horizontalPadding: 10.0,
+                        verticalMargin: 20.0,
+                        //width: 200.0,
+                        height: 30.0,
+                        color: Color.fromRGBO(230, 73, 90, 1),
                       ),
-                      Container(
-                        height: 230,
-                        child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            itemCount:
-                            mapBusiness[businessType[indexTipo]].length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  ConnectionChecked
-                                      .checkInternetConnectivity(context);
-                                  Business business = mapBusiness[
-                                  businessType[indexTipo]]
-                                  [index];
+                    ],
+                  ),
+                  selectedCountList.length == 0
+                      ? Container()
+                      : Container(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: WIDHT * 0.043,
+                        vertical: HEIGHT * 0.005),
+                    height: 40.0,
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        primary: false,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: selectedCountList.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.only(right: 20.0),
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 10.0),
+                            decoration: BoxDecoration(
+                              color: Colors.green,
+                              borderRadius:
+                              BorderRadius.circular(10),
+                            ),
+                            child: GestureDetector(
+                              onTap: () => removeElements(index),
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding:
+                                    EdgeInsets.only(right: 5.0),
+                                    child: SmallText(
+                                        selectedCountList[index]),
+                                  ),
+                                  Icon(
+                                    Icons.remove_circle_outline,
+                                    color: Colors.white,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        }),
+                  ),
+                  ListView.builder(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: WIDHT * 0.043, vertical: 0),
+                    shrinkWrap: true,
+                    primary: false,
+                    scrollDirection: Axis.vertical,
+                    itemCount: mapBusiness.length,
+                    itemBuilder: (context, indexTipo) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.only(
+                                bottom: 20, top: HEIGHT * 0.01),
+                            child: LargeText(
+                              businessType[indexTipo],
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            height: 230,
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount:
+                                mapBusiness[businessType[indexTipo]]
+                                    .length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      ConnectionChecked
+                                          .checkInternetConnectivity(
+                                          context);
+                                      Business business = mapBusiness[
+                                      businessType[indexTipo]][index];
 
                                   GlobalMethods().pushPage(context,
                                       DetailScreen(business, this.widget.logIn));
                                 },
-                                child: Container(
-                                  width: WIDHT * 0.34,
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                        right: WIDHT * 0.045),
                                     child: Container(
-                                      child: Column(
-                                        children: <Widget>[
-                                          ClipRRect(
-                                            borderRadius:
-                                            BorderRadius.circular(
-                                                10.0),
-                                            child: Center(
-                                              child: Container(
-                                                child: AspectRatio(
-                                                  aspectRatio: 4 / 4,
-                                                  child: mapBusiness["Images"][indexTipo + index],
+                                      width: WIDHT * 0.34,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            right: WIDHT * 0.045),
+                                        child: Container(
+                                          child: Column(
+                                            children: <Widget>[
+                                              ClipRRect(
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    10.0),
+                                                child: Center(
+                                                  child: Container(
+                                                    child: AspectRatio(
+                                                      aspectRatio: 4 / 4,
+                                                      child: logoBusinesses[
+                                                      index +
+                                                          indexTipo],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                               Icon(

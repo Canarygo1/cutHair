@@ -13,7 +13,7 @@ class HomeClientPresenter {
 
   init(Map<String, List> selectedFilters) async {
     images.clear();
-    List<String> businessType = await _remoteRepository.getBusiness();
+    List<String> businessType = await _remoteRepository.getBusiness(selectedFilters);
     await _view.showBusiness(businessType);
     await chargeBusiness(selectedFilters);
     _view.changeLoading();
@@ -21,15 +21,15 @@ class HomeClientPresenter {
 
   chargeBusiness(Map<String, List> selectedFilters) async {
     List<QuerySnapshot> querySnapshot =
-        await _remoteRepository.getAllQuery(selectedFilters);
+    await _remoteRepository.getAllQuery(selectedFilters);
     Map<String, List<Business>> mapAux =
-        await _remoteRepository.getAllBusiness(selectedFilters, querySnapshot);
+    await _remoteRepository.getAllBusiness(selectedFilters, querySnapshot);
     List<List<Business>> auxList = mapAux.values.toList();
-      for (var item in auxList) {
-          for (var business in item) {
-            await getOneImageFromFirebase(business);
-          }
+    for (var item in auxList) {
+      for (var business in item) {
+        await getOneImageFromFirebase(business);
       }
+    }
     List<Widget> logoBusinesses = [];
     await Images().getChilds(images, "assets/images/Store.png").then((value) {
       logoBusinesses = value;

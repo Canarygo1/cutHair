@@ -17,13 +17,19 @@ class HttpRemoteRepository implements RemoteRepository {
 
   HttpRemoteRepository(this.firestore);
 
-  Future<List<String>> getBusiness() async {
+  Future<List<String>> getBusiness(Map<String, List> selectedFilters) async {
     QuerySnapshot querySnapshot =
         await firestore.collection("Negocios").getDocuments();
     List<String> business = [];
-    querySnapshot.documents.forEach((v) {
-      if (v.documentID != "Discotecas") business.add(v.documentID);
-    });
+    if (selectedFilters["tipo"] != null) {
+      querySnapshot.documents.forEach((v) {
+        if (selectedFilters["tipo"].contains(v.documentID)) business.add(v.documentID);
+      });
+    } else {
+      querySnapshot.documents.forEach((v) {
+        if (v.documentID != "Discotecas") business.add(v.documentID);
+      });
+    }
     return business;
   }
 
@@ -71,7 +77,7 @@ class HttpRemoteRepository implements RemoteRepository {
     List<String> types = [];
     types = selectedFilters.containsKey("tipo")
         ? selectedFilters["tipo"]
-        : await getBusiness();
+        : await getBusiness(Map());
 
     for (var item in types) {
       QuerySnapshot querySnapshot = await firestore
