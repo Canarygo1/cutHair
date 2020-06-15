@@ -165,10 +165,13 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     cardWithoutCheckOut = CardWithoutCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithoutCheckOut;
-                  } else {
+                  } else if(myAppointments.elementAt(index).typeBusiness ==
+                      "Playas"){
                     cardWithCheckOutUid = CardWithCheckOutUid(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOutUid;
+                  }else{
+                    return Container();
                   }
                 });
   }
