@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/global_methods.dart';
@@ -13,14 +14,19 @@ import 'package:flutter/widgets.dart';
 import 'login_presenter.dart';
 
 class Login extends StatefulWidget {
+  String error;
+  Color color;
+  Login({this.error = '', this.color});
+
   @override
-  _LoginState createState() => _LoginState();
+  _LoginState createState() => _LoginState(error, color);
 }
 
 class _LoginState extends State<Login> implements LoginView {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String error = "";
+  Color color;
   LoginCode loginCode;
   double HEIGHT;
   double WIDHT;
@@ -35,8 +41,12 @@ class _LoginState extends State<Login> implements LoginView {
 
   PushNotificationService pushNotificationService;
 
+  _LoginState(this.error, this.color);
+
   @override
   void initState() {
+    color == null ? color = Color.fromRGBO(230, 73, 90, 1) : color = color;
+    Timer(Duration(seconds: 3), () => this.setState(() {error = '';}));
     rnd = new Random();
     randomBackground = 0 + rnd.nextInt(3 - 0);
     loginCode = LoginCode(this);
@@ -46,7 +56,6 @@ class _LoginState extends State<Login> implements LoginView {
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
@@ -76,7 +85,7 @@ class _LoginState extends State<Login> implements LoginView {
                 textFieldWidget(
                     passwordController, TextInputType.text, "Contraseña",
                     obscureText: true),
-                error.length == 0 ? Container() : TextError(error),
+                error.length == 0 ? Container() : TextError(error, color: color,),
                 TextForgetPassword(context),
                 MyButton(() => logIn(), LargeText("Entrar"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
