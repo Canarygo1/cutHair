@@ -39,7 +39,7 @@ class HomeClientPresenter {
 
   getOneImageFromFirebase(Business business) async {
     String url =
-    await _remoteRepository.getOneImage(business.uid, "0", "Gallery");
+        await _remoteRepository.getOneImage(business.uid, "0", "Gallery");
     images.add(url);
   }
 }

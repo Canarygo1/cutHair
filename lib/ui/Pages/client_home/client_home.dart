@@ -16,6 +16,10 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'home_client_presenter.dart';
 
 class ClientHome extends StatefulWidget {
+  bool logIn;
+
+  ClientHome(this.logIn);
+
   @override
   _ClientHomeState createState() => _ClientHomeState();
 }
@@ -171,9 +175,9 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                       Business business = mapBusiness[
                                       businessType[indexTipo]][index];
 
-                                      GlobalMethods().pushPage(context,
-                                          DetailScreen(business));
-                                    },
+                                  GlobalMethods().pushPage(context,
+                                      DetailScreen(business, this.widget.logIn));
+                                },
                                     child: Container(
                                       width: WIDHT * 0.34,
                                       child: Padding(
@@ -197,78 +201,150 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                   ),
                                                 ),
                                               ),
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: WIDHT * 0.017,
-                                                    top: HEIGHT * 0.025),
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                  CrossAxisAlignment
-                                                      .start,
-                                                  children: <Widget>[
-                                                    Text(
-                                                      mapBusiness[businessType
-                                                          .elementAt(
-                                                          indexTipo)][index]
-                                                          .name,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .bold,
-                                                          color: Colors
-                                                              .white,
-                                                          fontSize: 18.0),
-                                                    ),
-                                                    Text(
-                                                      mapBusiness[businessType
-                                                          .elementAt(
-                                                          indexTipo)][index]
-                                                          .type,
-                                                      style: TextStyle(
-                                                          color: Colors
-                                                              .white,
-                                                          fontSize: 15.0),
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          Icons
-                                                              .location_on,
-                                                          size: 12,
-                                                          color: Colors
-                                                              .white,
-                                                        ),
-                                                        Text(
-                                                          mapBusiness[businessType
-                                                              .elementAt(
-                                                              indexTipo)][index]
-                                                              .shortDirection,
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .white,
-                                                              fontSize:
-                                                              12.0),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
+                                              Icon(
+                                                Icons.remove_circle_outline,
+                                                color: Colors.white,
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          )
-                        ],
-                      );
-                    },
-                  ),
-                ],
-              ),
-            )
+                                      );
+                                    }),
+                              ),
+                        ListView.builder(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: WIDHT * 0.043, vertical: 0),
+                          shrinkWrap: true,
+                          primary: false,
+                          scrollDirection: Axis.vertical,
+                          itemCount: mapBusiness.length,
+                          itemBuilder: (context, indexTipo) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: 20, top: HEIGHT * 0.01),
+                                  child: LargeText(
+                                    businessType[indexTipo],
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Container(
+                                  height: 230,
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount:
+                                          mapBusiness[businessType[indexTipo]]
+                                              .length,
+                                      itemBuilder: (context, index) {
+                                        return GestureDetector(
+                                          onTap: () {
+                                            ConnectionChecked
+                                                .checkInternetConnectivity(
+                                                    context);
+                                            Business business = mapBusiness[
+                                                businessType[indexTipo]][index];
+
+                                            GlobalMethods().pushPage(context,
+                                                DetailScreen(business));
+                                          },
+                                          child: Container(
+                                            width: WIDHT * 0.34,
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  right: WIDHT * 0.045),
+                                              child: Container(
+                                                child: Column(
+                                                  children: <Widget>[
+                                                    ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
+                                                      child: Center(
+                                                        child: Container(
+                                                          child: AspectRatio(
+                                                            aspectRatio: 4 / 4,
+                                                            child: logoBusinesses[
+                                                                index +
+                                                                    indexTipo],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          left: WIDHT * 0.017,
+                                                          top: HEIGHT * 0.025),
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            mapBusiness[businessType
+                                                                    .elementAt(
+                                                                        indexTipo)][index]
+                                                                .name,
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 18.0),
+                                                          ),
+                                                          Text(
+                                                            mapBusiness[businessType
+                                                                    .elementAt(
+                                                                        indexTipo)][index]
+                                                                .type,
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 15.0),
+                                                          ),
+                                                          Row(
+                                                            children: <Widget>[
+                                                              Icon(
+                                                                Icons
+                                                                    .location_on,
+                                                                size: 12,
+                                                                color: Colors
+                                                                    .white,
+                                                              ),
+                                                              Text(
+                                                                mapBusiness[businessType
+                                                                        .elementAt(
+                                                                            indexTipo)][index]
+                                                                    .shortDirection,
+                                                                style: TextStyle(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontSize:
+                                                                        12.0),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      }),
+                                )
+                              ],
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  )
           ],
         ),
       ),

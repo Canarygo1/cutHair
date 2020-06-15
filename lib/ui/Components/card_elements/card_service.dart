@@ -5,6 +5,7 @@ import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
+import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,10 +13,11 @@ class CardService extends StatelessWidget {
   List<Service> servicesDetails = [];
   Business business;
   Appointment appointment = Appointment();
+  bool logIn;
   double HEIGHT;
   double WIDHT;
 
-  CardService(this.business, this.servicesDetails);
+  CardService(this.business, this.servicesDetails, this.logIn);
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +30,15 @@ class CardService extends StatelessWidget {
       itemBuilder: (context, index) {
         return GestureDetector(
           onTap: () {
-            appointment.service = servicesDetails[index];
-            appointment.business = business;
-            GlobalMethods()
-                .pushPage(context, ChooseExtraInfoScreen(appointment));
-          },
+            if(logIn == true){
+              appointment.service = servicesDetails[index];
+              appointment.business = business;
+              GlobalMethods()
+                  .pushPage(context, ChooseExtraInfoScreen(appointment));
+            }else {
+              GlobalMethods().pushPage(context, NotLoginScreen("Reservar cita", "Para reservar, necesitas iniciar sesión"));
+            }
+            },
           child: Card(
             shape: BeveledRectangleBorder(
                 side: BorderSide(color: Color.fromRGBO(300, 300, 300, 1))),
@@ -70,7 +76,8 @@ class CardService extends StatelessWidget {
   Widget cardServices(BuildContext context, int index) {
     if (servicesDetails[index].duration == "llamada") {
       return GestureDetector(
-        onTap: () => makecall(business.phoneNumber.toString()),
+        onTap: () =>
+          makecall(this.business.phoneNumber.toString()),
         child: ListTile(
           contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
           dense: true,

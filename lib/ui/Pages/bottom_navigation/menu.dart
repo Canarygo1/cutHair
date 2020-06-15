@@ -1,8 +1,8 @@
-import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/ui/Pages/client_appointments/client_appointments.dart';
 import 'package:cuthair/ui/Pages/client_home/client_home.dart';
 import 'package:cuthair/ui/Pages/info/info.dart';
+import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'menu_presenter.dart';
@@ -10,7 +10,7 @@ import 'menu_presenter.dart';
 class Menu extends StatefulWidget {
   User user;
 
-  Menu(this.user, {Business hairDressing});
+  Menu(this.user);
 
   @override
   _menuState createState() => _menuState(user);
@@ -28,7 +28,7 @@ class _menuState extends State<Menu> implements MenuView {
 
   void initState() {
     _presenter = MenuPresenter(this);
-    _presenter.init();
+    _presenter.init(this.user);
     super.initState();
   }
 
@@ -86,7 +86,16 @@ class _menuState extends State<Menu> implements MenuView {
   @override
   goToClient() {
     setState(() {
-      screens = [ClientAppointments(), ClientHome(), Info(user)];
+      screens = [ClientAppointments(), ClientHome(true), Info(user)];
+    });
+  }
+
+  @override
+  goToClientWithOutLogin(){
+    setState(() {
+      screens = [NotLoginScreen("Mis citas", "Para acceder, necesitas iniciar sesión"),
+        ClientHome(false),
+        NotLoginScreen("Mis datos", "Para acceder, necesitas iniciar sesión")];
     });
   }
 }
