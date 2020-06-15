@@ -11,14 +11,16 @@ import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
+import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
   Business business;
+  bool logIn;
 
-  DetailScreen(this.business);
+  DetailScreen(this.business, this.logIn);
 
   @override
   _DetailScreenState createState() => _DetailScreenState(business);
@@ -60,8 +62,12 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
               child: FloatingActionButton.extended(
                   onPressed: () {
-                    GlobalMethods()
-                        .pushPage(context, ChooseExtraInfoScreen(appointment));
+                    if(this.widget.logIn == true){
+                      GlobalMethods()
+                          .pushPage(context, ChooseExtraInfoScreen(appointment));
+                    }else{
+                      GlobalMethods().pushPage(context, NotLoginScreen("Reservar cita", "Para acceder, necesitas iniciar sesión"));
+                    }
                   },
                   label: Text("Reserva una cita"),
                   backgroundColor: Color.fromRGBO(230, 73, 90, 1)),
@@ -98,7 +104,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   Widget getCard() {
     if (business.typeBusiness == "Peluquerías") {
-      return CardService(business, serviceDetails);
+      return CardService(business, serviceDetails, this.widget.logIn);
     } else if (business.typeBusiness == "Restaurantes") {
       return RestaurantCard(business, serviceDetails);
     } else {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -46,26 +47,22 @@ class GlobalMethods {
 }
 
 class GetTimeSeparated {
-  static Future<List<dynamic>> getTimeSeparatedBy10(DateTime checkIn,
-      DateTime checkOut) async {
+  static Future<List<dynamic>> getTimeSeparatedBy10(
+      DateTime checkIn, DateTime checkOut) async {
     List<String> list = [];
-    var duration = checkOut
-        .difference(checkIn)
-        .inMinutes;
+    var duration = checkOut.difference(checkIn).inMinutes;
     duration ~/= 10;
     for (int i = 0; duration > i; i++) {
       DateTime date = checkIn.add(Duration(minutes: (10 * i)));
-      date.minute
-          .toString()
-          .length == 1
+      date.minute.toString().length == 1
           ? list.add(date.hour.toString() + ":" + date.minute.toString() + '0')
           : list.add(date.hour.toString() + ":" + date.minute.toString());
     }
     return list;
   }
 
-  static List<String> getHours(String checkIn, String checkOut,
-      DateTime dayId) {
+  static List<String> getHours(
+      String checkIn, String checkOut, DateTime dayId) {
     List<String> hours = [];
 
     List<String> arrayCheckIn = checkIn.split(":");
@@ -86,13 +83,8 @@ class GetTimeSeparated {
         Duration(hours: int.parse(finalHour), minutes: int.parse(finalMinute)));
 
     while (
-    int.parse(finalTime
-        .difference(initialTime)
-        .inMinutes
-        .toString()) > 0) {
-      String minute = initialTime.minute
-          .toString()
-          .length == 1
+        int.parse(finalTime.difference(initialTime).inMinutes.toString()) > 0) {
+      String minute = initialTime.minute.toString().length == 1
           ? initialTime.minute.toString() + '0'
           : initialTime.minute.toString();
       hours.add(initialTime.hour.toString() + ":" + minute);
@@ -110,15 +102,16 @@ class GetTimeSeparated {
     }
   }
 
-
   static getDurationFromMinutes(int minute) {
     double hours = minute / 60;
     int minutes = minute % 60;
     return Duration(hours: hours.toInt(), minutes: minutes);
   }
 }
+
 class Images {
-  Future<List<Widget>> getChilds(List<String> listImagesFirebase, String predefine) async {
+  Future<List<Widget>> getChilds(
+      List<String> listImagesFirebase, String predefine) async {
     List<Widget> images = [];
     Image image;
     listImagesFirebase.forEach((f) => {
@@ -147,17 +140,16 @@ class Images {
     return images;
   }
 
-  Widget getDefaultImage(String predefine){
+  Widget getDefaultImage(String predefine) {
     List pieceImage = predefine.split(".");
-    if(pieceImage.last == "svg"){
+    if (pieceImage.last == "svg") {
       return SvgPicture.asset(
         predefine,
       );
-    }else{
+    } else {
       return Image.asset(
         predefine,
       );
     }
-
   }
 }
