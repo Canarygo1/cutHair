@@ -31,12 +31,8 @@ class _checkSMSCodeState extends State<checkSMSCode> {
 
   _checkSMSCodeState(this.data, this.password, this.verificationId);
 
-  String phoneNo;
-  String smsOTP;
-  String errorMessage = '';
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController codeController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
   double HEIGHT;
   double WIDHT;
   String error = "";
@@ -48,7 +44,6 @@ class _checkSMSCodeState extends State<checkSMSCode> {
     );
     await _auth.signInWithCredential(credential);
     ConnectionChecked.checkInternetConnectivity(context);
-    data.putIfAbsent("Teléfono", () => phoneController.text);
     data.putIfAbsent("Penalización", () => false);
     var bytes = utf8.encode(password);
     Digest passwordEncript = sha1.convert(bytes);
