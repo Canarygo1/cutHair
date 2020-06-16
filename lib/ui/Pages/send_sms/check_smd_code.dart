@@ -1,88 +1,60 @@
+import 'dart:convert';
+
+import 'package:crypto/crypto.dart';
+import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
 import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Pages/send_sms/check_smd_code.dart';
+import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:async';
-import 'package:cuthair/global_methods.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class SendSMS extends StatefulWidget {
+class checkSMSCode extends StatefulWidget {
   Map data;
   String password;
+  String verificationId;
 
-  SendSMS(this.data, this.password);
+  checkSMSCode(this.data, this.password, this.verificationId);
 
   @override
-  _SendSMSState createState() => _SendSMSState(this.data, this.password);
+  _checkSMSCodeState createState() => _checkSMSCodeState(this.data, this.password, this.verificationId);
 }
 
-class _SendSMSState extends State<SendSMS> {
+class _checkSMSCodeState extends State<checkSMSCode> {
   Map data;
   String password;
-
-  _SendSMSState(this.data, this.password);
-  String phoneNo;
-  String smsOTP;
   String verificationId;
-  String errorMessage = '';
-  TextEditingController phoneController = TextEditingController();
+
+  _checkSMSCodeState(this.data, this.password, this.verificationId);
+
+  FirebaseAuth _auth = FirebaseAuth.instance;
+  TextEditingController codeController = TextEditingController();
   double HEIGHT;
   double WIDHT;
-  bool sending = true;
   String error = "";
 
-  Future<void> verifyPhone() async {
-    setState(() {
-      if (mounted) {
-        sending = true;
-      }
-    });
-    final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
-      this.verificationId = verId;
-    };
-
-    final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
-      this.verificationId = verId;
-      this.widget.data.putIfAbsent("Teléfono", () => '+34' + phoneController.text);
-      setState(() {
-        if (mounted) {
-          sending = false;
-        }
-      });
-      GlobalMethods().pushAndReplacement(context,
-          checkSMSCode(this.widget.data, this.widget.password, verificationId));
-    };
-
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
-      GlobalMethods().pushAndReplacement(context,
-          checkSMSCode(this.widget.data, this.widget.password, verificationId));
-    };
-
-    final PhoneVerificationFailed verifyFailed = (AuthException e) {
-      if (e.message == "ERROR_INVALID_VERIFICATION_CODE") {
-        setState(() {
-          error = 'El código es incorrecto';
-        });
-      } else {
-        setState(() {
-          error = 'Lo sentimos ha ocurrido un error. Inténtalo más tarde.';
-        });
-      }
-    };
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+34' + phoneController.text,
-      timeout: Duration(seconds: 5),
-      verificationCompleted: verifiedSuccess,
-      verificationFailed: verifyFailed,
-      codeSent: smsCodeSent,
-      codeAutoRetrievalTimeout: autoRetrieve,
+  Future<void> signIn(String smsCode) async {
+    final AuthCredential credential = PhoneAuthProvider.getCredential(
+      verificationId: verificationId,
+      smsCode: smsCode,
     );
+    await _auth.signInWithCredential(credential);
+    ConnectionChecked.checkInternetConnectivity(context);
+    data.putIfAbsent("Penalización", () => false);
+    var bytes = utf8.encode(password);
+    Digest passwordEncript = sha1.convert(bytes);
+    data.putIfAbsent("Contraseña", () => passwordEncript.toString());
+    try {
+      RegisterCode().registerAuth(data["Email"], password, context, data);
+    } catch (e) {
+      setState(() {
+        error = 'Ha ocurrido un error lo sentimos. Inténtelo más tarde';
+      });
+    }
   }
 
   handleError(PlatformException error) {
@@ -149,7 +121,7 @@ class _SendSMSState extends State<SendSMS> {
           title: LargeText("Volver"),
           titleSpacing: 0,
         ),
-        body: sending ? GestureDetector(
+        body: GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
@@ -157,20 +129,15 @@ class _SendSMSState extends State<SendSMS> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: <Widget>[
-                textFieldWidget(phoneController, TextInputType.phone,
-                    'Introduce el teléfono',
-                    topPadding: HEIGHT * 0.176),
-                MyButton(() => verifyPhone(), LargeText("Enviar código"),
+                textFieldWidget(
+                    codeController, TextInputType.phone, "Introduce el código",
+                    topPadding: HEIGHT * 0.027),
+                MyButton(() => signIn(codeController.text),
+                    LargeText("Confirmar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : TextError(error),
               ],
             ),
-          ),
-        ) : Padding(
-          padding: EdgeInsets.only(top: 50),
-          child: SpinKitWave(
-            color: Color.fromRGBO(230, 73, 90, 1),
-            type: SpinKitWaveType.start,
           ),
         ));
   }
