@@ -17,77 +17,42 @@ class HttpRemoteRepository implements RemoteRepository {
 
   HttpRemoteRepository(this.firestore);
 
-  Future<List<String>> getBusiness(Map<String, List> selectedFilters) async {
+  Future<List<String>> getBusiness() async {
     QuerySnapshot querySnapshot =
-        await firestore.collection("Negocios").getDocuments();
+    await firestore.collection("Negocios").getDocuments();
+
     List<String> business = [];
-    if (selectedFilters["tipo"] != null) {
-      querySnapshot.documents.forEach((v) {
-        if (selectedFilters["tipo"].contains(v.documentID)) business.add(v.documentID);
-      });
-    } else {
-      querySnapshot.documents.forEach((v) {
-        if (v.documentID != "Discotecas") business.add(v.documentID);
-      });
-    }
+    querySnapshot.documents.forEach((v) {
+      if (v.documentID == "Peluquerías")
+      business.add(v.documentID);
+    });
     return business;
   }
 
   @override
-  Future<Map<String, List<Business>>> getAllBusiness(
-      Map<String, List> selectedFilters,
-      List<QuerySnapshot> querySnapshots) async {
+  Future<Map<String, List<Business>>> getAllBusiness(String business) async {
+    QuerySnapshot querySnapshot = await firestore
+        .collection("Negocios")
+        .document(business)
+        .collection("Negocios")
+        .getDocuments();
+    List queryData = querySnapshot.documents;
+    List<Business> allBusiness = [];
+
+    for (int i = 0; i < queryData.length; i++) {
+      Business hairDressing = Business.fromMap(
+          queryData[i].data, queryData[i].documentID, business);
+      allBusiness.add(hairDressing);
+    }
+
     Map<String, List<Business>> allbusiness = new Map();
-    querySnapshots.forEach((element) {
-      List queryData = element.documents;
-      List<Business> allBusiness = [];
-      DocumentReference reference = element.documents[0].reference;
-      String businessType = reference.parent().parent().documentID;
-      for (int i = 0; i < queryData.length; i++) {
-        Business business = Business.fromMap(
-            queryData[i].data, queryData[i].documentID, businessType);
-        bool correct = true;
-        if (selectedFilters.isNotEmpty) {
-          selectedFilters.forEach((key, value) {
-            if (key != "tipo") {
-              if (!value.contains(queryData[i].data[key])) {
-                correct = false;
-              }
-            }
-          });
-        }
-        if (correct) {
-          allBusiness.add(business);
-        }
-      }
-      allbusiness[businessType] = allBusiness;
-    });
+    allbusiness[business] = allBusiness;
 
     if (allbusiness.length >= 1) {
       return allbusiness;
     } else {
       throw ("No existen peluquerias");
     }
-  }
-
-  @override
-  Future<List<QuerySnapshot>> getAllQuery(
-      Map<String, List> selectedFilters) async {
-    List<QuerySnapshot> querySnapshots = [];
-    List<String> types = [];
-    types = selectedFilters.containsKey("tipo")
-        ? selectedFilters["tipo"]
-        : await getBusiness(Map());
-
-    for (var item in types) {
-      QuerySnapshot querySnapshot = await firestore
-          .collection("Negocios")
-          .document(item)
-          .collection("Negocios")
-          .getDocuments();
-      querySnapshots.add(querySnapshot);
-    }
-    return querySnapshots;
   }
 
   @override

@@ -8,14 +8,10 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 
 abstract class RemoteRepository {
-  Future<List<String>> getBusiness(Map<String, List> selectedFilters);
+  Future<List<String>> getBusiness();
 
-  Future<Map<String, List<Business>>> getAllBusiness(
-      Map<String, List> selectedFilters, List<QuerySnapshot> querySnapshots);
+  Future<Map<String, List<Business>>> getAllBusiness(String business);
 
-  Future<List<QuerySnapshot>> getAllQuery(Map<String, List> selectedFilters);
-  
-  Future<Map<String, List<Business>>> getAllBusiness(Map<String, List> selectedFilters, List<QuerySnapshot> querySnapshots);
 
   Future<List<Service>> getAllServices(String uid, String typeBusiness);
 
