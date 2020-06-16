@@ -4,10 +4,7 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/business.dart';
-import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -28,17 +25,18 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
   RemoteRepository _remoteRepository;
   List<String> businessType;
   Map<String, List> mapBusiness = Map();
-  List<Widget> logoBusinesses = [];
   GlobalMethods global = GlobalMethods();
   bool loading = true;
   double HEIGHT;
   double WIDHT;
+
 
   initState() {
     businessType = [];
     loading = true;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     presenter = HomeClientPresenter(this, _remoteRepository);
+    presenter.init();
   }
 
   @override
@@ -195,13 +193,11 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     );
   }
 
-
   @override
-  showList(Map<String, List> business, List<Widget> images) {
+  showList(Map<String, List> hairDressing) {
     if (mounted) {
       setState(() {
-        logoBusinesses = images;
-        mapBusiness = business;
+        mapBusiness.addAll(hairDressing);
       });
     }
   }
@@ -217,7 +213,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
 
   @override
   changeLoading() {
-    if (mounted) {
+    if(mounted){
       setState(() {
         loading = false;
       });
