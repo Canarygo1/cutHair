@@ -5,7 +5,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
   await DotEnv().load('.env');
   runApp(MyApp());
 }
