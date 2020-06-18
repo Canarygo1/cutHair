@@ -68,7 +68,7 @@ class CardWithCheckOut extends StatelessWidget {
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
                           child:
-                              MediumText(myAppointments.elementAt(index).type)),
+                              MediumText(myAppointments.elementAt(index).type + ' - ' + myAppointments[index].price)),
                       Container(
                           width: WIDHT * 0.62,
                           padding:
