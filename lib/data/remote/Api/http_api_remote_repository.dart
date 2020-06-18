@@ -11,7 +11,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
   @override
   Future<List<String>> getHairDressingAvailability(String duration, String hairdresser, String date, String businessUid) async {
     //Pasas typeBusiness
-    var uri = Uri.parse(FlutterConfig.get('GET_DATA_HAIRDRESSING'));
+    var uri = Uri.parse('https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getData');
     List<String> availabity = [];
 
     uri = uri.replace(queryParameters:<String,String>{
