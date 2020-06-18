@@ -40,6 +40,15 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   CardWithCheckOut cardWithCheckOut;
   CardWithoutCheckOut cardWithoutCheckOut;
   CardWithCheckOutUid cardWithCheckOutUid;
+  Timer timer;
+
+  @override
+  void deactivate() {
+    if (timer != null && timer.isActive) {
+      timer.cancel();
+    }
+    ;
+  }
 
   @override
   initState() {
@@ -48,8 +57,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
     _presenter.init(DBProvider.users[0].uid, DateTime.now(), true);
-    calendarWidget = Calendar(
-        (DateTime date, List<Event> events) => pressCalendar(date));
+    calendarWidget =
+        Calendar((DateTime date, List<Event> events) => pressCalendar(date));
   }
 
   @override
@@ -74,10 +83,12 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     padding: EdgeInsets.only(right: WIDHT * 0.61),
                     child: Components.smallButton(
                       () => {
-                        this.isConsulting == false ?
-                        this.setState(() =>
-                            {this.filter = false, this.isConsulting = false})
-                            : () =>{},
+                        this.isConsulting == false
+                            ? this.setState(() => {
+                                  this.filter = false,
+                                  this.isConsulting = false
+                                })
+                            : () => {},
                       },
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -141,7 +152,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                         children: <Widget>[
                           Components.mediumText(
                               "Vaya! Parece que todavía no tienes citas"),
-                          Components.mediumText("Puedes reservarlas en el home"),
+                          Components.mediumText(
+                              "Puedes reservarlas en el home"),
                         ],
                       ),
                     ),
@@ -163,12 +175,12 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     cardWithoutCheckOut = CardWithoutCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithoutCheckOut;
-                  } else if(myAppointments.elementAt(index).typeBusiness ==
-                      "Playas"){
+                  } else if (myAppointments.elementAt(index).typeBusiness ==
+                      "Playas") {
                     cardWithCheckOutUid = CardWithCheckOutUid(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOutUid;
-                  }else{
+                  } else {
                     return Container();
                   }
                 });
@@ -176,6 +188,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
 
   controlTimer(int index) {
     if (firstTime == true) {
+      setState(() {
+        firstTime = false;
+      });
       return functionRemove(index);
     } else {
       showDialog(
@@ -208,10 +223,10 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             ConnectionChecked.checkInternetConnectivity(context),
             _presenter.removeAppointment(myAppointments[index], index,
                 DBProvider.users[0].uid, calendarWidget.currentDate2),
-            Timer(
+            timer = Timer(
                 Duration(minutes: 1),
                 () => this.setState(() {
-                      firstTime = !firstTime;
+                      firstTime = true;
                     })),
           },
         );
