@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/business.dart';
@@ -6,10 +7,8 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/card_elements/card_service.dart';
-import 'package:cuthair/ui/Components/card_elements/restaurant_card.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cuthair/ui/Components/card_elements/restaurant_card.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
@@ -78,8 +77,8 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
         child: Column(
           children: <Widget>[
             sliderImages(context),
-            LargeText(business.name),
-            MediumText(business.direction),
+            Components.largeText(business.name),
+            Components.mediumText(business.direction),
             business.typeBusiness != "Playas"
                 ? Align(
                     alignment: Alignment.centerLeft,
@@ -94,7 +93,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                       ),
                     ),
                   )
-                : MediumText("Aforo: " + business.aforo.toString()),
+                : Components.mediumText("Aforo: " + business.aforo.toString()),
             getCard()
           ],
         ),

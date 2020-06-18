@@ -1,12 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employee.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateRestaurant.dart';
 import 'package:flutter/material.dart';
@@ -52,12 +50,11 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        leading: GoBack(
+        leading: Components.goBack(
           context,
           "",
-          HEIGHT: HEIGHT * 0.013,
         ),
-        title: LargeText("Volver"),
+        title: Components.largeText("Volver"),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(
@@ -86,7 +83,7 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
       padding: EdgeInsets.only(top: HEIGHT * 0.054),
       child: Align(
         alignment: Alignment.center,
-        child: LargeText(text),
+        child: Components.largeText(text),
       ),
     );
   }
@@ -102,8 +99,8 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
           scrollDirection: Axis.vertical,
           itemCount: employeeNames.length,
           itemBuilder: (context, index) {
-            return MyButton(
-                () => chooseFunction(index), LargeText(employeeNames[index].name),
+            return Components.smallButton(
+                () => chooseFunction(index), Components.largeText(employeeNames[index].name),
                 color: Color.fromRGBO(230, 73, 90, 1));
           }),
     );
@@ -131,15 +128,15 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
                       return Row(
                         children: <Widget>[
                           number1 <= numero ? Expanded(
-                            child: MyButton(() => chooseNumberPersons(number1), LargeText(number1.toString()),
+                            child: Components.smallButton(() => chooseNumberPersons(number1), Components.largeText(number1.toString()),
                                   color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0,),
                           ) : Container(),
                           number2 <= numero ? Expanded(
-                            child: MyButton(() => chooseNumberPersons(number2), LargeText(number2.toString()),
+                            child: Components.smallButton(() => chooseNumberPersons(number2), Components.largeText(number2.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container(),
                           number3 <= numero ? Expanded(
-                            child: MyButton(() => chooseNumberPersons(number3), LargeText(number3.toString()),
+                            child: Components.smallButton(() => chooseNumberPersons(number3), Components.largeText(number3.toString()),
                                 color: Color.fromRGBO(230, 73, 90, 1), horizontalPadding: 20.0),
                           ) : Container()
                          ]);

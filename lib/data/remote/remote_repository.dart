@@ -15,8 +15,6 @@ abstract class RemoteRepository {
 
   Future<List<QuerySnapshot>> getAllQuery(Map<String, List> selectedFilters);
   
-  Future<Map<String, List<Business>>> getAllBusiness(Map<String, List> selectedFilters, List<QuerySnapshot> querySnapshots);
-
   Future<List<Service>> getAllServices(String uid, String typeBusiness);
 
   Future<List<Employee>> getAllEmployes(String uid, String typeBusiness);

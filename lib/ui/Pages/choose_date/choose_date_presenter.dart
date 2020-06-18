@@ -33,6 +33,5 @@ class ChooseDatePresenter {
 
 abstract class ChooseDateView {
   showAvailability(List<String> availability);
-
   emptyAvailability();
 }

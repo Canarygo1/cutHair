@@ -237,7 +237,6 @@ class HttpRemoteRepository implements RemoteRepository {
     List<MyAppointment> myAppointments = [];
     DocumentSnapshot documentSnapshot =
         await firestore.collection("Usuarios").document(uid).get();
-
     for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
       await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
         DocumentReference documentReference = documentSnapshot.data['citas'][i];
@@ -270,7 +269,6 @@ class HttpRemoteRepository implements RemoteRepository {
         }
       });
     }
-
     if (myAppointments.length >= 1) {
       return myAppointments;
     } else {

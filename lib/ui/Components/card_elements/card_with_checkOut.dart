@@ -1,8 +1,6 @@
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:flutter/material.dart';
 
 class CardWithCheckOut extends StatelessWidget {
@@ -61,23 +59,23 @@ class CardWithCheckOut extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText(
+                        child: Components.mediumText(
                             myAppointments.elementAt(index).businessName),
                       ),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
                           child:
-                              MediumText(myAppointments.elementAt(index).type)),
+                              Components.mediumText(myAppointments.elementAt(index).type)),
                       Container(
                           width: WIDHT * 0.62,
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                          child: MediumText(
+                          child: Components.mediumText(
                               myAppointments.elementAt(index).direction)),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText(
+                        child: Components.mediumText(
                             myAppointments.elementAt(index).extraInformation),
                       ),
                     ],
@@ -86,7 +84,7 @@ class CardWithCheckOut extends StatelessWidget {
                     padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                     child: Column(
                       children: <Widget>[
-                        SmallText(DateTime.parse(
+                        Components.smallText(DateTime.parse(
                                     myAppointments.elementAt(index).checkIn)
                                 .day
                                 .toString() +
@@ -104,7 +102,7 @@ class CardWithCheckOut extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.006),
-                              child: SmallText(
+                              child: Components.smallText(
                                 DateTime.parse(myAppointments
                                             .elementAt(index)
                                             .checkIn)
@@ -121,7 +119,7 @@ class CardWithCheckOut extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.045),
-                              child: SmallText(DateTime.parse(myAppointments
+                              child: Components.smallText(DateTime.parse(myAppointments
                                           .elementAt(index)
                                           .checkOut)
                                       .hour
@@ -176,9 +174,9 @@ class CardWithCheckOut extends StatelessWidget {
               ),
             ),
             Center(
-              child: MyButton(
+              child: Components.smallButton(
                 functionRemove,
-                SmallText(
+                Components.smallText(
                   'Cancelar',
                   size: 11,
                 ),

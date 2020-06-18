@@ -1,15 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/business.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
-import 'package:filter_list/filter_list.dart';
+import 'package:filterlist/filter_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -54,7 +51,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        title: LargeText("Negocios"),
+        title: Components.largeText("Negocios"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -78,7 +75,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                 children: <Widget>[
                   Row(
                     children: <Widget>[
-                      MyButton(
+                      Components.smallButton(
                             () => _openFilterList(businessType, "tipo"),
                         Row(
                           children: <Widget>[
@@ -86,7 +83,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                               Icons.keyboard_arrow_down,
                               color: Colors.white,
                             ),
-                            MediumText("Negocios"),
+                            Components.mediumText("Negocios"),
                           ],
                         ),
                         horizontalPadding: 10.0,
@@ -126,7 +123,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                   Padding(
                                     padding:
                                     EdgeInsets.only(right: 5.0),
-                                    child: SmallText(
+                                    child: Components.smallText(
                                         selectedCountList[index]),
                                   ),
                                   Icon(
@@ -153,9 +150,9 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                           Padding(
                             padding: EdgeInsets.only(
                                 bottom: 20, top: HEIGHT * 0.01),
-                            child: LargeText(
+                            child: Components.largeText(
                               businessType[indexTipo],
-                              fontWeight: FontWeight.bold,
+                              boolText: FontWeight.bold,
                             ),
                           ),
                           Container(
@@ -174,10 +171,9 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                           context);
                                       Business business = mapBusiness[
                                       businessType[indexTipo]][index];
-
-                                  GlobalMethods().pushPage(context,
-                                      DetailScreen(business, this.widget.logIn));
-                                },
+                                      GlobalMethods().pushPage(context,
+                                          DetailScreen(business, this.widget.logIn));
+                                    },
                                     child: Container(
                                       width: WIDHT * 0.34,
                                       child: Padding(
@@ -201,150 +197,78 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                                                   ),
                                                 ),
                                               ),
-                                              Icon(
-                                                Icons.remove_circle_outline,
-                                                color: Colors.white,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    }),
-                              ),
-                        ListView.builder(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: WIDHT * 0.043, vertical: 0),
-                          shrinkWrap: true,
-                          primary: false,
-                          scrollDirection: Axis.vertical,
-                          itemCount: mapBusiness.length,
-                          itemBuilder: (context, indexTipo) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      bottom: 20, top: HEIGHT * 0.01),
-                                  child: LargeText(
-                                    businessType[indexTipo],
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                Container(
-                                  height: 230,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount:
-                                          mapBusiness[businessType[indexTipo]]
-                                              .length,
-                                      itemBuilder: (context, index) {
-                                        return GestureDetector(
-                                          onTap: () {
-                                            ConnectionChecked
-                                                .checkInternetConnectivity(
-                                                    context);
-                                            Business business = mapBusiness[
-                                                businessType[indexTipo]][index];
-
-                                            GlobalMethods().pushPage(context,
-                                                DetailScreen(business));
-                                          },
-                                          child: Container(
-                                            width: WIDHT * 0.34,
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  right: WIDHT * 0.045),
-                                              child: Container(
+                                              Padding(
+                                                padding: EdgeInsets.only(
+                                                    left: WIDHT * 0.017,
+                                                    top: HEIGHT * 0.025),
                                                 child: Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .start,
                                                   children: <Widget>[
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10.0),
-                                                      child: Center(
-                                                        child: Container(
-                                                          child: AspectRatio(
-                                                            aspectRatio: 4 / 4,
-                                                            child: logoBusinesses[
-                                                                index +
-                                                                    indexTipo],
-                                                          ),
-                                                        ),
-                                                      ),
+                                                    Text(
+                                                      mapBusiness[businessType
+                                                          .elementAt(
+                                                          indexTipo)][index]
+                                                          .name,
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .bold,
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize: 18.0),
                                                     ),
-                                                    Padding(
-                                                      padding: EdgeInsets.only(
-                                                          left: WIDHT * 0.017,
-                                                          top: HEIGHT * 0.025),
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: <Widget>[
-                                                          Text(
-                                                            mapBusiness[businessType
-                                                                    .elementAt(
-                                                                        indexTipo)][index]
-                                                                .name,
-                                                            style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 18.0),
-                                                          ),
-                                                          Text(
-                                                            mapBusiness[businessType
-                                                                    .elementAt(
-                                                                        indexTipo)][index]
-                                                                .type,
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 15.0),
-                                                          ),
-                                                          Row(
-                                                            children: <Widget>[
-                                                              Icon(
-                                                                Icons
-                                                                    .location_on,
-                                                                size: 12,
-                                                                color: Colors
-                                                                    .white,
-                                                              ),
-                                                              Text(
-                                                                mapBusiness[businessType
-                                                                        .elementAt(
-                                                                            indexTipo)][index]
-                                                                    .shortDirection,
-                                                                style: TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        12.0),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
+                                                    Text(
+                                                      mapBusiness[businessType
+                                                          .elementAt(
+                                                          indexTipo)][index]
+                                                          .type,
+                                                      style: TextStyle(
+                                                          color: Colors
+                                                              .white,
+                                                          fontSize: 15.0),
+                                                    ),
+                                                    Row(
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons
+                                                              .location_on,
+                                                          size: 12,
+                                                          color: Colors
+                                                              .white,
+                                                        ),
+                                                        Text(
+                                                          mapBusiness[businessType
+                                                              .elementAt(
+                                                              indexTipo)][index]
+                                                              .shortDirection,
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white,
+                                                              fontSize:
+                                                              12.0),
+                                                        ),
+                                                      ],
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                            ),
+                                            ],
                                           ),
-                                        );
-                                      }),
-                                )
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                  )
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          )
+                        ],
+                      );
+                    },
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),
@@ -439,3 +363,4 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
     }
   }
 }
+

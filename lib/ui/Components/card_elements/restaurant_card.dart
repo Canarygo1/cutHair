@@ -1,7 +1,6 @@
+import 'package:components/components.dart';
 import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/service.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantCard extends StatefulWidget {
@@ -68,7 +67,7 @@ class _RestaurantCardState extends State<RestaurantCard> {
                           contentPadding:
                           EdgeInsets.only(left: WIDHT * 0.05),
                           dense: true,
-                          title: LargeText(widget.serviceDetails.elementAt(index).type),
+                          title: Components.largeText(widget.serviceDetails.elementAt(index).type),
                           subtitle: Column(
                             crossAxisAlignment:
                             CrossAxisAlignment.start,
@@ -76,13 +75,13 @@ class _RestaurantCardState extends State<RestaurantCard> {
                               Padding(
                                 padding: EdgeInsets.only(
                                     top: HEIGHT * 0.013),
-                                child: MediumText(
+                                child: Components.mediumText(
                                     widget.serviceDetails.elementAt(index).description,
                                     boolText: FontWeight.normal),
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
-                                child: MediumText(
+                                child: Components.mediumText(
                                     widget.serviceDetails[index].price.toString() + " €",
                                     boolText: FontWeight.normal),
                               )

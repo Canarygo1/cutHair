@@ -12,7 +12,7 @@ class ClientAppointmentsPresenter {
     allImages = [];
     try {
       List<MyAppointment> myAppointment = [];
-       myAppointment = await _remoteRepository
+      myAppointment = await _remoteRepository
            .getUserAppointments(userUid, date, firstTime);
        await getAllImages(myAppointment);
       _view.showImages(allImages);
@@ -32,7 +32,7 @@ class ClientAppointmentsPresenter {
   removeAppointment(MyAppointment appointment, int index, String userUid, DateTime date) async {
     try{
       await _remoteRepository.removeAppointment(appointment);
-      await init(userUid, date, false);
+      await init(userUid, date, true);
     }catch(Exception){
       _view.emptyAppointment();
     }

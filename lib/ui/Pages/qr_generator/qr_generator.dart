@@ -1,6 +1,5 @@
+import 'package:components/components.dart';
 import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -30,7 +29,7 @@ class _QrGeneratorState extends State<QrGenerator> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Center(child: MediumText("Tu código de entrada")),
+              Center(child: Components.mediumText("Tu código de entrada")),
               Padding(
                 padding: EdgeInsets.only(top:HEIGHT *0.05),
                 child: QrImage(
@@ -45,15 +44,15 @@ class _QrGeneratorState extends State<QrGenerator> {
                   children: <Widget>[
                     Padding(
                       padding: EdgeInsets.only(left:HEIGHT*0.001,top:HEIGHT *0.02),
-                      child: LargeText("Detalles de la reserva"),
+                      child: Components.largeText("Detalles de la reserva"),
                     ),
                     Padding(
                       padding: EdgeInsets.only(left:HEIGHT*0.001,top:HEIGHT *0.01),
-                      child: MediumText(myAppointment.uid),
+                      child: Components.mediumText(myAppointment.uid),
                     ),
-                    MediumText(myAppointment.businessName),
-                    MediumText(myAppointment.direction),
-                    MediumText("Personas: "+myAppointment.extraInformation),
+                    Components.mediumText(myAppointment.businessName),
+                    Components.mediumText(myAppointment.direction),
+                    Components.mediumText("Personas: "+myAppointment.extraInformation),
                   ],
                 ),
               ),

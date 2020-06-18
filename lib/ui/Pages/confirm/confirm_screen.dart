@@ -1,20 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
+import 'package:cuthair/data/remote/check_connection.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_presenter.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../../../data/remote/check_connection.dart';
-import '../../../data/remote/http_remote_repository.dart';
-import '../../../data/remote/remote_repository.dart';
-import '../../../global_methods.dart';
-import '../../Components/button.dart';
-import '../confirm_animation/confirm_animation.dart';
 
 class ConfirmScreen extends StatefulWidget {
   Appointment appointment;
@@ -73,15 +69,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
         Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
-            child: LargeText("¿Desea confirmar la cita?")),
+            child: Components.largeText("¿Desea confirmar la cita?")),
         Container(
           padding: EdgeInsets.fromLTRB(
               WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Peluquero: ")),
+              Expanded(child: Components.mediumText("Peluquero: ")),
               Expanded(
-                child: MediumText(appointment.employee.name),
+                child: Components.mediumText(appointment.employee.name),
               )
             ],
           ),
@@ -91,9 +87,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Día: ")),
+              Expanded(child: Components.mediumText("Día: ")),
               Expanded(
-                child: MediumText(appointment.checkIn.day.toString()),
+                child: Components.mediumText(appointment.checkIn.day.toString()),
               )
             ],
           ),
@@ -103,9 +99,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Hora: ")),
+              Expanded(child: Components.mediumText("Hora: ")),
               Expanded(
-                child: MediumText(appointment.checkIn.hour.toString() +
+                child: Components.mediumText(appointment.checkIn.hour.toString() +
                     ":" +
                     GetTimeSeparated.getFullTimeIfHasOneValue(
                         appointment.checkIn.minute.toString())),
@@ -118,8 +114,8 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Tipo servicio: ")),
-              Expanded(child: MediumText(appointment.service.type)),
+              Expanded(child: Components.mediumText("Tipo servicio: ")),
+              Expanded(child: Components.mediumText(appointment.service.type)),
             ],
           ),
         ),
@@ -128,9 +124,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Duración cita: ")),
+              Expanded(child: Components.mediumText("Duración cita: ")),
               Expanded(
-                  child: MediumText(
+                  child: Components.mediumText(
                       appointment.service.duration.toString() + " minutos")),
             ],
           ),
@@ -140,10 +136,10 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
           child: Row(
             children: <Widget>[
-              Expanded(child: MediumText("Precio cita: ")),
+              Expanded(child: Components.mediumText("Precio cita: ")),
               Expanded(
                   child:
-                      MediumText(appointment.service.price.toString() + "€")),
+                  Components.mediumText(appointment.service.price.toString() + "€")),
             ],
           ),
         ),
@@ -152,7 +148,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
             : Container(
                 padding: EdgeInsets.fromLTRB(
                     WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-                child: MediumText(
+                child: Components.mediumText(
                   'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
                   color: Colors.orange,
                 ),
@@ -179,15 +175,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
           Container(
               padding: EdgeInsets.fromLTRB(
                   WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
-              child: LargeText("¿Desea confirmar la reserva?")),
+              child: Components.largeText("¿Desea confirmar la reserva?")),
           Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Restaurante: ")),
+                Expanded(child: Components.mediumText("Restaurante: ")),
                 Expanded(
-                  child: MediumText(appointment.business.name),
+                  child: Components.mediumText(appointment.business.name),
                 )
               ],
             ),
@@ -197,9 +193,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Personas: ")),
+                Expanded(child: Components.mediumText("Personas: ")),
                 Expanded(
-                  child: MediumText(appointment.numberPersons),
+                  child: Components.mediumText(appointment.numberPersons),
                 )
               ],
             ),
@@ -209,9 +205,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Día: ")),
+                Expanded(child: Components.mediumText("Día: ")),
                 Expanded(
-                  child: MediumText(appointment.checkIn.day.toString()),
+                  child: Components.mediumText(appointment.checkIn.day.toString()),
                 )
               ],
             ),
@@ -221,9 +217,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Hora: ")),
+                Expanded(child: Components.mediumText("Hora: ")),
                 Expanded(
-                  child: MediumText(appointment.checkIn.hour.toString() +
+                  child: Components.mediumText(appointment.checkIn.hour.toString() +
                       ":" +
                       GetTimeSeparated.getFullTimeIfHasOneValue(
                           appointment.checkIn.minute.toString())),
@@ -236,7 +232,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               : Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-            child: MediumText(
+            child: Components.mediumText(
               'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
               color: Colors.orange,
             ),
@@ -262,15 +258,15 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
           Container(
               padding: EdgeInsets.fromLTRB(
                   WIDHT * 0.05, HEIGHT * 0.135, WIDHT * 0.089, HEIGHT * 0.027),
-              child: LargeText("¿Desea confirmar la reserva?")),
+              child: Components.largeText("¿Desea confirmar la reserva?")),
           Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.254, HEIGHT * 0.04, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Playa: ")),
+                Expanded(child: Components.mediumText("Playa: ")),
                 Expanded(
-                  child: MediumText(appointment.business.name),
+                  child: Components.mediumText(appointment.business.name),
                 )
               ],
             ),
@@ -280,9 +276,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Personas: ")),
+                Expanded(child: Components.mediumText("Personas: ")),
                 Expanded(
-                  child: MediumText(appointment.numberPersons),
+                  child: Components.mediumText(appointment.numberPersons),
                 )
               ],
             ),
@@ -292,9 +288,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Día: ")),
+                Expanded(child: Components.mediumText("Día: ")),
                 Expanded(
-                  child: MediumText(appointment.checkIn.day.toString()),
+                  child: Components.mediumText(appointment.checkIn.day.toString()),
                 )
               ],
             ),
@@ -304,9 +300,9 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                 WIDHT * 0.254, HEIGHT * 0.013, WIDHT * 0.089, HEIGHT * 0.027),
             child: Row(
               children: <Widget>[
-                Expanded(child: MediumText("Hora: ")),
+                Expanded(child: Components.mediumText("Hora: ")),
                 Expanded(
-                  child: MediumText(appointment.checkIn.hour.toString() +
+                  child: Components.mediumText(appointment.checkIn.hour.toString() +
                       ":" +
                       GetTimeSeparated.getFullTimeIfHasOneValue(
                           appointment.checkIn.minute.toString())),
@@ -319,7 +315,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               : Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-            child: MediumText(
+            child: Components.mediumText(
               'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
               color: Colors.orange,
             ),
@@ -341,13 +337,13 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
 
   Widget buttonConfirm(){
     return Expanded(
-      child: MyButton(
+      child: Components.smallButton(
             () => {
           ConnectionChecked.checkInternetConnectivity(context),
           GlobalMethods().pushAndReplacement(
               context, ConfirmAnimation(appointment))
         },
-        LargeText("Confirmar"),
+        Components.largeText("Confirmar"),
         horizontalPadding: WIDHT * 0.025,
         color: Color.fromRGBO(230, 73, 90, 1),
         height: HEIGHT * 0.067,
@@ -358,12 +354,12 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
 
   Widget buttonCancel(){
     return Expanded(
-      child: MyButton(
+      child: Components.smallButton(
             () => {
           ConnectionChecked.checkInternetConnectivity(context),
           GlobalMethods().removePages(context)
         },
-        LargeText("Cancelar"),
+        Components.largeText("Cancelar"),
         horizontalPadding: WIDHT * 0.025,
         color: Color.fromRGBO(230, 73, 90, 1),
         height: HEIGHT * 0.067,

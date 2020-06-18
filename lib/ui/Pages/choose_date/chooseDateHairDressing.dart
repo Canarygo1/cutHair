@@ -1,12 +1,9 @@
+import 'package:components/components.dart';
+import 'package:components/others_components/calendar.dart';
 import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
 import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/calendars.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
@@ -34,13 +31,12 @@ class _ChooseDateHairDressingScreenState
 
   _ChooseDateHairDressingScreenState(this.appointment);
 
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   List<String> availability = [];
   DateTime _finalDate = DateTime.now();
   ApiRemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
-  CalendarWidget calendarWidget;
 
   initState() {
     _remoteRepository = HttpApiRemoteRepository(Client());
@@ -56,32 +52,31 @@ class _ChooseDateHairDressingScreenState
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-          leading: GoBack(
+          leading: Components.goBack(
             context,
             "",
-            HEIGHT: HEIGHT * 0.013,
           ),
-          title: LargeText("Volver"),
+          title: Components.largeText("Volver"),
           titleSpacing: 0,
         ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
-            CalendarWidget(
+            Calendar(
                 (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
             Padding(
-              padding: EdgeInsets.only(left: WIDHT * 0.025),
-              child: LargeText("Horas disponibles"),
+              padding: EdgeInsets.only(left: width * 0.025),
+              child: Components.largeText("Horas disponibles"),
             ),
             timeSelector(),
           ],
@@ -93,7 +88,7 @@ class _ChooseDateHairDressingScreenState
   Widget timeSelector() {
     return isConsulting == true
         ? Padding(
-          padding: EdgeInsets.only(top: HEIGHT * 0.03),
+          padding: EdgeInsets.only(top: height * 0.03),
           child: SpinKitWave(
               color: Color.fromRGBO(230, 73, 90, 1),
               type: SpinKitWaveType.start,
@@ -102,19 +97,19 @@ class _ChooseDateHairDressingScreenState
         : availability.isEmpty
             ? Padding(
                 padding:
-                    EdgeInsets.only(top: HEIGHT * 0.03, left: WIDHT * 0.03),
+                    EdgeInsets.only(top: height * 0.03, left: width * 0.03),
                 child: Column(
                   children: <Widget>[
                     SvgPicture.asset(
                       "assets/images/sad.svg",
-                      width: WIDHT * 0.229,
+                      width: width * 0.229,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: HEIGHT * 0.03),
+                      padding: EdgeInsets.only(top: height * 0.03),
                       child: Column(
                         children: <Widget>[
-                          MediumText("Lo sentimos, no hay horas disponibles."),
-                          MediumText("Prueba con otro día."),
+                          Components.mediumText("Lo sentimos, no hay horas disponibles."),
+                          Components.mediumText("Prueba con otro día."),
                         ],
                       ),
                     ),
@@ -122,23 +117,23 @@ class _ChooseDateHairDressingScreenState
                 ),
               )
             : Padding(
-                padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                padding: EdgeInsets.only(top: height * 0.027),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
+                          horizontal: width * 0.043, vertical: height * 0.005),
                       height: 60.0,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: availability.length,
                           itemBuilder: (context, index) {
                             return Center(
-                              child: MyButton(
+                              child: Components.smallButton(
                                 () => pressTimeSelection(index),
-                                LargeText(availability[index]),
-                                horizontalPadding: WIDHT * 0.025,
+                                Components.largeText(availability[index]),
+                                horizontalPadding: width * 0.025,
                                 color: Color.fromRGBO(230, 73, 90, 1),
                               ),
                             );

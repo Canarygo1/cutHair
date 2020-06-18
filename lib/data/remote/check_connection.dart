@@ -1,6 +1,5 @@
-
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/network_error.dart';
 import 'package:flutter/material.dart';
 import 'package:simple_connectivity/simple_connectivity.dart';
 
@@ -17,7 +16,7 @@ class ConnectionChecked extends State<ConnectionCheck>{
         color: Color.fromRGBO(300, 300, 300, 1),
           child:  ListView(
             children: <Widget>[
-              NetworkError()
+              Components.networkError(MediaQuery.of(context).size.height, MediaQuery.of(context).size.width),
             ]
           )
         )

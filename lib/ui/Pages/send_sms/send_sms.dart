@@ -1,8 +1,4 @@
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/ui/Pages/send_sms/check_smd_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
@@ -76,7 +72,7 @@ class _SendSMSState extends State<SendSMS> {
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+34' + phoneController.text,
+      phoneNumber: "+34" + phoneController.text,
       timeout: Duration(seconds: 5),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
@@ -107,7 +103,7 @@ class _SendSMSState extends State<SendSMS> {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
-      child: MyTextField(
+      child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
@@ -141,12 +137,11 @@ class _SendSMSState extends State<SendSMS> {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-          leading: GoBack(
+          leading: Components.goBack(
             context,
             "",
-            HEIGHT: HEIGHT * 0.013,
           ),
-          title: LargeText("Volver"),
+          title: Components.largeText("Volver"),
           titleSpacing: 0,
         ),
         body: sending ? GestureDetector(
@@ -160,9 +155,9 @@ class _SendSMSState extends State<SendSMS> {
                 textFieldWidget(phoneController, TextInputType.phone,
                     'Introduce el teléfono',
                     topPadding: HEIGHT * 0.176),
-                MyButton(() => verifyPhone(), LargeText("Enviar código"),
+                Components.smallButton(() => verifyPhone(), Components.largeText("Enviar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
-                error.length == 0 ? Container() : TextError(error),
+                error.length == 0 ? Container() : Components.errorText(error),
               ],
             ),
           ),

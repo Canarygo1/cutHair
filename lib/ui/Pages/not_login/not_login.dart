@@ -1,8 +1,6 @@
 import 'dart:math';
-
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +41,7 @@ class _notLoginState extends State<NotLoginScreen> {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-          title: LargeText(this.widget.title),
+          title: Components.largeText(this.widget.title),
           centerTitle: true,
         ),
         body: Container(
@@ -59,9 +57,9 @@ class _notLoginState extends State<NotLoginScreen> {
               alignment: Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.35, bottom: 1),
-                child: LargeText(
+                child: Components.largeText(
                   this.widget.title,
-                  fontWeight: FontWeight.bold,
+                  boolText: FontWeight.bold,
                   size: 22,
                 ),
               ),
@@ -70,7 +68,7 @@ class _notLoginState extends State<NotLoginScreen> {
               alignment: Alignment.center,
               child: Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.02, bottom: 10.0),
-                child: MediumText(
+                child: Components.mediumText(
                   this.widget.message,
                   boolText: FontWeight.normal,
                 ),
