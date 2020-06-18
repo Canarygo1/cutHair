@@ -134,7 +134,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "9312de63117baf3064fbcf35647606b4e0d12549"
+      resolved-ref: e1160a4449a1e3654b8b543f1b5d92669b78a709
       url: "git://github.com/Domirop/FiltersPackage.git"
     source: git
     version: "0.0.1"
@@ -220,13 +220,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.4.12"
-  flutter_config:
+  flutter_dotenv:
     dependency: "direct main"
     description:
-      name: flutter_config
+      name: flutter_dotenv
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
+    version: "2.1.0"
   flutter_driver:
     dependency: "direct dev"
     description: flutter

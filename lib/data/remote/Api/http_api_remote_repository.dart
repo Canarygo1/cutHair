@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
-import 'package:flutter_config/flutter_config.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
 
 class HttpApiRemoteRepository extends ApiRemoteRepository{
@@ -10,10 +10,8 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
   @override
   Future<List<String>> getHairDressingAvailability(String duration, String hairdresser, String date, String businessUid) async {
-    //Pasas typeBusiness
-    var uri = Uri.parse('https://us-central1-pruebafirebase-44f30.cloudfunctions.net/getData');
+    var uri = Uri.parse(DotEnv().env['GET_DATA_HAIRDRESSING']);
     List<String> availabity = [];
-
     uri = uri.replace(queryParameters:<String,String>{
       "date":date,
       "peluquero":hairdresser,
@@ -29,7 +27,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
   @override
   Future<List<String>> getRestaurantAvailability(String duration, String numberPersons, String date, String businessUid) async {
-    var uri = Uri.parse(FlutterConfig.get('GET_DATA_RESTAURANT'));
+    var uri = Uri.parse(DotEnv().env['GET_DATA_RESTAURANT']);
     List<String> availabity = [];
 
     uri = uri.replace(queryParameters:<String,String>{
@@ -47,7 +45,7 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
 
   @override
   Future<List<String>> getBeachAvailability(String duration, String numberPersons, String date, String businessUid) async {
-    var uri = Uri.parse(FlutterConfig.get('GET_DATA_BEACH'));
+    var uri = Uri.parse(DotEnv().env['GET_DATA_BEACH']);
     List<String> availabity = [];
 
     uri = uri.replace(queryParameters:<String,String>{

@@ -222,7 +222,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             GlobalMethods().popPage(confirmDialog.context),
             ConnectionChecked.checkInternetConnectivity(context),
             _presenter.removeAppointment(myAppointments[index], index,
-                DBProvider.users[0].uid, calendarWidget.currentDate2),
+                DBProvider.users[0].uid, DateTime.now()),
             timer = Timer(
                 Duration(minutes: 1),
                 () => this.setState(() {
