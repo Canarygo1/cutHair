@@ -1,12 +1,7 @@
 import 'dart:convert';
-
+import 'package:components/components.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +74,7 @@ class _checkSMSCodeState extends State<checkSMSCode> {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
-      child: MyTextField(
+      child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
@@ -113,12 +108,11 @@ class _checkSMSCodeState extends State<checkSMSCode> {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-          leading: GoBack(
+          leading: Components.goBack(
             context,
             "",
-            HEIGHT: HEIGHT * 0.013,
           ),
-          title: LargeText("Volver"),
+          title: Components.largeText("Volver"),
           titleSpacing: 0,
         ),
         body: GestureDetector(
@@ -132,10 +126,10 @@ class _checkSMSCodeState extends State<checkSMSCode> {
                 textFieldWidget(
                     codeController, TextInputType.phone, "Introduce el código",
                     topPadding: HEIGHT * 0.027),
-                MyButton(() => signIn(codeController.text),
-                    LargeText("Confirmar código"),
+                Components.smallButton(() => signIn(codeController.text),
+                    Components.largeText("Confirmar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
-                error.length == 0 ? Container() : TextError(error),
+                error.length == 0 ? Container() : Components.errorText(error),
               ],
             ),
           ),

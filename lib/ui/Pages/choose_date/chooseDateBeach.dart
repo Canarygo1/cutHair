@@ -1,18 +1,15 @@
+import 'package:components/components.dart';
+import 'package:components/others_components/calendar.dart';
 import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
 import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:cuthair/ui/Components/calendars.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart';
-import 'package:cuthair/ui/Components/button.dart';
 import 'choose_date_presenter.dart';
 
 class ChooseDateBeachScreen extends StatefulWidget {
@@ -44,7 +41,7 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
   DateTime _finalDateCheckIn = DateTime.now();
   ApiRemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
-  CalendarWidget calendarWidget;
+  Calendar calendarWidget;
 
   initState() {
     _remoteRepository = HttpApiRemoteRepository(Client());
@@ -70,23 +67,22 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        leading: GoBack(
+        leading: Components.goBack(
           context,
           "",
-          HEIGHT: HEIGHT * 0.013,
         ),
-        title: LargeText("Volver"),
+        title: Components.largeText("Volver"),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            CalendarWidget(
+            Calendar(
                     (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
             Padding(
               padding: EdgeInsets.only(left: WIDHT * 0.025),
-              child: LargeText("Horas disponibles"),
+              child: Components.largeText("Horas disponibles"),
             ),
             timeSelector(),
           ],
@@ -115,8 +111,8 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
             padding: EdgeInsets.only(top: HEIGHT * 0.03),
             child: Column(
               children: <Widget>[
-                MediumText("Lo sentimos, no hay horas disponibles."),
-                MediumText("Prueba con otro día."),
+                Components.mediumText("Lo sentimos, no hay horas disponibles."),
+                Components.mediumText("Prueba con otro día."),
               ],
             ),
           ),
@@ -137,9 +133,9 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
                 itemCount: availability.length,
                 itemBuilder: (context, index) {
                   return Center(
-                    child: MyButton(
+                    child: Components.smallButton(
                           () => pressTimeSelection(index),
-                      LargeText(availability[index]),
+                      Components.largeText(availability[index]),
                       height: HEIGHT * 0.05,
                       horizontalPadding: WIDHT * 0.025,
                       color: Color.fromRGBO(230, 73, 90, 1),

@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:components/components.dart';
 import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
@@ -85,9 +82,9 @@ class _LoginState extends State<Login> implements LoginView {
                 textFieldWidget(
                     passwordController, TextInputType.text, "Contraseña",
                     obscureText: true),
-                error.length == 0 ? Container() : TextError(error, color: color,),
+                error.length == 0 ? Container() : Components.errorText(error, color: color,),
                 TextForgetPassword(context),
-                MyButton(() => logIn(), LargeText("Entrar"),
+                Components.smallButton(() => logIn(), Components.largeText("Entrar"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 TextRegister(context),
               ],
@@ -101,7 +98,7 @@ class _LoginState extends State<Login> implements LoginView {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
-      child: MyTextField(
+      child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(

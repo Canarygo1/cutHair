@@ -1,9 +1,8 @@
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/service.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
@@ -81,20 +80,20 @@ class CardService extends StatelessWidget {
         child: ListTile(
           contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
           dense: true,
-          title: LargeText(servicesDetails[index].type),
+          title: Components.largeText(servicesDetails[index].type),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
-                child: MediumText(
+                child: Components.mediumText(
                   "Llame al número para más información",
                   boolText: FontWeight.normal,
                 ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: HEIGHT * 0.013),
-                child: MediumText(
+                child: Components.mediumText(
                     "Teléfono: " + business.phoneNumber.toString(),
                     boolText: FontWeight.normal),
               ),
@@ -109,19 +108,19 @@ class CardService extends StatelessWidget {
       return ListTile(
         contentPadding: EdgeInsets.only(left: WIDHT * 0.05),
         dense: true,
-        title: LargeText(servicesDetails[index].type),
+        title: Components.largeText(servicesDetails[index].type),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
-              child: MediumText(
+              child: Components.mediumText(
                   servicesDetails[index].duration.toString() + " minutos",
                   boolText: FontWeight.normal),
             ),
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.013),
-              child: MediumText(servicesDetails[index].price.toString() + " €",
+              child: Components.mediumText(servicesDetails[index].price.toString() + " €",
                   boolText: FontWeight.normal),
             )
           ],

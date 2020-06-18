@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/business.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/detail/detail_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +48,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        title: LargeText("Negocios"),
+        title: Components.largeText("Negocios"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -79,7 +79,7 @@ class _ClientHomeState extends State<ClientHome> implements HomeView {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(bottom: 20, top: HEIGHT * 0.01),
-                        child: LargeText(businessType[indexTipo], fontWeight: FontWeight.bold,),
+                        child: Components.largeText(businessType[indexTipo], boolText: FontWeight.bold,),
                       ),
                       Container(
                         height: 230,

@@ -1,8 +1,6 @@
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:flutter/material.dart';
 
 class CardWithCheckOut extends StatelessWidget {
@@ -13,8 +11,8 @@ class CardWithCheckOut extends StatelessWidget {
   List<String> allImages = [];
   List<MyAppointment> myAppointments = [];
 
-  CardWithCheckOut(this.index, this.functionRemove,
-      this.allImages, this.myAppointments);
+  CardWithCheckOut(
+      this.index, this.functionRemove, this.allImages, this.myAppointments);
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +37,13 @@ class CardWithCheckOut extends StatelessWidget {
                     aspectRatio: 50.0 / 11.0,
                     child: allImages[index].contains("assets/")
                         ? Image.asset(
-                      allImages[index],
-                      fit: BoxFit.cover,
-                    )
+                            allImages[index],
+                            fit: BoxFit.cover,
+                          )
                         : Image.network(
-                      allImages[index],
-                      fit: BoxFit.cover,
-                    ),
+                            allImages[index],
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ],
               ),
@@ -61,23 +59,25 @@ class CardWithCheckOut extends StatelessWidget {
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText(
+                        child: Components.mediumText(
                             myAppointments.elementAt(index).businessName),
                       ),
                       Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                          child:
-                              MediumText(myAppointments.elementAt(index).type + ' - ' + myAppointments[index].price)),
+                          child: Components.mediumText(
+                              myAppointments.elementAt(index).type +
+                                  ' - ' +
+                                  myAppointments[index].price)),
                       Container(
                           width: WIDHT * 0.62,
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                          child: MediumText(
+                          child: Components.mediumText(
                               myAppointments.elementAt(index).direction)),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText(
+                        child: Components.mediumText(
                             myAppointments.elementAt(index).extraInformation),
                       ),
                     ],
@@ -86,15 +86,17 @@ class CardWithCheckOut extends StatelessWidget {
                     padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                     child: Column(
                       children: <Widget>[
-                        SmallText(GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
-                                    myAppointments.elementAt(index).checkIn)
-                                .day
-                                .toString()) +
+                        Components.smallText(GetTimeSeparated
+                                .getFullTimeIfHasOneValue_Month(DateTime.parse(
+                                        myAppointments.elementAt(index).checkIn)
+                                    .day
+                                    .toString()) +
                             "-" +
-                      GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
-                                    myAppointments.elementAt(index).checkIn)
-                                .month
-                                .toString()) +
+                            GetTimeSeparated.getFullTimeIfHasOneValue_Month(
+                                DateTime.parse(
+                                        myAppointments.elementAt(index).checkIn)
+                                    .month
+                                    .toString()) +
                             "-" +
                             DateTime.parse(
                                     myAppointments.elementAt(index).checkIn)
@@ -104,35 +106,37 @@ class CardWithCheckOut extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.006),
-                              child: SmallText(
+                              child: Components.smallText(
                                 DateTime.parse(myAppointments
                                             .elementAt(index)
                                             .checkIn)
                                         .hour
                                         .toString() +
                                     ":" +
-                                    GetTimeSeparated.getFullTimeIfHasOneValue_Hour(
-                                        DateTime.parse(myAppointments
-                                                .elementAt(index)
-                                                .checkIn)
-                                            .minute
-                                            .toString()),
+                                    GetTimeSeparated
+                                        .getFullTimeIfHasOneValue_Hour(
+                                            DateTime.parse(myAppointments
+                                                    .elementAt(index)
+                                                    .checkIn)
+                                                .minute
+                                                .toString()),
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.045),
-                              child: SmallText(DateTime.parse(myAppointments
+                              child: Components.smallText(DateTime.parse(myAppointments
                                           .elementAt(index)
                                           .checkOut)
                                       .hour
                                       .toString() +
                                   ":" +
-                                  GetTimeSeparated.getFullTimeIfHasOneValue_Hour(
-                                      DateTime.parse(myAppointments
-                                              .elementAt(index)
-                                              .checkOut)
-                                          .minute
-                                          .toString())),
+                                  GetTimeSeparated
+                                      .getFullTimeIfHasOneValue_Hour(
+                                          DateTime.parse(myAppointments
+                                                  .elementAt(index)
+                                                  .checkOut)
+                                              .minute
+                                              .toString())),
                             ),
                             Padding(
                               padding: EdgeInsets.only(
@@ -176,9 +180,9 @@ class CardWithCheckOut extends StatelessWidget {
               ),
             ),
             Center(
-              child: MyButton(
+              child: Components.smallButton(
                 functionRemove,
-                SmallText(
+                Components.smallText(
                   'Cancelar',
                   size: 11,
                 ),

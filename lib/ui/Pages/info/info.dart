@@ -1,14 +1,10 @@
 import 'dart:async';
+import 'package:components/components.dart';
+import 'package:components/others_components/confirm_dialog.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:cuthair/ui/Components/confirm_dialog.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Pages/contribuyers/contribuyer_screen.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
@@ -49,7 +45,7 @@ class _InfoScreenState extends State<Info> {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        title: LargeText("Mis datos"),
+        title: Components.largeText("Mis datos"),
         centerTitle: true,
         actions: <Widget>[
           GestureDetector(
@@ -154,13 +150,13 @@ class _InfoScreenState extends State<Info> {
               ],
             ),
           ),
-          MyButton(
-                  () => functionResetPassword(), LargeText("Cambiar contraseña"),
+          Components.smallButton(
+                  () => functionResetPassword(), Components.largeText("Cambiar contraseña"),
               color: Color.fromRGBO(230, 73, 90, 1)),
           error.length == 0
               ? Container()
               : Container(
-            child: TextError(error),
+            child: Components.errorText(error),
           ),
         ]),
       ),
@@ -201,8 +197,8 @@ class _InfoScreenState extends State<Info> {
               ],
             ),
           ),
-          Center(child: SmallText("Resérvalo © 2020", boolText: FontWeight.normal,)),
-          Center(child: SmallText("@Reservaloapp"))
+          Center(child: Components.smallText("Resérvalo © 2020", boolText: FontWeight.normal,)),
+          Center(child: Components.smallText("@Reservaloapp"))
         ],
       ),
     );
@@ -212,8 +208,8 @@ class _InfoScreenState extends State<Info> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        confirmDialog = ConfirmDialog(
-          MediumText("Seguro que quiere cambiar la contraseña de: " +
+        confirmDialog = Components.confirmDialog(
+          Components.mediumText("Seguro que quiere cambiar la contraseña de: " +
               DBProvider.users[0].email),
               () => {
             changePassword(),

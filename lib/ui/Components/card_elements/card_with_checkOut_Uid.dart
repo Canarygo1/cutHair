@@ -1,8 +1,6 @@
+import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/textTypes/small_text.dart';
 import 'package:cuthair/ui/Pages/qr_generator/qr_generator.dart';
 import 'package:flutter/material.dart';
 
@@ -63,17 +61,17 @@ class CardWithCheckOutUid extends StatelessWidget {
                       Padding(
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                          child: MediumText(
+                          child: Components.mediumText(
                               myAppointments.elementAt(index).businessName)),
                       Container(
                           width: WIDHT * 0.62,
                           padding:
                               EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                          child: MediumText(
+                          child: Components.mediumText(
                               myAppointments.elementAt(index).direction)),
                       Padding(
                         padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: MediumText("Personas: " +
+                        child: Components.mediumText("Personas: " +
                             myAppointments.elementAt(index).extraInformation),
                       ),
                     ],
@@ -82,7 +80,7 @@ class CardWithCheckOutUid extends StatelessWidget {
                     padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
                     child: Column(
                       children: <Widget>[
-                        SmallText(GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
+                        Components.smallText(GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
                             myAppointments.elementAt(index).checkIn)
                             .day
                             .toString()) +
@@ -100,7 +98,7 @@ class CardWithCheckOutUid extends StatelessWidget {
                           children: <Widget>[
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.006),
-                              child: SmallText(
+                              child: Components.smallText(
                                 DateTime.parse(myAppointments
                                             .elementAt(index)
                                             .checkIn)
@@ -117,7 +115,7 @@ class CardWithCheckOutUid extends StatelessWidget {
                             ),
                             Padding(
                               padding: EdgeInsets.only(top: HEIGHT * 0.045),
-                              child: SmallText(DateTime.parse(myAppointments
+                              child: Components.smallText(DateTime.parse(myAppointments
                                           .elementAt(index)
                                           .checkOut)
                                       .hour
@@ -172,9 +170,9 @@ class CardWithCheckOutUid extends StatelessWidget {
               ),
             ),
             Center(
-              child: MyButton(
+              child: Components.smallButton(
                 functionRemove,
-                SmallText(
+                Components.smallText(
                   'Cancelar',
                   size: 11,
                 ),
@@ -183,12 +181,12 @@ class CardWithCheckOutUid extends StatelessWidget {
               ),
             ),
             Center(
-              child: MyButton(
+              child: Components.smallButton(
                 () => {
                   GlobalMethods()
                       .pushPage(context, QrGenerator(myAppointments[index]))
                 },
-                SmallText(
+                Components.smallText(
                   'Mostrar código',
                   size: 11,
                 ),
