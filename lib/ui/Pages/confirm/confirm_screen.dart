@@ -143,7 +143,7 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
             ],
           ),
         ),
-        this.penalize == false
+        (this.penalize == false || this.penalize == null) && this.appointment.business.uid == "PR01"
             ? Container()
             : Container(
                 padding: EdgeInsets.fromLTRB(
@@ -227,16 +227,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
               ],
             ),
           ),
-          this.penalize == false || this.penalize == null
-              ? Container()
-              : Container(
-            padding: EdgeInsets.fromLTRB(
-                WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-            child: Components.mediumText(
-              'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
-              color: Colors.orange,
-            ),
-          ),
           Container(
             padding: EdgeInsets.fromLTRB(
                 WIDHT * 0.025, HEIGHT * 0.04, WIDHT * 0.025, 0),
@@ -308,16 +298,6 @@ class _ConfirmScreenState extends State<ConfirmScreen> implements ConfirmView {
                           appointment.checkIn.minute.toString())),
                 )
               ],
-            ),
-          ),
-          this.penalize == false || this.penalize == null
-              ? Container()
-              : Container(
-            padding: EdgeInsets.fromLTRB(
-                WIDHT * 0.089, HEIGHT * 0.013, WIDHT * 0.089, 0.0),
-            child: Components.mediumText(
-              'Existe una penalización hacia usted en este negocio, pueden haber cambios en el precio final.',
-              color: Colors.orange,
             ),
           ),
           Container(
