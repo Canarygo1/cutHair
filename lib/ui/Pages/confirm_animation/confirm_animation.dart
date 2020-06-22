@@ -88,7 +88,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     } else {
       timer.cancel();
       setState(() {
-        isAppointmentInsert == true ? color = Colors.green : color = Colors.red;
+        isAppointmentInsert == true ? color = Color.fromRGBO(26, 200, 146, 1) : color = Colors.red;
         _progressDone = true;
       });
     }
@@ -124,7 +124,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     return Text(
       _nextPercentage == 0 ? '' : '${_nextPercentage.toInt()}',
       style: TextStyle(
-          fontSize: 40, fontWeight: FontWeight.w800, color: Colors.green),
+          fontSize: 40, fontWeight: FontWeight.w800, color: Color.fromRGBO(26, 200, 146, 1)),
     );
   }
 
@@ -135,7 +135,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
       ),
       foregroundPainter: ProgressPainter(
           defaultCircleColor: Color.fromRGBO(300, 300, 300, 1),
-          percentageCompletedCircleColor: Colors.green,
+          percentageCompletedCircleColor: Color.fromRGBO(26, 200, 146, 1),
           completedPercentage: _percentage,
           circleWidth: 50.0),
     );

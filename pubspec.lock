@@ -90,7 +90,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "9068e16e2d6bd744daa7a74d90ba6aefd9d9fb31"
+      resolved-ref: "737a3ef4fd98c7bd992db6488b434dd25df8279a"
       url: "git://github.com/Domirop/Components.git"
     source: git
     version: "0.0.1"

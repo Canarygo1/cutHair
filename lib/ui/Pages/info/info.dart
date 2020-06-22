@@ -91,108 +91,131 @@ class _InfoScreenState extends State<Info> implements InfoView {
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
-            Widget>[
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Image.asset("assets/images/userInfo.png"),
-            height: 200,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(90),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: WIDHT * 0.101),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Components.mediumText(
-                "Teléfono:",
-                color: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            ),
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(left: WIDHT * 0.101, top: 10.0, bottom: 5.0),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Components.mediumText(
-                DBProvider.users[0].phone,
-                color: Colors.white,
-              ),
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
-            child: Divider(
-              height: 1.0,
-              color: Colors.white,
-              indent: WIDHT * 0.101,
-              endIndent: WIDHT * 0.089,
-              thickness: 0.5,
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: WIDHT * 0.101),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Components.mediumText(
-                "Nombre:",
-                color: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: textFieldWidget(nameTextfield, TextInputType.text, "Name"),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: WIDHT * 0.101),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Components.mediumText(
-                "Apellidos:",
-                color: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: textFieldWidget(
-                surNameTextfield, TextInputType.text, "Apellidos"),
-          ),
-          Padding(
-            padding: EdgeInsets.only(left: WIDHT * 0.101),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Components.mediumText(
-                "Email:",
-                color: Color.fromRGBO(230, 73, 90, 1),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: textFieldWidget(emailTextfield, TextInputType.emailAddress, "Email"),
-          ),
-          error.length == 0
-              ? Container()
-              : Container(
-                  child: Components.errorText(error,
-                      color: errorColor == true
-                          ? Colors.green
-                          : Color.fromRGBO(230, 73, 90, 1)),
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 20),
+                child: Image.asset("assets/images/userInfo.png"),
+                height: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(90),
                 ),
-          changes == true
-              ? Components.smallButton(
-                  () => dialogUpdate(), Components.largeText("Guardar cambios"),
-                  width: WIDHT * 0.85, color: Color.fromRGBO(230, 73, 90, 1))
-              : Container(),
-          Components.smallButton(() => functionResetPassword(),
-              Components.largeText("Cambiar contraseña"),
-              width: WIDHT * 0.85, color: Color.fromRGBO(230, 73, 90, 1)),
-          bottomElements(),
-        ]),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    "Teléfono:",
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(
+                        left: WIDHT * 0.101, top: 10.0, bottom: 5.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Components.mediumText(
+                        DBProvider.users[0].phone,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: WIDHT * 0.089),
+                    child: Components.alertCard(
+                      Icon(
+                        Icons.close,
+                        color: Colors.white,
+                        size: 22.0,
+                      ),
+                      Expanded(child: Components.smallText("No se Permite cambiar")),
+                      HEIGHT * 0.033,
+                      WIDHT * 0.4,
+                      color: Color.fromRGBO(230, 73, 90, 1),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
+                child: Divider(
+                  height: 1.0,
+                  color: Colors.white,
+                  indent: WIDHT * 0.101,
+                  endIndent: WIDHT * 0.089,
+                  thickness: 0.5,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    "Nombre:",
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child:
+                    textFieldWidget(nameTextfield, TextInputType.text, "Name"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    "Apellidos:",
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: textFieldWidget(
+                    surNameTextfield, TextInputType.text, "Apellidos"),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    "Email:",
+                    color: Color.fromRGBO(230, 73, 90, 1),
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: textFieldWidget(
+                    emailTextfield, TextInputType.emailAddress, "Email"),
+              ),
+              error.length == 0
+                  ? Container()
+                  : Container(
+                      child: Components.errorText(error,
+                          color: errorColor == true
+                              ? Color.fromRGBO(26, 200, 146, 1)
+                              : Color.fromRGBO(230, 73, 90, 1)),
+                    ),
+              changes == true
+                  ? Components.smallButton(() => dialogUpdate(),
+                      Components.largeText("Guardar cambios"),
+                      width: WIDHT * 0.85,
+                      color: Color.fromRGBO(230, 73, 90, 1))
+                  : Container(),
+              Components.smallButton(() => functionResetPassword(),
+                  Components.largeText("Cambiar contraseña"),
+                  width: WIDHT * 0.85, color: Color.fromRGBO(230, 73, 90, 1)),
+              bottomElements(),
+            ]),
       ),
     );
   }
@@ -257,7 +280,8 @@ class _InfoScreenState extends State<Info> implements InfoView {
             children: <Widget>[
               Components.mediumText("Introduzca la contraseña para continuar"),
               textFieldWidget(
-                  passwordTextField, TextInputType.text, "Contraseña", obscureText: true),
+                  passwordTextField, TextInputType.text, "Contraseña",
+                  obscureText: true),
             ],
           ),
           () => {},
