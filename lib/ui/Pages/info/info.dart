@@ -250,14 +250,14 @@ class _InfoScreenState extends State<Info> implements InfoView {
   updateData() {
     if (nameTextfield.text != DBProvider.users[0].name ||
         surNameTextfield.text != DBProvider.users[0].surname ||
-        emailTextfield.text != DBProvider.users[0].email) {
+        emailTextfield.text.toLowerCase() != DBProvider.users[0].email.toLowerCase()) {
       Map<String, String> data = Map();
       data.putIfAbsent("Nombre", () => nameTextfield.text);
       data.putIfAbsent("Apellidos", () => surNameTextfield.text);
-      data.putIfAbsent("Email", () => emailTextfield.text);
+      data.putIfAbsent("Email", () => emailTextfield.text.toLowerCase());
       presenter.updateData(data, DBProvider.users[0].uid);
       User user = DBProvider.users[0];
-      user.email = emailTextfield.text;
+      user.email = emailTextfield.text.toLowerCase();
       user.name = nameTextfield.text;
       user.surname = surNameTextfield.text;
       DBProvider.update(user);
