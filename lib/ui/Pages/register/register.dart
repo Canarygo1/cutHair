@@ -180,7 +180,7 @@ class _registerState extends State<register> {
   Map<String, Object> getData() {
     Map data = Map<String, Object>();
     data.putIfAbsent("Apellidos", () => surname.text.toString());
-    data.putIfAbsent("Email", () => email.text.toString());
+    data.putIfAbsent("Email", () => email.text.toLowerCase());
     data.putIfAbsent("Nombre", () => name.text.toString());
     data.putIfAbsent("Permisos", () => 3);
     return data;
@@ -188,7 +188,7 @@ class _registerState extends State<register> {
 
   checkEmail() async {
     var tokkens = await FirebaseAuth.instance
-        .fetchSignInMethodsForEmail(email: email.text);
+        .fetchSignInMethodsForEmail(email: email.text.toLowerCase());
     if (registerCode.checkCampos(context, keyForm)) {
       if (tokkens.length == 0) {
         setState(() {
