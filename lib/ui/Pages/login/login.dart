@@ -202,7 +202,7 @@ class _LoginState extends State<Login> implements LoginView {
 
   logIn() {
     changeTextError("");
-    loginCode.iniciarSesion(emailController.text.toString(),
+    loginCode.iniciarSesion(emailController.text.toLowerCase(),
         passwordController.text.toString(), context);
   }
 
