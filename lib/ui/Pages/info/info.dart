@@ -36,6 +36,7 @@ class _InfoScreenState extends State<Info> implements InfoView {
   var nameTextfield = TextEditingController();
   var surNameTextfield = TextEditingController();
   var emailTextfield = TextEditingController();
+  var passwordTextField = TextEditingController();
   InfoPagePresenter presenter;
   RemoteRepository remoteRepository;
   bool errorColor = false;
@@ -172,19 +173,19 @@ class _InfoScreenState extends State<Info> implements InfoView {
           ),
           Align(
             alignment: Alignment.centerLeft,
-            child: textFieldWidget(emailTextfield, TextInputType.text, "Email"),
+            child: textFieldWidget(emailTextfield, TextInputType.emailAddress, "Email"),
           ),
           error.length == 0
               ? Container()
               : Container(
-            child: Components.errorText(error,
-                color: errorColor == true
-                    ? Colors.green
-                    : Color.fromRGBO(230, 73, 90, 1)),
-          ),
+                  child: Components.errorText(error,
+                      color: errorColor == true
+                          ? Colors.green
+                          : Color.fromRGBO(230, 73, 90, 1)),
+                ),
           changes == true
               ? Components.smallButton(
-                  () => updateData(), Components.largeText("Guardar cambios"),
+                  () => dialogUpdate(), Components.largeText("Guardar cambios"),
                   width: WIDHT * 0.85, color: Color.fromRGBO(230, 73, 90, 1))
               : Container(),
           Components.smallButton(() => functionResetPassword(),
@@ -247,20 +248,37 @@ class _InfoScreenState extends State<Info> implements InfoView {
     );
   }
 
-  updateData() {
+  dialogUpdate() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        confirmDialog = Components.confirmDialog(
+          Column(
+            children: <Widget>[
+              Components.mediumText("Introduzca la contraseña para continuar"),
+              textFieldWidget(
+                  passwordTextField, TextInputType.text, "Contraseña", obscureText: true),
+            ],
+          ),
+          () => {updateData(passwordTextField.text),
+          Navigator.pop(context)},
+          multiOptions: true,
+        );
+        return confirmDialog;
+      },
+    );
+  }
+
+  updateData(String password) {
     if (nameTextfield.text != DBProvider.users[0].name ||
         surNameTextfield.text != DBProvider.users[0].surname ||
-        emailTextfield.text.toLowerCase() != DBProvider.users[0].email.toLowerCase()) {
+        emailTextfield.text.toLowerCase() !=
+            DBProvider.users[0].email.toLowerCase()) {
       Map<String, String> data = Map();
       data.putIfAbsent("Nombre", () => nameTextfield.text);
       data.putIfAbsent("Apellidos", () => surNameTextfield.text);
       data.putIfAbsent("Email", () => emailTextfield.text.toLowerCase());
-      presenter.updateData(data, DBProvider.users[0].uid);
-      User user = DBProvider.users[0];
-      user.email = emailTextfield.text.toLowerCase();
-      user.name = nameTextfield.text;
-      user.surname = surNameTextfield.text;
-      DBProvider.update(user);
+      presenter.updateData(data, DBProvider.users[0].uid, password);
     }
   }
 
@@ -359,15 +377,18 @@ class _InfoScreenState extends State<Info> implements InfoView {
                 errorColor = false
               };
         changes = false;
+        nameTextfield.text = DBProvider.users[0].name;
+        surNameTextfield.text = DBProvider.users[0].surname;
+        emailTextfield.text = DBProvider.users[0].email;
       });
       timer = Timer(
           Duration(seconds: 2),
-              () => {
-            this.setState(() {
-              errorColor = false;
-              error = "";
-            })
-          });
+          () => {
+                this.setState(() {
+                  errorColor = false;
+                  error = "";
+                })
+              });
     }
   }
 }
