@@ -15,7 +15,6 @@ import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Info extends StatefulWidget {
