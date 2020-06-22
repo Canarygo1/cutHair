@@ -90,7 +90,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: dcf4b7a9b033201890f1d79916a1b33ddd9a3740
+      resolved-ref: e190612f738b2add526834693e1a8a0680bf7d7b
       url: "git://github.com/Domirop/Components.git"
     source: git
     version: "0.0.1"
@@ -547,7 +547,7 @@ packages:
       name: shelf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.7.5"
+    version: "0.7.7"
   shelf_packages_handler:
     dependency: transitive
     description:

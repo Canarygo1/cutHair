@@ -47,7 +47,6 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     if (timer != null && timer.isActive) {
       timer.cancel();
     }
-    ;
   }
 
   @override

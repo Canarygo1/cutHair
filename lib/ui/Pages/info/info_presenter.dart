@@ -1,5 +1,4 @@
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class InfoPagePresenter {
@@ -10,21 +9,11 @@ class InfoPagePresenter {
 
   InfoPagePresenter(this._view, this._remoteRepository);
 
-  init() async {
-    try {
-      await currentUser();
-      _view.showList(await _remoteRepository.getUser(userUid));
-    }catch(e){
-      print(e.toString());
-    }
-  }
-
-  Future<void> currentUser() async {
-    final FirebaseUser user = await auth.currentUser();
-    userUid = user.uid;
+  updateData (Map data, String uid) async {
+    _view.showUpdate(await _remoteRepository.updateDataUser(data, uid));
   }
 }
 
 abstract class InfoView {
-  showList(User user);
+  showUpdate(bool correct);
 }

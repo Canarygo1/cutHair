@@ -578,4 +578,16 @@ class HttpRemoteRepository implements RemoteRepository {
     bool penalize = documentSnapshot.data['Penalizacion'];
     return penalize;
   }
+
+  @override
+  Future<bool> updateDataUser(Map data, String uid) async {
+        try {
+          await firestore.collection("Usuarios")
+          .document(uid)
+          .updateData(data);
+          return true;
+        } on Exception catch (e) {
+          return false;
+        }
+  }
 }
