@@ -260,8 +260,9 @@ class _InfoScreenState extends State<Info> implements InfoView {
                   passwordTextField, TextInputType.text, "Contraseña", obscureText: true),
             ],
           ),
-          () => {updateData(passwordTextField.text),
-          Navigator.pop(context)},
+          () => {},
+          functionSimple: () => updateData(passwordTextField.text),
+          textSimple: "Continuar",
           multiOptions: true,
         );
         return confirmDialog;
