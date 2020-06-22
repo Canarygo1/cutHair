@@ -47,4 +47,6 @@ abstract class RemoteRepository {
   Future<bool> removeAppointment(MyAppointment appointment);
 
   Future<bool> getUserPenalize(String uid);
+
+  Future<bool> updateDataUser(Map data, String uid);
 }

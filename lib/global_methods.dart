@@ -42,6 +42,7 @@ class GlobalMethods {
     } else {
       screen = Login();
     }
+
     pushAndReplacement(context, screen);
   }
 }
