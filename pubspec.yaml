@@ -50,4 +50,5 @@ flutter:
 
   assets:
     - assets/images/
-    - .env
+    - env_files/debug.env
+    - env_files/release.env

@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/components.dart';
 import 'package:components/others_components/confirm_dialog.dart';
+import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -134,7 +136,8 @@ class _InfoScreenState extends State<Info> implements InfoView {
                         color: Colors.white,
                         size: 22.0,
                       ),
-                      Expanded(child: Components.smallText("No se Permite cambiar")),
+                      Expanded(
+                          child: Components.smallText("No se Permite cambiar")),
                       HEIGHT * 0.033,
                       WIDHT * 0.4,
                       color: Color.fromRGBO(230, 73, 90, 1),
