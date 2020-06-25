@@ -16,7 +16,8 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
       "date":date,
       "peluquero":hairdresser,
       "duration":duration,
-      "businessUid": businessUid
+      "businessUid": businessUid,
+      "mode":DotEnv().env['GET_NEGOCIO']
     });
 
     //Con typeBusiness cambiará el get para la recogida del objeto
@@ -34,7 +35,8 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
       "date":date,
       "numberPersons": numberPersons,
       "duration":duration,
-      "businessUid": businessUid
+      "businessUid": businessUid,
+      "mode":DotEnv().env['GET_NEGOCIO']
     });
 
     //Con typeBusiness cambiará el get para la recogida del objeto
@@ -52,7 +54,8 @@ class HttpApiRemoteRepository extends ApiRemoteRepository{
       "date":date,
       "numberPersons": numberPersons,
       "duration":duration,
-      "businessUid": businessUid
+      "businessUid": businessUid,
+      "mode":DotEnv().env['GET_NEGOCIO']
     });
 
     var response = await _client.get(uri);

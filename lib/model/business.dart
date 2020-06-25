@@ -34,4 +34,11 @@ class Business {
       return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, aforo: aforo, maxPeople: numberPeople, durationMeal: duration);
     }
   }
+
+  @override
+  String toString() {
+    return 'Business{uid: $uid, name: $name, shortDirection: $shortDirection, direction: $direction, type: $type, phoneNumber: $phoneNumber, numeroFotos: $numeroFotos, typeBusiness: $typeBusiness}';
+  }
+
+
 }

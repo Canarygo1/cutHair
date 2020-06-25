@@ -17,6 +17,5 @@ class DetailPresenter {
 
 abstract class DetailView {
   showServices(List services);
-
   showImages(List images);
 }
