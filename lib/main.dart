@@ -4,8 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+const bool _kReleaseMode = const bool.fromEnvironment("dart.vm.product");
+
 Future<void> main() async {
-  await DotEnv().load('.env');
+  String file = _kReleaseMode == true ? 'env_files/release.env' : 'env_files/debug.env';
+  await DotEnv().load(file);
   runApp(MyApp());
 }
 
