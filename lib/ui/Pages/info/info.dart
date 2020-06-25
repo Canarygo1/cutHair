@@ -137,7 +137,7 @@ class _InfoScreenState extends State<Info> implements InfoView {
                         size: 22.0,
                       ),
                       Expanded(
-                          child: Components.smallText("No se Permite cambiar")),
+                          child: Components.smallText("No se permite cambiar")),
                       HEIGHT * 0.033,
                       WIDHT * 0.4,
                       color: Color.fromRGBO(230, 73, 90, 1),
