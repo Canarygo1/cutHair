@@ -20,6 +20,10 @@ class ChooseDatePresenter {
 
         _view.showAvailability(availability);
       }else{
+        print(appointment.business.durationMeal.toString());
+        print(appointment.numberPersons);
+        print(date);
+        print(appointment.business.uid);
         List availability = await _remoteRepository.getBeachAvailability(
             appointment.business.durationMeal.toString(), appointment.numberPersons, date, appointment.business.uid);
 

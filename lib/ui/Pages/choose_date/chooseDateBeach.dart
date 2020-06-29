@@ -26,7 +26,7 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
     implements ChooseDateView {
 
   Appointment appointment;
-  bool isConsulting = true;
+  bool isConsulting = false;
   DateTime currentDate2 = DateTime.now();
 
   _ChooseDateScreenState(this.appointment);
@@ -35,7 +35,7 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
   double WIDHT;
 
   List<String> availability = [
-    "10:00", "11:00", "12:00", "13:00", "14:00", "15:00"
+    "12:00",
   ];
 
   DateTime _finalDateCheckIn = DateTime.now();
@@ -52,9 +52,9 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
         seconds: currentDate2.second,
         microseconds: currentDate2.microsecond,
         milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment, initial.toString());
+    //this._presenter.init(appointment, initial.toString());
 
-    showAvailability(availability);
+    //showAvailability(availability);
 
   }
 
@@ -174,13 +174,13 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
               date.month == DateTime.now().month &&
               date.day == DateTime.now().day)) {
         setState(() {
-          this.isConsulting = true;
+          //this.isConsulting = true;
           this.currentDate2 = date;
           this._finalDateCheckIn = date;
 
-          _presenter.init(appointment, currentDate2.toString());
+          //_presenter.init(appointment, currentDate2.toString());
 
-          showAvailability(availability);
+          //showAvailability(availability);
         });
 
       }
@@ -192,7 +192,7 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
     if (mounted) {
       setState(() {
         this.isConsulting = false;
-        this.availability = availability;
+        //this.availability = availability;
       });
     }
   }
@@ -202,7 +202,7 @@ class _ChooseDateScreenState extends State<ChooseDateBeachScreen>
     if (mounted) {
       setState(() {
         this.isConsulting = false;
-        this.availability = [];
+        //this.availability = [];
       });
     }
   }

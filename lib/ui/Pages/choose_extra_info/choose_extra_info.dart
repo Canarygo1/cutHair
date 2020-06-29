@@ -5,6 +5,7 @@ import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/employee.dart';
+import 'package:cuthair/ui/Pages/choose_date/chooseDateBeach.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateHairDressing.dart';
 import 'package:cuthair/ui/Pages/choose_date/chooseDateRestaurant.dart';
 import 'package:flutter/material.dart';
@@ -160,9 +161,11 @@ class _ChooseExtraInfoScreenState extends State<ChooseExtraInfoScreen>
   goToCalendar() {
     if(appointment.business.typeBusiness == "Peluquerías"){
       GlobalMethods().pushPage(context, ChooseDateHairDressingScreen(appointment));
-    }else{
+    }else if(appointment.business.typeBusiness == "Restaurantes"){
       GlobalMethods().pushPage(
           context, ChooseDateRestaurantScreen(appointment));
+    }else{
+      GlobalMethods().pushPage(context, ChooseDateBeachScreen(appointment));
     }
   }
 

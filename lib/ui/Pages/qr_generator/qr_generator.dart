@@ -31,10 +31,16 @@ class _QrGeneratorState extends State<QrGenerator> {
             children: <Widget>[
               Center(child: Components.mediumText("Tu código de entrada")),
               Padding(
-                padding: EdgeInsets.only(top:HEIGHT *0.05),
-                child: QrImage(
-                  foregroundColor: Color.fromRGBO(230, 73, 90, 1) ,
-                  data: myAppointment.uid,
+                padding: EdgeInsets.symmetric(vertical: 10.0),
+                child: Center(
+                  child: Container(
+                    color: Colors.white,
+                    child: QrImage(
+                      foregroundColor: Color.fromRGBO(300, 300, 300, 1),
+                      data: myAppointment.uid,
+                      size: 300,
+                    ),
+                  ),
                 ),
               ),
               Padding(
@@ -48,11 +54,11 @@ class _QrGeneratorState extends State<QrGenerator> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(left:HEIGHT*0.001,top:HEIGHT *0.01),
-                      child: Components.mediumText(myAppointment.uid),
+                      child: Components.mediumText("Uid: " + myAppointment.uid),
                     ),
-                    Components.mediumText(myAppointment.businessName),
-                    Components.mediumText(myAppointment.direction),
-                    Components.mediumText("Personas: "+myAppointment.extraInformation),
+                    Components.mediumText("Playa: " + myAppointment.businessName),
+                    Components.mediumText("Dirección: " + myAppointment.direction),
+                    Components.mediumText("Nº personas: "+myAppointment.extraInformation),
                   ],
                 ),
               ),

@@ -48,7 +48,6 @@ class ConfirmAnimationPresenter{
         _remoteRepository.insertAppointmentRestaurant(appointment, user.uid);
         _view.correctInsert();
       }else{
-
         final FirebaseAuth auth = FirebaseAuth.instance;
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentBeach(appointment, user.uid);

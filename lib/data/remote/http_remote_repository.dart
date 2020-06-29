@@ -24,7 +24,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
     List<String> business = [];
     querySnapshot.documents.forEach((v) {
-      if (v.documentID == "Peluquerías")
+      if (v.documentID == "Peluquerías" || v.documentID == "Playas")
       business.add(v.documentID);
     });
     return business;
@@ -385,6 +385,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
   }
 
+  /*Cambiar Empleados a minuscula y disponiblidad por disponibilidad*/
   @override
   Future<bool> insertAppointmentBeach(
       Appointment appointment, String uid) async {
@@ -398,7 +399,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .collection("horarios")
         .document(appointment.day.toString())
         .get();
-
+    print(documentSnapshot.data);
     Duration duration = GetTimeSeparated.getDurationFromMinutes(
         appointment.business.durationMeal);
     List lista = documentSnapshot.data['disponibilidad'];
