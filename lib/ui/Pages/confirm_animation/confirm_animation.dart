@@ -29,7 +29,9 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     implements ConfirmAnimationView {
   double _percentage;
   double _nextPercentage;
+  double _maxPercentage;
   Timer _timer;
+  bool _errorScreen;
   AnimationController _progressAnimationController;
   bool _progressDone;
   Color color = Color.fromRGBO(300, 300, 300, 1);
@@ -48,6 +50,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   initState() {
     super.initState();
     isAppointmentInsert = false;
+    _errorScreen = false;
     statusIcon =
         Icon(Icons.check_circle_outline, color: Colors.white, size: 150);
     _percentage = 0.0;
@@ -83,14 +86,16 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
 
   handleTicker(Timer timer) {
     _timer = timer;
-    if (_nextPercentage < 100) {
+    if (_nextPercentage < 100 && _errorScreen == false) {
       publishProgress();
-    } else {
+    } else if(_nextPercentage == _maxPercentage){
       timer.cancel();
       setState(() {
         isAppointmentInsert == true ? color = Color.fromRGBO(26, 200, 146, 1) : color = Colors.red;
         _progressDone = true;
       });
+    }else{
+      publishProgress();
     }
   }
 
@@ -108,7 +113,9 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
 
   publishProgress() {
     _percentage = _nextPercentage;
-    _nextPercentage += 1;
+    if(_nextPercentage < _maxPercentage){
+      _nextPercentage += 1;
+    }
     if (_nextPercentage > 100.0) {
       _percentage = 0.0;
       _nextPercentage = 0.0;
@@ -116,9 +123,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     _progressAnimationController.forward(from: 0.0);
   }
 
-  getDoneImage() {
-    return Container();
-  }
 
   getProgressText() {
     return Text(
@@ -131,7 +135,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   progressView() {
     return CustomPaint(
       child: Center(
-        child: _progressDone ? getDoneImage() : Container(),
+        child: Container(),
       ),
       foregroundPainter: ProgressPainter(
           defaultCircleColor: Color.fromRGBO(300, 300, 300, 1),
@@ -199,18 +203,33 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
 
   @override
   correctInsert() {
-    isAppointmentInsert = true;
     statusIcon =
         Icon(Icons.check_circle_outline, color: Colors.white, size: 150);
-    confirmTitle = Components.mediumText("Cita confirmada.",);
+    confirmTitle = Components.mediumText("Cita confirmada.");
     confirmSubtitle = Components.mediumText("Gracias por confiar en Reservalo",);
+      isAppointmentInsert = true;
+      setState(() {
+        _errorScreen = true;
+      });
+
   }
 
   @override
   incorrectInsert() {
+
     statusIcon = Icon(Icons.close, color: Colors.white, size: 150);
-    confirmTitle = Components.mediumText("No se ha podido confirmar la cita",);
+    confirmTitle = Components.mediumText("No se ha podido confirmar la cita");
     confirmSubtitle = Components.mediumText("Disculpe las molestias, por favor intentelo de nuevo",);
-    isAppointmentInsert = false;
+      isAppointmentInsert = false;
+    setState(() {
+      _errorScreen = true;
+    });
+  }
+
+  @override
+  modifyMaxPercentage(double value){
+    setState(() {
+      _maxPercentage = value;
+    });
   }
 }

@@ -15,6 +15,7 @@ class ConfirmAnimationPresenter{
   init(Appointment appointment) async {
     try {
       if(appointment.business.typeBusiness == "Peluquerías") {
+        _view.modifyMaxPercentage(30);
         DateTime initial = appointment.checkIn.subtract(Duration(
             hours: appointment.checkIn.hour,
             minutes: appointment.checkIn.minute,
@@ -35,10 +36,12 @@ class ConfirmAnimationPresenter{
         if (!isInAppointments) {
           throw Exception;
         }
+        _view.modifyMaxPercentage(75);
 
         final FirebaseAuth auth = FirebaseAuth.instance;
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
+        _view.modifyMaxPercentage(100);
         _view.correctInsert();
 
       }else if(appointment.business.typeBusiness == "Restaurantes"){
@@ -46,12 +49,14 @@ class ConfirmAnimationPresenter{
         final FirebaseAuth auth = FirebaseAuth.instance;
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentRestaurant(appointment, user.uid);
+        _view.modifyMaxPercentage(100);
         _view.correctInsert();
       }else{
 
         final FirebaseAuth auth = FirebaseAuth.instance;
         final FirebaseUser user = await auth.currentUser();
         _remoteRepository.insertAppointmentBeach(appointment, user.uid);
+        _view.modifyMaxPercentage(100);
         _view.correctInsert();
       }
     }catch(e){
@@ -62,4 +67,5 @@ class ConfirmAnimationPresenter{
 abstract class ConfirmAnimationView{
   correctInsert();
   incorrectInsert();
+  modifyMaxPercentage(double value);
 }
