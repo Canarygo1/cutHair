@@ -15,6 +15,46 @@
       },
       "oauth_client": [
         {
+          "client_id": "846026419673-cc380jl6d4t23gbia5si2molasdf52o4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capihair.cuthair",
+            "certificate_hash": "22371421014ae477aeb19cddaf46e0a7fc00b12a"
+          }
+        },
+        {
+          "client_id": "846026419673-hu356uppkp2qp40p4t6i6v4g5c2i5kqn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capihair.cuthair",
+            "certificate_hash": "5cf74380f0515a0981f536634c04fe727ac3f3bb"
+          }
+        },
+        {
+          "client_id": "846026419673-f024jsoo88qkls2lar46isoitojos442.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capihair.cuthair",
+            "certificate_hash": "a9baeb2769dfb50c1231d041acc1b9a43c0c155d"
+          }
+        },
+        {
+          "client_id": "846026419673-f46auankjn1bqu9dnc8joflfubcfvfk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capihair.cuthair",
+            "certificate_hash": "fdbd5d35008cf8488131bb41befd79fa0858d5c3"
+          }
+        },
+        {
+          "client_id": "846026419673-1oobnel6sfdbjtnjft0d6b8dgabe7nrc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "capihair.cuthair",
+            "certificate_hash": "933011af5c92419b020b3208fe8b3b2e42fdd019"
+          }
+        },
+        {
           "client_id": "846026419673-bina27qmkl0ute0rqb7hlp0rm04upqqi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -38,6 +78,13 @@
             {
               "client_id": "846026419673-snt48l1adaspoel4es8ibsvg9t7sqlv7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "846026419673-se249ef686qfudk19ck9tl4dl75r3fpu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "capihair.cuthairbusiness"
+              }
             }
           ]
         }
@@ -45,17 +92,17 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:846026419673:android:683d288ee6eea773d83dc8",
+        "mobilesdk_app_id": "1:846026419673:android:246a81039f0262cbd83dc8",
         "android_client_info": {
-          "package_name": "capihair.pelu_app"
+          "package_name": "capihair.cuthairbusiness"
         }
       },
       "oauth_client": [
         {
-          "client_id": "846026419673-19259p67eao0ov5fpop9dbaeqdolk4iu.apps.googleusercontent.com",
+          "client_id": "846026419673-anr2pv95hpa82aeal8og8umdhpop4fas.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "capihair.pelu_app",
+            "package_name": "capihair.cuthairbusiness",
             "certificate_hash": "39d866d8a682603ab6b3d1dbee5c43b3483e2345"
           }
         },
@@ -75,6 +122,13 @@
             {
               "client_id": "846026419673-snt48l1adaspoel4es8ibsvg9t7sqlv7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "846026419673-se249ef686qfudk19ck9tl4dl75r3fpu.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "capihair.cuthairbusiness"
+              }
             }
           ]
         }
