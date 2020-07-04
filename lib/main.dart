@@ -1,4 +1,4 @@
-import 'package:cuthair/charge_screen.dart';
+import 'file:///C:/Users/domit/Desktop/cutHair/lib/ui/Pages/charge_screen/charge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Resérvalo',
       theme: ThemeData(
         buttonTheme: ButtonThemeData(minWidth: 5),
         dividerColor: Colors.black,

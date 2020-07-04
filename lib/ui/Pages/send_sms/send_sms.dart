@@ -44,18 +44,18 @@ class _SendSMSState extends State<SendSMS> {
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      this.widget.data.putIfAbsent("Teléfono", () => '+34' + phoneController.text);
+      this.widget.data.putIfAbsent("Teléfono", () => "+34" + phoneController.text);
       setState(() {
         if (mounted) {
           sending = false;
         }
       });
-      GlobalMethods().pushAndReplacement(context,
+      GlobalMethods().pushPage(context,
           checkSMSCode(this.widget.data, this.widget.password, verificationId));
     };
 
     final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
-      GlobalMethods().pushAndReplacement(context,
+      GlobalMethods().pushPage(context,
           checkSMSCode(this.widget.data, this.widget.password, verificationId));
     };
 
@@ -66,14 +66,15 @@ class _SendSMSState extends State<SendSMS> {
         });
       } else {
         setState(() {
+          print(e.message);
           error = 'Lo sentimos ha ocurrido un error. Inténtalo más tarde.';
         });
       }
     };
 
     await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+34' + phoneController.text,
-      timeout: Duration(seconds: 5),
+      phoneNumber: "+34" + phoneController.text,
+      timeout: Duration(seconds: 120),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
       codeSent: smsCodeSent,

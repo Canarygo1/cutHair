@@ -20,11 +20,10 @@ class HttpRemoteRepository implements RemoteRepository {
 
   Future<List<String>> getBusiness() async {
     QuerySnapshot querySnapshot =
-    await firestore.collection(DotEnv().env['GET_NEGOCIO']).getDocuments();
+        await firestore.collection(DotEnv().env['GET_NEGOCIO']).getDocuments();
 
     List<String> business = [];
     querySnapshot.documents.forEach((v) {
-      if (v.documentID == "Peluquerías")
       business.add(v.documentID);
     });
     return business;
@@ -45,7 +44,6 @@ class HttpRemoteRepository implements RemoteRepository {
           queryData[i].data, queryData[i].documentID, business);
       allBusiness.add(hairDressing);
     }
-
 
     Map<String, List<Business>> allbusiness = new Map();
     allbusiness[business] = allBusiness;
@@ -107,8 +105,10 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<User> getUser(String uid) async {
-    DocumentSnapshot document =
-        await firestore.collection(DotEnv().env["GET_USUARIOS"]).document(uid).get();
+    DocumentSnapshot document = await firestore
+        .collection(DotEnv().env["GET_USUARIOS"])
+        .document(uid)
+        .get();
     User user = User.fromMap(document.data, uid);
 
     if (user != null) {
@@ -202,8 +202,10 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<List<MyAppointment>> getUserAppointments(
       String uid, DateTime date, bool firstTime) async {
     List<MyAppointment> myAppointments = [];
-    DocumentSnapshot documentSnapshot =
-        await firestore.collection(DotEnv().env['GET_USUARIOS']).document(uid).get();
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection(DotEnv().env['GET_USUARIOS'])
+        .document(uid)
+        .get();
 
     for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
       await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
@@ -546,7 +548,8 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<User> insertAnonymousUser(User user) async {
-    DocumentReference docRef = await firestore.collection(DotEnv().env['GET_ANONIMOS']).add({
+    DocumentReference docRef =
+        await firestore.collection(DotEnv().env['GET_ANONIMOS']).add({
       "Nombre": user.name,
       "Telefono": user.phone,
     });
@@ -557,7 +560,8 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<User> getUserByPhoneNumber(String phoneNumber) async {
     User user;
-    CollectionReference collectionReference = firestore.collection(DotEnv().env['GET_USUARIOS']);
+    CollectionReference collectionReference =
+        firestore.collection(DotEnv().env['GET_USUARIOS']);
     var query = await collectionReference
         .where('Telefono', isEqualTo: phoneNumber)
         .getDocuments()
@@ -574,21 +578,32 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<bool> getUserPenalize(String uid) async {
-    DocumentSnapshot documentSnapshot =
-        await firestore.collection(DotEnv().env['GET_USUARIOS']).document(uid).get();
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection(DotEnv().env['GET_USUARIOS'])
+        .document(uid)
+        .get();
     bool penalize = documentSnapshot.data['Penalizacion'];
     return penalize;
   }
 
   @override
   Future<bool> updateDataUser(Map data, String uid) async {
-        try {
-          await firestore.collection(DotEnv().env['GET_USUARIOS'])
+    try {
+      await firestore
+          .collection(DotEnv().env['GET_USUARIOS'])
           .document(uid)
           .updateData(data);
-          return true;
-        } on Exception catch (e) {
-          return false;
-        }
+      return true;
+    } on Exception catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<String> getAplicationVersion(String software) async {
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection("Versiones").document(software).get();
+    String version = documentSnapshot.data['version'];
+    return version;
   }
 }

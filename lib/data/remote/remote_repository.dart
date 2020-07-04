@@ -49,4 +49,6 @@ abstract class RemoteRepository {
   Future<bool> getUserPenalize(String uid);
 
   Future<bool> updateDataUser(Map data, String uid);
+
+  Future<String> getAplicationVersion(String software);
 }

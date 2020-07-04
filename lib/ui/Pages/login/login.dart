@@ -43,7 +43,9 @@ class _LoginState extends State<Login> implements LoginView {
   @override
   void initState() {
     color == null ? color = Color.fromRGBO(230, 73, 90, 1) : color = color;
-    Timer(Duration(seconds: 3), () => this.setState(() {error = '';}));
+    if (error.length > 0) {
+      Timer(Duration(seconds: 3), () => this.setState(() {error = '';}));
+    }
     rnd = new Random();
     randomBackground = 0 + rnd.nextInt(3 - 0);
     loginCode = LoginCode(this);
@@ -210,6 +212,7 @@ class _LoginState extends State<Login> implements LoginView {
   changeTextError(String text) {
     if (mounted) {
       setState(() {
+        color = Color.fromRGBO(230, 73, 90, 1);
         error = text;
       });
     }

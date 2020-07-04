@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -28,6 +27,11 @@ class GlobalMethods {
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
+  removePagesAndGoToNewScreen(BuildContext context, Widget widget) {
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => widget), (route) => false);
+  }
+
   searchDBUser(BuildContext context) async {
     Widget screen;
     await DBProvider.db.getUser();
@@ -42,7 +46,6 @@ class GlobalMethods {
     } else {
       screen = Login();
     }
-
     pushAndReplacement(context, screen);
   }
 }
@@ -103,7 +106,7 @@ class GetTimeSeparated {
     }
   }
 
-  static getFullTimeIfHasOneValue_Month(String time){
+  static getFullTimeIfHasOneValue_Month(String time) {
     if (time.length == 1) {
       return "0" + time;
     } else {

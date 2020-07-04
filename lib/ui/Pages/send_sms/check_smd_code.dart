@@ -16,7 +16,8 @@ class checkSMSCode extends StatefulWidget {
   checkSMSCode(this.data, this.password, this.verificationId);
 
   @override
-  _checkSMSCodeState createState() => _checkSMSCodeState(this.data, this.password, this.verificationId);
+  _checkSMSCodeState createState() =>
+      _checkSMSCodeState(this.data, this.password, this.verificationId);
 }
 
 class _checkSMSCodeState extends State<checkSMSCode> {
@@ -33,17 +34,17 @@ class _checkSMSCodeState extends State<checkSMSCode> {
   String error = "";
 
   Future<void> signIn(String smsCode) async {
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: smsCode,
-    );
-    await _auth.signInWithCredential(credential);
-    ConnectionChecked.checkInternetConnectivity(context);
-    data.putIfAbsent("Penalización", () => false);
-    var bytes = utf8.encode(password);
-    Digest passwordEncript = sha1.convert(bytes);
-    data.putIfAbsent("Contraseña", () => passwordEncript.toString());
     try {
+      final AuthCredential credential = PhoneAuthProvider.getCredential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      await _auth.signInWithCredential(credential);
+      ConnectionChecked.checkInternetConnectivity(context);
+      data.putIfAbsent("Penalización", () => false);
+      var bytes = utf8.encode(password);
+      Digest passwordEncript = sha1.convert(bytes);
+      data.putIfAbsent("Contraseña", () => passwordEncript.toString());
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {
       setState(() {
