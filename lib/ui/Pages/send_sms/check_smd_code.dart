@@ -3,6 +3,7 @@ import 'package:components/components.dart';
 import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
+import 'package:dbcrypt/dbcrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -42,9 +43,9 @@ class _checkSMSCodeState extends State<checkSMSCode> {
       await _auth.signInWithCredential(credential);
       ConnectionChecked.checkInternetConnectivity(context);
       data.putIfAbsent("Penalización", () => false);
-      var bytes = utf8.encode(password);
-      Digest passwordEncript = sha1.convert(bytes);
-      data.putIfAbsent("Contraseña", () => passwordEncript.toString());
+      String hashPassword = new DBCrypt().hashpw(password, new DBCrypt().gensalt());
+
+      data.putIfAbsent("Contraseña", () => hashPassword.toString());
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {
       setState(() {

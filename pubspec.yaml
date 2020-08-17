@@ -1,7 +1,7 @@
 name: cuthair
 description: Application for the control and management of appointments.
 
-version: 1.0.0+1
+version: 1.0.0+6
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -11,15 +11,15 @@ dependencies:
     sdk: flutter
   meta: ^1.1.8
   font_awesome_flutter: ^8.5.0
+  dbcrypt: 1.0.0
   firebase_core: 0.4.4
   firebase_auth: 0.15.4
   http: ^0.12.0+4
   flutter_auth_buttons: ^0.6.0
-  sms: ^0.2.4
   flutter_facebook_login: ^3.0.0
   flutter_calendar_carousel: ^1.4.10
   firebase_storage: 3.1.3
-  cloud_firestore: 0.13.4
+  cloud_firestore: 0.13.7
   sqflite: ^1.3.0
   carousel_slider: ^1.4.1
   flutter_spinkit: ^3.1.0
@@ -29,6 +29,7 @@ dependencies:
   flutter_svg: 0.17.4
   simple_connectivity: 0.1.1
   firebase_messaging: ^5.1.4
+  sms: 0.2.4
   qr_flutter: ^3.1.0
   crypto: ^2.1.3
   flutter_dotenv: ^2.1.0
@@ -40,9 +41,19 @@ dependencies:
       url: git://github.com/Domirop/Components.git
 
 dev_dependencies:
-  flutter_driver:
+  flutter_test:
     sdk: flutter
-  test: any
+  flutter_launcher_icons: "^0.7.0"
+
+flutter_icons:
+  ios: false
+  android: true
+  image_path: "assets/images/logo/playstore.png"
+  adaptive_icon_background: "assets/images/logo/R-Bg.png"
+  adaptive_icon_foreground: "assets/images/logo/R-logo.png"
+
+
+
 
 flutter:
 

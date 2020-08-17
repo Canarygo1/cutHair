@@ -1,0 +1,5 @@
+git_url("https://github.com/Canarygo1/ReservaloCertificate.git")
+
+storage_mode("git")
+app_identifier("capihair.cuthair")
+username(ENV['FASTLANE_USER'])
