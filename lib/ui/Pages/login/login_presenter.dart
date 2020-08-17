@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
@@ -25,6 +28,13 @@ class LoginCode {
           .user;
       userLogin = await _remoteRepository.getUser(user.uid);
       DBProvider.db.insert(userLogin);
+      var bytes = utf8.encode(password);
+      Digest passwordEncript = sha1.convert(bytes);
+      if(userLogin.password != passwordEncript.toString()){
+        Map<String, String> data = Map();
+        data.putIfAbsent("Contraseña", () => passwordEncript.toString());
+        _remoteRepository.updateDataUser(data, userLogin.uid);
+      }
       GlobalMethods().searchDBUser(context);
       loginView.changeTextError("");
     } catch (Exception) {

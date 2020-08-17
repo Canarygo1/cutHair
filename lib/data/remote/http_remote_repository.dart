@@ -10,19 +10,21 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
   Firestore firestore;
+  List<QuerySnapshot> querySnapshots = [];
 
   HttpRemoteRepository(this.firestore);
 
   Future<List<String>> getBusiness() async {
     QuerySnapshot querySnapshot =
-        await firestore.collection("Negocios").getDocuments();
+        await firestore.collection(DotEnv().env['GET_NEGOCIO']).getDocuments();
 
     List<String> business = [];
     querySnapshot.documents.forEach((v) {
-      if (v.documentID == "Peluquerías") business.add(v.documentID);
+      business.add(v.documentID);
     });
     return business;
   }
@@ -30,7 +32,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<Map<String, List<Business>>> getAllBusiness(String business) async {
     QuerySnapshot querySnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(business)
         .collection("Negocios")
         .getDocuments();
@@ -56,7 +58,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<Service>> getAllServices(String uid, String typeBusiness) async {
     QuerySnapshot querySnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(typeBusiness)
         .collection("Negocios")
         .document(uid)
@@ -78,7 +80,7 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<List<Employee>> getAllEmployes(String uid, String typeBusiness) async {
     QuerySnapshot querySnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(typeBusiness)
         .collection("Negocios")
         .document(uid)
@@ -103,8 +105,10 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<User> getUser(String uid) async {
-    DocumentSnapshot document =
-        await firestore.collection("Usuarios").document(uid).get();
+    DocumentSnapshot document = await firestore
+        .collection(DotEnv().env["GET_USUARIOS"])
+        .document(uid)
+        .get();
     User user = User.fromMap(document.data, uid);
 
     if (user != null) {
@@ -152,7 +156,7 @@ class HttpRemoteRepository implements RemoteRepository {
         appointment.checkIn, appointment.checkOut);
 
     firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -163,7 +167,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
 
     DocumentReference docRef = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -181,11 +185,11 @@ class HttpRemoteRepository implements RemoteRepository {
 
     List refList = [docRef];
     await firestore
-        .collection("Usuarios")
+        .collection(DotEnv().env['GET_USUARIOS'])
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -198,8 +202,10 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<List<MyAppointment>> getUserAppointments(
       String uid, DateTime date, bool firstTime) async {
     List<MyAppointment> myAppointments = [];
-    DocumentSnapshot documentSnapshot =
-        await firestore.collection("Usuarios").document(uid).get();
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection(DotEnv().env['GET_USUARIOS'])
+        .document(uid)
+        .get();
 
     for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
       await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
@@ -255,7 +261,7 @@ class HttpRemoteRepository implements RemoteRepository {
     maplist.add(ranges);
 
     firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(typeBusiness)
         .collection("Negocios")
         .document(businessUid)
@@ -266,7 +272,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"turnos": FieldValue.arrayRemove(maplist)});
 
     firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(typeBusiness)
         .collection("Negocios")
         .document(businessUid)
@@ -281,7 +287,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<Schedule> getRange(
       String day, String name, String businessUid, String typeBusiness) async {
     DocumentSnapshot documentSnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(typeBusiness)
         .collection("Negocios")
         .document(businessUid)
@@ -303,7 +309,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<bool> insertAppointmentRestaurant(
       Appointment appointment, String uid) async {
     DocumentSnapshot documentSnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -340,7 +346,7 @@ class HttpRemoteRepository implements RemoteRepository {
     }
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -351,7 +357,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .setData({"disponibilidad": lista});
 
     DocumentReference docRef = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -367,12 +373,12 @@ class HttpRemoteRepository implements RemoteRepository {
     List refList = [docRef];
 
     await firestore
-        .collection("Usuarios")
+        .collection(DotEnv().env['GET_USUARIOS'])
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -385,7 +391,7 @@ class HttpRemoteRepository implements RemoteRepository {
   Future<bool> insertAppointmentBeach(
       Appointment appointment, String uid) async {
     DocumentSnapshot documentSnapshot = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -428,7 +434,7 @@ class HttpRemoteRepository implements RemoteRepository {
     }
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -439,7 +445,7 @@ class HttpRemoteRepository implements RemoteRepository {
         .setData({"disponibilidad": lista});
 
     DocumentReference docRef = await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -456,12 +462,12 @@ class HttpRemoteRepository implements RemoteRepository {
     List refList = [docRef];
 
     await firestore
-        .collection("Usuarios")
+        .collection(DotEnv().env['GET_USUARIOS'])
         .document(uid)
         .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.business.typeBusiness)
         .collection("Negocios")
         .document(appointment.business.uid)
@@ -501,7 +507,7 @@ class HttpRemoteRepository implements RemoteRepository {
     val.sort();
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.typeBusiness)
         .collection("Negocios")
         .document(appointment.businessUid)
@@ -510,12 +516,12 @@ class HttpRemoteRepository implements RemoteRepository {
         .updateData({"citas": FieldValue.arrayRemove(ref)});
 
     await firestore
-        .collection("Usuarios")
+        .collection(DotEnv().env['GET_USUARIOS'])
         .document(user.uid)
         .updateData({"citas": FieldValue.arrayRemove(ref)});
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.typeBusiness)
         .collection("Negocios")
         .document(appointment.businessUid)
@@ -527,7 +533,7 @@ class HttpRemoteRepository implements RemoteRepository {
             {"disponibilidad": FieldValue.arrayRemove(schedule.disponibility)});
 
     await firestore
-        .collection("Negocios")
+        .collection(DotEnv().env['GET_NEGOCIO'])
         .document(appointment.typeBusiness)
         .collection("Negocios")
         .document(appointment.businessUid)
@@ -542,7 +548,8 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<User> insertAnonymousUser(User user) async {
-    DocumentReference docRef = await firestore.collection("Anonimos").add({
+    DocumentReference docRef =
+        await firestore.collection(DotEnv().env['GET_ANONIMOS']).add({
       "Nombre": user.name,
       "Telefono": user.phone,
     });
@@ -553,7 +560,8 @@ class HttpRemoteRepository implements RemoteRepository {
   @override
   Future<User> getUserByPhoneNumber(String phoneNumber) async {
     User user;
-    CollectionReference collectionReference = firestore.collection("Usuarios");
+    CollectionReference collectionReference =
+        firestore.collection(DotEnv().env['GET_USUARIOS']);
     var query = await collectionReference
         .where('Telefono', isEqualTo: phoneNumber)
         .getDocuments()
@@ -570,9 +578,32 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<bool> getUserPenalize(String uid) async {
-    DocumentSnapshot documentSnapshot =
-        await firestore.collection("Usuarios").document(uid).get();
+    DocumentSnapshot documentSnapshot = await firestore
+        .collection(DotEnv().env['GET_USUARIOS'])
+        .document(uid)
+        .get();
     bool penalize = documentSnapshot.data['Penalizacion'];
     return penalize;
+  }
+
+  @override
+  Future<bool> updateDataUser(Map data, String uid) async {
+    try {
+      await firestore
+          .collection(DotEnv().env['GET_USUARIOS'])
+          .document(uid)
+          .updateData(data);
+      return true;
+    } on Exception catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<String> getAplicationVersion(String software) async {
+    DocumentSnapshot documentSnapshot =
+        await firestore.collection("Versiones").document(software).get();
+    String version = documentSnapshot.data['version'];
+    return version;
   }
 }

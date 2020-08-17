@@ -1,10 +1,9 @@
+import 'dart:async';
 import 'dart:math';
+import 'package:components/components.dart';
 import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
+import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password.dart';
 import 'package:flutter/material.dart';
@@ -12,25 +11,41 @@ import 'package:flutter/widgets.dart';
 import 'login_presenter.dart';
 
 class Login extends StatefulWidget {
+  String error;
+  Color color;
+  Login({this.error = '', this.color});
+
   @override
-  _LoginState createState() => _LoginState();
+  _LoginState createState() => _LoginState(error, color);
 }
 
 class _LoginState extends State<Login> implements LoginView {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   String error = "";
+  Color color;
   LoginCode loginCode;
   double HEIGHT;
   double WIDHT;
   List list;
   Random rnd;
-  List<String> backgroundImages = ["assets/images/hairdressingBg.jpg","assets/images/clubBg.jpg","assets/images/restaurantBg.jpg"];
-  int randomBackground ;
+  List<String> backgroundImages = [
+    "assets/images/hairdressingBg.jpg",
+    "assets/images/clubBg.jpg",
+    "assets/images/restaurantBg.jpg"
+  ];
+  int randomBackground;
+
   PushNotificationService pushNotificationService;
+
+  _LoginState(this.error, this.color);
 
   @override
   void initState() {
+    color == null ? color = Color.fromRGBO(230, 73, 90, 1) : color = color;
+    if (error.length > 0) {
+      Timer(Duration(seconds: 3), () => this.setState(() {error = '';}));
+    }
     rnd = new Random();
     randomBackground = 0 + rnd.nextInt(3 - 0);
     loginCode = LoginCode(this);
@@ -40,9 +55,6 @@ class _LoginState extends State<Login> implements LoginView {
   Widget build(BuildContext context) {
     HEIGHT = MediaQuery.of(context).size.height;
     WIDHT = MediaQuery.of(context).size.width;
-
-
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
@@ -58,9 +70,10 @@ class _LoginState extends State<Login> implements LoginView {
             ),
             child: ListView(
               children: <Widget>[
+                TextLoginWithoutAccount(context),
                 Padding(
-                  padding: EdgeInsets.fromLTRB(WIDHT * 0.200,HEIGHT * 0.126,
-                      WIDHT * 0.200, 0),
+                  padding: EdgeInsets.fromLTRB(
+                      WIDHT * 0.200, HEIGHT * 0.126, WIDHT * 0.200, 0),
                   child: Container(
                       child: Image.asset("assets/images/logo.png",
                           fit: BoxFit.cover)),
@@ -71,9 +84,9 @@ class _LoginState extends State<Login> implements LoginView {
                 textFieldWidget(
                     passwordController, TextInputType.text, "Contraseña",
                     obscureText: true),
-                error.length == 0 ? Container() : TextError(error),
+                error.length == 0 ? Container() : Components.errorText(error, color: color,),
                 TextForgetPassword(context),
-                MyButton(() => logIn(), LargeText("Entrar"),
+                Components.smallButton(() => logIn(), Components.largeText("Entrar"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 TextRegister(context),
               ],
@@ -87,7 +100,7 @@ class _LoginState extends State<Login> implements LoginView {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
-      child: MyTextField(
+      child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
@@ -136,12 +149,43 @@ class _LoginState extends State<Login> implements LoginView {
             )));
   }
 
+  Widget TextLoginWithoutAccount(BuildContext context) {
+    return Align(
+        alignment: Alignment.centerRight,
+        child: Padding(
+            padding: EdgeInsets.only(
+                top: HEIGHT * 0.02,
+                right: MediaQuery.of(context).size.width * 0.05),
+            child: GestureDetector(
+              onTap: () {
+                GlobalMethods().pushAndReplacement(context, Menu(null));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(4.0))),
+                child: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: Text(
+                    'Omitir',
+                    style: TextStyle(
+                      color: Colors.white,
+                      decoration: TextDecoration.none,
+                      decorationColor: Color.fromRGBO(0, 144, 255, 1),
+                      fontSize: 13.0,
+                    ),
+                  ),
+                ),
+              ),
+            )));
+  }
+
   Widget TextForgetPassword(BuildContext context) {
     return Align(
         alignment: Alignment.centerRight,
         child: Padding(
             padding:
-            EdgeInsets.only(bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
+                EdgeInsets.only(bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
             child: GestureDetector(
               onTap: () {
                 GlobalMethods().pushPage(context, ResetPassword());
@@ -159,7 +203,8 @@ class _LoginState extends State<Login> implements LoginView {
   }
 
   logIn() {
-    loginCode.iniciarSesion(emailController.text.toString(),
+    changeTextError("");
+    loginCode.iniciarSesion(emailController.text.toLowerCase(),
         passwordController.text.toString(), context);
   }
 
@@ -167,6 +212,7 @@ class _LoginState extends State<Login> implements LoginView {
   changeTextError(String text) {
     if (mounted) {
       setState(() {
+        color = Color.fromRGBO(230, 73, 90, 1);
         error = text;
       });
     }

@@ -1,6 +1,4 @@
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
+import 'package:components/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -36,12 +34,11 @@ class _contribuyerState extends State<contribuyer_screen>{
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        leading: GoBack(
+        leading: Components.goBack(
           context,
           "",
-          HEIGHT: HEIGHT * 0.013,
         ),
-        title: LargeText("Volver"),
+        title: Components.largeText("Volver"),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(
@@ -51,7 +48,7 @@ class _contribuyerState extends State<contribuyer_screen>{
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: HEIGHT * 0.04, left: WIDTH * 0.05),
-              child: LargeText("Lista de contribuidores"),
+              child: Components.largeText("Lista de contribuidores"),
             ),
             Container(
               child: ListView.builder(
@@ -65,12 +62,12 @@ class _contribuyerState extends State<contribuyer_screen>{
                     children: <Widget>[
                       Padding(
                         padding: EdgeInsets.only(bottom: HEIGHT * 0.02, left: WIDTH * 0.05),
-                        child: MediumText(mapContribuyers.keys.elementAt(index) + ":"),
+                        child: Components.mediumText(mapContribuyers.keys.elementAt(index) + ":"),
                       ),
                       Padding(
                         padding: EdgeInsets.only(bottom: HEIGHT * 0.04, left: WIDTH * 0.10),
                         child: InkWell(
-                          child: MediumText(mapContribuyers.values.elementAt(index)),
+                          child: Components.mediumText(mapContribuyers.values.elementAt(index)),
                           onTap: () => launch(mapContribuyers.values.elementAt(index)),
                         ),
                       )

@@ -1,9 +1,16 @@
-import 'package:cuthair/charge_screen.dart';
+import 'package:cuthair/ui/Pages/charge_screen/charge_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() => runApp(MyApp());
+const bool _kReleaseMode = const bool.fromEnvironment("dart.vm.product");
+
+Future<void> main() async {
+  String file = 'env_files/debug.env';
+  await DotEnv().load(file);
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -18,16 +25,15 @@ class _MyAppState extends State<MyApp> {
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown
     ]);
-
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Resérvalo',
       theme: ThemeData(
-        buttonTheme:ButtonThemeData(minWidth:5),
+        buttonTheme: ButtonThemeData(minWidth: 5),
         dividerColor: Colors.black,
         primarySwatch: Colors.blue,
         splashColor: Colors.transparent,

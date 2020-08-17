@@ -29,6 +29,7 @@ class DBProvider {
           'name TEXT,'
           'email TEXT,'
           'phone TEXT,'
+          'password TEXT,'
           'uid TEXT PRIMARY KEY'
           ')');
     });
@@ -58,7 +59,7 @@ class DBProvider {
         await databaseObject.rawQuery('SELECT * FROM User');
     users = List.generate(lista.length, (i) {
       return User(lista[i]['surname'], lista[i]['name'], lista[i]['email'],
-          lista[i]['phone'], lista[i]['uid']);
+          lista[i]['phone'], lista[i]['uid'], lista[i]['password']);
     });
   }
 

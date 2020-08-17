@@ -1,18 +1,16 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:components/components.dart';
+import 'package:components/others_components/calendar.dart';
+import 'package:components/others_components/confirm_dialog.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/calendars.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut_Uid.dart';
 import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Components/confirm_dialog.dart';
-import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -35,13 +33,21 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   bool filter = true;
   double HEIGHT;
   double WIDHT;
-  CalendarWidget calendarWidget;
+  Calendar calendarWidget;
   ConfirmDialog confirmDialog;
   List<String> allImages;
   bool firstTime = true;
   CardWithCheckOut cardWithCheckOut;
   CardWithoutCheckOut cardWithoutCheckOut;
   CardWithCheckOutUid cardWithCheckOutUid;
+  Timer timer;
+
+  @override
+  void deactivate() {
+    if (timer != null && timer.isActive) {
+      timer.cancel();
+    }
+  }
 
   @override
   initState() {
@@ -50,8 +56,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
     _presenter.init(DBProvider.users[0].uid, DateTime.now(), true);
-    calendarWidget = CalendarWidget(
-        (DateTime date, List<Event> events) => pressCalendar(date));
+    calendarWidget =
+        Calendar((DateTime date, List<Event> events) => pressCalendar(date));
   }
 
   @override
@@ -63,7 +69,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        title: LargeText("Mis citas"),
+        title: Components.largeText("Mis citas"),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -74,12 +80,14 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             this.filter == true
                 ? Padding(
                     padding: EdgeInsets.only(right: WIDHT * 0.61),
-                    child: MyButton(
+                    child: Components.smallButton(
                       () => {
-                        this.isConsulting == false ?
-                        this.setState(() =>
-                            {this.filter = false, this.isConsulting = false})
-                            : () =>{},
+                        this.isConsulting == false
+                            ? this.setState(() => {
+                                  this.filter = false,
+                                  this.isConsulting = false
+                                })
+                            : () => {},
                       },
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -90,7 +98,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: WIDHT * 0.024),
-                            child: LargeText("Día"),
+                            child: Components.largeText("Día"),
                           ),
                         ],
                       ),
@@ -107,7 +115,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                       Center(
                         child: Padding(
                           padding: EdgeInsets.only(top: HEIGHT * 0.027),
-                          child: LargeText(
+                          child: Components.largeText(
                             "Seleccione el día.",
                             size: 25,
                           ),
@@ -141,9 +149,10 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                       padding: EdgeInsets.only(top: HEIGHT * 0.03),
                       child: Column(
                         children: <Widget>[
-                          MediumText(
+                          Components.mediumText(
                               "Vaya! Parece que todavía no tienes citas"),
-                          MediumText("Puedes reservarlas en el home"),
+                          Components.mediumText(
+                              "Puedes reservarlas en el home"),
                         ],
                       ),
                     ),
@@ -165,23 +174,29 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     cardWithoutCheckOut = CardWithoutCheckOut(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithoutCheckOut;
-                  } else {
+                  } else if (myAppointments.elementAt(index).typeBusiness ==
+                      "Playas") {
                     cardWithCheckOutUid = CardWithCheckOutUid(index,
                         () => controlTimer(index), allImages, myAppointments);
                     return cardWithCheckOutUid;
+                  } else {
+                    return Container();
                   }
                 });
   }
 
   controlTimer(int index) {
     if (firstTime == true) {
+      setState(() {
+        firstTime = false;
+      });
       return functionRemove(index);
     } else {
       showDialog(
         context: context,
         builder: (BuildContext context) {
-          confirmDialog = ConfirmDialog(
-            MediumText(
+          confirmDialog = Components.confirmDialog(
+            Components.mediumText(
                 "Lo sentimos tiene que esperar 1 minuto para cancelar otra cita."),
             () => {},
             multiOptions: false,
@@ -196,8 +211,8 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        confirmDialog = ConfirmDialog(
-          MediumText("¿Desea cancelar la cita?"),
+        confirmDialog = Components.confirmDialog(
+          Components.mediumText("¿Desea cancelar la cita?"),
           () => {
             this.setState(() {
               isConsulting = true;
@@ -206,11 +221,11 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             GlobalMethods().popPage(confirmDialog.context),
             ConnectionChecked.checkInternetConnectivity(context),
             _presenter.removeAppointment(myAppointments[index], index,
-                DBProvider.users[0].uid, calendarWidget.currentDate2),
-            Timer(
+                DBProvider.users[0].uid, DateTime.now()),
+            timer = Timer(
                 Duration(minutes: 1),
                 () => this.setState(() {
-                      firstTime = !firstTime;
+                      firstTime = true;
                     })),
           },
         );

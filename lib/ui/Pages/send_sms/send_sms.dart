@@ -1,16 +1,11 @@
-import 'package:cuthair/data/remote/check_connection.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
-import 'package:cuthair/ui/Pages/register/register_presenter.dart';
+import 'package:components/components.dart';
+import 'package:cuthair/ui/Pages/send_sms/check_smd_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'dart:async';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class SendSMS extends StatefulWidget {
   Map data;
@@ -27,34 +22,42 @@ class _SendSMSState extends State<SendSMS> {
   String password;
 
   _SendSMSState(this.data, this.password);
-
   String phoneNo;
   String smsOTP;
   String verificationId;
   String errorMessage = '';
-  FirebaseAuth _auth = FirebaseAuth.instance;
-  TextEditingController codeController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   double HEIGHT;
   double WIDHT;
+  bool sending = true;
   String error = "";
 
   Future<void> verifyPhone() async {
+    setState(() {
+      if (mounted) {
+        sending = true;
+      }
+    });
     final PhoneCodeAutoRetrievalTimeout autoRetrieve = (String verId) {
       this.verificationId = verId;
     };
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      Timer(Duration(minutes: 1, seconds: 30), () {
-        setState(() {
-          error = 'Tiempo expirado';
-        });
-        GlobalMethods().pushAndReplacement(context, Login());
+      this.widget.data.putIfAbsent("Teléfono", () => "+34" + phoneController.text);
+      setState(() {
+        if (mounted) {
+          sending = false;
+        }
       });
+      GlobalMethods().pushPage(context,
+          checkSMSCode(this.widget.data, this.widget.password, verificationId));
     };
 
-    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {};
+    final PhoneVerificationCompleted verifiedSuccess = (AuthCredential auth) {
+      GlobalMethods().pushPage(context,
+          checkSMSCode(this.widget.data, this.widget.password, verificationId));
+    };
 
     final PhoneVerificationFailed verifyFailed = (AuthException e) {
       if (e.message == "ERROR_INVALID_VERIFICATION_CODE") {
@@ -63,6 +66,7 @@ class _SendSMSState extends State<SendSMS> {
         });
       } else {
         setState(() {
+          print(e.message);
           error = 'Lo sentimos ha ocurrido un error. Inténtalo más tarde.';
         });
       }
@@ -70,30 +74,12 @@ class _SendSMSState extends State<SendSMS> {
 
     await FirebaseAuth.instance.verifyPhoneNumber(
       phoneNumber: "+34" + phoneController.text,
-      timeout: Duration(seconds: 5),
+      timeout: Duration(seconds: 120),
       verificationCompleted: verifiedSuccess,
       verificationFailed: verifyFailed,
       codeSent: smsCodeSent,
       codeAutoRetrievalTimeout: autoRetrieve,
     );
-  }
-
-  Future<void> signIn(String smsCode) async {
-    final AuthCredential credential = PhoneAuthProvider.getCredential(
-      verificationId: verificationId,
-      smsCode: smsCode,
-    );
-    await _auth.signInWithCredential(credential);
-    ConnectionChecked.checkInternetConnectivity(context);
-    data.putIfAbsent("Teléfono", () => phoneController.text);
-    data.putIfAbsent("Penalización", () => false);
-    try {
-      RegisterCode().registerAuth(data["Email"], password, context, data);
-    } catch (e) {
-      setState(() {
-        error = 'Ha ocurrido un error lo sentimos. Inténtelo más tarde';
-      });
-    }
   }
 
   handleError(PlatformException error) {
@@ -118,7 +104,7 @@ class _SendSMSState extends State<SendSMS> {
     return Padding(
       padding: EdgeInsets.fromLTRB(
           WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
-      child: MyTextField(
+      child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
@@ -152,15 +138,14 @@ class _SendSMSState extends State<SendSMS> {
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-          leading: GoBack(
+          leading: Components.goBack(
             context,
             "",
-            HEIGHT: HEIGHT * 0.013,
           ),
-          title: LargeText("Volver"),
+          title: Components.largeText("Volver"),
           titleSpacing: 0,
         ),
-        body: GestureDetector(
+        body: sending ? GestureDetector(
           onTap: () {
             FocusScope.of(context).requestFocus(FocusNode());
           },
@@ -171,17 +156,17 @@ class _SendSMSState extends State<SendSMS> {
                 textFieldWidget(phoneController, TextInputType.phone,
                     'Introduce el teléfono',
                     topPadding: HEIGHT * 0.176),
-                MyButton(() => verifyPhone(), LargeText("Enviar código"),
+                Components.smallButton(() => verifyPhone(), Components.largeText("Enviar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
-                textFieldWidget(
-                    codeController, TextInputType.phone, "Introduce el código",
-                    topPadding: HEIGHT * 0.027),
-                MyButton(() => signIn(codeController.text),
-                    LargeText("Confirmar código"),
-                    color: Color.fromRGBO(230, 73, 90, 1)),
-                error.length == 0 ? Container() : TextError(error),
+                error.length == 0 ? Container() : Components.errorText(error),
               ],
             ),
+          ),
+        ) : Padding(
+          padding: EdgeInsets.only(top: 50),
+          child: SpinKitWave(
+            color: Color.fromRGBO(230, 73, 90, 1),
+            type: SpinKitWaveType.start,
           ),
         ));
   }

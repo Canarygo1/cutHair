@@ -1,3 +1,4 @@
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,21 +11,24 @@ class InfoPagePresenter {
 
   InfoPagePresenter(this._view, this._remoteRepository);
 
-  init() async {
+  updateData(Map data, String uid, String password) async {
     try {
-      await currentUser();
-      _view.showList(await _remoteRepository.getUser(userUid));
-    }catch(e){
-      print(e.toString());
+      FirebaseUser user = (await auth.signInWithEmailAndPassword(
+              email: DBProvider.users[0].email, password: password))
+          .user;
+      await user.updateEmail(data['Email']);
+      _view.showUpdate(await _remoteRepository.updateDataUser(data, uid));
+      User userSQL = DBProvider.users[0];
+      userSQL.email = data['Email'];
+      userSQL.name = data['Nombre'];
+      userSQL.surname = data['Apellidos'];
+      DBProvider.update(userSQL);
+    } on Exception catch (e) {
+      _view.showUpdate(false);
     }
-  }
-
-  Future<void> currentUser() async {
-    final FirebaseUser user = await auth.currentUser();
-    userUid = user.uid;
   }
 }
 
 abstract class InfoView {
-  showList(User user);
+  showUpdate(bool correct);
 }

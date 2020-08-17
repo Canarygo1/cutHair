@@ -1,14 +1,10 @@
 import 'dart:async';
+import 'package:components/components.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/ui/Components/button.dart';
-import 'package:cuthair/ui/Components/textTypes/my_textField.dart';
-import 'package:cuthair/ui/Components/textTypes/text_error.dart';
-import 'package:cuthair/ui/Components/upElements/goback.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
 import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:flutter/material.dart';
-import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 
 class ResetPassword extends StatefulWidget {
   @override
@@ -30,12 +26,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       appBar: AppBar(
         backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        leading: GoBack(
+        leading: Components.goBack(
           context,
           "",
-          HEIGHT: HEIGHT * 0.013,
         ),
-        title: LargeText("Volver"),
+        title: Components.largeText("Volver"),
         titleSpacing: 0,
       ),
       body: SingleChildScrollView(
@@ -45,7 +40,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             Padding(
               padding: EdgeInsets.fromLTRB(
                   WIDHT * 0.101, HEIGHT * 0.176, WIDHT * 0.089, HEIGHT * 0.027),
-              child: MyTextField(
+              child: Components.textFieldPredefine(
                 emailControler,
                 TextInputType.emailAddress,
                 InputDecoration(
@@ -65,9 +60,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                 ),
               ),
             ),
-            MyButton(() => sendEmail(context), LargeText("Enviar"),
+            Components.smallButton(() => sendEmail(context), Components.largeText("Enviar"),
                 color: Color.fromRGBO(230, 73, 90, 1), width: WIDHT,),
-            error.length == 0 ? Container() : TextError(error),
+            error.length == 0 ? Container() : Components.errorText(error),
           ],
         ),
       ),
