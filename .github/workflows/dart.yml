@@ -21,4 +21,5 @@ jobs:
       with:
         flutter-version: '1.20.2'
     - run: flutter pub get
-    - run: flutter build apk
+    - run: flutter build ios --release --no-codesign
+
