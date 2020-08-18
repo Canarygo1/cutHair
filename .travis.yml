@@ -8,5 +8,4 @@
             - gem install bundler
             - cd ios && bundle install && cd ..
         script:
-            - if [ "$TRAVIS_BRANCH" = "staging"]; then ./deploy/ios-staging.sh; fi
-            - if [ "$TRAVIS_TAG" != ""]; then ./deploy/ios-staging.sh; fi
+            - ./deploy/ios-staging.sh;
