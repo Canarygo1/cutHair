@@ -1,0 +1,12 @@
+jobs:
+    include:
+        - os: osx
+        name: IOS
+        osx_image: xcode11.3
+        install:
+            - git clone https://github.com/flutter/flutter.git -b stable
+            - export PATH=$PWD/flutter/bin:$PWD/flutter/bin/cache/dart-sdk/bin:$PATH
+            - gem install bundler
+            - cd ios && bundle install && cd ..
+        script:
+            if ["$TRAVIS_BRANCH" == "master"]; then ./deploy/ios-stagin.sh; fi
