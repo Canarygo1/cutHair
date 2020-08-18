@@ -1,6 +1,5 @@
-jobs:
-    include:
-        - os: osx
+
+        os: osx
         name: IOS
         osx_image: xcode11.3
         install:
