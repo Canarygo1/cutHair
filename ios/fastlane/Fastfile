@@ -12,34 +12,22 @@
 
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
-
+setup_travis
 default_platform(:ios)
 
 platform :ios do
   desc "Push a new beta build to TestFlight"
-  lane :beta do
-    if is_ci
-      create_keychain(
-        name: ENV['MATCH_KEYCHAIN_NAME'],
-        password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-        default_keychain: true,
-        unlock: true,
-        timeout: 3600,
-        lock_when_sleeps: false
-      )
+  lane :deployStaging do
+    sync_code_signing(type: "appstore", app_identifier:"capihair.cuthair",readonly:is_ci)
+    build_app(scheme: "Staging", export_method:"app-store")
+    upload_to_testflight(skip_waiting_for_build_processing:true)
     end
-    match(
-      type: "appstore",
-      readonly: is_ci,
-      keychain_name: ENV['MATCH_KEYCHAIN_NAME'],
-      keychain_password: ENV["MATCH_KEYCHAIN_PASSWORD"],
-    )
-    build_app(
-      workspace: "Runner.xcworkspace",
-      scheme: "MyApp",
-      export_method: "app-store"
-    )
 
-      upload_to_testflight
-    end
+    desc "Deploy a new version to the App Store"
+    lane :deployProd do
+      sync_code_signing(type: "appstore",app_identifier:"capihair.cuthair", readonly:is_ci)
+      build_app(scheme:"Prod", export_method:'app-store')
+      buildNotes = File.read("../../build_notes.txt")
+      upload_to_app_store(release_notes:{"default": buildNotes})
   end
+end
