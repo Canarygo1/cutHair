@@ -1,4 +1,4 @@
-git_url("git@github.com:Canarygo1/ReservaloCertificate.git")
+git_url("https://github.com/Canarygo1/ReservaloCertificate.git")
 
 storage_mode("git")
 app_identifier("capihair.cuthair")
