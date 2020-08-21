@@ -8,4 +8,4 @@
             - gem install bundler
             - cd ios && bundle install && cd ..
         script:
-            -  bash deploy/ios-staging.sh;
+            -  travis_wait bash deploy/ios-staging.sh;
