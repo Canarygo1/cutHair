@@ -35,7 +35,6 @@ class HomeClientPresenter {
       businessMap.putIfAbsent("Images", () => value);
       return true;
     }).then((value) => _view.showList(businessMap));
-
   }
 
   getOneImageFromFirebase(Business business) async {

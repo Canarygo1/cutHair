@@ -5,6 +5,9 @@ import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/ui/BusinessComponents/Beach/main_class_beach.dart';
+import 'package:cuthair/ui/BusinessComponents/HairDressing/main_class_hairdressing.dart';
+import 'package:cuthair/ui/BusinessComponents/Restaurant/main_class_restaurant.dart';
 import 'package:cuthair/ui/Components/button.dart';
 import 'package:cuthair/ui/Components/textTypes/large_text.dart';
 import 'package:cuthair/ui/Components/textTypes/medium_text.dart';
@@ -44,7 +47,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   double WIDHT;
   ConfirmAnimationPresenter _presenter;
   RemoteRepository _remoteRepository;
-  ApiRemoteRepository _apiRemoteRepository;
   Icon statusIcon;
   MediumText confirmTitle;
   MediumText confirmSubtitle;
@@ -62,13 +64,29 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     confirmSubtitle = MediumText("Disculpe las molestias, por favor intentelo de nuevo",);
     _progressDone = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _apiRemoteRepository = HttpApiRemoteRepository(Client());
-    _presenter = ConfirmAnimationPresenter(
-        this, _remoteRepository, _apiRemoteRepository);
+    getConfirmAnimationPresenter();
+
     _presenter.init(widget.appointment);
     startProgress();
     initAnimationController();
   }
+
+  getConfirmAnimationPresenter(){
+    if(this.widget.appointment.business.typeBusiness == "Peluquerías") {
+
+      ApiRemoteRepository _apiRemoteRepository = HttpApiRemoteRepository(Client());
+
+      _presenter = ConfirmAnimationHairDressingPresenter(
+          this, _remoteRepository, _apiRemoteRepository);
+    }else if(this.widget.appointment.business.typeBusiness == "Restaurantes"){
+      _presenter = ConfirmAnimationRestaurantPresenter(
+          this, _remoteRepository);
+    }else{
+      _presenter = ConfirmAnimationBeachPresenter(
+          this, _remoteRepository);
+    }
+  }
+
 
   initAnimationController() {
     _progressAnimationController = AnimationController(
