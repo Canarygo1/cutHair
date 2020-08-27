@@ -1,8 +1,6 @@
 
 import 'package:components/components.dart';
 import 'package:components/others_components/calendar.dart';
-import 'package:components/text_types/large_text.dart';
-import 'package:components/text_types/medium_text.dart';
 import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/appointment.dart';
@@ -198,7 +196,6 @@ class ChooseExtraInfoHairDressing{
 }
 
 class ChooseDateHairDressing{
-  bool type;
   Appointment appointment;
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
@@ -208,10 +205,9 @@ class ChooseDateHairDressing{
   Calendar calendarWidget;
   BuildContext context;
 
-  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool type, bool isConsulting, DateTime currentDate,
+  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool isConsulting, DateTime currentDate,
       double HEIGHT, double WIDTH, List<String> availability, Calendar calendar, BuildContext context, Function pressTimeSelection){
 
-    this.type = type;
     this.appointment = appointment;
     this.isConsulting = isConsulting;
     this.currentDate2 = currentDate;
@@ -285,7 +281,7 @@ class ConfirmScreenHairDressing{
   double width;
   bool penalize = false;
 
-  Widget getConfirmHairDressing(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, bool type, Widget confirmButton, Widget cancelButton) {
+  Widget getConfirmHairDressing(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, Widget confirmButton, Widget cancelButton) {
     this.appointment = appointment;
     this.height = HEI;
     this.width = WID;

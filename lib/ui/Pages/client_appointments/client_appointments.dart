@@ -8,6 +8,9 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/ui/BusinessComponents/Beach/main_class_beach.dart';
+import 'package:cuthair/ui/BusinessComponents/HairDressing/main_class_hairdressing.dart';
+import 'package:cuthair/ui/BusinessComponents/Restaurant/main_class_restaurant.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut_Uid.dart';
 import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
@@ -37,9 +40,9 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   ConfirmDialog confirmDialog;
   List<String> allImages;
   bool firstTime = true;
-  CardWithCheckOut cardWithCheckOut;
-  CardWithoutCheckOut cardWithoutCheckOut;
-  CardWithCheckOutUid cardWithCheckOutUid;
+  CardWithCheckOutHairDressing cardWithCheckOut;
+  CardWithoutCheckOutRestaurant cardWithoutCheckOut;
+  CardWithCheckOutUidBeach cardWithCheckOutUid;
   Timer timer;
 
   @override
@@ -164,25 +167,29 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                 primary: false,
                 itemCount: myAppointments.length,
                 itemBuilder: (context, index) {
-                  if (myAppointments.elementAt(index).typeBusiness ==
-                      "Peluquerías") {
-                    cardWithCheckOut = CardWithCheckOut(index,
-                        () => controlTimer(index), allImages, myAppointments);
-                    return cardWithCheckOut;
-                  } else if (myAppointments.elementAt(index).typeBusiness ==
-                      "Restaurantes") {
-                    cardWithoutCheckOut = CardWithoutCheckOut(index,
-                        () => controlTimer(index), allImages, myAppointments);
-                    return cardWithoutCheckOut;
-                  } else if (myAppointments.elementAt(index).typeBusiness ==
-                      "Playas") {
-                    cardWithCheckOutUid = CardWithCheckOutUid(index,
-                        () => controlTimer(index), allImages, myAppointments);
-                    return cardWithCheckOutUid;
-                  } else {
-                    return Container();
-                  }
+                  return getCardByTypeBusiness(index);
                 });
+  }
+
+  getCardByTypeBusiness(int index){
+    if (myAppointments.elementAt(index).typeBusiness ==
+        "Peluquerías") {
+      cardWithCheckOut = CardWithCheckOutHairDressing(index,
+              () => controlTimer(index), allImages, myAppointments);
+      return cardWithCheckOut;
+    } else if (myAppointments.elementAt(index).typeBusiness ==
+        "Restaurantes") {
+      cardWithoutCheckOut = CardWithoutCheckOutRestaurant(index,
+              () => controlTimer(index), allImages, myAppointments);
+      return cardWithoutCheckOut;
+    } else if (myAppointments.elementAt(index).typeBusiness ==
+        "Playas") {
+      cardWithCheckOutUid = CardWithCheckOutUidBeach(index,
+              () => controlTimer(index), allImages, myAppointments);
+      return cardWithCheckOutUid;
+    } else {
+      return Container();
+    }
   }
 
   controlTimer(int index) {

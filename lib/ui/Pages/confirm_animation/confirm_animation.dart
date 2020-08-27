@@ -7,6 +7,9 @@ import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/ui/BusinessComponents/Beach/main_class_beach.dart';
+import 'package:cuthair/ui/BusinessComponents/HairDressing/main_class_hairdressing.dart';
+import 'package:cuthair/ui/BusinessComponents/Restaurant/main_class_restaurant.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/confirm_animation_presenter.dart';
 import 'package:cuthair/ui/Pages/confirm_animation/progress_painter.dart';
 import 'package:flutter/material.dart';
@@ -56,11 +59,27 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     _progressDone = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
     _apiRemoteRepository = HttpApiRemoteRepository(Client());
-    _presenter = ConfirmAnimationPresenter(
-        this, _remoteRepository, _apiRemoteRepository);
+    getConfirmAnimationPresenter();
+
     _presenter.init(widget.appointment);
     startProgress();
     initAnimationController();
+  }
+
+  getConfirmAnimationPresenter(){
+    if(this.widget.appointment.business.typeBusiness == "Peluquerías") {
+
+      ApiRemoteRepository _apiRemoteRepository = HttpApiRemoteRepository(Client());
+
+      _presenter = ConfirmAnimationHairDressingPresenter(
+          this, _remoteRepository, _apiRemoteRepository);
+    }else if(this.widget.appointment.business.typeBusiness == "Restaurantes"){
+      _presenter = ConfirmAnimationRestaurantPresenter(
+          this, _remoteRepository);
+    }else{
+      _presenter = ConfirmAnimationBeachPresenter(
+          this, _remoteRepository);
+    }
   }
 
   initAnimationController() {

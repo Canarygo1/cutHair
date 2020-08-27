@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import '../../../global_methods.dart';
 
 class ChooseDateBeach{
-  bool type;
   Appointment appointment;
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
@@ -23,10 +22,9 @@ class ChooseDateBeach{
   Calendar calendarWidget;
   BuildContext context;
 
-  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool type, bool isConsulting, DateTime currentDate,
+  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool isConsulting, DateTime currentDate,
       double HEIGHT, double WIDTH, List<String> availability, Calendar calendar, BuildContext context, Function pressTimeSelection){
 
-    this.type = type;
     this.appointment = appointment;
     this.isConsulting = isConsulting;
     this.currentDate2 = currentDate;
@@ -102,7 +100,7 @@ class ConfirmScreenBeach {
   bool penalize = false;
 
 
-  Widget getConfirmBeach(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, bool type, Widget confirmButton, Widget cancelButton) {
+  Widget getConfirmBeach(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, Widget confirmButton, Widget cancelButton) {
     this.appointment = appointment;
     this.height = HEI;
     this.width = WID;

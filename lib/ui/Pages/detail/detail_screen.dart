@@ -6,8 +6,8 @@ import 'package:cuthair/model/business.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/model/service.dart';
-import 'package:cuthair/ui/Components/card_elements/card_service.dart';
-import 'package:cuthair/ui/Components/card_elements/restaurant_card.dart';
+import 'package:cuthair/ui/BusinessComponents/HairDressing/main_class_hairdressing.dart';
+import 'package:cuthair/ui/BusinessComponents/Restaurant/main_class_restaurant.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:cuthair/ui/Pages/not_login/not_login.dart';
@@ -103,9 +103,9 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
 
   Widget getCard() {
     if (business.typeBusiness == "Peluquerías") {
-      return CardService(business, serviceDetails, this.widget.logIn);
+      return CardServiceHairDressing(business, serviceDetails);
     } else if (business.typeBusiness == "Restaurantes") {
-      return RestaurantCard(business, serviceDetails);
+      return CardServiceRestaurant(business, serviceDetails);
     } else {
       return Container();
     }

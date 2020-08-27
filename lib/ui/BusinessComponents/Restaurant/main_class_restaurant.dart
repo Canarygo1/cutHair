@@ -213,7 +213,6 @@ class ChooseExtraInfoRestaurant{
 }
 
 class ChooseDateRestaurant{
-  bool type;
   Appointment appointment;
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
@@ -223,10 +222,9 @@ class ChooseDateRestaurant{
   Calendar calendarWidget;
   BuildContext context;
 
-  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool type, bool isConsulting, DateTime currentDate,
+  Widget getTimeSelectorIsNotEmpty(Appointment appointment, bool isConsulting, DateTime currentDate,
       double HEIGHT, double WIDTH, List<String> availability, Calendar calendar, BuildContext context, Function pressTimeSelection){
 
-    this.type = type;
     this.appointment = appointment;
     this.isConsulting = isConsulting;
     this.currentDate2 = currentDate;
@@ -298,7 +296,7 @@ class ConfirmScreenRestaurant{
   double width;
   bool penalize = false;
 
-  Widget getConfirmRestaurant(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, bool type, Widget confirmButton, Widget cancelButton) {
+  Widget getConfirmRestaurant(Appointment appointment, double HEI, double WID, bool penalize, BuildContext context, Widget confirmButton, Widget cancelButton) {
     this.appointment = appointment;
     this.height = HEI;
     this.width = WID;

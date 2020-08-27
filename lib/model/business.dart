@@ -28,10 +28,11 @@ class Business {
       int meal = int.parse(values["duracionComida"]);
       return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, maxPeople: numberPeople, durationMeal: meal);
     }else{
-      int aforo = values["Aforo"];
-      int numberPeople = values['MaximoReserva'];
+      /*int aforo = int.parse(values["Aforo"]);
+      int numberPeople = int.parse(values['MaximoReserva']);
       int duration = int.parse(values["duracionEstancia"]);
-      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, aforo: aforo, maxPeople: numberPeople, durationMeal: duration);
+      */return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness);
+      //, aforo: aforo, maxPeople: numberPeople, durationMeal: duration);
     }
   }
 
