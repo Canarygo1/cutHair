@@ -6,4 +6,5 @@ abstract class ConfirmAnimationPresenter{
 abstract class ConfirmAnimationView{
   correctInsert();
   incorrectInsert();
+  modifyMaxPercentage(double value);
 }

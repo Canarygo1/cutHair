@@ -592,6 +592,7 @@ class ConfirmAnimationHairDressingPresenter implements ConfirmAnimationPresenter
   @override
   init(Appointment appointment) async {
     try {
+      _view.modifyMaxPercentage(30);
       DateTime initial = appointment.checkIn.subtract(Duration(
           hours: appointment.checkIn.hour,
           minutes: appointment.checkIn.minute,
@@ -614,9 +615,12 @@ class ConfirmAnimationHairDressingPresenter implements ConfirmAnimationPresenter
         throw Exception;
       }
 
+      _view.modifyMaxPercentage(75);
+
       final FirebaseAuth auth = FirebaseAuth.instance;
       final FirebaseUser user = await auth.currentUser();
       _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
+      _view.modifyMaxPercentage(100);
       _view.correctInsert();
     }catch(e){
       _view.incorrectInsert();

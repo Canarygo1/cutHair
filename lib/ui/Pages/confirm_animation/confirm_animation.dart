@@ -32,6 +32,7 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     implements ConfirmAnimationView {
   double _percentage;
   double _nextPercentage;
+  double _maxPercentage;
   Timer _timer;
   AnimationController _progressAnimationController;
   bool _progressDone;
@@ -42,7 +43,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
   double WIDHT;
   ConfirmAnimationPresenter _presenter;
   RemoteRepository _remoteRepository;
-  ApiRemoteRepository _apiRemoteRepository;
   Icon statusIcon;
   MediumText confirmTitle;
   MediumText confirmSubtitle;
@@ -58,7 +58,6 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     _timer = null;
     _progressDone = false;
     _remoteRepository = HttpRemoteRepository(Firestore.instance);
-    _apiRemoteRepository = HttpApiRemoteRepository(Client());
     getConfirmAnimationPresenter();
 
     _presenter.init(widget.appointment);
@@ -127,7 +126,9 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
 
   publishProgress() {
     _percentage = _nextPercentage;
-    _nextPercentage += 1;
+    if (_nextPercentage < _maxPercentage) {
+      _nextPercentage += 1;
+    }
     if (_nextPercentage > 100.0) {
       _percentage = 0.0;
       _nextPercentage = 0.0;
@@ -231,5 +232,12 @@ class ConfirmAnimationState extends State<ConfirmAnimation>
     confirmTitle = Components.mediumText("No se ha podido confirmar la cita",);
     confirmSubtitle = Components.mediumText("Disculpe las molestias, por favor intentelo de nuevo",);
     isAppointmentInsert = false;
+  }
+
+  @override
+  modifyMaxPercentage(double value) {
+    setState(() {
+      _maxPercentage = value;
+    });
   }
 }

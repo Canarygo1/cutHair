@@ -395,9 +395,11 @@ class ConfirmAnimationBeachPresenter implements ConfirmAnimationPresenter{
   @override
   init(Appointment appointment) async {
     try {
+      _view.modifyMaxPercentage(30);
       final FirebaseAuth auth = FirebaseAuth.instance;
       final FirebaseUser user = await auth.currentUser();
       _remoteRepository.insertAppointmentBeach(appointment, user.uid);
+      _view.modifyMaxPercentage(100);
       _view.correctInsert();
     }catch(e){
       _view.incorrectInsert();
