@@ -1,9 +1,6 @@
-import 'dart:convert';
 import 'package:components/components.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
-import 'package:dbcrypt/dbcrypt.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -30,8 +27,8 @@ class _checkSMSCodeState extends State<checkSMSCode> {
 
   FirebaseAuth _auth = FirebaseAuth.instance;
   TextEditingController codeController = TextEditingController();
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   String error = "";
 
   Future<void> signIn(String smsCode) async {
@@ -41,11 +38,6 @@ class _checkSMSCodeState extends State<checkSMSCode> {
         smsCode: smsCode,
       );
       await _auth.signInWithCredential(credential);
-      ConnectionChecked.checkInternetConnectivity(context);
-      data.putIfAbsent("Penalización", () => false);
-      String hashPassword = new DBCrypt().hashpw(password, new DBCrypt().gensalt());
-
-      data.putIfAbsent("Contraseña", () => hashPassword.toString());
       RegisterCode().registerAuth(data["Email"], password, context, data);
     } catch (e) {
       setState(() {
@@ -75,17 +67,17 @@ class _checkSMSCodeState extends State<checkSMSCode> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -103,8 +95,8 @@ class _checkSMSCodeState extends State<checkSMSCode> {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -127,7 +119,7 @@ class _checkSMSCodeState extends State<checkSMSCode> {
               children: <Widget>[
                 textFieldWidget(
                     codeController, TextInputType.phone, "Introduce el código",
-                    topPadding: HEIGHT * 0.027),
+                    topPadding: height * 0.027),
                 Components.smallButton(() => signIn(codeController.text),
                     Components.largeText("Confirmar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),

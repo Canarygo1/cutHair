@@ -14,8 +14,8 @@ class contribuyer_screen extends StatefulWidget{
 
 class _contribuyerState extends State<contribuyer_screen>{
 
-  double HEIGHT;
-  double WIDTH;
+  double height;
+  double width;
   Map<String, String> mapContribuyers = {
     "Ufo: Vitaly Gorbachev": "www.flaticon.com",
     "404 image: Freepik": "http://www.freepik.com/"
@@ -27,8 +27,8 @@ class _contribuyerState extends State<contribuyer_screen>{
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDTH = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -47,7 +47,7 @@ class _contribuyerState extends State<contribuyer_screen>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.only(top: HEIGHT * 0.04, left: WIDTH * 0.05),
+              padding: EdgeInsets.only(top: height * 0.04, left: width * 0.05),
               child: Components.largeText("Lista de contribuidores"),
             ),
             Container(
@@ -61,11 +61,11 @@ class _contribuyerState extends State<contribuyer_screen>{
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.only(bottom: HEIGHT * 0.02, left: WIDTH * 0.05),
+                        padding: EdgeInsets.only(bottom: height * 0.02, left: width * 0.05),
                         child: Components.mediumText(mapContribuyers.keys.elementAt(index) + ":"),
                       ),
                       Padding(
-                        padding: EdgeInsets.only(bottom: HEIGHT * 0.04, left: WIDTH * 0.10),
+                        padding: EdgeInsets.only(bottom: height * 0.04, left: width * 0.10),
                         child: InkWell(
                           child: Components.mediumText(mapContribuyers.values.elementAt(index)),
                           onTap: () => launch(mapContribuyers.values.elementAt(index)),

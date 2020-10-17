@@ -16,7 +16,7 @@ class ConnectionChecked extends State<ConnectionCheck>{
         color: Color.fromRGBO(300, 300, 300, 1),
           child:  ListView(
             children: <Widget>[
-              Components.networkError(MediaQuery.of(context).size.height, MediaQuery.of(context).size.width)
+              Components.networkError(MediaQuery.of(context).size.height, MediaQuery.of(context).size.width, Container()),
             ]
           )
         )

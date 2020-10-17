@@ -1,20 +1,19 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:http/http.dart';
 
 class ResetPasswordCode{
-  final FirebaseAuth auth = FirebaseAuth.instance;
-  String email;
-  ResetPasswordCode(this.email);
+  RemoteRepository _remoteRepository;
+  ResetPasswordCode(this._remoteRepository);
 
-  Future<void> changePassword() async {
+  changePassword(String email) async {
     try {
-      String emailChange = email;
-      auth.setLanguageCode("es");
-      await auth.sendPasswordResetEmail(
-        email: emailChange,
-      );
+      String response = await _remoteRepository.resetPassword(email);
     }catch(e){
-      print(e.toString());
+      print(e);
     }
   }
 
+}
+abstract class ResetPasswordView{
+  showEmailSend(String texto);
 }

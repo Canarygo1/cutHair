@@ -1,44 +1,53 @@
+import 'package:cuthair/model/image_business.dart';
+import 'package:flutter/material.dart';
+
 class Business {
-  var uid;
-  var name;
-  var shortDirection;
-  var direction;
-  var type;
-  var phoneNumber;
-  var numeroFotos;
-  var typeBusiness;
-  var maxPeople;
-  var durationMeal;
-  var aforo;
+  String id;
+  String name;
+  String typeId;
+  String phoneNumber;
+  String direction;
+  String shortDirection;
+  String type;
+  bool useCheckout;
+  bool useEmployees;
+  String maxPerson;
+  bool isServiceSelected;
 
-  Business(this.name, this.shortDirection, this.direction, this.type,
-      this.phoneNumber, this.numeroFotos, this.uid, this.typeBusiness, {this.maxPeople, this.durationMeal, this.aforo});
+  Widget widget;
+  List<ImageBusiness> images;
 
-  factory Business.fromMap(Map values, String uid, String typeBusiness) {
-    String name = values['NOMBRE'];
+  Business(
+      this.id,
+      this.name,
+      this.typeId,
+      this.phoneNumber,
+      this.direction,
+      this.shortDirection,
+      this.type,
+      this.useCheckout,
+      this.useEmployees,
+      this.maxPerson,
+      this.isServiceSelected);
+
+  factory Business.fromMap(Map values) {
+    String id = values['Id'];
+    String name = values['Nombre'];
+    String typeId = values['TipoNegocioId'];
+    String phoneNumber = values['Telefono'];
     String direction = values['Ubicacion'];
-    int phoneNumber = values['Telefono'];
-    String type = values['tipo'];
     String shortDirection = values['shortUbicacion'];
-    int numeroFotos = values['Fotos'];
-    if(typeBusiness == "Peluquerías"){
-      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness);
-    }else if(typeBusiness == "Restaurantes"){
-      int numberPeople = values['MaximoReserva'];
-      int meal = int.parse(values["duracionComida"]);
-      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, maxPeople: numberPeople, durationMeal: meal);
-    }else{
-      int aforo = values["Aforo"];
-      int numberPeople = values['MaximoReserva'];
-      int duration = int.parse(values["duracionEstancia"]);
-      return Business(name, shortDirection, direction, type, phoneNumber, numeroFotos, uid, typeBusiness, aforo: aforo, maxPeople: numberPeople, durationMeal: duration);
-    }
+    String type = values['Tipo'];
+    bool useCheckout = values['UsaCheckOut'];
+    bool useEmployees = values['UsaEmpleados'];
+    String maxPerson = values['MaxPersonas'];
+    bool isServiceSelected = values['isServiceSelectable'];
+    return Business(id, name, typeId, phoneNumber, direction, shortDirection,
+        type, useCheckout, useEmployees, maxPerson, isServiceSelected);
   }
 
   @override
   String toString() {
-    return 'Business{uid: $uid, name: $name, shortDirection: $shortDirection, direction: $direction, type: $type, phoneNumber: $phoneNumber, numeroFotos: $numeroFotos, typeBusiness: $typeBusiness}';
+    return 'Business{id: $id, name: $name, typeId: $typeId, phoneNumber: $phoneNumber, direction: $direction, shortDirection: $shortDirection, type: $type, useCheckout: $useCheckout, useEmployees: $useEmployees, maxPerson: $maxPerson, isServiceSelected: $isServiceSelected, widget: $widget, images: $images}';
   }
-
-
 }

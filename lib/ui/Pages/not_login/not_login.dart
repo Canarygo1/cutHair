@@ -17,8 +17,8 @@ class NotLoginScreen extends StatefulWidget {
 }
 
 class _notLoginState extends State<NotLoginScreen> {
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   Random rnd;
   List<String> backgroundImages = [
     "assets/images/hairdressingBg.jpg",
@@ -35,8 +35,8 @@ class _notLoginState extends State<NotLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
         appBar: AppBar(
@@ -56,7 +56,7 @@ class _notLoginState extends State<NotLoginScreen> {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.only(top: HEIGHT * 0.35, bottom: 1),
+                padding: EdgeInsets.only(top: height * 0.35, bottom: 1),
                 child: Components.largeText(
                   this.widget.title,
                   boolText: FontWeight.bold,
@@ -67,7 +67,7 @@ class _notLoginState extends State<NotLoginScreen> {
             Align(
               alignment: Alignment.center,
               child: Padding(
-                padding: EdgeInsets.only(top: HEIGHT * 0.02, bottom: 10.0),
+                padding: EdgeInsets.only(top: height * 0.02, bottom: 10.0),
                 child: Components.mediumText(
                   this.widget.message,
                   boolText: FontWeight.normal,
@@ -78,11 +78,10 @@ class _notLoginState extends State<NotLoginScreen> {
                 alignment: Alignment.center,
                 child: Padding(
                     padding: EdgeInsets.only(
-                        top: HEIGHT * 0.04),
+                        top: height * 0.04),
                     child: GestureDetector(
                       onTap: () {
-                        GlobalMethods().removePages(context);
-                        GlobalMethods().pushAndReplacement(context, Login());
+                        GlobalMethods().removePagesAndGoToNewScreen(context, Login());
                       },
                       child: Container(
                         decoration: BoxDecoration(

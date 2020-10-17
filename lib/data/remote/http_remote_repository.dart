@@ -1,609 +1,523 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
-import 'package:cuthair/global_methods.dart';
+import 'package:cuthair/model/Place.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/model/appointment_completed.dart';
+import 'package:cuthair/model/business_type.dart';
 import 'package:cuthair/model/employee.dart';
-import 'package:cuthair/model/my_appointment.dart';
-import 'package:cuthair/model/schedule.dart';
+import 'package:cuthair/model/image_business.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/model/business.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart';
 
 class HttpRemoteRepository implements RemoteRepository {
-  Firestore firestore;
+  final Client _client;
+
   List<QuerySnapshot> querySnapshots = [];
 
-  HttpRemoteRepository(this.firestore);
+  HttpRemoteRepository(this._client);
 
-  Future<List<String>> getBusiness() async {
-    QuerySnapshot querySnapshot =
-        await firestore.collection(DotEnv().env['GET_NEGOCIO']).getDocuments();
+  @override
+  Future<String> createUserAuth(String email, password) async {
+    var params = {"Email": email, "Password": password};
+    var response = await _client.post(DotEnv().env['API_URL'] + "register",
+        body: json.encode(params),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        });
+    return response.body;
+  }
 
-    List<String> business = [];
-    querySnapshot.documents.forEach((v) {
-      business.add(v.documentID);
+  @override
+  Future<Response> createUserData(Map values, String userId) async {
+    var params = {
+      "Id": userId,
+      "Nombre": values['Nombre'],
+      "Apellidos": values['Apellidos'],
+      "Email": values['Email'],
+      "Telefono": values['Telefono']
+    };
+    var response = await _client.post(DotEnv().env['API_URL'] + "user",
+        body: json.encode(params),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        });
+    return response;
+  }
+
+  @override
+  Future<Response> loginUser(String email, password) async {
+    var params = {"Email": email, "Password": password};
+    var response = await _client.post(DotEnv().env['API_URL'] + "login",
+        body: json.encode(params),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        });
+    if (json.decode(response.body)['code'] == 400) {
+      throw ('El usuario no exite');
+    } else {
+      return response;
+    }
+  }
+
+  @override
+  Future<User> getUser(String id, String accessToken) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "user/" + id);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
     });
-    return business;
-  }
-
-  @override
-  Future<Map<String, List<Business>>> getAllBusiness(String business) async {
-    QuerySnapshot querySnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(business)
-        .collection("Negocios")
-        .getDocuments();
-    List queryData = querySnapshot.documents;
-    List<Business> allBusiness = [];
-
-    for (int i = 0; i < queryData.length; i++) {
-      Business hairDressing = Business.fromMap(
-          queryData[i].data, queryData[i].documentID, business);
-      allBusiness.add(hairDressing);
-    }
-
-    Map<String, List<Business>> allbusiness = new Map();
-    allbusiness[business] = allBusiness;
-
-    if (allbusiness.length >= 1) {
-      return allbusiness;
-    } else {
-      throw ("No existen peluquerias");
-    }
-  }
-
-  @override
-  Future<List<Service>> getAllServices(String uid, String typeBusiness) async {
-    QuerySnapshot querySnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(typeBusiness)
-        .collection("Negocios")
-        .document(uid)
-        .collection("servicios")
-        .getDocuments();
-    List<Service> services = [];
-    for (int i = 0; i < querySnapshot.documents.length; i++) {
-      services
-          .add(Service.fromMap(querySnapshot.documents[i].data, typeBusiness));
-    }
-
-    if (services.length >= 1) {
-      return services;
-    } else {
-      throw ("No existen servicios de esta peluqueria");
-    }
-  }
-
-  @override
-  Future<List<Employee>> getAllEmployes(String uid, String typeBusiness) async {
-    QuerySnapshot querySnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(typeBusiness)
-        .collection("Negocios")
-        .document(uid)
-        .collection("empleados")
-        .getDocuments();
-
-    List<Employee> employes = [];
-    for (int i = 0; i < querySnapshot.documents.length; i++) {
-      Employee employe = Employee(
-          querySnapshot.documents[i].data['Nombre'],
-          querySnapshot.documents[i].documentID,
-          querySnapshot.documents[i].data["orden"]);
-      employes.add(employe);
-    }
-
-    if (employes.length >= 1) {
-      return employes;
-    } else {
-      throw ("No existen empleados");
-    }
-  }
-
-  @override
-  Future<User> getUser(String uid) async {
-    DocumentSnapshot document = await firestore
-        .collection(DotEnv().env["GET_USUARIOS"])
-        .document(uid)
-        .get();
-    User user = User.fromMap(document.data, uid);
-
-    if (user != null) {
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ('JWT error');
+    } else if (json.decode(response.body)['code'] == 200) {
+      var data = json.decode(response.body)['result']['Usuarios'][0];
+      User user = User.fromMap(data);
       return user;
     } else {
-      throw ("No existe ese usuario");
+      throw ('Este usuario no existe');
     }
   }
 
   @override
-  Future<String> getOneImage(
-      String businessUid, String employeeName, String directory) async {
-    String url = "";
-    String nombre =
-        businessUid + "/" + directory + "/" + employeeName + ".jpeg";
-    try {
-      url = await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
-      return url;
-    } catch (e) {
-      return "";
-    }
+  Future<String> generateNewToken(String refreshToken) async {
+    var params = {"RefreshToken": refreshToken};
+    var response = await _client.post(DotEnv().env['API_URL'] + "token",
+        body: json.encode(params),
+        headers: {
+          HttpHeaders.contentTypeHeader: "application/json",
+        });
+    var token = json.decode(response.body)['result']['AccessToken'];
+    return token;
   }
 
   @override
-  Future<List<String>> getAllImages(Business business) async {
-    List<String> list = [];
-    try {
-      for (int i = 0; i < business.numeroFotos; i++) {
-        String nombre = business.uid + "/Gallery/" + i.toString() + ".jpeg";
-        String url =
-            await FirebaseStorage.instance.ref().child(nombre).getDownloadURL();
-        list.add(url);
-      }
-      return list;
-    } on Exception catch (e) {
-      return list;
-    }
-  }
-
-  @override
-  Future<bool> insertAppointmentHairDressing(
-      Appointment appointment, String uid) async {
-    var val = [];
-    val = await GetTimeSeparated.getTimeSeparatedBy10(
-        appointment.checkIn, appointment.checkOut);
-
-    firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.employee.uid)
-        .collection("horarios")
-        .document(appointment.day.toString())
-        .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
-
-    DocumentReference docRef = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("citas")
-        .add({
-      "extraInformation": appointment.employee.name,
-      "idUsuario": uid,
-      "CheckIn": appointment.checkIn.toString(),
-      "CheckOut": appointment.checkOut.toString(),
-      "Negocio": appointment.business.name,
-      "Servicio": appointment.service.type,
-      "Precio": appointment.service.price,
-      "Direccion": appointment.business.direction
+  Future<List<BusinessType>> getBusinessTypes() async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "business/types");
+    var response = await _client.get(uri, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
     });
-
-    List refList = [docRef];
-    await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(uid)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.employee.uid)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-  }
-
-  @override
-  Future<List<MyAppointment>> getUserAppointments(
-      String uid, DateTime date, bool firstTime) async {
-    List<MyAppointment> myAppointments = [];
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(uid)
-        .get();
-
-    for (int i = 0; i < documentSnapshot.data['citas'].length; i++) {
-      await documentSnapshot.data['citas'][i].get().then((datasnapshot) {
-        DocumentReference documentReference = documentSnapshot.data['citas'][i];
-        MyAppointment myAppointment = MyAppointment.fromMap(
-            datasnapshot.data,
-            documentReference.documentID,
-            documentReference.parent().parent().documentID,
-            documentReference.parent().parent().parent().parent().documentID,
-            documentReference);
-        if (!firstTime) {
-          DateTime checkIn = DateTime.parse(myAppointment.checkIn);
-          DateTime dateTime = DateTime.parse(myAppointment.checkIn).subtract(
-              Duration(
-                  microseconds: checkIn.microsecond,
-                  milliseconds: checkIn.millisecond,
-                  seconds: checkIn.second,
-                  minutes: checkIn.minute,
-                  hours: checkIn.hour));
-          if (date == dateTime) {
-            return myAppointment;
-          }
-        } else {
-          if (DateTime.parse(myAppointment.checkIn).isAfter(date)) {
-            return myAppointment;
-          }
-        }
-      }).then((myAppointment) {
-        if (myAppointment != null) {
-          myAppointments.add(myAppointment);
-        }
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else {
+      List<BusinessType> types = [];
+      var data = json.decode(response.body)['result']['TipoNegocios'];
+      data.forEach((element) {
+        BusinessType businessType = BusinessType.fromMap(element);
+        types.add(businessType);
       });
+      if (types.isEmpty) {
+        throw ('No hay tipos');
+      } else {
+        return types;
+      }
     }
+  }
 
-    if (myAppointments.length >= 1) {
-      return myAppointments;
+  @override
+  Future<BusinessType> getBusinessTypeById(
+      String accessToken, String id) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "business/types/" + id);
+    var response = await _client.get(uri, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      BusinessType type =
+          BusinessType.fromMap(json.decode(response.body)['result']);
+      return type;
     } else {
-      throw ("No existen citas de esta peluqueria");
+      throw ("No existe dicho tipo");
     }
   }
 
   @override
-  Future<bool> removeRange(DateTime day, String name, String businessUid,
-      String typeBusiness, Map ranges) async {
-    var val = [];
-
-    DateTime checkIn = day.add(Duration(hours: int.parse(ranges["Entrada"])));
-    DateTime checkOut = day.add(Duration(hours: int.parse(ranges["Salida"])));
-
-    val = await GetTimeSeparated.getTimeSeparatedBy10(checkIn, checkOut);
-
-    var maplist = [];
-    maplist.add(ranges);
-
-    firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(typeBusiness)
-        .collection("Negocios")
-        .document(businessUid)
-        .collection("empleados")
-        .document(name)
-        .collection("horarios")
-        .document(day.toString())
-        .updateData({"turnos": FieldValue.arrayRemove(maplist)});
-
-    firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(typeBusiness)
-        .collection("Negocios")
-        .document(businessUid)
-        .collection("empleados")
-        .document(name)
-        .collection("horarios")
-        .document(day.toString())
-        .updateData({"disponibilidad": FieldValue.arrayRemove(val)});
-  }
-
-  @override
-  Future<Schedule> getRange(
-      String day, String name, String businessUid, String typeBusiness) async {
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(typeBusiness)
-        .collection("Negocios")
-        .document(businessUid)
-        .collection("empleados")
-        .document(name)
-        .collection("horarios")
-        .document(day)
-        .get();
-
-    if (documentSnapshot.data != null) {
-      Schedule schedule = Schedule.fromMap(documentSnapshot.data, day);
-      return schedule;
+  Future<List<Business>> getAllBusiness() async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "business");
+    var response = await _client.get(uri, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
     } else {
-      throw Exception("No hay horarios");
+      List<Business> businesses = [];
+      List data = json.decode(response.body)['result']['Negocios'];
+      data.forEach((element) {
+        Business business = Business.fromMap(element);
+        businesses.add(business);
+      });
+      return businesses;
     }
   }
 
   @override
-  Future<bool> insertAppointmentRestaurant(
-      Appointment appointment, String uid) async {
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .collection("horarios")
-        .document(appointment.day.toString())
-        .get();
-
-    List lista = documentSnapshot.data['disponibilidad'];
-
-    Duration duration = GetTimeSeparated.getDurationFromMinutes(
-        appointment.business.durationMeal);
-
-    DateTime firebaseDate;
-
-    for (int i = 0; i < lista.length; i++) {
-      List<String> hours = lista[i]["hora"].split(':');
-
-      firebaseDate = appointment.checkIn.subtract(Duration(
-          hours: appointment.checkIn.hour,
-          minutes: appointment.checkIn.minute,
-          seconds: appointment.checkIn.second,
-          milliseconds: appointment.checkIn.millisecond,
-          microseconds: appointment.checkIn.microsecond));
-
-      firebaseDate = firebaseDate.add(
-          Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
-      if (firebaseDate.difference(appointment.checkIn).inMinutes >= 0 &&
-          firebaseDate.difference(appointment.checkIn).inMinutes <=
-              appointment.business.durationMeal) {
-        lista[i]["totalDisponibles"]--;
-      }
+  Future<Business> getBusinessById(String accessToken, String id) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "business/" + id);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      Business business =
+          Business.fromMap(json.decode(response.body)['result']);
+      return business;
+    } else {
+      throw ("No existe dicho negocio");
     }
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .collection("horarios")
-        .document(appointment.day.toString())
-        .setData({"disponibilidad": lista});
-
-    DocumentReference docRef = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("citas")
-        .add({
-      "extraInformation": appointment.numberPersons,
-      "idUsuario": uid,
-      "CheckIn": appointment.checkIn.toString(),
-      "Negocio": appointment.business.name,
-      "Direccion": appointment.business.direction
-    });
-
-    List refList = [docRef];
-
-    await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(uid)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
   }
 
   @override
-  Future<bool> insertAppointmentBeach(
-      Appointment appointment, String uid) async {
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .collection("horarios")
-        .document(appointment.day.toString())
-        .get();
-
-    Duration duration = GetTimeSeparated.getDurationFromMinutes(
-        appointment.business.durationMeal);
-    List lista = documentSnapshot.data['disponibilidad'];
-
-    DateTime firebaseDataInitial;
-    DateTime firebaseDataFinal;
-
-    for (int i = 0; i < lista.length; i++) {
-      List<String> hours = lista[i]["hora"].split(':');
-
-      firebaseDataInitial = appointment.checkIn.subtract(Duration(
-          hours: appointment.checkIn.hour,
-          minutes: appointment.checkIn.minute,
-          seconds: appointment.checkIn.second,
-          milliseconds: appointment.checkIn.millisecond,
-          microseconds: appointment.checkIn.microsecond));
-
-      firebaseDataInitial = firebaseDataInitial.add(
-          Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
-
-      if (firebaseDataInitial.difference(appointment.checkIn).inMinutes >= 0 &&
-          firebaseDataInitial.difference(appointment.checkIn).inMinutes <=
-              appointment.business.durationMeal) {
-        lista[i]["totalDisponibles"]--;
-      }
-
-      if (firebaseDataInitial.difference(appointment.checkIn).inMinutes == 0) {
-        firebaseDataFinal =
-            firebaseDataInitial.add(Duration(minutes: duration.inMinutes));
-      }
+  Future<List<Service>> getAllServices(
+      String businessId, String accessToken) async {
+    List<Service> services = [];
+    var uri = Uri.parse(
+        DotEnv().env['API_URL'] + "business/" + businessId + "/services");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      List data = json.decode(response.body)['result']['Servicios'];
+      data.forEach((element) {
+        Service service = Service.fromMap(element);
+        services.add(service);
+      });
+      return services;
+    } else {
+      throw ("No existen servicios para este negocio");
     }
+  }
 
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .collection("horarios")
-        .document(appointment.day.toString())
-        .setData({"disponibilidad": lista});
-
-    DocumentReference docRef = await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("citas")
-        .add({
-      "extraInformation": appointment.numberPersons,
-      "idUsuario": uid,
-      "CheckIn": appointment.checkIn.toString(),
-      "CheckOut": firebaseDataFinal.toString(),
-      "Negocio": appointment.business.name,
-      "Direccion": appointment.business.direction
+  @override
+  Future<Service> getServiceById(
+      String accessToken, String id, String businessId) async {
+    var uri = Uri.parse(
+        DotEnv().env['API_URL'] + "business/" + businessId + "/services/" + id);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
     });
-
-    List refList = [docRef];
-
-    await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(uid)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.business.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.business.uid)
-        .collection("empleados")
-        .document(appointment.numberPersons)
-        .setData({"citas": FieldValue.arrayUnion(refList)}, merge: true);
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      Service service = Service.fromMap(json.decode(response.body)['result']);
+      return service;
+    } else {
+      throw ("No existen este servicio");
+    }
   }
 
   @override
-  Future<bool> removeAppointment(MyAppointment appointment) async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    DocumentReference documentReference = appointment.documentReference;
-
-    List ref = [];
-    ref.add(documentReference);
-
-    String checkIn = DateTime.parse(appointment.checkIn).hour.toString() +
-        ":" +
-        DateTime.parse(appointment.checkIn).minute.toString();
-    String checkOut = DateTime.parse(appointment.checkOut).hour.toString() +
-        ":" +
-        DateTime.parse(appointment.checkOut).minute.toString();
-
-    DateTime date = DateTime.parse(appointment.checkIn);
-    DateTime subtract =
-        date.subtract(Duration(hours: date.hour, minutes: date.minute));
-
-    List<String> val = [];
-    val = GetTimeSeparated.getHours(checkIn, checkOut, subtract);
-    Schedule schedule = await getRange(
-        subtract.toString(),
-        appointment.extraInformation,
-        appointment.businessUid,
-        appointment.typeBusiness);
-    schedule.disponibility.forEach((value) => val.add(value));
-
-    val.sort();
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.businessUid)
-        .collection("empleados")
-        .document(appointment.extraInformation)
-        .updateData({"citas": FieldValue.arrayRemove(ref)});
-
-    await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(user.uid)
-        .updateData({"citas": FieldValue.arrayRemove(ref)});
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.businessUid)
-        .collection("empleados")
-        .document(appointment.extraInformation)
-        .collection("horarios")
-        .document(subtract.toString())
-        .updateData(
-            {"disponibilidad": FieldValue.arrayRemove(schedule.disponibility)});
-
-    await firestore
-        .collection(DotEnv().env['GET_NEGOCIO'])
-        .document(appointment.typeBusiness)
-        .collection("Negocios")
-        .document(appointment.businessUid)
-        .collection("empleados")
-        .document(appointment.extraInformation)
-        .collection("horarios")
-        .document(subtract.toString())
-        .updateData({"disponibilidad": FieldValue.arrayUnion(val)});
-
-    documentReference.delete();
-  }
-
-  @override
-  Future<User> insertAnonymousUser(User user) async {
-    DocumentReference docRef =
-        await firestore.collection(DotEnv().env['GET_ANONIMOS']).add({
-      "Nombre": user.name,
-      "Telefono": user.phone,
+  Future<List<Employee>> getAllEmployes(
+      String businessId, String accessToken) async {
+    List<Employee> employees = [];
+    var uri = Uri.parse(
+        DotEnv().env['API_URL'] + "business/" + businessId + "/employees");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
     });
-    user.uid = docRef.documentID;
-    return user;
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      List data = json.decode(response.body)['result']['Empleados'];
+      data.forEach((element) {
+        Employee employee = Employee.fromMap(element);
+        employees.add(employee);
+      });
+      return employees;
+    } else {
+      throw ("No existen empleados para este negocio");
+    }
   }
 
   @override
-  Future<User> getUserByPhoneNumber(String phoneNumber) async {
-    User user;
-    CollectionReference collectionReference =
-        firestore.collection(DotEnv().env['GET_USUARIOS']);
-    var query = await collectionReference
-        .where('Telefono', isEqualTo: phoneNumber)
-        .getDocuments()
-        .then((snapshot) {
-      if (snapshot.documents.length < 1) {
-        throw Exception;
+  Future<Employee> getEmployeeById(String accessToken, String id) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "employee/" + id);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      Employee employee =
+          Employee.fromMap(json.decode(response.body)['result']);
+      return employee;
+    } else {
+      throw ("No existen este empleado");
+    }
+  }
+
+  @override
+  Future<List<String>> getDisponibility(String accessToken, String employeeId,
+      String typeBusiness, String date, String duration) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] +
+        "employee/" +
+        employeeId +
+        "/availabilities/" +
+        typeBusiness +
+        "/" +
+        date +
+        "/" +
+        duration);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 400) {
+      throw ("Error en la disponibilidad");
+    } else {
+      List<String> data = [];
+      List values = json.decode(response.body)['result']['Availability'];
+      values.forEach((element) {
+        data.add(element);
+      });
+      return data;
+    }
+  }
+
+  @override
+  Future<bool> insertAppointment(
+      Appointment appointment, String accessToken, var params) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] +
+        "user/" +
+        appointment.userId +
+        "/appointments");
+    var response = await _client.post(uri,
+        headers: {
+          "token": accessToken,
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+        body: json.encode(params));
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      Appointment appointment = Appointment.fromMap(
+          json.decode(response.body)["result"]["Insertado"], false);
+      if (appointment.id != null) {
+        return true;
+      } else {
+        return false;
       }
-      return [snapshot.documents[0].data, snapshot.documents[0].documentID];
-    }).then((data) async {
-      user = User.fromMap(data[0], data[1]);
-    });
-    return user;
+    } else {
+      throw ("Ha ocurrido un error en la creacion");
+    }
   }
 
   @override
-  Future<bool> getUserPenalize(String uid) async {
-    DocumentSnapshot documentSnapshot = await firestore
-        .collection(DotEnv().env['GET_USUARIOS'])
-        .document(uid)
-        .get();
-    bool penalize = documentSnapshot.data['Penalizacion'];
-    return penalize;
-  }
-
-  @override
-  Future<bool> updateDataUser(Map data, String uid) async {
-    try {
-      await firestore
-          .collection(DotEnv().env['GET_USUARIOS'])
-          .document(uid)
-          .updateData(data);
+  Future<bool> insertAppointmentPlace(
+      Appointment appointment, String accessToken, var params) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] +
+        "place/" +
+        appointment.plazaCitaId +
+        "/appointments");
+    var response = await _client.post(uri,
+        headers: {
+          "token": accessToken,
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+        body: json.encode(params));
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
       return true;
-    } on Exception catch (e) {
+    } else {
+      throw ("Ha ocurrido un error en la creacion");
+    }
+  }
+
+  @override
+  Future<List<Appointment>> getUserAppointments(
+      String id, String accessToken) async {
+    var uri =
+        Uri.parse(DotEnv().env['API_URL'] + "user/" + id + "/appointments");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    List<Appointment> data = [];
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else {
+      List values = json.decode(response.body)['result'];
+      values.forEach((element) {
+        Appointment appointment = Appointment.fromMap(element, true);
+        data.add(appointment);
+      });
+      return data;
+    }
+  }
+
+  Future<bool> updateDataUser(User user, String accessToken) async {
+    var params = {
+      "Id": user.id,
+      "Nombre": user.name,
+      "Apellidos": user.surname,
+      "Email": user.email,
+      "Telefono": user.phone
+    };
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "user/" + user.id);
+    var response = await _client.put(uri,
+        headers: {
+          "token": accessToken,
+          HttpHeaders.contentTypeHeader: "application/json",
+        },
+        body: json.encode(params));
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      return true;
+    } else {
       return false;
     }
   }
 
   @override
-  Future<String> getAplicationVersion(String software) async {
-    DocumentSnapshot documentSnapshot =
-        await firestore.collection("Versiones").document(software).get();
-    String version = documentSnapshot.data['version'];
-    return version;
+  Future<List<ImageBusiness>> getAllImages(
+      Business business, String accessToken) async {
+    List<ImageBusiness> list = [];
+    var uri = Uri.parse(
+        DotEnv().env['API_URL'] + "business/" + business.id + "/photos");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    var data = json.decode(response.body)['result'];
+    if (data == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      List objects = data['Fotos'];
+      objects.forEach((element) {
+        ImageBusiness image = ImageBusiness.fromMap(element);
+        list.add(image);
+      });
+      return list;
+    } else {
+      throw ("No hay imagenes");
+    }
+  }
+
+  @override
+  Future<bool> removeAppointment(
+      AppointmentCompleted appointment, String accessToken) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] +
+        "user/" +
+        appointment.user.id +
+        "/appointments/" +
+        appointment.appointment.id +
+        "/" +
+        appointment.businessType.type);
+    var response = await _client.delete(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    var data = json.decode(response.body)['result'];
+    if (data == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      return true;
+    } else {
+      throw ("No se ha podido borrar la cita");
+    }
+  }
+
+  @override
+  Future<String> getVersionApp(String software) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "version/" + software);
+    var response = await _client.get(uri);
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      return json.decode(response.body)["result"];
+    } else {
+      throw ("No existen turnos");
+    }
+  }
+
+  @override
+  Future<List<Place>> getAllPLace(String accessToken, String businessId) async {
+    var uri = Uri.parse(
+        DotEnv().env['API_URL'] + "business/" + businessId + "/places");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    List<Place> data = [];
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      List aux = json.decode(response.body)['result']['Plazas'];
+      aux.forEach((element) {
+        Place place = Place.fromMap(element);
+        data.add(place);
+      });
+      return data;
+    } else {
+      throw ("No existen plazas");
+    }
+  }
+
+  @override
+  Future<Place> getPlaceById(String accessToken, String placeId) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "place/" + placeId);
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      Map data = json.decode(response.body)['result'];
+      Place place = Place.fromMap(data);
+      return place;
+    } else {
+      throw ("No existen plazas");
+    }
+  }
+
+  @override
+  Future<bool> getUserPenalization(String accessToken, String userId) async {
+    var uri =
+        Uri.parse(DotEnv().env['API_URL'] + "user/" + userId + "/penalizes");
+    var response = await _client.get(uri, headers: {
+      "token": accessToken,
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      bool penalization =
+          jsonDecode(response.body)['result']['Usuarios']['Penalizacion'];
+      return penalization;
+    } else {
+      throw ("Error al cargar penalizacion");
+    }
+  }
+
+  @override
+  Future<String> resetPassword(String email) async {
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "reset");
+    var params = {"Email": email};
+    var response = await _client.post(uri, body: json.encode(params), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+    });
+    if (json.decode(response.body)['result'] == 'JWT failed') {
+      throw ("JWT error");
+    } else if (json.decode(response.body)['code'] == 200) {
+      return response.body;
+    } else {
+      throw ("No se ha podido cambiar");
+    }
   }
 }

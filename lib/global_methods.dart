@@ -1,12 +1,18 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart';
 import 'data/local/db_sqlite.dart';
 import 'ui/Pages/bottom_navigation/menu.dart';
 import 'ui/Pages/login/login.dart';
 
 class GlobalMethods {
   BuildContext context;
+  var storage = FlutterSecureStorage();
+  RemoteRepository _remoteRepository =
+  HttpRemoteRepository(Client());
 
   void pushPage(BuildContext context, Widget page) {
     Navigator.of(context).push(
@@ -32,21 +38,26 @@ class GlobalMethods {
         MaterialPageRoute(builder: (context) => widget), (route) => false);
   }
 
+  generateNewAccessToken(String refreshToken) async {
+    String newToken = await _remoteRepository.generateNewToken(refreshToken);
+    await storage.write(key: 'AccessToken', value: newToken);
+  }
+
   searchDBUser(BuildContext context) async {
     Widget screen;
     await DBProvider.db.getUser();
     if (DBProvider.users.length > 0) {
-      FirebaseUser user = await FirebaseAuth.instance.currentUser();
-      if (user.uid == DBProvider.users[0].uid) {
+      try {
         screen = Menu(DBProvider.users[0]);
-      } else {
+      } catch (e) {
         DBProvider.db.delete();
         screen = Login();
       }
     } else {
       screen = Login();
     }
-    pushAndReplacement(context, screen);
+
+    return screen;
   }
 }
 

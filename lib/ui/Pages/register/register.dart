@@ -2,7 +2,6 @@ import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/register/register_presenter.dart';
 import 'package:cuthair/ui/Pages/send_sms/send_sms.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,15 +21,15 @@ class _registerState extends State<register> {
   TextEditingController password = TextEditingController();
   TextEditingController password2 = TextEditingController();
   GlobalKey<FormState> keyForm = GlobalKey();
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   String error = "";
   RegisterCode registerCode = RegisterCode();
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -56,7 +55,7 @@ class _registerState extends State<register> {
                   child: Column(
                     children: <Widget>[
                       textFormNameAndSurName(name, TextInputType.text, "Nombre",
-                          topPadding: HEIGHT * 0.067),
+                          topPadding: height * 0.067),
                       textFormNameAndSurName(surname, TextInputType.text, "Apellidos"),
                       textFormEmail(email, TextInputType.emailAddress,
                           "Correo electrónico"),
@@ -71,7 +70,7 @@ class _registerState extends State<register> {
                           : Components.errorText(error),
                       Padding(
                         padding: EdgeInsets.only(
-                            left: WIDHT * 0.11, right: WIDHT * 0.089),
+                            left: width * 0.11, right: width * 0.089),
                         child: Text.rich(
                           TextSpan(
                             children: [
@@ -113,7 +112,7 @@ class _registerState extends State<register> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: TextFormField(
         validator: (value) => registerCode.validateNameAndSurname(value),
         controller: controller,
@@ -121,10 +120,10 @@ class _registerState extends State<register> {
         decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -144,7 +143,7 @@ class _registerState extends State<register> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: TextFormField(
         validator: (value) => registerCode.checkEmail(value),
         controller: controller,
@@ -152,10 +151,10 @@ class _registerState extends State<register> {
         decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -175,7 +174,7 @@ class _registerState extends State<register> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: TextFormField(
         validator: (value) => registerCode.checkSecurityPassword(value),
         controller: controller,
@@ -183,10 +182,10 @@ class _registerState extends State<register> {
         decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -206,7 +205,7 @@ class _registerState extends State<register> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: TextFormField(
         validator: (value) => registerCode.checkSamePassword(value),
         controller: controller,
@@ -214,10 +213,10 @@ class _registerState extends State<register> {
         decoration: InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -239,28 +238,19 @@ class _registerState extends State<register> {
     data.putIfAbsent("Apellidos", () => surname.text.toString());
     data.putIfAbsent("Email", () => email.text.toLowerCase());
     data.putIfAbsent("Nombre", () => name.text.toString());
-    data.putIfAbsent("Permisos", () => 3);
     return data;
   }
 
   checkEmail() async {
     if (registerCode.checkCampos(context, keyForm)) {
-      var tokkens = await FirebaseAuth.instance
-          .fetchSignInMethodsForEmail(email: email.text.toLowerCase());
       if (registerCode.checkCampos(context, keyForm)) {
-        if (tokkens.length == 0) {
-          setState(() {
-            error = "";
-          });
-          GlobalMethods().pushPage(context, SendSMS(getData(), password.text));
-        } else {
-          setState(() {
-            error = "El email introducido ya existe";
-          });
-        }
-      } else {
-        error = "Rellene los campos de forma correcta";
+        setState(() {
+          error = "";
+        });
+        GlobalMethods().pushPage(context, SendSMS(getData(), password.text));
       }
+    } else {
+      error = "Rellene los campos de forma correcta";
     }
   }
 }

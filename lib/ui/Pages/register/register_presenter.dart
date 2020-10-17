@@ -1,27 +1,26 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/login/login.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart';
 
 class RegisterCode {
-  final FirebaseAuth auth = FirebaseAuth.instance;
   static String password1;
+  RemoteRepository remoteRepository =
+  HttpRemoteRepository(Client());
 
   void registerAuth(String email, String password, BuildContext context,
       Map<String, Object> data) async {
-    FirebaseUser user;
-    user = (await auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    ))
-        .user;
-    if (user != null) {
-      Firestore.instance
-          .collection(DotEnv().env['GET_USUARIOS'])
-          .document(user.uid)
-          .setData(data);
+    String responseAuth =
+    await remoteRepository.createUserAuth(email, password);
+    var userId = await json.decode(responseAuth)['result'];
+    var code = await json.decode(responseAuth)['code'];
+    Response responseUser = await remoteRepository.createUserData(data, userId);
+    code = await json.decode(responseUser.body)['code'];
+
+    if (code == 200) {
       GlobalMethods().removePagesAndGoToNewScreen(
           context,
           Login(
@@ -36,16 +35,16 @@ class RegisterCode {
         r'^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
-      return "El nombre es necesario";
+      return "El campo nombre no puede estar vacío";
     } else if (!regExp.hasMatch(value)) {
-      return "El nombre debe de ser a-z y A-Z";
+      return "Introduzca un nombre correcto.";
     }
     return null;
   }
 
   String checkEmail(String value) {
     bool pattern = RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value);
     if (value.length == 0) {
       return "El campo email no puede estar vacío";
@@ -58,7 +57,7 @@ class RegisterCode {
   String checkSecurityPassword(String value) {
     password1 = value;
     bool pattern =
-        RegExp(r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{8,}$').hasMatch(value);
+    RegExp(r'^(?=.*?[a-zA-Z])(?=.*?[0-9]).{8,}$').hasMatch(value);
     if (!pattern) {
       return "Debe tener letras y números. Min 8 dígitos.";
     }

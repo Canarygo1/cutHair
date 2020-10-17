@@ -1,56 +1,44 @@
 import 'package:components/components.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/model/appointment_completed.dart';
 import 'package:flutter/material.dart';
 
 class CardWithoutCheckOut extends StatelessWidget {
-  double HEIGHT;
-  double WIDHT;
-  int index;
+  double height;
+  double width;
   Function functionRemove;
-  List<String> allImages;
-  List<MyAppointment> myAppointments = [];
+  AppointmentCompleted appointment;
 
-  CardWithoutCheckOut(
-      this.index, this.functionRemove, this.allImages, this.myAppointments);
+  CardWithoutCheckOut(this.appointment, this.functionRemove);
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: WIDHT * 0.06),
+      padding: EdgeInsets.symmetric(horizontal: width * 0.06),
       child: Card(
         elevation: 4,
         shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
         color: Color.fromRGBO(60, 60, 62, 1),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
               padding: EdgeInsets.fromLTRB(
-                  WIDHT * 0.025, HEIGHT * 0.01, WIDHT * 0.025, 0),
+                  width * 0.025, height * 0.01, width * 0.025, 0),
               child: Column(
                 children: <Widget>[
                   AspectRatio(
-                    aspectRatio: 50.0 / 11.0,
-                    child: allImages[index].contains("assets/")
-                        ? Image.asset(
-                      allImages[index],
-                      fit: BoxFit.cover,
-                    )
-                        : Image.network(
-                      allImages[index],
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      aspectRatio: 50.0 / 11.0,
+                      child: appointment.business.widget),
                 ],
               ),
             ),
             Padding(
               padding:
-                  EdgeInsets.only(left: WIDHT * 0.025, top: HEIGHT * 0.013),
+              EdgeInsets.only(left: width * 0.025, top: height * 0.013),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -58,56 +46,55 @@ class CardWithoutCheckOut extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                        padding: EdgeInsets.symmetric(vertical: height * 0.006),
                         child: Components.mediumText(
-                            myAppointments.elementAt(index).businessName),
+                            appointment.business.name),
                       ),
                       Container(
-                          width: WIDHT * 0.62,
+                          width: width * 0.62,
                           padding:
-                              EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
+                          EdgeInsets.symmetric(vertical: height * 0.006),
                           child: Components.mediumText(
-                              myAppointments.elementAt(index).direction)),
+                              appointment.business.direction)),
                       Padding(
-                        padding: EdgeInsets.symmetric(vertical: HEIGHT * 0.006),
-                        child: Components.mediumText("Personas: " +
-                            myAppointments.elementAt(index).extraInformation),
+                        padding: EdgeInsets.symmetric(vertical: height * 0.006),
+                        child: Components.mediumText("Nº personas: " +
+                            appointment.appointment.plazaCitaId),
                       ),
                     ],
                   ),
                   Padding(
-                    padding: EdgeInsets.only(top: HEIGHT * 0.025, left: 1),
+                    padding: EdgeInsets.only(top: height * 0.025, left: 1),
                     child: Column(
                       children: <Widget>[
-                        Components.smallText(GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
-                            myAppointments.elementAt(index).checkIn)
+                        Components.smallText(GetTimeSeparated
+                            .getFullTimeIfHasOneValue_Month(DateTime.parse(
+                            appointment.appointment.checkIn)
                             .day
                             .toString()) +
                             "-" +
-                            GetTimeSeparated.getFullTimeIfHasOneValue_Month(DateTime.parse(
-                                myAppointments.elementAt(index).checkIn)
-                                .month
-                                .toString()) +
+                            GetTimeSeparated.getFullTimeIfHasOneValue_Month(
+                                DateTime.parse(
+                                    appointment.appointment.checkIn)
+                                    .month
+                                    .toString()) +
                             "-" +
                             DateTime.parse(
-                                    myAppointments.elementAt(index).checkIn)
+                                appointment.appointment.checkIn)
                                 .year
                                 .toString()),
                         Stack(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.only(top: HEIGHT * 0.020),
+                              padding: EdgeInsets.only(top: height * 0.006),
                               child: Components.smallText(
-                                DateTime.parse(myAppointments
-                                            .elementAt(index)
-                                            .checkIn)
-                                        .hour
-                                        .toString() +
+                                DateTime.parse(appointment.appointment.checkIn)
+                                    .hour
+                                    .toString() +
                                     ":" +
-                                    GetTimeSeparated.getFullTimeIfHasOneValue_Hour(
-                                        DateTime.parse(myAppointments
-                                                .elementAt(index)
-                                                .checkIn)
+                                    GetTimeSeparated
+                                        .getFullTimeIfHasOneValue_Hour(
+                                        DateTime.parse(appointment.appointment.checkIn)
                                             .minute
                                             .toString()),
                               ),
@@ -120,14 +107,15 @@ class CardWithoutCheckOut extends StatelessWidget {
                 ],
               ),
             ),
-            Center(
+            Expanded(
               child: Components.smallButton(
                 functionRemove,
                 Components.smallText(
                   'Cancelar',
                   size: 11,
                 ),
-                height: HEIGHT * 0.05,
+                height: height * 0.05,
+                horizontalPadding: width * 0.008,
                 color: Color.fromRGBO(230, 73, 90, 1),
               ),
             ),

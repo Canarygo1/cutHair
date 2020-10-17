@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:components/components.dart';
-import 'package:cuthair/data/remote/push_notification_service.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/ui/Pages/bottom_navigation/menu.dart';
 import 'package:cuthair/ui/Pages/register/register.dart';
@@ -25,8 +24,8 @@ class _LoginState extends State<Login> implements LoginView {
   String error = "";
   Color color;
   LoginCode loginCode;
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   List list;
   Random rnd;
   List<String> backgroundImages = [
@@ -35,9 +34,6 @@ class _LoginState extends State<Login> implements LoginView {
     "assets/images/restaurantBg.jpg"
   ];
   int randomBackground;
-
-  PushNotificationService pushNotificationService;
-
   _LoginState(this.error, this.color);
 
   @override
@@ -53,8 +49,8 @@ class _LoginState extends State<Login> implements LoginView {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: GestureDetector(
@@ -73,19 +69,19 @@ class _LoginState extends State<Login> implements LoginView {
                 TextLoginWithoutAccount(context),
                 Padding(
                   padding: EdgeInsets.fromLTRB(
-                      WIDHT * 0.200, HEIGHT * 0.126, WIDHT * 0.200, 0),
+                      width * 0.200, height * 0.126, width * 0.200, 0),
                   child: Container(
                       child: Image.asset("assets/images/logo.png",
                           fit: BoxFit.cover)),
                 ),
                 textFieldWidget(emailController, TextInputType.emailAddress,
                     "Correo electrónico",
-                    topPadding: HEIGHT * 0.07),
+                    topPadding: height * 0.07),
                 textFieldWidget(
                     passwordController, TextInputType.text, "Contraseña",
                     obscureText: true),
                 error.length == 0 ? Container() : Components.errorText(error, color: color,),
-                TextForgetPassword(context),
+                //TextForgetPassword(context),
                 Components.smallButton(() => logIn(), Components.largeText("Entrar"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 TextRegister(context),
@@ -99,17 +95,17 @@ class _LoginState extends State<Login> implements LoginView {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -124,8 +120,6 @@ class _LoginState extends State<Login> implements LoginView {
       ),
     );
   }
-
-  Widget logo(BuildContext context) {}
 
   Widget TextRegister(BuildContext context) {
     return Align(
@@ -154,7 +148,7 @@ class _LoginState extends State<Login> implements LoginView {
         alignment: Alignment.centerRight,
         child: Padding(
             padding: EdgeInsets.only(
-                top: HEIGHT * 0.02,
+                top: height * 0.02,
                 right: MediaQuery.of(context).size.width * 0.05),
             child: GestureDetector(
               onTap: () {
@@ -185,7 +179,7 @@ class _LoginState extends State<Login> implements LoginView {
         alignment: Alignment.centerRight,
         child: Padding(
             padding:
-                EdgeInsets.only(bottom: HEIGHT * 0.027, right: WIDHT * 0.10),
+                EdgeInsets.only(bottom: height * 0.027, right: width * 0.10),
             child: GestureDetector(
               onTap: () {
                 GlobalMethods().pushPage(context, ResetPassword());

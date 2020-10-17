@@ -22,17 +22,17 @@ class DBProvider {
   initDB() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, 'CurrentUserDB.db');
-    return await openDatabase(path, version: 1, onOpen: (db) {},
+    return await openDatabase(path, version: 2, onOpen: (db) {},
         onCreate: (Database db, int version) async {
-      await db.execute('CREATE TABLE User ('
-          'surname TEXT,'
-          'name TEXT,'
-          'email TEXT,'
-          'phone TEXT,'
-          'password TEXT,'
-          'uid TEXT PRIMARY KEY'
-          ')');
-    });
+          await db.execute('CREATE TABLE User ('
+              'surname TEXT,'
+              'name TEXT,'
+              'email TEXT,'
+              'phone TEXT,'
+              'id TEXT PRIMARY KEY,'
+              'permission INTEGER'
+              ')');
+        });
   }
 
   static Future<List<Map<String, dynamic>>> query(String table) async =>
@@ -56,10 +56,10 @@ class DBProvider {
   Future<User> getUser() async {
     final databaseObject = await database;
     List<Map<String, dynamic>> lista =
-        await databaseObject.rawQuery('SELECT * FROM User');
+    await databaseObject.rawQuery('SELECT * FROM User');
     users = List.generate(lista.length, (i) {
       return User(lista[i]['surname'], lista[i]['name'], lista[i]['email'],
-          lista[i]['phone'], lista[i]['uid'], lista[i]['password']);
+          lista[i]['phone'], lista[i]['id'], lista[i]['permission']);
     });
   }
 
