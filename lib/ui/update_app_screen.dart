@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -10,25 +9,12 @@ class UpdateAppScreen extends StatefulWidget {
 }
 
 class _UpdateAppScreenState extends State<UpdateAppScreen> {
-  String software;
-
-  @override
-  void initState() {
-    if (Platform.isIOS) {
-      software = "IOS";
-    } else {
-      software = "Android";
-    }
-    launchStore();
-    super.initState();
-  }
-
   launchStore() {
-    if (software == "IOS") {
+    if (Platform.isIOS) {
       launch('https://apps.apple.com/es/app/res%C3%A9rvalo/id1511570047');
     } else {
       launch(
-          'https://play.google.com/store/apps/details?id=capihair.cuthair&gl=ES');
+          'https://play.google.com/store/apps/details?id=capihair.cuthair');
     }
   }
 

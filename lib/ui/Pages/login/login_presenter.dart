@@ -1,41 +1,35 @@
 import 'dart:convert';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/user.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart';
 
 class LoginCode {
   LoginView loginView;
   LoginCode(this.loginView);
 
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  final storage = new FlutterSecureStorage();
   User userLogin;
   Widget screen;
-  RemoteRepository _remoteRepository = HttpRemoteRepository(Firestore.instance);
+  RemoteRepository _remoteRepository = HttpRemoteRepository(Client());
 
   void iniciarSesion(
       String email, String password, BuildContext context) async {
-    FirebaseUser user;
     try {
-      user = (await auth.signInWithEmailAndPassword(
-          email: email, password: password))
-          .user;
-      userLogin = await _remoteRepository.getUser(user.uid);
+      Response responseLogin = await _remoteRepository.loginUser(email, password);
+      String userId = json.decode(responseLogin.body)['result']['Id'];
+      String accessToken = json.decode(responseLogin.body)['result']['AccessToken'];
+      String refreshToken = json.decode(responseLogin.body)['result']['RefreshToken'];
+      userLogin = await _remoteRepository.getUser(
+          userId, accessToken);
+      await storage.write(key: 'AccessToken', value: accessToken);
+      await storage.write(key: 'RefreshToken', value: refreshToken);
       DBProvider.db.insert(userLogin);
-      var bytes = utf8.encode(password);
-      Digest passwordEncript = sha1.convert(bytes);
-      if(userLogin.password != passwordEncript.toString()){
-        Map<String, String> data = Map();
-        data.putIfAbsent("Contraseña", () => passwordEncript.toString());
-        _remoteRepository.updateDataUser(data, userLogin.uid);
-      }
-      GlobalMethods().searchDBUser(context);
+      await GlobalMethods().removePagesAndGoToNewScreen(context, await GlobalMethods().searchDBUser(context));
       loginView.changeTextError("");
     } catch (Exception) {
       loginView.changeTextError("Los datos no son correctos");

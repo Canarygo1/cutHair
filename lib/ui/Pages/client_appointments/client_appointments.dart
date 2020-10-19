@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/components.dart';
 import 'package:components/others_components/calendar.dart';
 import 'package:components/others_components/confirm_dialog.dart';
@@ -7,15 +6,14 @@ import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
-import 'package:cuthair/model/my_appointment.dart';
+import 'package:cuthair/model/appointment_completed.dart';
 import 'package:cuthair/ui/Components/card_elements/card_with_checkOut.dart';
-import 'package:cuthair/ui/Components/card_elements/card_with_checkOut_Uid.dart';
 import 'package:cuthair/ui/Components/card_elements/card_without_checkOut.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:cuthair/data/remote/check_connection.dart';
+import 'package:http/http.dart';
 import 'client_appointments_presenter.dart';
 
 class ClientAppointments extends StatefulWidget {
@@ -25,21 +23,21 @@ class ClientAppointments extends StatefulWidget {
 
 class _ClientAppointmentsState extends State<ClientAppointments>
     implements MyAppointmentsView {
-  List<MyAppointment> myAppointments = [];
+  List<AppointmentCompleted> myAppointments = [];
+  List<AppointmentCompleted> aux = [];
   GlobalMethods global = GlobalMethods();
   RemoteRepository _remoteRepository;
   ClientAppointmentsPresenter _presenter;
   bool isConsulting = true;
   bool filter = true;
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   Calendar calendarWidget;
   ConfirmDialog confirmDialog;
   List<String> allImages;
   bool firstTime = true;
   CardWithCheckOut cardWithCheckOut;
   CardWithoutCheckOut cardWithoutCheckOut;
-  CardWithCheckOutUid cardWithCheckOutUid;
   Timer timer;
 
   @override
@@ -53,17 +51,17 @@ class _ClientAppointmentsState extends State<ClientAppointments>
   initState() {
     allImages = [];
     super.initState();
-    _remoteRepository = HttpRemoteRepository(Firestore.instance);
+    _remoteRepository = HttpRemoteRepository(Client());
     _presenter = ClientAppointmentsPresenter(this, _remoteRepository);
-    _presenter.init(DBProvider.users[0].uid, DateTime.now(), true);
+    _presenter.init(DBProvider.users[0].id, false);
     calendarWidget =
         Calendar((DateTime date, List<Event> events) => pressCalendar(date));
   }
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     global.context = context;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -78,35 +76,46 @@ class _ClientAppointmentsState extends State<ClientAppointments>
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             this.filter == true
-                ? Padding(
-                    padding: EdgeInsets.only(right: WIDHT * 0.61),
-                    child: Components.smallButton(
-                      () => {
-                        this.isConsulting == false
-                            ? this.setState(() => {
-                                  this.filter = false,
-                                  this.isConsulting = false
-                                })
-                            : () => {},
-                      },
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          SvgPicture.asset(
-                            "assets/images/Filter.svg",
-                            width: WIDHT * 0.063,
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: WIDHT * 0.024),
-                            child: Components.largeText("Día"),
-                          ),
-                        ],
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Components.smallButton(
+                        () => {
+                          this.isConsulting == false
+                              ? this.setState(() => {
+                                    this.filter = false,
+                                    this.isConsulting = false
+                                  })
+                              : () => {},
+                        },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            SvgPicture.asset(
+                              "assets/images/Filter.svg",
+                              width: width * 0.063,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: width * 0.024),
+                              child: Components.largeText("Día"),
+                            ),
+                          ],
+                        ),
+                        height: height * 0.054,
+                        verticalMargin: height * 0.035,
+                        horizontalPadding: width * 0.03,
+                        color: Color.fromRGBO(230, 73, 90, 1),
                       ),
-                      height: HEIGHT * 0.054,
-                      verticalMargin: HEIGHT * 0.035,
-                      horizontalPadding: WIDHT * 0.05,
-                      color: Color.fromRGBO(230, 73, 90, 1),
-                    ),
+                      calendarWidget.currentDate2 != null
+                          ? Components.mediumText(
+                              calendarWidget.currentDate2.day.toString() +
+                                  "-" +
+                                  calendarWidget.currentDate2.month.toString() +
+                                  "-" +
+                                  calendarWidget.currentDate2.year.toString(),
+                              color: Color.fromRGBO(26, 200, 146, 1))
+                          : Container(),
+                    ],
                   )
                 : Container(),
             this.filter == false
@@ -114,7 +123,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
                     children: <Widget>[
                       Center(
                         child: Padding(
-                          padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                          padding: EdgeInsets.only(top: height * 0.027),
                           child: Components.largeText(
                             "Seleccione el día.",
                             size: 25,
@@ -137,16 +146,16 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             color: Color.fromRGBO(230, 73, 90, 1),
             type: SpinKitWaveType.start,
           )
-        : myAppointments.length == 0
+        : aux.length == 0
             ? Center(
                 child: Column(
                   children: <Widget>[
                     SvgPicture.asset(
                       "assets/images/sad.svg",
-                      width: WIDHT * 0.229,
+                      width: width * 0.229,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: HEIGHT * 0.03),
+                      padding: EdgeInsets.only(top: height * 0.03),
                       child: Column(
                         children: <Widget>[
                           Components.mediumText(
@@ -162,34 +171,24 @@ class _ClientAppointmentsState extends State<ClientAppointments>
             : ListView.builder(
                 shrinkWrap: true,
                 primary: false,
-                itemCount: myAppointments.length,
+                itemCount: aux.length,
                 itemBuilder: (context, index) {
-                  if (myAppointments.elementAt(index).typeBusiness ==
-                      "Peluquerías") {
-                    cardWithCheckOut = CardWithCheckOut(index,
-                        () => controlTimer(index), allImages, myAppointments);
+                  if (aux[index].business.useCheckout == true) {
+                    cardWithCheckOut = CardWithCheckOut(
+                      () => controlTimer(index),
+                      aux[index],
+                    );
                     return cardWithCheckOut;
-                  } else if (myAppointments.elementAt(index).typeBusiness ==
-                      "Restaurantes") {
-                    cardWithoutCheckOut = CardWithoutCheckOut(index,
-                        () => controlTimer(index), allImages, myAppointments);
-                    return cardWithoutCheckOut;
-                  } else if (myAppointments.elementAt(index).typeBusiness ==
-                      "Playas") {
-                    cardWithCheckOutUid = CardWithCheckOutUid(index,
-                        () => controlTimer(index), allImages, myAppointments);
-                    return cardWithCheckOutUid;
                   } else {
-                    return Container();
+                    cardWithoutCheckOut = CardWithoutCheckOut(
+                        aux[index], () => functionRemove(index));
+                    return cardWithoutCheckOut;
                   }
                 });
   }
 
   controlTimer(int index) {
     if (firstTime == true) {
-      setState(() {
-        firstTime = false;
-      });
       return functionRemove(index);
     } else {
       showDialog(
@@ -216,12 +215,11 @@ class _ClientAppointmentsState extends State<ClientAppointments>
           () => {
             this.setState(() {
               isConsulting = true;
-              firstTime = !firstTime;
+              firstTime = false;
             }),
+            _presenter.removeAppointment(
+                aux[index], calendarWidget.currentDate2),
             GlobalMethods().popPage(confirmDialog.context),
-            ConnectionChecked.checkInternetConnectivity(context),
-            _presenter.removeAppointment(myAppointments[index], index,
-                DBProvider.users[0].uid, DateTime.now()),
             timer = Timer(
                 Duration(minutes: 1),
                 () => this.setState(() {
@@ -234,39 +232,58 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     );
   }
 
+  checkDay(DateTime day) {
+    if (calendarWidget.currentDate2 != null) {
+      if (day.day == calendarWidget.currentDate2.day &&
+          day.month == calendarWidget.currentDate2.month &&
+          day.year == calendarWidget.currentDate2.year) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
+  generateList() {
+    if (myAppointments.isNotEmpty) {
+      aux = myAppointments
+          .where((element) =>
+              checkDay(DateTime.parse(element.appointment.checkIn)))
+          .toList();
+    }
+    setState(() {
+      isConsulting = false;
+    });
+  }
+
   pressCalendar(DateTime date) {
     if (isConsulting == false) {
       if (date.isAfter(calendarWidget.currentDate) ||
           (date.year == calendarWidget.currentDate.year &&
               date.month == calendarWidget.currentDate.month &&
               date.day == calendarWidget.currentDate.day)) {
-        this.setState(() {
-          calendarWidget.currentDate2 = date;
-          myAppointments.clear();
-          allImages.clear();
-          _presenter.init(DBProvider.users[0].uid, date, false);
+        calendarWidget.currentDate2 = date;
+        setState(() {
+          isConsulting = true;
           this.filter = true;
-          this.isConsulting = true;
         });
+        if (myAppointments.isEmpty) {
+          _presenter.init(DBProvider.users[0].id, true);
+        } else {
+          generateList();
+        }
       }
     }
   }
 
   @override
-  showAppointments(List<MyAppointment> myAppointment) {
+  showAppointments(List<AppointmentCompleted> myAppointment) {
     if (mounted) {
       setState(() {
-        isConsulting = false;
-        myAppointments = myAppointment;
-      });
-    }
-  }
-
-  @override
-  showImages(List<String> allImages) {
-    if (mounted) {
-      setState(() {
-        this.allImages = allImages;
+        this.myAppointments = myAppointment;
+        generateList();
       });
     }
   }
@@ -276,7 +293,7 @@ class _ClientAppointmentsState extends State<ClientAppointments>
     if (mounted) {
       setState(() {
         isConsulting = false;
-        myAppointments = [];
+        myAppointments.clear();
       });
     }
   }

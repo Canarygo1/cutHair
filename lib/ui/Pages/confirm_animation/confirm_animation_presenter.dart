@@ -1,65 +1,82 @@
-import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuthair/model/business.dart';
+import 'package:cuthair/model/service.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ConfirmAnimationPresenter{
 
   ConfirmAnimationView _view;
   RemoteRepository _remoteRepository;
-  ApiRemoteRepository _apiRemoteRepository;
+  final storage = new FlutterSecureStorage();
 
-  ConfirmAnimationPresenter(this._view, this._remoteRepository,this._apiRemoteRepository);
+  ConfirmAnimationPresenter(this._view, this._remoteRepository);
 
-  init(Appointment appointment) async {
+  init(Appointment appointment, String businessType, Service service, Business business) async {
     try {
-      if(appointment.business.typeBusiness == "Peluquerías") {
-        DateTime initial = appointment.checkIn.subtract(Duration(
-            hours: appointment.checkIn.hour,
-            minutes: appointment.checkIn.minute,
-            seconds: appointment.checkIn.second,
-            microseconds: appointment.checkIn.microsecond,
-            milliseconds: appointment.checkIn.millisecond));
-        List<String> appointments = await _apiRemoteRepository.getHairDressingAvailability(
-            appointment.service.duration.toString(),
-            appointment.employee.name,
-            initial.toString(), appointment.business.uid
-        );
-
-        bool isInAppointments = appointments.contains(
-            appointment.checkIn.hour.toString() + ":" +
-                GetTimeSeparated.getFullTimeIfHasOneValue_Hour(
-                    appointment.checkIn.minute.toString()));
-
-        if (!isInAppointments) {
-          throw Exception;
+      _view.modifyMaxPercentage(30);
+      String accessToken = await storage.read(key: 'AccessToken');
+      List<String> availability = await _remoteRepository.getDisponibility(accessToken,
+          appointment.employeeId, businessType, appointment.checkIn, service.duration);
+      _view.modifyMaxPercentage(75);
+      String availabilityValue = appointment.checkIn.split(".")[0];
+      if(availability.contains(availabilityValue)){
+        bool salida;
+        var params = createParams(appointment, business, service);
+        if(business.useEmployees){
+          salida = await _remoteRepository.insertAppointment(appointment, accessToken, params);
+        }else{
+          salida = await _remoteRepository.insertAppointmentPlace(appointment, accessToken, params);
         }
-
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final FirebaseUser user = await auth.currentUser();
-        _remoteRepository.insertAppointmentHairDressing(appointment, user.uid);
-        _view.correctInsert();
-
-      }else if(appointment.business.typeBusiness == "Restaurantes"){
-
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final FirebaseUser user = await auth.currentUser();
-        _remoteRepository.insertAppointmentRestaurant(appointment, user.uid);
-        _view.correctInsert();
+        _view.modifyMaxPercentage(100);
+        if(salida == true){
+          _view.correctInsert();
+        }else{
+          _view.incorrectInsert();
+        }
       }else{
-
-        final FirebaseAuth auth = FirebaseAuth.instance;
-        final FirebaseUser user = await auth.currentUser();
-        _remoteRepository.insertAppointmentBeach(appointment, user.uid);
-        _view.correctInsert();
+        throw ('Ya no esta disponible');
       }
     }catch(e){
+      if (e == 'JWT error') {
+        String refreshToken = await storage.read(key: 'RefreshToken');
+        await GlobalMethods().generateNewAccessToken(refreshToken);
+        init(appointment, businessType, service, business);
+      }
+      _view.modifyMaxPercentage(100);
       _view.incorrectInsert();
     }
+  }
+
+  createParams(Appointment appointment, Business business, Service service){
+    String checkIn = appointment.checkIn.split(".")[0];
+    String checkOut = appointment.checkOut.split(".")[0];
+    var params;
+    if(business.isServiceSelected == true){
+      params = {
+        "Precio": service.price,
+        "CheckIn": checkIn,
+        "CheckOut": checkOut,
+        "EmployeeId": appointment.employeeId,
+        "isAnonymous": "User",
+        "ServiceId": appointment.serviceId,
+      };
+    }else{
+      params = {
+        "Precio": service.price,
+        "CheckIn": checkIn,
+        "CheckOut": checkOut,
+        "isAnonymous": "User",
+        "ServiceId": appointment.serviceId,
+        "UserId": appointment.userId
+      };
+    }
+    return params;
   }
 }
 abstract class ConfirmAnimationView{
   correctInsert();
   incorrectInsert();
+  modifyMaxPercentage(double value);
 }

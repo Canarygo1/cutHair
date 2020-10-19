@@ -1,28 +1,32 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/components.dart';
+import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
 import 'package:cuthair/model/business.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
 import 'package:cuthair/data/remote/remote_repository.dart';
+import 'package:cuthair/model/business_type.dart';
+import 'package:cuthair/model/image_business.dart';
 import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Components/card_elements/card_service.dart';
-import 'package:cuthair/ui/Components/card_elements/restaurant_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cuthair/ui/Pages/choose_extra_info/choose_extra_info.dart';
 import 'package:cuthair/ui/Pages/not_login/not_login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:http/http.dart';
 import 'detail_presenter.dart';
 
 class DetailScreen extends StatefulWidget {
   Business business;
   bool logIn;
+  BusinessType businessType;
 
-  DetailScreen(this.business, this.logIn);
+  DetailScreen(this.business, this.logIn, this.businessType);
 
   @override
-  _DetailScreenState createState() => _DetailScreenState(business);
+  _DetailScreenState createState() =>
+      _DetailScreenState(business, businessType);
 }
 
 class _DetailScreenState extends State<DetailScreen> implements DetailView {
@@ -31,41 +35,47 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   DetailPresenter presenter;
   RemoteRepository remoteRepository;
   List<Service> serviceDetails = [];
-  List<String> listImagesFirebase = [];
   List<Widget> child = [];
   bool isConsulting = true;
   bool notImages = true;
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
+  BusinessType businessType;
 
-  _DetailScreenState(this.business);
+  _DetailScreenState(this.business, this.businessType);
 
   int _current = 0;
 
   initState() {
-    appointment.business = this.business;
-    remoteRepository = HttpRemoteRepository(Firestore.instance);
+    appointment.businessId = business.id;
+    appointment.userId = this.widget.logIn == true ? DBProvider.users[0].id : "";
+    remoteRepository = HttpRemoteRepository(Client());
     presenter = DetailPresenter(this, remoteRepository);
     presenter.init(business);
   }
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: business.typeBusiness != "Peluquerías"
+      floatingActionButton: business.isServiceSelected == false
           ? Padding(
-              padding: EdgeInsets.only(bottom: HEIGHT * 0.02),
+              padding: EdgeInsets.only(bottom: height * 0.02),
               child: FloatingActionButton.extended(
                   onPressed: () {
-                    if(this.widget.logIn == true){
-                      GlobalMethods()
-                          .pushPage(context, ChooseExtraInfoScreen(appointment));
-                    }else{
-                      GlobalMethods().pushPage(context, NotLoginScreen("Reservar cita", "Para acceder, necesitas iniciar sesión"));
+                    if (this.widget.logIn == true) {
+                      GlobalMethods().pushPage(
+                          context,
+                          ChooseExtraInfoScreen(appointment, business,
+                              businessType, serviceDetails[0]));
+                    } else {
+                      GlobalMethods().pushPage(
+                          context,
+                          NotLoginScreen("Reservar cita",
+                              "Para acceder, necesitas iniciar sesión"));
                     }
                   },
                   label: Text("Reserva una cita"),
@@ -79,46 +89,39 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
             sliderImages(context),
             Components.largeText(business.name),
             Components.mediumText(business.direction),
-            business.typeBusiness != "Playas"
-                ? Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                          top: HEIGHT * 0.013, left: WIDHT * 0.025),
-                      child: Text(
-                        "Servicios",
-                        style: TextStyle(
-                            color: Color.fromRGBO(230, 73, 90, 1),
-                            fontSize: 24),
-                      ),
-                    ),
-                  )
-                : Components.mediumText("Aforo: " + business.aforo.toString()),
-            getCard()
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding:
+                    EdgeInsets.only(top: height * 0.013, left: width * 0.025),
+                child: Text(
+                  "Servicios",
+                  style: TextStyle(
+                      color: Color.fromRGBO(230, 73, 90, 1), fontSize: 24),
+                ),
+              ),
+            ),
+            CardService(appointment, business, serviceDetails,
+                this.widget.logIn, businessType),
           ],
         ),
       ),
     );
   }
 
-  Widget getCard() {
-    if (business.typeBusiness == "Peluquerías") {
-      return CardService(business, serviceDetails, this.widget.logIn);
-    } else if (business.typeBusiness == "Restaurantes") {
-      return RestaurantCard(business, serviceDetails);
-    } else {
-      return Container();
-    }
-  }
-
   List<Widget> getChilds() {
-    List prueba = map<Widget>(listImagesFirebase, (index, i) {
+    List prueba = map<Widget>(business.images, (index, i) {
+      notImages = business.images.isEmpty || business.images[0].url.contains("assets") ? false : true;
       return Container(
         margin: EdgeInsets.all(5.0),
         child: ClipRRect(
           borderRadius: BorderRadius.all(Radius.circular(5.0)),
           child: Stack(children: <Widget>[
-            notImages ? Image.network(i, fit: BoxFit.cover, width: WIDHT * 2.546) : Image.asset(i, fit: BoxFit.cover, width: WIDHT * 2.546),
+            notImages == true
+                ? Image.network(business.images[index].url,
+                    fit: BoxFit.cover, width: width * 2.546)
+                : Image.asset(business.images[index].url,
+                    fit: BoxFit.cover, width: width * 2.546),
             Positioned(
               child: Container(
                 decoration: BoxDecoration(
@@ -132,7 +135,7 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
                   ),
                 ),
                 padding: EdgeInsets.symmetric(
-                    vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.05),
+                    vertical: height * 0.013, horizontal: width * 0.05),
               ),
             ),
           ]),
@@ -143,22 +146,23 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   }
 
   Widget sliderImages(BuildContext context) {
-    return isConsulting
+    return isConsulting || business.images.length == 0
         ? Container(
-            margin: EdgeInsets.only(top: HEIGHT * 0.027),
-            height: HEIGHT * 0.25,
+            margin: EdgeInsets.only(top: height * 0.027),
+            height: height * 0.25,
             child: SpinKitWave(
               color: Color.fromRGBO(230, 73, 90, 1),
               type: SpinKitWaveType.start,
             ),
           )
         : Container(
-            margin: EdgeInsets.only(top: HEIGHT * 0.027),
+            margin: EdgeInsets.only(top: height * 0.027),
             child: Column(children: [
               CarouselSlider(
-                height: HEIGHT * 0.23,
+                height: height * 0.23,
                 items: child,
                 autoPlay: true,
+                autoPlayInterval: Duration(seconds: 1, milliseconds: 500),
                 enlargeCenterPage: true,
                 aspectRatio: 2.0,
                 onPageChanged: (index) {
@@ -170,13 +174,13 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: map<Widget>(
-                  listImagesFirebase,
+                  business.images,
                   (index, url) {
                     return Container(
-                      width: WIDHT * 0.02,
-                      height: HEIGHT * 0.01,
+                      width: width * 0.02,
+                      height: height * 0.01,
                       margin: EdgeInsets.symmetric(
-                          vertical: HEIGHT * 0.013, horizontal: WIDHT * 0.005),
+                          vertical: height * 0.013, horizontal: width * 0.005),
                       decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: _current == index
@@ -208,16 +212,19 @@ class _DetailScreenState extends State<DetailScreen> implements DetailView {
   }
 
   @override
-  showImages(List images) {
+  showImages(List<ImageBusiness> images) {
     if (mounted) {
       setState(() {
-        listImagesFirebase = images;
-        listImagesFirebase.isEmpty
+        images.isEmpty
             ? {
                 notImages = false,
-                listImagesFirebase.add("assets/images/splash.png")
+                business.images.add(
+                    ImageBusiness("aux", "assets/images/splash.png", "aux")),
               }
-            : notImages = true;
+            : {
+                notImages = true,
+                business.images = images,
+              };
         child = getChilds();
         this.isConsulting = false;
       });

@@ -1,25 +1,25 @@
 class Service {
-  String type;
+  String id;
+  String name;
   String duration;
   String price;
-  String description;
+  String businessServiceId;
 
   @override
   String toString() {
-    return 'Service{type: $type, duration: $duration, price: $price}';
+    return 'Service{id: $id, name: $name, duration: $duration, price: $price, negocioServicioId: $businessServiceId}';
   }
 
-  Service(this.type,this.price, {this.description, this.duration});
+  Service(this.id, this.name, this.duration, this.price,
+      this.businessServiceId);
 
-  factory Service.fromMap(Map values, String typeBusiness) {
-    String price = values['precio'];
-    String type = values['nombre'];
-    if(typeBusiness == "Peluquerías"){
-      String duration = values['duracion'];
-      return Service(type, price, duration: duration);
-    }else{
-      String description = values['descripcion'];
-      return Service(type, price, description: description);
-    }
+  factory Service.fromMap(Map values) {
+    String price = values['Precio'];
+    String name = values['Nombre'];
+    String duration = values['Duracion'];
+    String id = values['Id'];
+    String businessServiceId = values['NegocioServicioId'];
+    return Service(id, name, duration, price, businessServiceId);
+
   }
 }

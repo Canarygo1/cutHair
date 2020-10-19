@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:components/components.dart';
 import 'package:components/others_components/confirm_dialog.dart';
-import 'package:crypto/crypto.dart';
 import 'package:cuthair/data/local/db_sqlite.dart';
 import 'package:cuthair/data/remote/check_connection.dart';
 import 'package:cuthair/data/remote/http_remote_repository.dart';
@@ -17,6 +15,7 @@ import 'package:cuthair/ui/Pages/reset_password/reset_password_code.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Info extends StatefulWidget {
@@ -31,8 +30,8 @@ class Info extends StatefulWidget {
 class _InfoScreenState extends State<Info> implements InfoView {
   User user;
   Widget screen;
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   String error = "";
   ConfirmDialog confirmDialog;
   var nameTextfield = TextEditingController();
@@ -40,6 +39,7 @@ class _InfoScreenState extends State<Info> implements InfoView {
   var emailTextfield = TextEditingController();
   var passwordTextField = TextEditingController();
   InfoPagePresenter presenter;
+  ResetPasswordCode presenterPassWord;
   RemoteRepository remoteRepository;
   bool errorColor = false;
   Timer timer;
@@ -51,11 +51,11 @@ class _InfoScreenState extends State<Info> implements InfoView {
 
   @override
   void initState() {
-    remoteRepository = HttpRemoteRepository(Firestore.instance);
+    remoteRepository = HttpRemoteRepository(Client());
     presenter = InfoPagePresenter(this, remoteRepository);
+    presenterPassWord = ResetPasswordCode(remoteRepository);
     nameTextfield.text = DBProvider.users[0].name;
     surNameTextfield.text = DBProvider.users[0].surname;
-    emailTextfield.text = DBProvider.users[0].email;
   }
 
   @override
@@ -67,8 +67,8 @@ class _InfoScreenState extends State<Info> implements InfoView {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     global.context = context;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -81,7 +81,7 @@ class _InfoScreenState extends State<Info> implements InfoView {
           GestureDetector(
             onTap: logOut,
             child: Padding(
-              padding: EdgeInsets.only(right: WIDHT * 0.05),
+              padding: EdgeInsets.only(right: width * 0.05),
               child: Icon(
                 Icons.exit_to_app,
                 size: 30,
@@ -105,7 +105,7 @@ class _InfoScreenState extends State<Info> implements InfoView {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                padding: EdgeInsets.only(left: width * 0.101),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Components.mediumText(
@@ -114,79 +114,29 @@ class _InfoScreenState extends State<Info> implements InfoView {
                   ),
                 ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: WIDHT * 0.101, top: 10.0, bottom: 5.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Components.mediumText(
-                        DBProvider.users[0].phone,
-                        color: Colors.white,
-                      ),
-                    ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: width * 0.101, top: 10.0, bottom: 5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    DBProvider.users[0].phone,
+                    color: Colors.white,
                   ),
-                  Padding(
-                    padding: EdgeInsets.only(right: WIDHT * 0.089),
-                    child: Components.alertCard(
-                      Icon(
-                        Icons.close,
-                        color: Colors.white,
-                        size: 22.0,
-                      ),
-                      Expanded(
-                          child: Components.smallText("No se permite cambiar")),
-                      HEIGHT * 0.045,
-                      WIDHT * 0.4,
-                      color: Color.fromRGBO(230, 73, 90, 1),
-                    ),
-                  ),
-                ],
+                ),
               ),
               Padding(
                 padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
                 child: Divider(
                   height: 1.0,
                   color: Colors.white,
-                  indent: WIDHT * 0.101,
-                  endIndent: WIDHT * 0.089,
+                  indent: width * 0.101,
+                  endIndent: width * 0.089,
                   thickness: 0.5,
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.101),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Components.mediumText(
-                    "Nombre:",
-                    color: Color.fromRGBO(230, 73, 90, 1),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child:
-                    textFieldWidget(nameTextfield, TextInputType.text, "Name"),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.101),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Components.mediumText(
-                    "Apellidos:",
-                    color: Color.fromRGBO(230, 73, 90, 1),
-                  ),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: textFieldWidget(
-                    surNameTextfield, TextInputType.text, "Apellidos"),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: WIDHT * 0.101),
+                padding: EdgeInsets.only(left: width * 0.101),
                 child: Align(
                   alignment: Alignment.centerLeft,
                   child: Components.mediumText(
@@ -195,10 +145,74 @@ class _InfoScreenState extends State<Info> implements InfoView {
                   ),
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: width * 0.101, top: 10.0, bottom: 5.0),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Components.mediumText(
+                    DBProvider.users[0].email,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(top: 5.0, bottom: 15.0),
+                child: Divider(
+                  height: 1.0,
+                  color: Colors.white,
+                  indent: width * 0.101,
+                  endIndent: width * 0.089,
+                  thickness: 0.5,
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.101),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Components.mediumText(
+                        "Nombre:",
+                        color: Color.fromRGBO(230, 73, 90, 1),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 40.0),
+                    child: Icon(Icons.edit, color: Colors.white,),
+                  ),
+                ],
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child:
+                    textFieldWidget(nameTextfield, TextInputType.text, "Name"),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width * 0.101),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Components.mediumText(
+                        "Apellidos:",
+                        color: Color.fromRGBO(230, 73, 90, 1),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(right: 40.0),
+                    child: Icon(Icons.edit, color: Colors.white,),
+                  ),
+                ],
+              ),
               Align(
                 alignment: Alignment.centerLeft,
                 child: textFieldWidget(
-                    emailTextfield, TextInputType.emailAddress, "Email"),
+                    surNameTextfield, TextInputType.text, "Apellidos"),
               ),
               error.length == 0
                   ? Container()
@@ -211,12 +225,12 @@ class _InfoScreenState extends State<Info> implements InfoView {
               changes == true
                   ? Components.smallButton(() => dialogUpdate(),
                       Components.largeText("Guardar cambios"),
-                      width: WIDHT * 0.85,
+                      width: width * 0.85,
                       color: Color.fromRGBO(230, 73, 90, 1))
                   : Container(),
-              Components.smallButton(() => functionResetPassword(),
+              /*Components.smallButton(() => functionResetPassword(),
                   Components.largeText("Cambiar contraseña"),
-                  width: WIDHT * 0.85, color: Color.fromRGBO(230, 73, 90, 1)),
+                  width: width * 0.85, color: Color.fromRGBO(230, 73, 90, 1)),*/
               bottomElements(),
             ]),
       ),
@@ -227,17 +241,17 @@ class _InfoScreenState extends State<Info> implements InfoView {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -279,34 +293,21 @@ class _InfoScreenState extends State<Info> implements InfoView {
       context: context,
       builder: (BuildContext context) {
         confirmDialog = Components.confirmDialog(
-          Column(
-            children: <Widget>[
-              Components.mediumText("Introduzca la contraseña para continuar"),
-              textFieldWidget(
-                  passwordTextField, TextInputType.text, "Contraseña",
-                  obscureText: true),
-            ],
-          ),
-          () => {},
-          functionSimple: () => updateData(passwordTextField.text),
-          textSimple: "Continuar",
-          multiOptions: true,
+          Components.mediumText("¿Desea guardar los cambios?"),
+          () => {updateData(), GlobalMethods().popPage(confirmDialog.context),},
         );
         return confirmDialog;
       },
     );
   }
 
-  updateData(String password) {
+  updateData() {
     if (nameTextfield.text != DBProvider.users[0].name ||
-        surNameTextfield.text != DBProvider.users[0].surname ||
-        emailTextfield.text.toLowerCase() !=
-            DBProvider.users[0].email.toLowerCase()) {
-      Map<String, String> data = Map();
-      data.putIfAbsent("Nombre", () => nameTextfield.text);
-      data.putIfAbsent("Apellidos", () => surNameTextfield.text);
-      data.putIfAbsent("Email", () => emailTextfield.text.toLowerCase());
-      presenter.updateData(data, DBProvider.users[0].uid, password);
+        surNameTextfield.text != DBProvider.users[0].surname) {
+      User user = DBProvider.users[0];
+      user.name = nameTextfield.text;
+      user.surname = surNameTextfield.text;
+      presenter.updateData(user, DBProvider.users[0].id);
     }
   }
 
@@ -379,18 +380,17 @@ class _InfoScreenState extends State<Info> implements InfoView {
   }
 
   changePassword() async {
-    ConnectionChecked.checkInternetConnectivity(context);
-    ResetPasswordCode(DBProvider.users[0].email).changePassword();
+    presenterPassWord.changePassword(DBProvider.users[0].email);
     setState(() {
       error = 'Se ha enviado un correo a dicha direccion email';
     });
-    await FirebaseAuth.instance.signOut();
     DBProvider.db.delete();
     Timer(Duration(seconds: 2),
         () => GlobalMethods().pushAndReplacement(context, Login()));
   }
 
   changeScreen() {
+    GlobalMethods().removePages(context);
     GlobalMethods().pushAndReplacement(context, screen);
   }
 

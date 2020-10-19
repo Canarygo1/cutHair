@@ -27,8 +27,8 @@ class _SendSMSState extends State<SendSMS> {
   String verificationId;
   String errorMessage = '';
   TextEditingController phoneController = TextEditingController();
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   bool sending = true;
   String error = "";
 
@@ -44,7 +44,7 @@ class _SendSMSState extends State<SendSMS> {
 
     final PhoneCodeSent smsCodeSent = (String verId, [int forceCodeResend]) {
       this.verificationId = verId;
-      this.widget.data.putIfAbsent("Teléfono", () => "+34" + phoneController.text);
+      this.widget.data.putIfAbsent("Telefono", () => "+34" + phoneController.text);
       setState(() {
         if (mounted) {
           sending = false;
@@ -103,17 +103,17 @@ class _SendSMSState extends State<SendSMS> {
       {obscureText = false, topPadding = 0.0}) {
     return Padding(
       padding: EdgeInsets.fromLTRB(
-          WIDHT * 0.101, topPadding, WIDHT * 0.089, HEIGHT * 0.027),
+          width * 0.101, topPadding, width * 0.089, height * 0.027),
       child: Components.textFieldPredefine(
         controller,
         textType,
         InputDecoration(
           hintText: hintText,
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.white, width: WIDHT * 0.003),
+            borderSide: BorderSide(color: Colors.white, width: width * 0.003),
           ),
           hintStyle: TextStyle(
             color: Colors.white,
@@ -131,8 +131,8 @@ class _SendSMSState extends State<SendSMS> {
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color.fromRGBO(300, 300, 300, 1),
@@ -155,7 +155,7 @@ class _SendSMSState extends State<SendSMS> {
               children: <Widget>[
                 textFieldWidget(phoneController, TextInputType.phone,
                     'Introduce el teléfono',
-                    topPadding: HEIGHT * 0.176),
+                    topPadding: height * 0.176),
                 Components.smallButton(() => verifyPhone(), Components.largeText("Enviar código"),
                     color: Color.fromRGBO(230, 73, 90, 1)),
                 error.length == 0 ? Container() : Components.errorText(error),

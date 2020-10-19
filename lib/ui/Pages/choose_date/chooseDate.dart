@@ -1,80 +1,85 @@
 import 'package:components/components.dart';
 import 'package:components/others_components/calendar.dart';
-import 'package:cuthair/data/remote/Api/api_remote_repository.dart';
-import 'package:cuthair/data/remote/Api/http_api_remote_repository.dart';
+import 'package:cuthair/data/remote/http_remote_repository.dart';
+import 'package:cuthair/data/remote/remote_repository.dart';
 import 'package:cuthair/global_methods.dart';
 import 'package:cuthair/model/appointment.dart';
+import 'package:cuthair/model/business.dart';
+import 'package:cuthair/model/business_type.dart';
+import 'package:cuthair/model/service.dart';
 import 'package:cuthair/ui/Pages/confirm/confirm_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_calendar_carousel/classes/event.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart';
 import 'choose_date_presenter.dart';
 
-class ChooseDateRestaurantScreen extends StatefulWidget {
-  Appointment appointment = Appointment();
+class ChooseDate extends StatefulWidget {
+  Appointment appointment;
+  BusinessType typeBusiness;
+  Service service;
+  Business business;
 
-  ChooseDateRestaurantScreen(this.appointment);
+  ChooseDate(this.appointment, this.typeBusiness, this.service, this.business);
 
   @override
-  _ChooseDateScreenState createState() =>
-      _ChooseDateScreenState(this.appointment);
+  _ChooseDateState createState() =>
+      _ChooseDateState(appointment, typeBusiness, service, business);
 }
 
-class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
-    implements ChooseDateView {
+class _ChooseDateState
+    extends State<ChooseDate> implements ChooseDateView {
   Appointment appointment;
+  Service service;
+  Business business;
+
   bool isConsulting = true;
   DateTime currentDate2 = DateTime.now();
 
-  _ChooseDateScreenState(this.appointment);
+  _ChooseDateState(this.appointment, this.typeBusiness, this.service, this.business);
 
-  double HEIGHT;
-  double WIDHT;
+  double height;
+  double width;
   List<String> availability = [];
-  DateTime _finalDateCheckIn = DateTime.now();
-  ApiRemoteRepository _remoteRepository;
+  DateTime _finalDate = DateTime.now();
+  RemoteRepository _remoteRepository;
   ChooseDatePresenter _presenter;
   Calendar calendarWidget;
+  BusinessType typeBusiness;
 
   initState() {
-    _remoteRepository = HttpApiRemoteRepository(Client());
+    _remoteRepository = HttpRemoteRepository(Client());
     _presenter = ChooseDatePresenter(this, _remoteRepository);
-    DateTime initial = currentDate2.subtract(Duration(
-        hours: currentDate2.hour,
-        minutes: currentDate2.minute,
-        seconds: currentDate2.second,
-        microseconds: currentDate2.microsecond,
-        milliseconds: currentDate2.millisecond));
-    this._presenter.init(appointment, initial.toString());
-    showAvailability(availability);
+    _presenter.init(appointment, currentDate2, typeBusiness.type, service, business);
   }
 
   @override
   Widget build(BuildContext context) {
-    HEIGHT = MediaQuery.of(context).size.height;
-    WIDHT = MediaQuery.of(context).size.width;
+    height = MediaQuery.of(context).size.height;
+    width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromRGBO(300, 300, 300, 1),
-      appBar: AppBar(
-        backgroundColor: Color.fromRGBO(230, 73, 90, 1),
-        leading: Components.goBack(
-          context,
-          "",
+        appBar: AppBar(
+          backgroundColor: Color.fromRGBO(230, 73, 90, 1),
+          leading: Components.goBack(
+            context,
+            "",
+          ),
+          title: Components.largeText("Volver"),
+          titleSpacing: 0,
         ),
-        title: Components.largeText("Volver"),
-        titleSpacing: 0,
-      ),
       body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           children: <Widget>[
             Calendar(
                 (DateTime date, List<Event> events) => pressCalendar(date),
                 currentDate2: currentDate2),
             Padding(
-              padding: EdgeInsets.only(left: WIDHT * 0.025),
+              padding: EdgeInsets.only(left: width * 0.025),
               child: Components.largeText("Horas disponibles"),
             ),
             timeSelector(),
@@ -86,22 +91,25 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
 
   Widget timeSelector() {
     return isConsulting == true
-        ? SpinKitWave(
-            color: Color.fromRGBO(230, 73, 90, 1),
-            type: SpinKitWaveType.start,
-          )
+        ? Padding(
+          padding: EdgeInsets.only(top: height * 0.03),
+          child: SpinKitWave(
+              color: Color.fromRGBO(230, 73, 90, 1),
+              type: SpinKitWaveType.start,
+            ),
+        )
         : availability.isEmpty
             ? Padding(
                 padding:
-                    EdgeInsets.only(top: HEIGHT * 0.03, left: WIDHT * 0.03),
+                    EdgeInsets.only(top: height * 0.03, left: width * 0.03),
                 child: Column(
                   children: <Widget>[
                     SvgPicture.asset(
                       "assets/images/sad.svg",
-                      width: WIDHT * 0.229,
+                      width: width * 0.229,
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: HEIGHT * 0.03),
+                      padding: EdgeInsets.only(top: height * 0.03),
                       child: Column(
                         children: <Widget>[
                           Components.mediumText("Lo sentimos, no hay horas disponibles."),
@@ -113,24 +121,26 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
                 ),
               )
             : Padding(
-                padding: EdgeInsets.only(top: HEIGHT * 0.027),
+                padding: EdgeInsets.only(top: height * 0.027),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: WIDHT * 0.043, vertical: HEIGHT * 0.005),
-                      height: HEIGHT * 0.08,
+                          horizontal: width * 0.043, vertical: height * 0.005),
+                      height: 60.0,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: availability.length,
                           itemBuilder: (context, index) {
+                            DateTime dateTime = DateTime.parse(availability[index]);
+                            String minutes = dateTime.minute.toString().length == 1 ? dateTime.minute.toString() + "0" : dateTime.minute.toString();
+                            String value = dateTime.hour.toString() + ":" + minutes;
                             return Center(
                               child: Components.smallButton(
-                                () => pressTimeSelection(index),
-                                Components.largeText(availability[index]),
-                                height: HEIGHT * 0.05,
-                                horizontalPadding: WIDHT * 0.025,
+                                () => pressTimeSelection(dateTime),
+                                Components.largeText(value),
+                                horizontalPadding: width * 0.025,
                                 color: Color.fromRGBO(230, 73, 90, 1),
                               ),
                             );
@@ -141,26 +151,13 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
               );
   }
 
-  pressTimeSelection(int index) {
-    if (_finalDateCheckIn != null) {
-      _finalDateCheckIn = _finalDateCheckIn.subtract(Duration(
-          hours: _finalDateCheckIn.hour,
-          minutes: _finalDateCheckIn.minute,
-          seconds: _finalDateCheckIn.second,
-          milliseconds: _finalDateCheckIn.millisecond,
-          microseconds: _finalDateCheckIn.microsecond));
-      List hours = availability[index].split(':');
-      appointment.day = _finalDateCheckIn;
-
-      _finalDateCheckIn = _finalDateCheckIn.add(
-          Duration(hours: int.parse(hours[0]), minutes: int.parse(hours[1])));
-      appointment.checkIn = _finalDateCheckIn;
-      GlobalMethods().pushPage(context, ConfirmScreen(appointment));
+  pressTimeSelection(DateTime date) async {
+    if (_finalDate != null) {
+      _presenter.pressInOption(date, appointment, service);
     }
   }
 
   pressCalendar(DateTime date) {
-
     if (isConsulting == false) {
       if (date.isAfter(DateTime.now()) ||
           (date.year == DateTime.now().year &&
@@ -169,11 +166,9 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
         setState(() {
           this.isConsulting = true;
           this.currentDate2 = date;
-          this._finalDateCheckIn = date;
-
-          _presenter.init(appointment, currentDate2.toString());
+          this._finalDate = date;
+          this._presenter.init(appointment, currentDate2, typeBusiness.type, service, business);
         });
-
       }
     }
   }
@@ -196,5 +191,11 @@ class _ChooseDateScreenState extends State<ChooseDateRestaurantScreen>
         this.availability = [];
       });
     }
+  }
+
+  @override
+  goToNewScreen(Appointment value) {
+    appointment = value;
+    GlobalMethods().pushPage(context, ConfirmScreen(appointment, typeBusiness, business, service));
   }
 }
