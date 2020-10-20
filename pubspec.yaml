@@ -1,7 +1,7 @@
 name: cuthair
 description: Application for the control and management of appointments.
 
-version: 1.0.0+11
+version: 1.1.0
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
