@@ -57,6 +57,7 @@ class _SplashScreenState extends State implements ChargeScreenView {
       versionApp = DotEnv().env['GET_ANDROID_VERSION'];
     }
     await presenter.init(sofware);
+
     if (versionApp.split(".")[0] != this.version.split(".")[0] ||
         versionApp.split(".")[1] != this.version.split(".")[1]) {
       GlobalMethods().pushAndReplacement(context, UpdateAppScreen());

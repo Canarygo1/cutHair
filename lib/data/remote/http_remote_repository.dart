@@ -434,7 +434,7 @@ class HttpRemoteRepository implements RemoteRepository {
 
   @override
   Future<String> getVersionApp(String software) async {
-    var uri = Uri.parse(DotEnv().env['API_URL'] + "version/" + software);
+    var uri = Uri.parse(DotEnv().env['API_URL'] + "version/Cliente/type/" + software);
     var response = await _client.get(uri);
     if (json.decode(response.body)['result'] == 'JWT failed') {
       throw ("JWT error");
